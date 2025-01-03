@@ -36,7 +36,7 @@ const callWorkflowFile = <TData>(flowPath: string, data: TData, eventManager: Ev
 }
 
 export const createWorkflowHandlers = (workflows: Workflow[], eventManager: EventManager, stateConfig: AdapterConfig) => {
-  console.log(`[Workflows] Creating workflow handlers for ${workflows.length} workflows`, Array.isArray(workflows))
+  console.log(`[Workflows] Creating workflow handlers for ${workflows.length} workflows`)
 
   workflows.forEach((workflow) => {
     const { config, file, filePath } = workflow
