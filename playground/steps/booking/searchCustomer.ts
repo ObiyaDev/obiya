@@ -19,6 +19,14 @@ export const executor: FlowExecutor<Input> = async (input, emit, ctx) => {
   const { venuePhoneNumber, customerPhoneNumber } = input;
 
   try {
+    const cachedValue = await ctx.state.get('123', 'test');
+
+    if (cachedValue !== 'ping') {
+      throw new Error('state adapter not working');
+    }
+
+    await ctx.state.clear('123');
+
     const venueResponse = await fetch(
       `https://supreme-voltaic-flyaway.glitch.me/venue/${venuePhoneNumber}`
     );

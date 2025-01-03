@@ -80,7 +80,8 @@ export const dev = async () => {
   const eventManager = createEventManager()
 
   const server = createServer(config.api, eventManager)
-  createWorkflowHandlers(workflows, eventManager)
+  
+  createWorkflowHandlers(workflows, eventManager, config.state)
 
   // 6) Gracefully shut down on SIGTERM
   process.on('SIGTERM', async () => {

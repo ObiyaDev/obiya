@@ -15,7 +15,7 @@ export const config: FlowConfig<Input> = {
   input: inputSchema,
 }
 
-export const executor: FlowExecutor<Input> = async (input, emit) => {
+export const executor: FlowExecutor<Input> = async (input, emit, ctx) => {
   const validation = inputSchema.safeParse(input);
 
   if (!validation.success) {
@@ -25,6 +25,8 @@ export const executor: FlowExecutor<Input> = async (input, emit) => {
     });
     return;
   }
+
+  await ctx.state.set('123', 'test', 'ping');
 
   await emit({
     type: "dbz.search-customer",

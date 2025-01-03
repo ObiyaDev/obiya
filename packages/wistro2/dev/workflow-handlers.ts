@@ -2,6 +2,7 @@ import { Event, EventManager } from './event-manager'
 import { spawn } from 'child_process'
 import path from 'path'
 import { Workflow } from './config.types'
+import { AdapterConfig } from '../state/createStateAdapter'
 
 const nodeRunner = path.join(__dirname, 'node', 'node-runner.js')
 const pythonRunner = path.join(__dirname, 'python', 'python-runner.py')
@@ -34,7 +35,7 @@ const callWorkflowFile = <TData>(flowPath: string, data: TData, eventManager: Ev
   })
 }
 
-export const createWorkflowHandlers = (workflows: Workflow[], eventManager: EventManager) => {
+export const createWorkflowHandlers = (workflows: Workflow[], eventManager: EventManager, stateConfig: AdapterConfig) => {
   console.log(`[Workflows] Creating workflow handlers for ${workflows.length} workflows`, Array.isArray(workflows))
 
   workflows.forEach((workflow) => {
@@ -48,7 +49,7 @@ export const createWorkflowHandlers = (workflows: Workflow[], eventManager: Even
         console.log(`[Workflow] ${file} received event`, event)
 
         try {
-          await callWorkflowFile(filePath, event.data, eventManager)
+          await callWorkflowFile(filePath, [event.data, stateConfig], eventManager)
         } catch (error) {
           console.error(`[Workflow] ${file} error calling workflow`, {error, filePath})
         }
