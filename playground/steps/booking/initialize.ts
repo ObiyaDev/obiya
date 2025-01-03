@@ -1,19 +1,22 @@
-import { z } from "zod";
+import { z } from 'zod'
+import { FlowConfig, FlowExecutor } from 'wistro2'
 
-export const config = {
+type Input = typeof inputSchema
+
+const inputSchema = z.object({
+  venuePhoneNumber: z.string().min(1),
+  customerPhoneNumber: z.string().min(1),
+})
+
+export const config: FlowConfig<Input> = {
   name: "Initialize",
-  endpoint: "node-agent",
   subscribes: ["dbz.initialize"],
   emits: ["dbz.search-customer", "dbz.error"],
-};
+  input: inputSchema,
+}
 
-export default async (input, emit) => {
-  const schema = z.object({
-    venuePhoneNumber: z.string().min(1),
-    customerPhoneNumber: z.string().min(1),
-  });
-
-  const validation = schema.safeParse(input);
+export const executor: FlowExecutor<Input> = async (input, emit) => {
+  const validation = inputSchema.safeParse(input);
 
   if (!validation.success) {
     await emit({
