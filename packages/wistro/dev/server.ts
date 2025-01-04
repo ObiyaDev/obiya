@@ -23,10 +23,10 @@ export const createServer = (config: Config, workflowSteps: WorkflowStep[], even
 
       try {
         await eventManager.emit(event)
-        return res.send({ success: true, eventType: emits, traceId })
+        res.send({ success: true, eventType: emits, traceId })
       } catch (error) {
         console.error('[API] Error emitting event', error)
-        return res.status(500).send({ error: 'Internal server error' })
+        res.status(500).send({ error: 'Internal server error' })
       }
     }
   }
