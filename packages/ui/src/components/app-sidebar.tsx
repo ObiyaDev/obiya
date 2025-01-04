@@ -28,7 +28,7 @@ export const AppSidebar = () => {
               {workflows.map((workflow) => (
                 <SidebarMenuItem key={workflow.id}>
                   <SidebarMenuButton asChild className="cursor-pointer">
-                    <Link to="." search={(prev) => ({ ...prev, workflowId: workflow.id })} className="flex items-center gap-2">
+                    <Link to="." search={(prev) => ({ ...prev, workflowId: workflow.id })} className="flex items-center gap-2" data-testid={workflow.id}>
                       <Workflow />
                       <span>{workflow.name}</span>
                     </Link>
