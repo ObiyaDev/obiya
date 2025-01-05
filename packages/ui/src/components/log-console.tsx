@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Button } from './ui/button'
 import { motion } from 'framer-motion'
 import { useTriggerLogs } from '@/stores/triggerLogs'
-import { Collapsible, CollapsibleContent } from './ui/collapsible'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { ArrowDownToLine, ArrowUpToLine, Trash2, Terminal } from 'lucide-react'
 
 export const LogConsole = () => {
