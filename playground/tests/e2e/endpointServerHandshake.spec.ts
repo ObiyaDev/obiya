@@ -26,7 +26,7 @@ test.describe('endpointServerHandshake + Redis E2E', () => {
   test('Verifies handshake flow & Redis events are published', async ({ page }) => {
     // 1) Go to the Playground UI
     await page.goto('http://localhost:3000')
-    // Wait for the workflow dropdown or a known element
+    // Wait for the flow dropdown or a known element
     await expect(page.locator('text=Endpoint Server Handshake')).toBeVisible()
 
     // 2) Select 'endpointServerHandshake' in the dropdown (from config)
@@ -36,11 +36,11 @@ test.describe('endpointServerHandshake + Redis E2E', () => {
     // Wait for some node label to appear, e.g. "Node Starter"
     await expect(page.getByTestId('subscribes__handshake.initiate')).toBeVisible()
 
-    // 3) Trigger the workflow by calling the inbound route
+    // 3) Trigger the flow by calling the inbound route
     const response = await fetch('http://localhost:3000/api/endpoint-server-handshake', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // Optionally pass some JSON data to your workflow
+      // Optionally pass some JSON data to your flow
       body: JSON.stringify({
         message: 'Hello from endpointServerHandshake test',
       }),

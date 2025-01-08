@@ -3,14 +3,14 @@ import { Server as SocketIOServer } from 'socket.io'
 import bodyParser from 'body-parser'
 import { randomUUID } from 'crypto'
 import express, { Request, Response } from 'express'
-import http, { Server } from 'http'
-import { Config, WorkflowStep } from './config.types'
-import { workflowsEndpoint } from './workflows-endpoint'
+import http from 'http'
+import { Config, FlowStep } from './config.types'
+import { flowsEndpoint } from './flows-endpoint'
 import { Event, EventManager, WistroServer, WistroSockerServer } from './../wistro.types'
 
 export const createServer = async (
   config: Config,
-  workflowSteps: WorkflowStep[],
+  flowSteps: FlowStep[],
   eventManager: EventManager,
   options?: {
     skipSocketServer?: boolean
@@ -64,7 +64,7 @@ export const createServer = async (
     }
   }
 
-  workflowsEndpoint(config, workflowSteps, app)
+  flowsEndpoint(config, flowSteps, app)
   await applyMiddleware(app)
 
   console.log('[API] Server listening on port', config.port)

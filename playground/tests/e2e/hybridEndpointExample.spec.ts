@@ -35,7 +35,7 @@ test.describe('Hybrid Workflow E2E', () => {
     collectedEvents = []
   })
 
-  test('processes hybrid workflow through all stages', async () => {
+  test('processes hybrid flow through all stages', async () => {
     // Test input data
     const testData = {
       items: [
@@ -44,7 +44,7 @@ test.describe('Hybrid Workflow E2E', () => {
       ],
     }
 
-    // Send the request to start the hybrid workflow
+    // Send the request to start the hybrid flow
     const res = await fetch('http://localhost:3000/api/hybrid-endpoint-example', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,7 +53,7 @@ test.describe('Hybrid Workflow E2E', () => {
 
     expect(res.status).toBe(200)
 
-    // Wait for the workflow to complete
+    // Wait for the flow to complete
     await new Promise((resolve) => setTimeout(resolve, 2000)) // Adjust time as needed
 
     // Define the expected sequence of events

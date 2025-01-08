@@ -30,8 +30,8 @@ test.describe('Parallel Merge State Workflow + Redis E2E', () => {
     collectedEvents = []
   })
 
-  test('verifies parallel merge workflow state & events', async ({ page }) => {
-    // 1. Trigger the workflow
+  test('verifies parallel merge flow state & events', async ({ page }) => {
+    // 1. Trigger the flow
     const response = await fetch('http://localhost:3000/api/parallel-merge', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -59,7 +59,7 @@ test.describe('Parallel Merge State Workflow + Redis E2E', () => {
       ]),
     )
 
-    // 3. Get the workflow trace ID
+    // 3. Get the flow trace ID
     const startEvent = collectedEvents.find((ev) => ev.type === 'pms.start')
     expect(startEvent?.traceId).toBeDefined()
 

@@ -28,14 +28,14 @@ test.describe('WistroServerExample + Redis E2E', () => {
     await page.goto('http://localhost:3000')
     await expect(page.locator('text=Select Workflow')).toBeVisible()
 
-    // 3) Select the "wistroServerExample" workflow
+    // 3) Select the "wistroServerExample" flow
     const workflowSelect = page.locator('select')
     await workflowSelect.selectOption('wistroServerExample')
 
     // For example, wait for a node named "Start Event"
     await expect(page.locator('text=.start').first()).toBeVisible()
 
-    // 4) Trigger the workflow by POSTing to the Wistro server
+    // 4) Trigger the flow by POSTing to the Wistro server
     const response = await fetch('http://localhost:3000/api/wistro-server-example', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ test.describe('WistroServerExample + Redis E2E', () => {
     })
     expect(response.status).toBe(200)
 
-    // Give time for the workflow to run and events to publish
+    // Give time for the flow to run and events to publish
     await page.waitForTimeout(1000)
 
     // 5) Assert we saw expected Redis events

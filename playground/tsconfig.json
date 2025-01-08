@@ -13,11 +13,6 @@
     "rootDir": ".",
     "baseUrl": "."
   },
-  "include": [
-    "**/*.ts"
-, "wistro.mts"  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["**/*.ts", "wistro.mts"],
+  "exclude": ["node_modules", "dist", "tests"]
 }

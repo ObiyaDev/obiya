@@ -8,7 +8,7 @@ export const createEventManager = (globalSubscriber?: (event: Event<unknown>) =>
 
     const eventHandlers = handlers[event.type] ?? []
 
-    console.log(`[Workflow Emit] ${event.type} emitted`, { handlers: eventHandlers.length })
+    console.log(`[Flow Emit] ${event.type} emitted`, { handlers: eventHandlers.length })
     eventHandlers.map((handler) => handler(event))
   }
 
@@ -17,7 +17,7 @@ export const createEventManager = (globalSubscriber?: (event: Event<unknown>) =>
       handlers[event] = []
     }
 
-    console.log(`[Workflow Sub] ${handlerName} subscribing to ${event}`)
+    console.log(`[Flow Sub] ${handlerName} subscribing to ${event}`)
 
     handlers[event].push(handler as Handler)
   }
