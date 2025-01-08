@@ -1,4 +1,4 @@
-import { Event, EventManager } from './event-manager'
+import { Event, EventManager } from './../wistro.types'
 import { spawn } from 'child_process'
 import path from 'path'
 import { WorkflowStep } from './config.types'
@@ -44,7 +44,7 @@ export const createWorkflowHandlers = (
   workflows: WorkflowStep[],
   eventManager: EventManager,
   stateConfig: AdapterConfig,
-  socketServer: Server,
+  socketServer?: Server,
 ) => {
   console.log(`[Workflows] Creating workflow handlers for ${workflows.length} workflows`)
 
@@ -57,7 +57,7 @@ export const createWorkflowHandlers = (
     subscribes.forEach((subscribe) => {
       eventManager.subscribe(subscribe, file, async (event) => {
         console.log(`[Workflow] ${file} received event`, event)
-        socketServer.emit('event', { time: Date.now(), event, file, traceId: event.traceId })
+        socketServer?.emit('event', { time: Date.now(), event, file, traceId: event.traceId })
 
         try {
           await callWorkflowFile(filePath, event, stateConfig, eventManager)
