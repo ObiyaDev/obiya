@@ -6,9 +6,9 @@ export type Emitter = (event: any) => Promise<void>
 export type FlowContext = {
   traceId: string
   state: {
-    get: <T>(traceId: string, key: string) => Promise<T>
-    clear: (traceId: string) => Promise<void>
-    set: <T>(traceId: string, key: string, value: T) => Promise<void>
+    get: <T>(path?: string) => Promise<T>
+    clear: () => Promise<void>
+    set: <T>(path: string, value: T) => Promise<void>
   }
 }
 export type FlowExecutor<TInput extends ZodObject<any>> = (

@@ -26,11 +26,11 @@ test.describe('endpointServerHandshake + Redis E2E', () => {
   test('Verifies handshake flow & Redis events are published', async ({ page }) => {
     // 1) Go to the Playground UI
     await page.goto('http://localhost:3000')
-    // Wait for the flow dropdown or a known element
+    // Wait for the flow selection sidebar to appear
     await expect(page.locator('text=Endpoint Server Handshake')).toBeVisible()
 
     // 2) Select 'endpointServerHandshake' in the dropdown (from config)
-    const workflowSelect = page.getByTestId('handshake')
+    const workflowSelect = page.getByTestId('flow-link-handshake')
     await workflowSelect.click()
 
     // Wait for some node label to appear, e.g. "Node Starter"

@@ -26,14 +26,15 @@ test.describe('WistroServerExample + Redis E2E', () => {
   test('verifies wistroServerExample flow & Redis events', async ({ page }) => {
     // 2) Navigate to Playground UI
     await page.goto('http://localhost:3000')
-    await expect(page.locator('text=Select Workflow')).toBeVisible()
+    // Wait for the flow selection sidebar to appear
+    await expect(page.locator('text=Endpoint Server Handshake')).toBeVisible()
 
     // 3) Select the "wistroServerExample" flow
-    const workflowSelect = page.locator('select')
-    await workflowSelect.selectOption('wistroServerExample')
+    const workflowSelect = page.getByTestId('flow-link-wistro-server')
+    await workflowSelect.click()
 
-    // For example, wait for a node named "Start Event"
-    await expect(page.locator('text=.start').first()).toBeVisible()
+    // Wait for some node label to appear, e.g. "Node Starter"
+    await expect(page.getByTestId('subscribes__ws-server-example.trigger')).toBeVisible()
 
     // 4) Trigger the flow by POSTing to the Wistro server
     const response = await fetch('http://localhost:3000/api/wistro-server-example', {
@@ -64,6 +65,6 @@ test.describe('WistroServerExample + Redis E2E', () => {
 
     // 6) Optionally confirm the final UI state
     // e.g., a "Finalizer" node or some text indicating completion
-    await expect(page.locator('text=Subscribes: ws-server-example.processed')).toBeVisible()
+    await expect(page.getByTestId('subscribes__ws-server-example.processed')).toBeVisible()
   })
 })

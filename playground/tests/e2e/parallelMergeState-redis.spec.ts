@@ -11,10 +11,10 @@ type EventDataType = {
 
 test.describe('Parallel Merge State Workflow + Redis E2E', () => {
   let collectedEvents: Array<Event<EventDataType>> = []
-  let server: WistroServer
   let eventSubscriber = (event: Event<EventDataType>) => {
     collectedEvents.push(event)
   }
+  let server: WistroServer
 
   test.beforeAll(async () => {
     const result = await createTestServer(path.join(__dirname, '../../'), eventSubscriber)
