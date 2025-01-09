@@ -1,14 +1,16 @@
+import { globalLogger, Logger } from './logger'
 import { Event, EventManager, Handler } from './../wistro.types'
 
 export const createEventManager = (globalSubscriber?: (event: Event<unknown>) => void): EventManager => {
   const handlers: Record<string, Handler[]> = {}
 
-  const emit = async <TData>(event: Event<TData>) => {
+  const emit = async <TData>(event: Event<TData>, file?: string) => {
     globalSubscriber?.(event)
 
     const eventHandlers = handlers[event.type] ?? []
+    const { logger, ...rest } = event
 
-    console.log(`[Flow Emit] ${event.type} emitted`, { handlers: eventHandlers.length })
+    logger.debug('[Flow Emit] Event emitted', { handlers: eventHandlers.length, data: rest, file })
     eventHandlers.map((handler) => handler(event))
   }
 
@@ -17,7 +19,7 @@ export const createEventManager = (globalSubscriber?: (event: Event<unknown>) =>
       handlers[event] = []
     }
 
-    console.log(`[Flow Sub] ${handlerName} subscribing to ${event}`)
+    globalLogger.debug('[Flow Sub] Subscribing to event', { event, handlerName })
 
     handlers[event].push(handler as Handler)
   }

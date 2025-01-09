@@ -3,6 +3,7 @@ import fs from 'fs'
 import { getPythonConfig } from './python/get-python-config'
 import { FlowStep } from './config.types'
 import { FlowConfig } from '../wistro.types'
+import { globalLogger } from './logger'
 
 require('ts-node').register({
   transpileOnly: true,
@@ -17,24 +18,24 @@ export const parseFlowFolder = async (folderPath: string, nextFlows: FlowStep[])
   const flowRootFolders = flowFolderItems.filter((item) => item.isDirectory())
   let flows: FlowStep[] = [...nextFlows]
 
-  console.log('[Flows] Building flows', flowFiles)
+  globalLogger.debug('[Flows] Building flows', { flowFiles, flowRootFolders })
 
   for (const file of flowFiles) {
     const isPython = file.endsWith('.py')
 
     if (isPython) {
-      console.log('[Flows] Building Python flow', file)
+      globalLogger.debug('[Flows] Building Python flow', { file })
       const config = await getPythonConfig(path.join(folderPath, file))
-      console.log('[Flows] Python flow config', config)
+      globalLogger.debug('[Flows] Python flow config', { config })
       flows.push({ config, file, filePath: path.join(folderPath, file) })
     } else {
-      console.log('[Flows] Building Node flow', file)
+      globalLogger.debug('[Flows] Building Node flow', { file })
       const module = require(path.join(folderPath, file))
       if (!module.config) {
-        console.log(`[Flows] skipping file ${file} as it does not have a valid config`)
+        globalLogger.debug(`[Flows] skipping file ${file} as it does not have a valid config`)
         continue
       }
-      console.log(`[Flows] processing component ${module.config.name} for flow ${module.config.tags?.flow ?? file}`)
+      globalLogger.debug('[Flows] processing component', { config: module.config })
       const config = module.config as FlowConfig<any>
       flows.push({ config, file, filePath: path.join(folderPath, file) })
     }
@@ -42,7 +43,7 @@ export const parseFlowFolder = async (folderPath: string, nextFlows: FlowStep[])
 
   if (flowRootFolders.length > 0) {
     for (const folder of flowRootFolders) {
-      console.log('[Flows] Building nested flows in path', path.join(folderPath, folder.name))
+      globalLogger.debug('[Flows] Building nested flows in path', { path: path.join(folderPath, folder.name) })
       const nestedFlows = await parseFlowFolder(path.join(folderPath, folder.name), [])
       flows = [...flows, ...nestedFlows]
     }
@@ -57,7 +58,7 @@ export const buildFlows = async (): Promise<FlowStep[]> => {
 
   // Check if steps directory exists
   if (!fs.existsSync(flowsDir)) {
-    console.log('No /steps directory found')
+    globalLogger.error('No /steps directory found')
     return []
   }
 
