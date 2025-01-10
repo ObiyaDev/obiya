@@ -1,0 +1,269 @@
+{
+  "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698",
+  "port": 3000,
+  "state": {
+    "adapter": "redis",
+    "host": "localhost",
+    "port": 6379
+  },
+  "triggers": {
+    "api": {
+      "paths": {
+        "/api/openai": {
+          "method": "POST",
+          "emits": "call-openai",
+          "name": "OpenAI",
+          "description": "Triggered when a message is received from chatbot",
+          "flows": [
+            "openai"
+          ]
+        },
+        "/api/hybrid-endpoint-example": {
+          "method": "POST",
+          "emits": "hybrid.received",
+          "name": "Hybrid Endpoint Example",
+          "description": "Triggered when a message is received from hybrid endpoint",
+          "flows": [
+            "hybrid-example"
+          ]
+        },
+        "/api/wistro-server-example": {
+          "method": "POST",
+          "emits": "ws-server-example.trigger",
+          "name": "Wistro Server Example",
+          "description": "Triggered when a message is received from wistro server",
+          "flows": [
+            "wistro-server"
+          ]
+        },
+        "/api/endpoint-server-handshake": {
+          "method": "POST",
+          "emits": "handshake.initiate",
+          "name": "Endpoint Server Handshake",
+          "description": "Triggered when a message is received from endpoint server",
+          "flows": [
+            "handshake"
+          ]
+        },
+        "/api/parallel-merge": {
+          "name": "Parallel Merge",
+          "description": "Triggered when a message is received from parallel merge",
+          "method": "POST",
+          "emits": "pms.initialize",
+          "flows": [
+            "parallel-merge"
+          ]
+        },
+        "/api/dbz/initialize": {
+          "name": "DBZ Initialize",
+          "description": "Triggered when a message is received from dbz",
+          "method": "POST",
+          "emits": "dbz.initialize",
+          "flows": [
+            "booking"
+          ]
+        },
+        "/api/dbz/search-upgrades": {
+          "name": "DBZ Search Upgrades",
+          "description": "Triggered when a message is received from dbz",
+          "method": "POST",
+          "emits": "dbz.evaluate-upgrades",
+          "flows": [
+            "booking"
+          ]
+        },
+        "/api/ecommerce/new-order": {
+          "name": "Ecommerce New Order",
+          "description": "Triggered when a message is received from ecommerce",
+          "method": "POST",
+          "emits": "ecommerce.new-order",
+          "flows": [
+            "ecommerce"
+          ]
+        }
+      }
+    },
+    "cron": {
+      "parallel-merge-cron": {
+        "name": "Parallel Merge",
+        "description": "Triggered every 5 minutes",
+        "cron": "0/5 * * * *",
+        "emits": "pms.initialize",
+        "flows": [
+          "parallel-merge"
+        ]
+      }
+    }
+  },
+  "flows": {
+    "booking": {
+      "name": "Booking Example",
+      "description": "A flow that demonstrates the an event driven booking flow",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/initialize.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchCustomer.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/sendText.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "openai": {
+      "name": "OpenAI Example",
+      "description": "A flow that demonstrates the use of OpenAI in a flow",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/callOpenAi.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAiResponse.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "ecommerce": {
+      "name": "Ecommerce Example",
+      "description": "A flow that demonstrates the use of ecommerce in a flow",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/cancel-order.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/check-inventory.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/confirm-order.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/generate-invoice.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/new-order.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/notify-user.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/process-payment.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/release-stock.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/reserve-stock.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/update-inventory.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "handshake": {
+      "name": "Endpoint Server Handshake",
+      "description": "A flow that demonstrates the handshake between endpoint server and wistro server",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "hybrid-example": {
+      "name": "Hybrid Endpoint Example",
+      "description": "A flow that demonstrates the use of python and nodejs in a flow",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/validateData.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "parallel-merge": {
+      "name": "Parallel Merge Example",
+      "description": "update my description",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    },
+    "wistro-server": {
+      "name": "Wistro Server Example",
+      "description": "update my description",
+      "steps": [
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/finalizer.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/processor.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        },
+        {
+          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/startServerExample.step.ts",
+          "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+        }
+      ],
+      "version": "8b8c8dd1-6642-43a0-a81e-2421626fdd2c:1736473698"
+    }
+  }
+}
