@@ -25,7 +25,7 @@ const collectFlows = (folderPath: string, flows: Record<string, any>): Record<st
       collectFlows(itemPath, flows)
     } else if (item.name.endsWith('.step.ts') || item.name.endsWith('.step.js') || item.name.endsWith('.step.py')) {
       const fileContent = fs.readFileSync(itemPath, 'utf-8')
-      const flowMatch = fileContent.match(/flows:\s*\[([^\]]+)\]/)
+      const flowMatch = fileContent.match(/flows\"?:\s*\[([^\]]+)\]/)
 
       if (flowMatch) {
         const flowNames = flowMatch[1].split(',').map((f) => f.trim().replace(/['"`]/g, ''))
