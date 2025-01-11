@@ -15,14 +15,14 @@ const readConfig = (configPath: string): any => {
 }
 
 // Helper function to recursively collect flow data
-const collectFlows = (folderPath: string, flows: Record<string, any>): Record<string, any> => {
+const collectFlows = (folderPath: string, flows: Record<string, any>, baseDir: string): Record<string, any> => {
   const folderItems = fs.readdirSync(folderPath, { withFileTypes: true })
 
   for (const item of folderItems) {
     const itemPath = path.join(folderPath, item.name)
 
     if (item.isDirectory()) {
-      collectFlows(itemPath, flows)
+      collectFlows(itemPath, flows, baseDir)
     } else if (item.name.endsWith('.step.ts') || item.name.endsWith('.step.js') || item.name.endsWith('.step.py')) {
       const fileContent = fs.readFileSync(itemPath, 'utf-8')
       const flowMatch = fileContent.match(/flows\"?:\s*\[([^\]]+)\]/)
@@ -35,7 +35,7 @@ const collectFlows = (folderPath: string, flows: Record<string, any>): Record<st
             flows[flowName] = { steps: [] }
           }
           flows[flowName].steps.push({
-            filePath: itemPath,
+            filePath: `./${path.relative(baseDir, itemPath)}`,
             version,
           })
         }
@@ -56,7 +56,7 @@ export const generateLockFile = async (projectDir: string) => {
     const flows: Record<string, any> = {}
 
     // Collect flow data from steps folder
-    collectFlows(stepsDir, flows)
+    collectFlows(stepsDir, flows, projectDir)
 
     // Merge flow descriptions from config.yml
     for (const [flowName, flowData] of Object.entries(flows)) {

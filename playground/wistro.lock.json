@@ -1,5 +1,5 @@
 {
-  "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518",
+  "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581",
   "port": 3000,
   "state": {
     "adapter": "redis",
@@ -101,181 +101,181 @@
       "description": "A flow that demonstrates the an event driven booking flow",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/initialize.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/booking/initialize.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchCustomer.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/booking/searchCustomer.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/booking/searchTicketUpgrades.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/sendText.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/booking/sendText.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "openai": {
       "name": "OpenAI Example",
       "description": "A flow that demonstrates the use of OpenAI in a flow",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/callOpenAi.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/callOpenAi.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/call_ai.step.py",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/call_ai.step.py",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAiResponse.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/openAiResponse.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "ecommerce": {
       "name": "Ecommerce Example",
       "description": "A flow that demonstrates the use of ecommerce in a flow",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/cancel-order.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/cancel-order.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/check-inventory.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/check-inventory.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/confirm-order.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/confirm-order.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/generate-invoice.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/generate-invoice.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/new-order.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/new-order.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/notify-user.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/notify-user.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/process-payment.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/process-payment.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/release-stock.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/release-stock.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/reserve-stock.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/reserve-stock.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/ecommerce/update-inventory.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/ecommerce/update-inventory.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "handshake": {
       "name": "Endpoint Server Handshake",
       "description": "A flow that demonstrates the handshake between endpoint server and wistro server",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/endpointServerHandshake/apiCaller.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/endpointServerHandshake/nodeFinalizer.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/endpointServerHandshake/nodeStarter.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "hybrid-example": {
       "name": "Hybrid Endpoint Example",
       "description": "A flow that demonstrates the use of python and nodejs in a flow",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/hybridEndpointExample/analyzeData.step.py",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/hybridEndpointExample/enrichData.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/hybridEndpointExample/finalizeData.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/transformData.step.py",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/hybridEndpointExample/transformData.step.py",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/validateData.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/hybridEndpointExample/validateData.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "parallel-merge": {
       "name": "Parallel Merge Example",
       "description": "update my description",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/parallelMergeState/joinStep.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/parallelMergeState/setpB.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/parallelMergeState/startParallelMerge.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/parallelMergeState/stepA.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/parallelMergeState/stepC.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     },
     "wistro-server": {
       "name": "Wistro Server Example",
       "description": "update my description",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/finalizer.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/wistroServerExample/finalizer.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/processor.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/wistroServerExample/processor.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/startServerExample.step.ts",
-          "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+          "filePath": "./steps/wistroServerExample/startServerExample.step.ts",
+          "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
         }
       ],
-      "version": "7645dce3-e85c-4472-a3e7-51ee49c86488:1736474518"
+      "version": "dc318765-7f0d-48fc-a760-1ca0d9da565d:1736559581"
     }
   }
 }

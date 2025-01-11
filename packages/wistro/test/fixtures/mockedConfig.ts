@@ -1,6 +1,7 @@
 import { LockFile } from '../../wistro.types'
 
 export const mockValidConfig: LockFile = {
+  baseDir: './',
   version: '1.0.0',
   flows: {
     flow1: {
@@ -36,6 +37,7 @@ export const mockValidConfig: LockFile = {
 }
 
 export const mockConfigWithoutTriggers: LockFile = {
+  baseDir: './',
   version: '1.0.0',
   flows: {
     flow1: {

@@ -9,7 +9,7 @@ require('ts-node').register({
   compilerOptions: { module: 'commonjs' },
 })
 
-export const parseFlowFolder = async (lockData: LockFile, nextFlows: FlowStep[]): Promise<FlowStep[]> => {
+export const buildLockDataFlows = async (lockData: LockFile, nextFlows: FlowStep[]): Promise<FlowStep[]> => {
   const flowsFromLock = lockData.flows || {}
   let flows: FlowStep[] = [...nextFlows]
 
@@ -17,21 +17,22 @@ export const parseFlowFolder = async (lockData: LockFile, nextFlows: FlowStep[])
 
   for (const [_, flowData] of Object.entries(flowsFromLock)) {
     for (const { filePath: stepPath } of flowData.steps) {
-      const isPython = stepPath.endsWith('.py')
+      const stepFilePath = path.join(lockData.baseDir, stepPath)
+      const isPython = stepFilePath.endsWith('.py')
 
       if (isPython) {
-        globalLogger.debug('[Flows] Building Python flow from lock', { stepPath })
-        const config = await getPythonConfig(stepPath)
-        flows.push({ config, file: path.basename(stepPath), filePath: stepPath })
+        globalLogger.debug('[Flows] Building Python flow from lock', { stepPath: stepFilePath })
+        const config = await getPythonConfig(stepFilePath)
+        flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
       } else {
-        globalLogger.debug('[Flows] Building Node flow from lock', { stepPath })
-        const module = require(stepPath)
+        globalLogger.debug('[Flows] Building Node flow from lock', { stepPath: stepFilePath })
+        const module = require(stepFilePath)
         if (!module.config) {
-          globalLogger.debug(`[Flows] Skipping step ${stepPath} as it does not have a valid config`)
+          globalLogger.debug(`[Flows] Skipping step ${stepFilePath} as it does not have a valid config`)
           continue
         }
         const config = module.config
-        flows.push({ config, file: path.basename(stepPath), filePath: stepPath })
+        flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
       }
     }
   }
@@ -41,5 +42,5 @@ export const parseFlowFolder = async (lockData: LockFile, nextFlows: FlowStep[])
 
 // Updated buildFlows to use lock file
 export const buildFlows = async (lockData: LockFile): Promise<FlowStep[]> => {
-  return parseFlowFolder(lockData, [])
+  return buildLockDataFlows(lockData, [])
 }

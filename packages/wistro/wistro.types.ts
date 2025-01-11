@@ -61,6 +61,7 @@ export type LockFlow = {
 }
 
 export type LockFile = {
+  baseDir: string
   version: string
   port?: number
   flows: Record<string, LockFlow>

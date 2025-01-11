@@ -15,5 +15,5 @@ export const loadLockFile = (): LockFile => {
   const lockData: LockFile = JSON.parse(fs.readFileSync(lockFilePath, 'utf-8'))
 
   // TODO: add zod schema validation for lock data
-  return lockData
+  return { ...lockData, baseDir: process.cwd() }
 }
