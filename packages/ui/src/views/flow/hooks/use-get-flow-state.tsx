@@ -14,6 +14,7 @@ type FlowStep = {
   action?: 'webhook' | 'cron'
   webhookUrl?: string
   cron?: string
+  language?: string
 }
 
 export type FlowResponse = {
@@ -35,6 +36,7 @@ export const useGetFlowState = (flow: FlowResponse) => {
       type: step.type,
       position: { x: 0, y: 0 },
       data: step,
+      language: step.language,
     }))
 
     const edges: Edge<EdgeData>[] = []

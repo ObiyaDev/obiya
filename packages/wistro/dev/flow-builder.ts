@@ -3,6 +3,8 @@ import { getPythonConfig } from './python/get-python-config'
 import { FlowStep } from './config.types'
 import { LockFile } from '../wistro.types'
 import { globalLogger } from './logger'
+import { getRubyConfig } from './ruby/get-ruby-config'
+import { getGoConfig } from './go/get-go-config'
 
 require('ts-node').register({
   transpileOnly: true,
@@ -19,12 +21,24 @@ export const buildLockDataFlows = async (lockData: LockFile, nextFlows: FlowStep
     for (const { filePath: stepPath } of flowData.steps) {
       const stepFilePath = path.join(lockData.baseDir, stepPath)
       const isPython = stepFilePath.endsWith('.py')
+      const isRuby = stepFilePath.endsWith('.rb')
+      const isGolang = stepFilePath.endsWith('.go')
+      const isJsTs = stepFilePath.endsWith('.ts') || stepFilePath.endsWith('.js')
 
       if (isPython) {
         globalLogger.debug('[Flows] Building Python flow from lock', { stepPath: stepFilePath })
         const config = await getPythonConfig(stepFilePath)
         flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
-      } else {
+      } else if (isRuby) {
+        globalLogger.debug('[Flows] Building Ruby flow from lock', { stepPath: stepFilePath })
+        const config = await getRubyConfig(stepFilePath)
+        flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
+        // TODO: figure out how to handle Golang flows
+        // } else if (isGolang) {
+        //   globalLogger.debug('[Flows] Building Golang flow from lock', { stepPath: stepFilePath })
+        //   const config = await getGoConfig(stepFilePath)
+        //   flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
+      } else if (isJsTs) {
         globalLogger.debug('[Flows] Building Node flow from lock', { stepPath: stepFilePath })
         const module = require(stepFilePath)
         if (!module.config) {
@@ -33,6 +47,8 @@ export const buildLockDataFlows = async (lockData: LockFile, nextFlows: FlowStep
         }
         const config = module.config
         flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
+      } else {
+        globalLogger.debug('[Flows] Skipping step, file extension not supported', { stepPath: stepFilePath })
       }
     }
   }

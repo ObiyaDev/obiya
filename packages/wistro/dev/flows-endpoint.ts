@@ -20,10 +20,41 @@ type FlowStepResponse = {
   webhookUrl?: string
   inputSchema?: any
   cron?: string
+  language?: string
 }
 
 type FlowResponse = FlowListResponse & {
   steps: FlowStepResponse[]
+}
+
+const getStepLanguage = (fileExtension?: string): string | undefined => {
+  if (!fileExtension) return
+
+  if (fileExtension.match(/js/)) {
+    return 'javascript'
+  }
+
+  if (fileExtension.match(/ts/)) {
+    return 'typescript'
+  }
+
+  if (fileExtension.match(/py/)) {
+    return 'python'
+  }
+
+  if (fileExtension.match(/go/)) {
+    return 'go'
+  }
+
+  if (fileExtension.match(/rb/)) {
+    return 'ruby'
+  }
+
+  if (fileExtension.match(/php/)) {
+    return 'php'
+  }
+
+  return
 }
 
 export const generateFlowsList = (lockData: LockFile, flowSteps: FlowStep[]): FlowResponse[] => {
@@ -111,14 +142,15 @@ export const generateFlowsList = (lockData: LockFile, flowSteps: FlowStep[]): Fl
       })
     })
 
-    flowStepsMap[flowId].forEach((flow) => {
+    flowStepsMap[flowId].forEach((step) => {
       steps.push({
         id: randomUUID(),
         type: 'base',
-        name: flow.config.name,
-        description: flow.config.description,
-        emits: flow.config.emits,
-        subscribes: flow.config.subscribes,
+        name: step.config.name,
+        description: step.config.description,
+        emits: step.config.emits,
+        subscribes: step.config.subscribes,
+        language: getStepLanguage(step.filePath.split('.').pop()),
       })
     })
 

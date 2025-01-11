@@ -2,13 +2,15 @@ import { Position } from '@xyflow/react'
 import { Eye, Send } from 'lucide-react'
 import { BaseNodeData } from './nodes.types'
 import { BaseHandle } from '../base-handle'
+import { LanguageIndicator } from './language-indicator'
 
 const toType = (emit: string | { type: string; label?: string; conditional?: boolean }) =>
   typeof emit === 'string' ? emit : emit.type
 
 export const BaseNode = ({ data }: { data: BaseNodeData }) => {
   return (
-    <div className="bg-white rounded-md p-2 px-3 text-black">
+    <div className="bg-white rounded-md p-2 px-3 text-black relative">
+      <LanguageIndicator language={data.language} />
       <div className="flex flex-col ">
         <div className="flex flex-col gap-1">
           <div className="text-sm font-semibold">{data.name}</div>
