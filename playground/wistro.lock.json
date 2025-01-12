@@ -1,5 +1,5 @@
 {
-  "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797",
+  "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945",
   "port": 3000,
   "state": {
     "adapter": "redis",
@@ -14,56 +14,72 @@
           "emits": "call-openai",
           "name": "OpenAI",
           "description": "Triggered when a message is received from chatbot",
-          "flows": ["openai"]
+          "flows": [
+            "openai"
+          ]
         },
         "/api/hybrid-endpoint-example": {
           "method": "POST",
           "emits": "hybrid.received",
           "name": "Hybrid Endpoint Example",
           "description": "Triggered when a message is received from hybrid endpoint",
-          "flows": ["hybrid-example"]
+          "flows": [
+            "hybrid-example"
+          ]
         },
         "/api/wistro-server-example": {
           "method": "POST",
           "emits": "ws-server-example.trigger",
           "name": "Wistro Server Example",
           "description": "Triggered when a message is received from wistro server",
-          "flows": ["wistro-server"]
+          "flows": [
+            "wistro-server"
+          ]
         },
         "/api/endpoint-server-handshake": {
           "method": "POST",
           "emits": "handshake.initiate",
           "name": "Endpoint Server Handshake",
           "description": "Triggered when a message is received from endpoint server",
-          "flows": ["handshake"]
+          "flows": [
+            "handshake"
+          ]
         },
         "/api/parallel-merge": {
           "name": "Parallel Merge",
           "description": "Triggered when a message is received from parallel merge",
           "method": "POST",
           "emits": "pms.initialize",
-          "flows": ["parallel-merge"]
+          "flows": [
+            "parallel-merge"
+          ]
         },
         "/api/dbz/initialize": {
           "name": "DBZ Initialize",
           "description": "Triggered when a message is received from dbz",
           "method": "POST",
           "emits": "dbz.initialize",
-          "flows": ["booking"]
+          "flows": [
+            "booking"
+          ]
         },
         "/api/dbz/search-upgrades": {
           "name": "DBZ Search Upgrades",
           "description": "Triggered when a message is received from dbz",
           "method": "POST",
           "emits": "dbz.evaluate-upgrades",
-          "flows": ["booking"]
+          "flows": [
+            "booking"
+          ]
         },
         "/api/ecommerce/new-order": {
           "name": "Ecommerce New Order",
           "description": "Triggered when a message is received from ecommerce",
           "method": "POST",
           "emits": "ecommerce.new-order",
-          "flows": ["ecommerce"]
+          "flows": [
+            "ecommerce"
+          ]
         }
       }
     },
@@ -73,7 +89,9 @@
         "description": "Triggered every 5 minutes",
         "cron": "0/5 * * * *",
         "emits": "pms.initialize",
-        "flows": ["parallel-merge"]
+        "flows": [
+          "parallel-merge"
+        ]
       }
     }
   },
@@ -84,22 +102,22 @@
       "steps": [
         {
           "filePath": "./steps/booking/initialize.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/booking/searchCustomer.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/booking/searchTicketUpgrades.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/booking/sendText.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "openai": {
       "name": "OpenAI Example",
@@ -107,30 +125,30 @@
       "steps": [
         {
           "filePath": "./steps/callOpenAi.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/call_ai.go",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/call_ai.php",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/call_ai.rb",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/call_ai.step.py",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/openAiResponse.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "ecommerce": {
       "name": "Ecommerce Example",
@@ -138,46 +156,46 @@
       "steps": [
         {
           "filePath": "./steps/ecommerce/cancel-order.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/check-inventory.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/confirm-order.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/generate-invoice.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/new-order.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/notify-user.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/process-payment.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/release-stock.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/reserve-stock.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/ecommerce/update-inventory.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "handshake": {
       "name": "Endpoint Server Handshake",
@@ -185,18 +203,18 @@
       "steps": [
         {
           "filePath": "./steps/endpointServerHandshake/apiCaller.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/endpointServerHandshake/nodeFinalizer.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/endpointServerHandshake/nodeStarter.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "hybrid-example": {
       "name": "Hybrid Endpoint Example",
@@ -204,26 +222,26 @@
       "steps": [
         {
           "filePath": "./steps/hybridEndpointExample/analyzeData.step.py",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/hybridEndpointExample/enrichData.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/hybridEndpointExample/finalizeData.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/hybridEndpointExample/transformData.step.py",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/hybridEndpointExample/validateData.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "parallel-merge": {
       "name": "Parallel Merge Example",
@@ -231,26 +249,26 @@
       "steps": [
         {
           "filePath": "./steps/parallelMergeState/joinStep.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/parallelMergeState/setpB.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/parallelMergeState/startParallelMerge.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/parallelMergeState/stepA.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/parallelMergeState/stepC.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     },
     "wistro-server": {
       "name": "Wistro Server Example",
@@ -258,18 +276,18 @@
       "steps": [
         {
           "filePath": "./steps/wistroServerExample/finalizer.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/wistroServerExample/processor.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         },
         {
           "filePath": "./steps/wistroServerExample/startServerExample.step.ts",
-          "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+          "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
         }
       ],
-      "version": "35ffe3e8-51f0-4e7e-bb0d-3dd8f5dadff4:1736564797"
+      "version": "592d4a18-45cf-42db-aae1-fe1277823c60:1736650945"
     }
   }
 }

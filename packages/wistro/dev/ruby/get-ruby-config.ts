@@ -4,7 +4,7 @@ import { FlowConfig } from '../../wistro.types'
 import { globalLogger } from '../logger'
 
 export const getRubyConfig = (file: string): Promise<FlowConfig<any>> => {
-  const getConfig = path.join(__dirname, 'get-config.rb')
+  const getConfig = path.join(__dirname, 'get_config.rb')
 
   return new Promise((resolve, reject) => {
     let config: FlowConfig<any> | null = null

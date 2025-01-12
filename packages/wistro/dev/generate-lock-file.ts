@@ -5,7 +5,6 @@ import yaml from 'yaml'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
 const baseFlowRegex = new RegExp(/flows\"?\s?.*\s*\[([^\]]+)\]/)
-const golangFlowRegex = new RegExp(/Flows:\s*\[\]string\{([^\}]+)\}/)
 
 // Helper function to read config.yml
 const readConfig = (configPath: string): any => {
@@ -25,11 +24,9 @@ const collectFlows = (folderPath: string, flows: Record<string, any>, baseDir: s
 
     if (item.isDirectory()) {
       collectFlows(itemPath, flows, baseDir)
-    } else if (!!item.name.match(/.step.(ts)|(js)|(py$)|(rb)|(go)|(php)/)) {
+    } else if (!!item.name.match(/.step.(ts)|(js)|(py$)|(rb)/)) {
       const fileContent = fs.readFileSync(itemPath, 'utf-8')
-      const flowMatch = item.name.endsWith('.go')
-        ? fileContent.match(golangFlowRegex)
-        : fileContent.match(baseFlowRegex)
+      const flowMatch = fileContent.match(baseFlowRegex)
 
       if (flowMatch) {
         const flowNames = flowMatch[1].split(',').map((f) => f.trim().replace(/['"`]/g, ''))

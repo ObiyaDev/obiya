@@ -4,7 +4,6 @@ import { FlowStep } from './config.types'
 import { LockFile } from '../wistro.types'
 import { globalLogger } from './logger'
 import { getRubyConfig } from './ruby/get-ruby-config'
-import { getGoConfig } from './go/get-go-config'
 
 require('ts-node').register({
   transpileOnly: true,
@@ -22,7 +21,6 @@ export const buildLockDataFlows = async (lockData: LockFile, nextFlows: FlowStep
       const stepFilePath = path.join(lockData.baseDir, stepPath)
       const isPython = stepFilePath.endsWith('.py')
       const isRuby = stepFilePath.endsWith('.rb')
-      const isGolang = stepFilePath.endsWith('.go')
       const isJsTs = stepFilePath.endsWith('.ts') || stepFilePath.endsWith('.js')
 
       if (isPython) {
@@ -33,11 +31,6 @@ export const buildLockDataFlows = async (lockData: LockFile, nextFlows: FlowStep
         globalLogger.debug('[Flows] Building Ruby flow from lock', { stepPath: stepFilePath })
         const config = await getRubyConfig(stepFilePath)
         flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
-        // TODO: figure out how to handle Golang flows
-        // } else if (isGolang) {
-        //   globalLogger.debug('[Flows] Building Golang flow from lock', { stepPath: stepFilePath })
-        //   const config = await getGoConfig(stepFilePath)
-        //   flows.push({ config, file: path.basename(stepFilePath), filePath: stepFilePath })
       } else if (isJsTs) {
         globalLogger.debug('[Flows] Building Node flow from lock', { stepPath: stepFilePath })
         const module = require(stepFilePath)
