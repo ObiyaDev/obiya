@@ -85,7 +85,7 @@ pnpm run dev
 This command starts the following services:
 
 - **WistroCore**: The flow orchestrator.
-- **WistroServer**: Provides HTTP endpoints for triggering flows.
+- **MotiaServer**: Provides HTTP endpoints for triggering flows.
 - **Playground UI**: A React-based visualization tool for flows.
 
 ## How to Contribute

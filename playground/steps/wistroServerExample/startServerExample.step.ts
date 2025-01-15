@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ApiRouteConfig, StepHandler } from 'wistro'
+import { ApiRouteConfig, StepHandler } from '@motia/core'
 
 const inputSchema = z.object({})
 

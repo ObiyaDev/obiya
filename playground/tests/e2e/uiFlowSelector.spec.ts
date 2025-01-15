@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import path from 'path'
-import { createTestServer, WistroServer } from 'wistro'
+import { createTestServer } from '../utils/createTestServer'
+import { MotiaServer } from '@motia/core'
 
 // We'll define a helper array of flows we want to test
 // Each object has the flow's "selectOption" value and a unique node label.
@@ -26,7 +27,7 @@ const FLOWS = [
 const wistroWorkbenchUrl = 'http://localhost:3000'
 
 test.describe('Flow Selector & Visual Tests', () => {
-  let server: WistroServer
+  let server: MotiaServer
 
   test.beforeAll(async () => {
     const result = await createTestServer(path.join(__dirname, '../../'))

@@ -1,7 +1,7 @@
 # Wistro Dev Central Development Checklist
 
 - ⬜ [MonoRepo][Refactor] Rename monorepo to Wistro Dev Central and endpoints to endpoints
-- ⬜ [WistroServer][Architecture] Centralize all inbound/outbound traffic through WistroServer
+- ⬜ [MotiaServer][Architecture] Centralize all inbound/outbound traffic through MotiaServer
 - ✅ [Testing][Architecture] Restructure tests to run e2e at top level by default
 - ⬜ [MonoRepo][Infra] Harden monorepo to be more rigorous
 - ⬜ [Core][Feature] Add component hot-reload capabilities
