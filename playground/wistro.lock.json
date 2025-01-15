@@ -1,0 +1,165 @@
+{
+  "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929",
+  "state": {
+    "adapter": "redis",
+    "host": "localhost",
+    "port": 6379
+  },
+  "triggers": {
+    "api": {
+      "paths": {}
+    }
+  },
+  "flows": {
+    "booking": {
+      "steps": [
+        {
+          "filePath": "./steps/booking/initializeApi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/booking/noop/userSendsMessage.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/booking/searchCustomer.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/booking/searchTicketUpgrades.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/booking/searchUpgradesApi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/booking/sendText.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    },
+    "handshake": {
+      "steps": [
+        {
+          "filePath": "./steps/endpointServerHandshake/apiCaller.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/endpointServerHandshake/handshakeApi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/endpointServerHandshake/nodeFinalizer.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/endpointServerHandshake/nodeStarter.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    },
+    "hybrid-example": {
+      "steps": [
+        {
+          "filePath": "./steps/hybridEndpointExample/analyzeData.step.py",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/hybridEndpointExample/enrichData.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/hybridEndpointExample/finalizeData.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/hybridEndpointExample/hybridApi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/hybridEndpointExample/transformData.step.py",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    },
+    "openai": {
+      "steps": [
+        {
+          "filePath": "./steps/openAi/callOpenAi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/openAi/callOpenAiApi.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/openAi/call_ai.step.py",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/openAi/call_ai_ruby.step.rb",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/openAi/openAiResponse.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    },
+    "parallel-merge": {
+      "steps": [
+        {
+          "filePath": "./steps/parallelMergeState/joinComplete.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/joinStep.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/noopStartButton.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/setpB.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/startParallelMerge.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/stepA.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/parallelMergeState/stepC.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    },
+    "wistro-server": {
+      "steps": [
+        {
+          "filePath": "./steps/wistroServerExample/finalizer.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/wistroServerExample/processor.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        },
+        {
+          "filePath": "./steps/wistroServerExample/startServerExample.step.ts",
+          "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+        }
+      ],
+      "version": "e2f695d6-a0fa-490d-ae4d-a5d223105f24:1736959929"
+    }
+  }
+}
