@@ -11,10 +11,9 @@ import {
   EmitData,
   EventManager,
   LockedData,
-  Flow,
   Step,
   MotiaServer,
-  WistroSockerServer,
+  MotiaSocketServer,
 } from './types'
 import { flowsEndpoint } from './flows-endpoint'
 import { isApiStep } from './guards'
@@ -31,7 +30,7 @@ type ServerOptions = {
 
 export const createServer = async (
   options: ServerOptions,
-): Promise<{ server: MotiaServer; socketServer?: WistroSockerServer }> => {
+): Promise<{ server: MotiaServer; socketServer?: MotiaSocketServer }> => {
   const { steps, state, eventManager, port, skipSocketServer } = options
   const app = express()
   const server = http.createServer(app)

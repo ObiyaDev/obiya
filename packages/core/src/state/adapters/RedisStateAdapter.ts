@@ -16,7 +16,7 @@ export class RedisStateAdapter extends StateAdapter {
   constructor(config: RedisAdapterConfig) {
     super()
     this.client = new Redis(config)
-    this.prefix = 'wistro:state:'
+    this.prefix = 'motia:state:'
     if (config.ttl) {
       this.ttl = config.ttl
     }

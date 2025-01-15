@@ -6,16 +6,16 @@ const inputSchema = z.object({})
 export const config: ApiRouteConfig = {
   type: 'api',
   name: 'Start Event',
-  description: 'Start the Wistro Server Example flow',
-  path: '/api/wistro-server-example',
+  description: 'Start the Motia Server Example flow',
+  path: '/api/motia-server-example',
   method: 'POST',
   emits: ['ws-server-example.start'],
   bodySchema: inputSchema,
-  flows: ['wistro-server'],
+  flows: ['motia-server'],
 }
 
 export const handler: StepHandler<typeof config> = async (_, { emit, logger }) => {
-  logger.info('[Wistro Server Example] start-event')
+  logger.info('[Motia Server Example] start-event')
 
   await emit({
     type: 'ws-server-example.start',

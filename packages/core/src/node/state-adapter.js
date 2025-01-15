@@ -6,7 +6,7 @@ class StateAdapter {
   constructor(traceId, stateConfig) {
     this.traceId = traceId
     this.client = new Redis(stateConfig)
-    this.prefix = 'wistro:state'
+    this.prefix = 'motia:state'
     this.rootKey = this._makeRootKey()
 
     if (stateConfig.ttl) {

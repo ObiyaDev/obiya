@@ -5,7 +5,7 @@ class StateAdapter:
     def __init__(self, trace_id: str, state_config: Any):
         self.trace_id = trace_id
         self.store = {}
-        self.prefix = 'wistro:state:'
+        self.prefix = 'motia:state:'
         self.ttl = getattr(state_config, 'ttl', None)
 
     def _make_key(self, key: str) -> str:

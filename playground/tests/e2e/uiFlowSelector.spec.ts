@@ -7,9 +7,9 @@ import { MotiaServer } from '@motia/core'
 // Each object has the flow's "selectOption" value and a unique node label.
 const FLOWS = [
   {
-    // This is the "name" from wistroServerExample/config.js
+    // This is the "name" from motiaServerExample/config.js
     // which your UI returns in /api/flows
-    name: 'wistro-server',
+    name: 'motia-server',
     topic: 'ws-server-example.start', // e.g. the label from your node's UI
   },
   {
@@ -24,7 +24,7 @@ const FLOWS = [
   },
 ]
 
-const wistroWorkbenchUrl = 'http://localhost:3000'
+const workbenchUrl = 'http://localhost:3000'
 
 test.describe('Flow Selector & Visual Tests', () => {
   let server: MotiaServer
@@ -40,12 +40,12 @@ test.describe('Flow Selector & Visual Tests', () => {
 
   test('the flow selector is visible', async ({ page }) => {
     // Go to your Playground UI root (adjust if needed)
-    await page.goto(wistroWorkbenchUrl)
+    await page.goto(workbenchUrl)
     await expect(page.locator('text=Endpoint Server Handshake')).toBeVisible()
   })
 
   test('can switch among the three flows', async ({ page }) => {
-    await page.goto(wistroWorkbenchUrl)
+    await page.goto(workbenchUrl)
 
     // Wait for the flow selector to appear
     await expect(page.locator('text=Endpoint Server Handshake')).toBeVisible()
@@ -60,7 +60,7 @@ test.describe('Flow Selector & Visual Tests', () => {
 
   test('visual regression for the three flows', async ({ page }) => {
     // 1) Navigate to the main Playground UI
-    await page.goto(wistroWorkbenchUrl)
+    await page.goto(workbenchUrl)
     await page.locator('text=Endpoint Server Handshake').waitFor()
 
     // 2) For each flow, select it, wait for the node, then take a screenshot

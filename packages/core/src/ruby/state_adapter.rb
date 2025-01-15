@@ -6,7 +6,7 @@ class StateAdapter
   def initialize(trace_id, state_config)
     @trace_id = trace_id
     @store = {}
-    @prefix = 'wistro:state:'
+    @prefix = 'motia:state:'
     @ttl = state_config.respond_to?(:ttl) ? state_config.ttl : nil
   end
 

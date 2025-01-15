@@ -1,5 +1,5 @@
 {
-  "baseDir": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground",
+  "baseDir": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground",
   "state": {
     "adapter": "redis",
     "host": "localhost",
@@ -8,7 +8,7 @@
   "steps": {
     "active": [
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/initializeApi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/initializeApi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -16,15 +16,9 @@
           "description": "Initialize the booking flow",
           "path": "/api/booking/initialize",
           "method": "POST",
-          "virtualSubscribes": [
-            "/api/booking/initialize"
-          ],
-          "emits": [
-            "dbz.search-customer"
-          ],
-          "flows": [
-            "booking"
-          ],
+          "virtualSubscribes": ["/api/booking/initialize"],
+          "emits": ["dbz.search-customer"],
+          "flows": ["booking"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -48,18 +42,13 @@
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchCustomer.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchCustomer.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Search Customer",
-          "subscribes": [
-            "dbz.search-customer"
-          ],
-          "emits": [
-            "dbz.send-text",
-            "dbz.error"
-          ],
+          "subscribes": ["dbz.search-customer"],
+          "emits": ["dbz.send-text", "dbz.error"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -80,24 +69,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "booking"
-          ]
+          "flows": ["booking"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Search Ticket Upgrades",
-          "subscribes": [
-            "dbz.evaluate-upgrades"
-          ],
-          "emits": [
-            "dbz.error",
-            "dbz.send-text"
-          ],
+          "subscribes": ["dbz.evaluate-upgrades"],
+          "emits": ["dbz.error", "dbz.send-text"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -118,13 +100,11 @@
             },
             "_cached": null
           },
-          "flows": [
-            "booking"
-          ]
+          "flows": ["booking"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchUpgradesApi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchUpgradesApi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -132,15 +112,9 @@
           "description": "Triggered when a message is received from dbz",
           "path": "/api/dbz/search-upgrades",
           "method": "POST",
-          "emits": [
-            "dbz.evaluate-upgrades"
-          ],
-          "flows": [
-            "booking"
-          ],
-          "virtualSubscribes": [
-            "/api/dbz/search-upgrades"
-          ],
+          "emits": ["dbz.evaluate-upgrades"],
+          "flows": ["booking"],
+          "virtualSubscribes": ["/api/dbz/search-upgrades"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -164,18 +138,13 @@
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/sendText.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/sendText.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Send SMS",
-          "subscribes": [
-            "dbz.send-text"
-          ],
-          "emits": [
-            "dbz.error",
-            "dbz.message-sent"
-          ],
+          "subscribes": ["dbz.send-text"],
+          "emits": ["dbz.error", "dbz.message-sent"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -196,23 +165,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "booking"
-          ]
+          "flows": ["booking"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "API Caller",
-          "subscribes": [
-            "handshake.callApi"
-          ],
-          "emits": [
-            "handshake.apiResponse"
-          ],
+          "subscribes": ["handshake.callApi"],
+          "emits": ["handshake.apiResponse"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -233,13 +196,11 @@
             },
             "_cached": null
           },
-          "flows": [
-            "handshake"
-          ]
+          "flows": ["handshake"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/handshakeApi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/handshakeApi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -247,12 +208,8 @@
           "description": "Triggered when a message is received from endpoint server",
           "path": "/api/endpoint-server-handshake",
           "method": "POST",
-          "emits": [
-            "handshake.initiate"
-          ],
-          "flows": [
-            "handshake"
-          ],
+          "emits": ["handshake.initiate"],
+          "flows": ["handshake"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -276,14 +233,12 @@
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Node Finalizer",
-          "subscribes": [
-            "handshake.apiResponse"
-          ],
+          "subscribes": ["handshake.apiResponse"],
           "emits": [],
           "input": {
             "_def": {
@@ -305,23 +260,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "handshake"
-          ]
+          "flows": ["handshake"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Node Starter",
-          "subscribes": [
-            "handshake.initiate"
-          ],
-          "emits": [
-            "handshake.callApi"
-          ],
+          "subscribes": ["handshake.initiate"],
+          "emits": ["handshake.callApi"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -342,41 +291,29 @@
             },
             "_cached": null
           },
-          "flows": [
-            "handshake"
-          ]
+          "flows": ["handshake"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Analyze Data",
-          "subscribes": [
-            "hybrid.enriched"
-          ],
-          "emits": [
-            "hybrid.analyzed"
-          ],
+          "subscribes": ["hybrid.enriched"],
+          "emits": ["hybrid.analyzed"],
           "input": null,
-          "flows": [
-            "hybrid-example"
-          ]
+          "flows": ["hybrid-example"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Enrich Data",
-          "subscribes": [
-            "hybrid.transformed"
-          ],
-          "emits": [
-            "hybrid.enriched"
-          ],
+          "subscribes": ["hybrid.transformed"],
+          "emits": ["hybrid.enriched"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -397,23 +334,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "hybrid-example"
-          ]
+          "flows": ["hybrid-example"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Fanialize Data",
-          "subscribes": [
-            "hybrid.analyzed"
-          ],
-          "emits": [
-            "hybrid.completed"
-          ],
+          "subscribes": ["hybrid.analyzed"],
+          "emits": ["hybrid.completed"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -434,13 +365,11 @@
             },
             "_cached": null
           },
-          "flows": [
-            "hybrid-example"
-          ]
+          "flows": ["hybrid-example"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/hybridApi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/hybridApi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -448,12 +377,8 @@
           "description": "Triggered when a message is received from hybrid endpoint",
           "path": "/api/hybrid-endpoint-example",
           "method": "POST",
-          "emits": [
-            "hybrid.validated"
-          ],
-          "flows": [
-            "hybrid-example"
-          ],
+          "emits": ["hybrid.validated"],
+          "flows": ["hybrid-example"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -477,33 +402,25 @@
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/transformData.step.py",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/transformData.step.py",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Transform Data",
-          "subscribes": [
-            "hybrid.validated"
-          ],
-          "emits": [
-            "hybrid.transformed"
-          ],
+          "subscribes": ["hybrid.validated"],
+          "emits": ["hybrid.transformed"],
           "input": null,
-          "flows": [
-            "hybrid-example"
-          ]
+          "flows": ["hybrid-example"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Call OpenAI",
           "description": "Call OpenAI",
-          "subscribes": [
-            "call-openai"
-          ],
+          "subscribes": ["call-openai"],
           "emits": [
             {
               "type": "openai-response",
@@ -530,13 +447,11 @@
             },
             "_cached": null
           },
-          "flows": [
-            "openai"
-          ]
+          "flows": ["openai"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/callOpenAiApi.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/callOpenAiApi.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -544,9 +459,7 @@
           "description": "Call OpenAI",
           "path": "/openai",
           "method": "POST",
-          "emits": [
-            "call-openai"
-          ],
+          "emits": ["call-openai"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -567,56 +480,40 @@
             },
             "_cached": null
           },
-          "flows": [
-            "openai"
-          ]
+          "flows": ["openai"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/call_ai.step.py",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/call_ai.step.py",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Call OpenAI",
-          "subscribes": [
-            "call-openai"
-          ],
-          "emits": [
-            "openai-response"
-          ],
+          "subscribes": ["call-openai"],
+          "emits": ["openai-response"],
           "input": null,
-          "flows": [
-            "openai"
-          ]
+          "flows": ["openai"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/call_ai_ruby.step.rb",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/call_ai_ruby.step.rb",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Call OpenAI",
-          "subscribes": [
-            "call-openai"
-          ],
-          "emits": [
-            "openai-response"
-          ],
+          "subscribes": ["call-openai"],
+          "emits": ["openai-response"],
           "input": null,
-          "flows": [
-            "openai"
-          ]
+          "flows": ["openai"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/openAiResponse.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/openAiResponse.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "OpenAI Response",
-          "subscribes": [
-            "openai-response"
-          ],
+          "subscribes": ["openai-response"],
           "emits": [],
           "input": {
             "_def": {
@@ -638,20 +535,16 @@
             },
             "_cached": null
           },
-          "flows": [
-            "openai"
-          ]
+          "flows": ["openai"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Join Complete",
-          "subscribes": [
-            "pms.join.complete"
-          ],
+          "subscribes": ["pms.join.complete"],
           "emits": [],
           "input": {
             "_def": {
@@ -673,25 +566,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "parallel-merge"
-          ]
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "join-step",
-          "subscribes": [
-            "pms.stepA.done",
-            "pms.stepB.done",
-            "pms.stepC.done"
-          ],
-          "emits": [
-            "pms.join.complete"
-          ],
+          "subscribes": ["pms.stepA.done", "pms.stepB.done", "pms.stepC.done"],
+          "emits": ["pms.join.complete"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -712,23 +597,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "parallel-merge"
-          ]
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "stepB",
-          "subscribes": [
-            "pms.start"
-          ],
-          "emits": [
-            "pms.stepB.done"
-          ],
+          "subscribes": ["pms.start"],
+          "emits": ["pms.stepB.done"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -749,13 +628,11 @@
             },
             "_cached": null
           },
-          "flows": [
-            "parallel-merge"
-          ]
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
@@ -763,26 +640,18 @@
           "description": "Triggered when a message is received from parallel merge",
           "path": "/api/parallel-merge",
           "method": "POST",
-          "emits": [
-            "pms.start"
-          ],
-          "flows": [
-            "parallel-merge"
-          ]
+          "emits": ["pms.start"],
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "stepA",
-          "subscribes": [
-            "pms.start"
-          ],
-          "emits": [
-            "pms.stepA.done"
-          ],
+          "subscribes": ["pms.start"],
+          "emits": ["pms.stepA.done"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -803,23 +672,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "parallel-merge"
-          ]
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "stepC",
-          "subscribes": [
-            "pms.start"
-          ],
-          "emits": [
-            "pms.stepC.done"
-          ],
+          "subscribes": ["pms.start"],
+          "emits": ["pms.stepC.done"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -840,20 +703,16 @@
             },
             "_cached": null
           },
-          "flows": [
-            "parallel-merge"
-          ]
+          "flows": ["parallel-merge"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/finalizer.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/finalizer.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Finalizer",
-          "subscribes": [
-            "ws-server-example.processed"
-          ],
+          "subscribes": ["ws-server-example.processed"],
           "emits": [],
           "input": {
             "_def": {
@@ -875,23 +734,17 @@
             },
             "_cached": null
           },
-          "flows": [
-            "wistro-server"
-          ]
+          "flows": ["motia-server"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/processor.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/processor.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "event",
           "name": "Processor",
-          "subscribes": [
-            "ws-server-example.start"
-          ],
-          "emits": [
-            "ws-server-example.processed"
-          ],
+          "subscribes": ["ws-server-example.start"],
+          "emits": ["ws-server-example.processed"],
           "input": {
             "_def": {
               "unknownKeys": "strip",
@@ -912,23 +765,19 @@
             },
             "_cached": null
           },
-          "flows": [
-            "wistro-server"
-          ]
+          "flows": ["motia-server"]
         }
       },
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/startServerExample.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/startServerExample.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "api",
           "name": "Start Event",
-          "description": "Start the Wistro Server Example flow",
-          "path": "/api/wistro-server-example",
+          "description": "Start the Motia Server Example flow",
+          "path": "/api/motia-server-example",
           "method": "POST",
-          "emits": [
-            "ws-server-example.start"
-          ],
+          "emits": ["ws-server-example.start"],
           "bodySchema": {
             "_def": {
               "unknownKeys": "strip",
@@ -949,28 +798,20 @@
             },
             "_cached": null
           },
-          "flows": [
-            "wistro-server"
-          ]
+          "flows": ["motia-server"]
         }
       }
     ],
     "dev": [
       {
-        "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/noop/userSendsMessage.step.ts",
+        "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/noop/userSendsMessage.step.ts",
         "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
         "config": {
           "type": "noop",
           "name": "User Sends Message",
-          "virtualEmits": [
-            "/api/dbz/search-upgrades"
-          ],
-          "virtualSubscribes": [
-            "dbz.message-sent"
-          ],
-          "flows": [
-            "booking"
-          ]
+          "virtualEmits": ["/api/dbz/search-upgrades"],
+          "virtualSubscribes": ["dbz.message-sent"],
+          "flows": ["booking"]
         }
       }
     ]
@@ -981,7 +822,7 @@
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/initializeApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/initializeApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -989,15 +830,9 @@
             "description": "Initialize the booking flow",
             "path": "/api/booking/initialize",
             "method": "POST",
-            "virtualSubscribes": [
-              "/api/booking/initialize"
-            ],
-            "emits": [
-              "dbz.search-customer"
-            ],
-            "flows": [
-              "booking"
-            ],
+            "virtualSubscribes": ["/api/booking/initialize"],
+            "emits": ["dbz.search-customer"],
+            "flows": ["booking"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1021,7 +856,7 @@
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/initializeApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/initializeApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1029,15 +864,9 @@
             "description": "Initialize the booking flow",
             "path": "/api/booking/initialize",
             "method": "POST",
-            "virtualSubscribes": [
-              "/api/booking/initialize"
-            ],
-            "emits": [
-              "dbz.search-customer"
-            ],
-            "flows": [
-              "booking"
-            ],
+            "virtualSubscribes": ["/api/booking/initialize"],
+            "emits": ["dbz.search-customer"],
+            "flows": ["booking"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1061,35 +890,24 @@
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/noop/userSendsMessage.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/noop/userSendsMessage.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "noop",
             "name": "User Sends Message",
-            "virtualEmits": [
-              "/api/dbz/search-upgrades"
-            ],
-            "virtualSubscribes": [
-              "dbz.message-sent"
-            ],
-            "flows": [
-              "booking"
-            ]
+            "virtualEmits": ["/api/dbz/search-upgrades"],
+            "virtualSubscribes": ["dbz.message-sent"],
+            "flows": ["booking"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchCustomer.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchCustomer.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Search Customer",
-            "subscribes": [
-              "dbz.search-customer"
-            ],
-            "emits": [
-              "dbz.send-text",
-              "dbz.error"
-            ],
+            "subscribes": ["dbz.search-customer"],
+            "emits": ["dbz.send-text", "dbz.error"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1110,24 +928,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "booking"
-            ]
+            "flows": ["booking"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchTicketUpgrades.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Search Ticket Upgrades",
-            "subscribes": [
-              "dbz.evaluate-upgrades"
-            ],
-            "emits": [
-              "dbz.error",
-              "dbz.send-text"
-            ],
+            "subscribes": ["dbz.evaluate-upgrades"],
+            "emits": ["dbz.error", "dbz.send-text"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1148,13 +959,11 @@
               },
               "_cached": null
             },
-            "flows": [
-              "booking"
-            ]
+            "flows": ["booking"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/searchUpgradesApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/searchUpgradesApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1162,15 +971,9 @@
             "description": "Triggered when a message is received from dbz",
             "path": "/api/dbz/search-upgrades",
             "method": "POST",
-            "emits": [
-              "dbz.evaluate-upgrades"
-            ],
-            "flows": [
-              "booking"
-            ],
-            "virtualSubscribes": [
-              "/api/dbz/search-upgrades"
-            ],
+            "emits": ["dbz.evaluate-upgrades"],
+            "flows": ["booking"],
+            "virtualSubscribes": ["/api/dbz/search-upgrades"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1194,18 +997,13 @@
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/booking/sendText.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/booking/sendText.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Send SMS",
-            "subscribes": [
-              "dbz.send-text"
-            ],
-            "emits": [
-              "dbz.error",
-              "dbz.message-sent"
-            ],
+            "subscribes": ["dbz.send-text"],
+            "emits": ["dbz.error", "dbz.message-sent"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1226,9 +1024,7 @@
               },
               "_cached": null
             },
-            "flows": [
-              "booking"
-            ]
+            "flows": ["booking"]
           }
         }
       ]
@@ -1238,17 +1034,13 @@
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "API Caller",
-            "subscribes": [
-              "handshake.callApi"
-            ],
-            "emits": [
-              "handshake.apiResponse"
-            ],
+            "subscribes": ["handshake.callApi"],
+            "emits": ["handshake.apiResponse"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1269,23 +1061,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "handshake"
-            ]
+            "flows": ["handshake"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/apiCaller.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "API Caller",
-            "subscribes": [
-              "handshake.callApi"
-            ],
-            "emits": [
-              "handshake.apiResponse"
-            ],
+            "subscribes": ["handshake.callApi"],
+            "emits": ["handshake.apiResponse"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1306,13 +1092,11 @@
               },
               "_cached": null
             },
-            "flows": [
-              "handshake"
-            ]
+            "flows": ["handshake"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/handshakeApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/handshakeApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1320,12 +1104,8 @@
             "description": "Triggered when a message is received from endpoint server",
             "path": "/api/endpoint-server-handshake",
             "method": "POST",
-            "emits": [
-              "handshake.initiate"
-            ],
-            "flows": [
-              "handshake"
-            ],
+            "emits": ["handshake.initiate"],
+            "flows": ["handshake"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1349,14 +1129,12 @@
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/nodeFinalizer.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Node Finalizer",
-            "subscribes": [
-              "handshake.apiResponse"
-            ],
+            "subscribes": ["handshake.apiResponse"],
             "emits": [],
             "input": {
               "_def": {
@@ -1378,23 +1156,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "handshake"
-            ]
+            "flows": ["handshake"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/endpointServerHandshake/nodeStarter.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Node Starter",
-            "subscribes": [
-              "handshake.initiate"
-            ],
-            "emits": [
-              "handshake.callApi"
-            ],
+            "subscribes": ["handshake.initiate"],
+            "emits": ["handshake.callApi"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1415,9 +1187,7 @@
               },
               "_cached": null
             },
-            "flows": [
-              "handshake"
-            ]
+            "flows": ["handshake"]
           }
         }
       ]
@@ -1427,53 +1197,37 @@
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Analyze Data",
-            "subscribes": [
-              "hybrid.enriched"
-            ],
-            "emits": [
-              "hybrid.analyzed"
-            ],
+            "subscribes": ["hybrid.enriched"],
+            "emits": ["hybrid.analyzed"],
             "input": null,
-            "flows": [
-              "hybrid-example"
-            ]
+            "flows": ["hybrid-example"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/analyzeData.step.py",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Analyze Data",
-            "subscribes": [
-              "hybrid.enriched"
-            ],
-            "emits": [
-              "hybrid.analyzed"
-            ],
+            "subscribes": ["hybrid.enriched"],
+            "emits": ["hybrid.analyzed"],
             "input": null,
-            "flows": [
-              "hybrid-example"
-            ]
+            "flows": ["hybrid-example"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/enrichData.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Enrich Data",
-            "subscribes": [
-              "hybrid.transformed"
-            ],
-            "emits": [
-              "hybrid.enriched"
-            ],
+            "subscribes": ["hybrid.transformed"],
+            "emits": ["hybrid.enriched"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1494,23 +1248,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "hybrid-example"
-            ]
+            "flows": ["hybrid-example"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/finalizeData.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Fanialize Data",
-            "subscribes": [
-              "hybrid.analyzed"
-            ],
-            "emits": [
-              "hybrid.completed"
-            ],
+            "subscribes": ["hybrid.analyzed"],
+            "emits": ["hybrid.completed"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1531,13 +1279,11 @@
               },
               "_cached": null
             },
-            "flows": [
-              "hybrid-example"
-            ]
+            "flows": ["hybrid-example"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/hybridApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/hybridApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1545,12 +1291,8 @@
             "description": "Triggered when a message is received from hybrid endpoint",
             "path": "/api/hybrid-endpoint-example",
             "method": "POST",
-            "emits": [
-              "hybrid.validated"
-            ],
-            "flows": [
-              "hybrid-example"
-            ],
+            "emits": ["hybrid.validated"],
+            "flows": ["hybrid-example"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1574,21 +1316,15 @@
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/hybridEndpointExample/transformData.step.py",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/hybridEndpointExample/transformData.step.py",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Transform Data",
-            "subscribes": [
-              "hybrid.validated"
-            ],
-            "emits": [
-              "hybrid.transformed"
-            ],
+            "subscribes": ["hybrid.validated"],
+            "emits": ["hybrid.transformed"],
             "input": null,
-            "flows": [
-              "hybrid-example"
-            ]
+            "flows": ["hybrid-example"]
           }
         }
       ]
@@ -1598,15 +1334,13 @@
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Call OpenAI",
             "description": "Call OpenAI",
-            "subscribes": [
-              "call-openai"
-            ],
+            "subscribes": ["call-openai"],
             "emits": [
               {
                 "type": "openai-response",
@@ -1633,21 +1367,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/callOpenAi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Call OpenAI",
             "description": "Call OpenAI",
-            "subscribes": [
-              "call-openai"
-            ],
+            "subscribes": ["call-openai"],
             "emits": [
               {
                 "type": "openai-response",
@@ -1674,13 +1404,11 @@
               },
               "_cached": null
             },
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/callOpenAiApi.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/callOpenAiApi.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1688,9 +1416,7 @@
             "description": "Call OpenAI",
             "path": "/openai",
             "method": "POST",
-            "emits": [
-              "call-openai"
-            ],
+            "emits": ["call-openai"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1711,56 +1437,40 @@
               },
               "_cached": null
             },
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/call_ai.step.py",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/call_ai.step.py",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Call OpenAI",
-            "subscribes": [
-              "call-openai"
-            ],
-            "emits": [
-              "openai-response"
-            ],
+            "subscribes": ["call-openai"],
+            "emits": ["openai-response"],
             "input": null,
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/call_ai_ruby.step.rb",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/call_ai_ruby.step.rb",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Call OpenAI",
-            "subscribes": [
-              "call-openai"
-            ],
-            "emits": [
-              "openai-response"
-            ],
+            "subscribes": ["call-openai"],
+            "emits": ["openai-response"],
             "input": null,
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/openAi/openAiResponse.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/openAi/openAiResponse.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "OpenAI Response",
-            "subscribes": [
-              "openai-response"
-            ],
+            "subscribes": ["openai-response"],
             "emits": [],
             "input": {
               "_def": {
@@ -1782,9 +1492,7 @@
               },
               "_cached": null
             },
-            "flows": [
-              "openai"
-            ]
+            "flows": ["openai"]
           }
         }
       ]
@@ -1794,14 +1502,12 @@
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Join Complete",
-            "subscribes": [
-              "pms.join.complete"
-            ],
+            "subscribes": ["pms.join.complete"],
             "emits": [],
             "input": {
               "_def": {
@@ -1823,20 +1529,16 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/joinComplete.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Join Complete",
-            "subscribes": [
-              "pms.join.complete"
-            ],
+            "subscribes": ["pms.join.complete"],
             "emits": [],
             "input": {
               "_def": {
@@ -1858,25 +1560,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/joinStep.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "join-step",
-            "subscribes": [
-              "pms.stepA.done",
-              "pms.stepB.done",
-              "pms.stepC.done"
-            ],
-            "emits": [
-              "pms.join.complete"
-            ],
+            "subscribes": ["pms.stepA.done", "pms.stepB.done", "pms.stepC.done"],
+            "emits": ["pms.join.complete"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1897,23 +1591,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/setpB.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "stepB",
-            "subscribes": [
-              "pms.start"
-            ],
-            "emits": [
-              "pms.stepB.done"
-            ],
+            "subscribes": ["pms.start"],
+            "emits": ["pms.stepB.done"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1934,13 +1622,11 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/startParallelMerge.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
@@ -1948,26 +1634,18 @@
             "description": "Triggered when a message is received from parallel merge",
             "path": "/api/parallel-merge",
             "method": "POST",
-            "emits": [
-              "pms.start"
-            ],
-            "flows": [
-              "parallel-merge"
-            ]
+            "emits": ["pms.start"],
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/stepA.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "stepA",
-            "subscribes": [
-              "pms.start"
-            ],
-            "emits": [
-              "pms.stepA.done"
-            ],
+            "subscribes": ["pms.start"],
+            "emits": ["pms.stepA.done"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -1988,23 +1666,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/parallelMergeState/stepC.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "stepC",
-            "subscribes": [
-              "pms.start"
-            ],
-            "emits": [
-              "pms.stepC.done"
-            ],
+            "subscribes": ["pms.start"],
+            "emits": ["pms.stepC.done"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -2025,26 +1697,22 @@
               },
               "_cached": null
             },
-            "flows": [
-              "parallel-merge"
-            ]
+            "flows": ["parallel-merge"]
           }
         }
       ]
     },
-    "wistro-server": {
-      "name": "wistro-server",
+    "motia-server": {
+      "name": "motia-server",
       "description": "",
       "steps": [
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/finalizer.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/finalizer.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Finalizer",
-            "subscribes": [
-              "ws-server-example.processed"
-            ],
+            "subscribes": ["ws-server-example.processed"],
             "emits": [],
             "input": {
               "_def": {
@@ -2066,20 +1734,16 @@
               },
               "_cached": null
             },
-            "flows": [
-              "wistro-server"
-            ]
+            "flows": ["motia-server"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/finalizer.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/finalizer.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Finalizer",
-            "subscribes": [
-              "ws-server-example.processed"
-            ],
+            "subscribes": ["ws-server-example.processed"],
             "emits": [],
             "input": {
               "_def": {
@@ -2101,23 +1765,17 @@
               },
               "_cached": null
             },
-            "flows": [
-              "wistro-server"
-            ]
+            "flows": ["motia-server"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/processor.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/processor.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "event",
             "name": "Processor",
-            "subscribes": [
-              "ws-server-example.start"
-            ],
-            "emits": [
-              "ws-server-example.processed"
-            ],
+            "subscribes": ["ws-server-example.start"],
+            "emits": ["ws-server-example.processed"],
             "input": {
               "_def": {
                 "unknownKeys": "strip",
@@ -2138,23 +1796,19 @@
               },
               "_cached": null
             },
-            "flows": [
-              "wistro-server"
-            ]
+            "flows": ["motia-server"]
           }
         },
         {
-          "filePath": "/Users/rodrigomorales/Projects/Wistro-Monorepo/playground/steps/wistroServerExample/startServerExample.step.ts",
+          "filePath": "/Users/rodrigomorales/Projects/Motia-Monorepo/playground/steps/motiaServerExample/startServerExample.step.ts",
           "version": "d54a3fd6-9977-4a17-813e-5954036f223b:1736901079",
           "config": {
             "type": "api",
             "name": "Start Event",
-            "description": "Start the Wistro Server Example flow",
-            "path": "/api/wistro-server-example",
+            "description": "Start the Motia Server Example flow",
+            "path": "/api/motia-server-example",
             "method": "POST",
-            "emits": [
-              "ws-server-example.start"
-            ],
+            "emits": ["ws-server-example.start"],
             "bodySchema": {
               "_def": {
                 "unknownKeys": "strip",
@@ -2175,9 +1829,7 @@
               },
               "_cached": null
             },
-            "flows": [
-              "wistro-server"
-            ]
+            "flows": ["motia-server"]
           }
         }
       ]
