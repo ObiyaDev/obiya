@@ -18,6 +18,8 @@ import { flowsEndpoint } from './flows-endpoint'
 import { isApiStep } from './guards'
 import { globalLogger, Logger } from './logger'
 import { declareInternalStateManagerEndpoints } from './state/internalStateManagerEndpoints'
+import { loadNodeFileExports } from './node/load-node-file-exports'
+import { getModuleExport } from './node/get-module-export'
 
 type ServerOptions = {
   steps: Step[]
@@ -43,8 +45,7 @@ export const createServer = async (
 
       logger.debug('[API] Received request, processing step', { path: req.path, step })
 
-      const module = require(step.filePath)
-      const handler = module.handler as ApiRouteHandler
+      const handler = (await getModuleExport(step.filePath, 'handler')) as ApiRouteHandler;
       const request: ApiRequest = {
         body: req.body,
         headers: req.headers as Record<string, string | string[]>,
