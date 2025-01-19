@@ -18,7 +18,6 @@ import { flowsEndpoint } from './flows-endpoint'
 import { isApiStep } from './guards'
 import { globalLogger, Logger } from './logger'
 import { declareInternalStateManagerEndpoints } from './state/internalStateManagerEndpoints'
-import { loadNodeFileExports } from './node/load-node-file-exports'
 import { getModuleExport } from './node/get-module-export'
 
 type ServerOptions = {

@@ -29,6 +29,7 @@ export const dev = async (port: number): Promise<void> => {
 
   server.listen(port)
   console.log('🚀 Server ready and listening on port', port)
+  console.log(`🔗 Open http://localhost:${port}/ to open workbench 🛠️`)
 
   // 6) Gracefully shut down on SIGTERM
   process.on('SIGTERM', async () => {
