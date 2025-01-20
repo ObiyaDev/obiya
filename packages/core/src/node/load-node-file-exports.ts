@@ -16,7 +16,7 @@ export const loadNodeFileExports = async <T>(filePath: string): Promise<T> => {
       format: "cjs",
       target: ["es2020"],
       write: false, // Keep output in memory
-      external: ["@motia/core"], // Add external dependencies to exclude if needed
+      external: ["@motiadev/core"], // Add external dependencies to exclude if needed
       loader: { '.ts': 'ts' }, // Add this line to handle TypeScript files
       plugins: [esbuildPluginTsc()],
     });
