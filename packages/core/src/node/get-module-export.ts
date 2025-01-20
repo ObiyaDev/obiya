@@ -1,15 +1,26 @@
-import { loadNodeFileExports } from "./load-node-file-exports";
+import path from 'path';
+import * as tsconfigPaths from 'tsconfig-paths';
+
+const tsConfigPath = path.resolve(process.cwd(), 'tsconfig.json');
+const result = tsconfigPaths.loadConfig(tsConfigPath);
+
+if (result.resultType !== 'success') {
+  throw Error('Failed to load tsconfig.json');
+}
+
+const {absoluteBaseUrl, paths} = result;
+
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: { module: 'commonjs', baseUrl: absoluteBaseUrl, paths },
+})
 
 export const getModuleExport = async (filePath: string, exportName: string) => {
   try {
-    const sandbox = await loadNodeFileExports<{
-      module: { exports: Record<string, any> };
-      exports: Record<string, any>;
-    }>(filePath);
+    const resolvedFilePath = require.resolve(filePath);
+    const module = require(resolvedFilePath);
 
-    const exportedModule = sandbox.module.exports[exportName] || sandbox.exports[exportName];
-
-    return exportedModule;
+    return module[exportName];
   } catch (error) {
     console.error(`Failed to extract ${exportName} from ${filePath}:`, error);
 

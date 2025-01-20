@@ -36,7 +36,6 @@ export const createServer = async (options: ServerOptions): Promise<ServerOutput
 
       logger.debug('[API] Received request, processing step', { path: req.path, step })
 
-      // TODO: figure out a way to not use getModuleExport here, perhaps moving towards calling the node-runner
       const handler = (await getModuleExport(step.filePath, 'handler')) as ApiRouteHandler;
       const request: ApiRequest = {
         body: req.body,
