@@ -1,4 +1,3 @@
-import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useLogs } from '@/stores/use-logs'
 import { motion, AnimatePresence } from 'framer-motion'
