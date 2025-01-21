@@ -1,19 +1,11 @@
 src/
 public/
 
-components.json 
-eslint.config.js 
-index.html 
-index.tsx 
-middleware.ts 
-package.json 
-post-build.sh 
-postcss.config.js 
-README.md 
-tailwind.config.ts 
-tsconfig.app.json 
-tsconfig.app.tsbuildinfo 
-tsconfig.json 
-tsconfig.node.json 
-tsconfig.node.tsbuildinfo 
-vite.config.ts
+/*.json
+/*.js
+/*.html
+/*.tsx
+/*.ts
+/*.sh
+/*.md
+/*.tsbuildinfo
