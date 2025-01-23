@@ -1,3 +1,4 @@
+import { setupCronHandlers } from './cron-handler'
 import bodyParser from 'body-parser'
 import { randomUUID } from 'crypto'
 import express, { Express, Request, Response } from 'express'
@@ -28,6 +29,9 @@ export const createServer = async (options: ServerOptions): Promise<ServerOutput
   const app = express()
   const server = http.createServer(app)
   const io = new SocketIOServer(server)
+
+  // Setup cron handlers with socket server
+  const cleanupCronJobs = setupCronHandlers(steps, eventManager, io)
 
   const asyncHandler = (step: Step, flows: string[]) => {
     return async (req: Request, res: Response) => {
@@ -87,6 +91,7 @@ export const createServer = async (options: ServerOptions): Promise<ServerOutput
 
   server.on('error', (error) => {
     console.error('Server error:', error)
+    cleanupCronJobs()
   })
 
   return { app, server, socketServer: io }
