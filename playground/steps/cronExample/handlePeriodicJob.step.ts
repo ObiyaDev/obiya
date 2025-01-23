@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { FlowContext } from '@motiadev/core'
 
 export const config = {
-	type: 'event' as const,
+	type: 'event',
 	name: 'HandlePeriodicJob',
 	description: 'Handles the periodic job event',
 	subscribes: ['cron-ticked'],
