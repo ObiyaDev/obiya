@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Position } from '@xyflow/react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 import { PropsWithChildren } from 'react'
 import { BaseHandle } from './base-handle'
 
@@ -12,12 +12,13 @@ const baseBackgroundVariants = cva('absolute -inset-[1px] rounded-md bg-gradient
       event: 'from-teal-500/20 to-teal-400/10',
       api: 'from-blue-500/20 to-blue-400/10',
       noop: 'from-white/20 to-white/10',
+      cron: 'from-purple-500/20 to-purple-400/10',
     },
   },
 })
 
 type Props = PropsWithChildren<{
-  variant?: VariantProps<typeof baseBackgroundVariants>['variant']
+  variant?: 'event' | 'api' | 'noop' | 'cron'
   title: string
   headerChildren?: React.ReactNode
   className?: string
