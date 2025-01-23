@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Position } from '@xyflow/react'
-import { cva } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { PropsWithChildren } from 'react'
 import { BaseHandle } from './base-handle'
 
@@ -18,7 +18,7 @@ const baseBackgroundVariants = cva('absolute -inset-[1px] rounded-md bg-gradient
 })
 
 type Props = PropsWithChildren<{
-  variant?: 'event' | 'api' | 'noop' | 'cron'
+  variant?: VariantProps<typeof baseBackgroundVariants>['variant']
   title: string
   headerChildren?: React.ReactNode
   className?: string
