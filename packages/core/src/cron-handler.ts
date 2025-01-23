@@ -1,17 +1,16 @@
-import { EventManager, Step, CronConfig } from './types'
+import { EventManager, Step, CronConfig, FlowContext } from './types'
 import { globalLogger, Logger } from './logger'
 import * as cron from 'node-cron'
 import { Server } from 'socket.io'
 import { isCronStep } from './guards'
+import { getModuleExport } from './node/get-module-export'
 
 const cronJobs = new Map<string, cron.ScheduledTask>()
 
-
-
 export const setupCronHandlers = (steps: Step[], eventManager: EventManager, socketServer?: Server) => {
-	steps.filter(isCronStep).forEach((step) => {
+	steps.filter(isCronStep).forEach(async (step) => {
 		const { config, filePath } = step
-		const { cron: cronExpression, emits } = config
+		const { cron: cronExpression } = config
 
 		if (!cron.validate(cronExpression)) {
 			globalLogger.error('[cron handler] invalid cron expression', { 
@@ -32,15 +31,26 @@ export const setupCronHandlers = (steps: Step[], eventManager: EventManager, soc
 			const logger = new Logger(traceId, config.flows, step.config.name, socketServer)
 			
 			try {
-				await eventManager.emit({
-					type: emits[0],
-					data: { timestamp: Date.now() },
-					traceId,
-					flows: config.flows,
-					logger
-				})
+				const handler = await getModuleExport(filePath, 'handler')
+				const emit = async (event: { type: string; data: any }) => {
+					await eventManager.emit({
+						...event,
+						traceId,
+						flows: config.flows,
+						logger
+					}, filePath)
+				}
+
+				if (handler) {
+					await handler({ emit, logger, traceId } as FlowContext)
+				} else {
+					await emit({
+						type: config.emits[0],
+						data: { timestamp: Date.now() }
+					})
+				}
 			} catch (error: any) {
-				logger.error('[cron handler] error emitting event', {
+				logger.error('[cron handler] error executing cron job', {
 					error: error.message,
 					step: step.config.name
 				})

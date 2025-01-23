@@ -9,10 +9,11 @@ export const config = {
 	emits: [],
 	flows: ['cron-example'],
 	input: z.object({
-		timestamp: z.number()
+		timestamp: z.number(),
+		message: z.string()
 	})
 }
 
 export const handler = async (input: z.infer<typeof config.input>, { logger }: FlowContext) => {
-	logger.info('Periodic job executed', { timestamp: input.timestamp })
+	logger.info('Periodic job executed', { timestamp: input.timestamp, message: input.message })
 }
