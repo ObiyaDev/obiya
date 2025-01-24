@@ -10,8 +10,8 @@ export const config = {
   flows: ['cron-example'],
   input: z.object({
     timestamp: z.number(),
-    message: z.string()
-  })
+    message: z.string(),
+  }),
 }
 
 export const handler = async (input: z.infer<typeof config.input>, { logger }: FlowContext) => {

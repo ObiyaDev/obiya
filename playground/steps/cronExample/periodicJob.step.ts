@@ -4,9 +4,9 @@ export const config = {
   type: 'cron' as const,
   name: 'PeriodicJob',
   description: 'Runs every minute and emits a timestamp',
-  cron: '* * * * *', // run every minutes
+  cron: '0 * * * *', // run every hour at minute 0
   emits: ['cron-ticked'],
-  flows: ['cron-example']
+  flows: ['cron-example'],
 }
 
 export const handler = async ({ emit }: FlowContext) => {
@@ -14,7 +14,7 @@ export const handler = async ({ emit }: FlowContext) => {
     type: 'cron-ticked',
     data: {
       timestamp: Date.now(),
-      message: 'Cron job executed'
-    }
+      message: 'Cron job executed',
+    },
   })
 }
