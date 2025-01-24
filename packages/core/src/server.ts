@@ -22,6 +22,7 @@ type ServerOutput = {
   app: Express
   server: http.Server
   socketServer: SocketIOServer
+  close: () => Promise<void>
 }
 
 export const createServer = async (options: ServerOptions): Promise<ServerOutput> => {
@@ -40,7 +41,7 @@ export const createServer = async (options: ServerOptions): Promise<ServerOutput
 
       logger.debug('[API] Received request, processing step', { path: req.path, step })
 
-      const handler = (await getModuleExport(step.filePath, 'handler')) as ApiRouteHandler;
+      const handler = (await getModuleExport(step.filePath, 'handler')) as ApiRouteHandler
       const request: ApiRequest = {
         body: req.body,
         headers: req.headers as Record<string, string | string[]>,
@@ -94,5 +95,11 @@ export const createServer = async (options: ServerOptions): Promise<ServerOutput
     cleanupCronJobs()
   })
 
-  return { app, server, socketServer: io }
+  const close = async (): Promise<void> => {
+    cleanupCronJobs()
+    await io.close()
+    server.close()
+  }
+
+  return { app, server, socketServer: io, close }
 }
