@@ -28,7 +28,7 @@ export class RpcProcessor {
   }
 
   private response(id: string | undefined, result: unknown, error: unknown) {
-    if (id && !this.isClosed) {
+    if (id && !this.isClosed && this.child.connected) {
       this.child.send?.({ type: 'rpc_response', id, result, error })
     }
   }
