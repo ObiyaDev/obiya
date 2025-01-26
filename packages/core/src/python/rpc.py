@@ -2,6 +2,7 @@ import uuid
 import asyncio
 import os
 import json
+import sys
 from typing import Any, Dict, Tuple
 
 # get the FD from ENV
@@ -77,3 +78,10 @@ class RpcSender:
 
         # Start message reading loop
         asyncio.create_task(read_messages())
+
+    async def close(self) -> None:
+        outstanding_requests = list(self.pending_requests.values())
+        
+        if len(outstanding_requests) > 0:
+            print("Process ended while there are some promises outstanding", file=sys.stderr)
+            sys.exit(1)
