@@ -24,7 +24,7 @@ jobs:
       - name: Run linter
         run: pnpm lint
 
-      - name: Run quality gates
+      - name: Run tests
         run: pnpm -r run test
 
   publish:
