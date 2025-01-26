@@ -51,9 +51,12 @@ async def run_python_module(file_path: str, args: Any) -> None:
         sender = RpcSender()
         context = Context(args, sender, file_path)
         sender.init()
+
         
         await module.handler(args.data, context)
         await sender.close()
+        
+        context.logger.info("[python-runner] done")
         
         # exit with 0 to indicate success
         sys.exit(0)
