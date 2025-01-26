@@ -28,7 +28,6 @@ async function runTypescriptModule(filePath: string, event: Record<string, unkno
       throw new Error(`Function handler not found in module ${filePath}`)
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { traceId, flows } = event
     const sender = new RpcSender(process)
     const logger = new Logger(traceId as string, flows as string[], filePath, sender)
@@ -41,6 +40,7 @@ async function runTypescriptModule(filePath: string, event: Record<string, unkno
 
     // Call the function with provided arguments
     await module.handler(event.data, context)
+    await sender.close()
 
     process.exit(0)
   } catch (error) {
