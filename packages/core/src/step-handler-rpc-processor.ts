@@ -28,7 +28,7 @@ export class RpcProcessor {
   }
 
   private response(id: string | undefined, result: unknown, error: unknown) {
-    if (id && !this.isClosed && this.child.connected) {
+    if (id && !this.isClosed && this.child.connected && !this.child.killed) {
       this.child.send?.({ type: 'rpc_response', id, result, error })
     }
   }
@@ -43,6 +43,12 @@ export class RpcProcessor {
       }
     })
     this.child.on('exit', () => {
+      this.isClosed = true
+    })
+    this.child.on('close', () => {
+      this.isClosed = true
+    })
+    this.child.on('disconnect', () => {
       this.isClosed = true
     })
   }
