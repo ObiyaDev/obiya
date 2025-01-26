@@ -11,6 +11,28 @@ require('ts-node').register({
 })
 
 program
+  .command('create')
+  .description('Create a new motia project')
+  .option('-n, --name <project name>', 'The name for your project, used to create a directory, use ./ or . to create it under the existing directory', `${defaultPort}`)
+  .option('-t, --template <template name>', 'The motia template name to use for your project')
+  .action(async (arg) => {
+    const { create } = require('./create')
+    await create({
+      projectName: arg.project ?? '.',
+      template: arg.template ?? undefined
+    })
+  })
+
+
+program
+  .command('templates')
+  .description('Prints the list of available templates')
+  .action(async (arg) => {
+    const {templates} = require('./src/create/templates')
+    console.log(`📝 Available templates: \n\n ${Object.keys(templates).join('\n')}`);
+  })
+
+program
   .command('dev')
   .description('Start the development server')
   .option('-p, --port <port>', 'The port to run the server on', `${defaultPort}`)
