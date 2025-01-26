@@ -6,6 +6,6 @@ export const systemSteps: Step[] = [
   {
     filePath: path.join(__dirname, 'emit.step.ts'),
     version: '1',
-    config: emitConfig
-  }
+    config: emitConfig,
+  },
 ]

@@ -11,8 +11,8 @@ export const config: ApiRouteConfig = {
   flows: ['_system'],
   bodySchema: z.object({
     type: z.string(),
-    data: z.record(z.unknown())
-  })
+    data: z.record(z.unknown()),
+  }),
 }
 
 export const handler: StepHandler<typeof config> = async (req, { emit, logger }) => {
@@ -23,6 +23,6 @@ export const handler: StepHandler<typeof config> = async (req, { emit, logger })
 
   return {
     status: 200,
-    body: { success: true, emitted: { type, data } }
+    body: { success: true, emitted: { type, data } },
   }
 }

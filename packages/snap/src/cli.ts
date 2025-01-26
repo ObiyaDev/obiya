@@ -89,8 +89,8 @@ program
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: options.topic,
-          data: JSON.parse(options.message)
-        })
+          data: JSON.parse(options.message),
+        }),
       })
 
       if (!response.ok) {
