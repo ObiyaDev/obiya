@@ -1,6 +1,6 @@
 import { Edge, Node, useNodesInitialized, useReactFlow } from '@xyflow/react'
 import dagre from 'dagre'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { EventNodeData, EdgeData, ApiNodeData } from './nodes/nodes.types'
 
 const organizeNodes = (
@@ -64,7 +64,7 @@ export const NodeOrganizer: React.FC<Props> = ({ onInitialized }) => {
         await fitView()
       }, 1)
     }
-  }, [nodesInitialized, onInitialized])
+  }, [nodesInitialized, onInitialized, setNodes, getNodes, getEdges, fitView])
 
   return null
 }

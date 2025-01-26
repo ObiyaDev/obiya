@@ -1,5 +1,5 @@
-import { generateDefaultTemplateSteps } from "./default/generate";
+import { generateDefaultTemplateSteps } from './default/generate'
 
 export const templates: Record<string, (dir: string) => Promise<void>> = {
-  default: generateDefaultTemplateSteps
+  default: generateDefaultTemplateSteps,
 }

@@ -1,5 +1,5 @@
 import { Edge, Node, useEdgesState, useNodesState } from '@xyflow/react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { EdgeData, NodeData } from '../nodes/nodes.types'
 import { ApiFlowNode } from '../nodes/api-flow-node'
 import { NoopFlowNode } from '../nodes/noop-flow-node'
@@ -39,10 +39,12 @@ type FlowEdge = {
 type FlowState = {
   nodes: Node<NodeData>[]
   edges: Edge<EdgeData>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nodeTypes: Record<string, React.ComponentType<any>>
 }
 
 async function importFlow(flow: FlowResponse): Promise<FlowState> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nodeTypes: Record<string, React.ComponentType<any>> = {
     event: EventFlowNode,
     api: ApiFlowNode,
@@ -54,7 +56,7 @@ async function importFlow(flow: FlowResponse): Promise<FlowState> {
   for (const step of flow.steps) {
     if (step.nodeComponentPath) {
       const module = await import(/* @vite-ignore */ step.nodeComponentPath)
-      nodeTypes[step.nodeComponentPath] = module.default
+      nodeTypes[step.nodeComponentPath] = module.Node ?? module.default
     }
   }
 
@@ -77,6 +79,7 @@ async function importFlow(flow: FlowResponse): Promise<FlowState> {
 }
 
 export const useGetFlowState = (flow: FlowResponse) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [nodeTypes, setNodeTypes] = useState<Record<string, React.ComponentType<any>>>()
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge<EdgeData>>([])
@@ -89,7 +92,7 @@ export const useGetFlowState = (flow: FlowResponse) => {
       setEdges(edges)
       setNodeTypes(nodeTypes)
     })
-  }, [flow])
+  }, [flow, setNodes, setEdges, setNodeTypes])
 
   return { nodes, edges, onNodesChange, onEdgesChange, nodeTypes }
 }

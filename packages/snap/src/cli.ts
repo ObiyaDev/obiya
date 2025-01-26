@@ -4,7 +4,9 @@ import path from 'path'
 
 const defaultPort = 3000
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv/config')
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
   transpileOnly: true,
   compilerOptions: { module: 'commonjs' },
@@ -13,23 +15,27 @@ require('ts-node').register({
 program
   .command('create')
   .description('Create a new motia project')
-  .option('-n, --name <project name>', 'The name for your project, used to create a directory, use ./ or . to create it under the existing directory', `${defaultPort}`)
+  .option(
+    '-n, --name <project name>',
+    'The name for your project, used to create a directory, use ./ or . to create it under the existing directory',
+  )
   .option('-t, --template <template name>', 'The motia template name to use for your project')
   .action(async (arg) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { create } = require('./create')
     await create({
       projectName: arg.project ?? '.',
-      template: arg.template ?? undefined
+      template: arg.template ?? undefined,
     })
   })
-
 
 program
   .command('templates')
   .description('Prints the list of available templates')
-  .action(async (arg) => {
+  .action(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { templates } = require('./src/create/templates')
-    console.log(`📝 Available templates: \n\n ${Object.keys(templates).join('\n')}`);
+    console.log(`📝 Available templates: \n\n ${Object.keys(templates).join('\n')}`)
   })
 
 program
@@ -44,7 +50,7 @@ program
     }
 
     const port = arg.port ? parseInt(arg.port) : defaultPort
-    const { dev } = require('./dev')
+    const { dev } = require('./dev') // eslint-disable-line @typescript-eslint/no-require-imports
     await dev(port)
   })
 
@@ -53,11 +59,12 @@ program
   .description('Get the generated config for your project')
   .option('-o, --output <port>', 'Path to write the generated config')
   .action(async (arg) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { generateLockedData } = require('./src/generate/locked-data')
     const lockedData = await generateLockedData(path.join(process.cwd()))
 
     if (arg.output) {
-      const fs = require('fs')
+      const fs = require('fs') // eslint-disable-line @typescript-eslint/no-require-imports
       fs.writeFileSync(path.join(arg.output, '.motia.generated.json'), JSON.stringify(lockedData, null, 2))
       console.log(`📄 Wrote locked data to ${arg.output}`)
 
