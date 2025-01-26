@@ -29,3 +29,5 @@ async def handler(_, context):
         "type": "pms.stepB.done",
         "data": partial_result_b
     })
+
+    context.logger.info("[stepB] done")
