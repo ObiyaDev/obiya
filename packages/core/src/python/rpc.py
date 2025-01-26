@@ -2,7 +2,6 @@ import uuid
 import asyncio
 import os
 import json
-import sys
 from typing import Any, Dict, Tuple
 
 # get the FD from ENV

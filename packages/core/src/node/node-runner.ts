@@ -18,7 +18,7 @@ function parseArgs(arg: string) {
   }
 }
 
-async function runTypescriptModule(filePath: string, args: Record<string, unknown>) {
+async function runTypescriptModule(filePath: string, event: Record<string, unknown>) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const module = require(path.resolve(filePath))
@@ -29,10 +29,9 @@ async function runTypescriptModule(filePath: string, args: Record<string, unknow
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { stateConfig, ...event } = args
     const { traceId, flows } = event
-    const logger = new Logger(traceId as string, flows as string[], filePath.split('/').pop())
     const sender = new RpcSender(process)
+    const logger = new Logger(traceId as string, flows as string[], filePath, sender)
     const state = new RpcStateManager(sender)
 
     const emit = async (data: unknown) => sender.send('emit', data)

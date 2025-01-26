@@ -26,6 +26,10 @@ export class RpcSender {
     })
   }
 
+  sendNoWait(method: string, args: unknown) {
+    this.process.send?.({ type: 'rpc_request', method, args })
+  }
+
   init() {
     this.process.on('message', (msg: RpcResponse) => {
       if (msg.type === 'rpc_response') {
