@@ -156,7 +156,7 @@ export const create = async ({ projectName, template }: Args): Promise<void> => 
     }
 
     if (!packageJson.scripts.dev) {
-      packageJson.scripts.dev = 'motia dev'  
+      packageJson.scripts.dev = 'motia dev'
     } else {
       packageJson.scripts.olddev = packageJson.scripts.dev
       packageJson.scripts.dev = 'motia dev'
