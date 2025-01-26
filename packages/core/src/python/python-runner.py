@@ -51,15 +51,14 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: Any) -> None:
 
         context = Context(args, rpc, file_path)
 
-        
-
         await module.handler(args.data, context)
+
         rpc.close()
 
-        # exit with 0 to indicate success
-        sys.exit(0)
+        # We need this to close the process
+        rpc.send_no_wait('close', None)
     except Exception as error:
-        print('Error running Python module:', file=sys.stderr)
+        print(f'Error running Python module: {error}', file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
