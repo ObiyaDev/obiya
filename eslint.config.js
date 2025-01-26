@@ -6,6 +6,7 @@ const pluginJest = require('eslint-plugin-jest')
 
 /** @type {import('eslint').Linter.Config[]} */
 module.exports = [
+  { ignores: ['**/dist/**/*'] },
   {
     files: ['index.ts', 'src/**/*.ts', 'test/**/*.ts', 'steps/**/*.ts', 'integration-tests/**/*.ts'],
     languageOptions: {
@@ -28,6 +29,9 @@ module.exports = [
       ...pluginJs.configs.recommended.rules,
       ...pluginTs.configs.recommended.rules,
       ...pluginJest.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-require-imports': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
     },
   },
 ]

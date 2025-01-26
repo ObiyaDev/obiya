@@ -5,7 +5,7 @@
     "dev:docs": "pnpm -r --filter=docs start",
     "dev": "pnpm run build && pnpm -r --filter=playground dev",
     "build": "pnpm --filter=!docs run -r build",
-    "lint": "pnpm run -r lint",
+    "lint": "pnpm run -r --no-bail lint",
     "test": "pnpm -r run test",
     "clean": "rm -rf node_modules pnpm-lock.yaml dist .turbo .next"
   },
