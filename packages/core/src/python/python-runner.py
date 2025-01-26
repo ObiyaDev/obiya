@@ -2,6 +2,7 @@ import sys
 import json
 import importlib.util
 import traceback
+import asyncio
 import os
 from logger import Logger
 from rpc import RpcSender
@@ -28,9 +29,9 @@ class Context:
         self.logger = Logger(self.trace_id, self.flows, self.file_name, self.sender)
 
     async def emit(self, event: Any):
-        await self.sender.send('emit', event)
+        return await self.sender.send('emit', event)
 
-async def run_python_module(file_path: str, args: Any) -> None:
+async def run_python_module(file_path: str, rpc: RpcSender, args: Any) -> None:
     try:
         # Construct path relative to steps directory
         flows_dir = os.path.join(os.getcwd(), 'steps')
@@ -48,21 +49,17 @@ async def run_python_module(file_path: str, args: Any) -> None:
         if not hasattr(module, 'handler'):
             raise AttributeError(f"Function 'handler' not found in module {module_path}")
 
-        sender = RpcSender()
-        context = Context(args, sender, file_path)
-        sender.init()
+        context = Context(args, rpc, file_path)
 
         
+
         await module.handler(args.data, context)
-        await sender.close()
-        
-        context.logger.info("[python-runner] done")
-        
+        rpc.close()
+
         # exit with 0 to indicate success
         sys.exit(0)
     except Exception as error:
         print('Error running Python module:', file=sys.stderr)
-
         traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
@@ -74,5 +71,9 @@ if __name__ == "__main__":
     file_path = sys.argv[1]
     arg = sys.argv[2] if len(sys.argv) > 2 else None
 
-    import asyncio
-    asyncio.run(run_python_module(file_path, parse_args(arg)))
+    rpc = RpcSender()
+    loop = asyncio.get_event_loop()
+    # Create and gather tasks
+    tasks = asyncio.gather(rpc.init(), run_python_module(file_path, rpc, parse_args(arg)))
+    # Run until tasks complete
+    loop.run_until_complete(tasks)
