@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "pnpm run lint:ts && pnpm run lint:tsx",
-    "lint:ts": "eslint --config ../../eslint.config.js",
+    "lint:ts": "eslint",
     "lint:tsx": "eslint --config ../../eslint.config.tsx.js",
     "build": "rm -rf dist && tsc --build && sh post-build.sh"
   },
