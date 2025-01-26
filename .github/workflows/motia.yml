@@ -25,8 +25,7 @@ jobs:
         run: pnpm lint
 
       - name: Run quality gates
-        # TODO remove filter
-        run: pnpm -r --filter @motiadev/core run test
+        run: pnpm -r run test
 
   publish:
     runs-on: ubuntu-latest
