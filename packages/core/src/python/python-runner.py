@@ -20,13 +20,12 @@ def parse_args(arg: str) -> Any:
         return arg
 
 class Context:
-    def __init__(self, args: Any, sender: RpcSender, file_name: str):
+    def __init__(self, args: Any, rpc: RpcSender, file_name: str):
         self.trace_id = args.traceId
         self.flows = args.flows
         self.file_name = file_name
-        self.sender = sender
-        self.state = RpcStateManager(self.sender)
-        self.logger = Logger(self.trace_id, self.flows, self.file_name, self.sender)
+        self.state = RpcStateManager(rpc)
+        self.logger = Logger(self.trace_id, self.flows, self.file_name, rpc)
 
     async def emit(self, event: Any):
         return await self.sender.send('emit', event)
