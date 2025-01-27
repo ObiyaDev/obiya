@@ -24,11 +24,12 @@ class Context:
         self.trace_id = args.traceId
         self.flows = args.flows
         self.file_name = file_name
+        self.rpc = rpc
         self.state = RpcStateManager(rpc)
         self.logger = Logger(self.trace_id, self.flows, self.file_name, rpc)
 
     async def emit(self, event: Any):
-        return await self.sender.send('emit', event)
+        return await self.rpc.send('emit', event)
 
 async def run_python_module(file_path: str, rpc: RpcSender, args: Any) -> None:
     try:
