@@ -1,4 +1,4 @@
-def config()
+def config
   {
     type: 'event',
     name: 'stepC',
