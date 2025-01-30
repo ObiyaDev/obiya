@@ -11,7 +11,7 @@ import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { Banner } from 'fumadocs-ui/components/banner';
-import {DescriptionTable} from'@/components/DescriptionTable';
+import { DescriptionTable } from '@/components/DescriptionTable';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
@@ -33,14 +33,14 @@ export default async function Page(props: {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ 
-          ...defaultMdxComponents, 
+        <MDX components={{
+          ...defaultMdxComponents,
           pre: ({ ref: _ref, ...props }) => (
             <CodeBlock {...props}>
               <Pre>{props.children}</Pre>
             </CodeBlock>
           ),
-          Card, 
+          Card,
           Cards,
           Callout,
           File,
