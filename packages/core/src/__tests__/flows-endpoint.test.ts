@@ -4,7 +4,7 @@ import { LockedData } from '../locked-data'
 import { z } from 'zod'
 import { Step } from '../types'
 
-export const mockFlowSteps: Step[] = [
+const mockFlowSteps: Step[] = [
   createApiStep({
     name: 'Start Event',
     description: 'Start the Motia Server Example flow',

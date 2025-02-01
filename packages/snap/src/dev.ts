@@ -1,12 +1,4 @@
-import {
-  createServer,
-  createStepHandlers,
-  createEventManager,
-  globalLogger,
-  createStateAdapter,
-  Step,
-  isApiStep,
-} from '@motiadev/core'
+import { createServer, createStepHandlers, createEventManager, globalLogger, createStateAdapter } from '@motiadev/core'
 import { generateLockedData } from './generate-locked-data'
 import path from 'path'
 import { FileStateAdapter } from '@motiadev/core/dist/src/state/adapters/default-state-adapter'

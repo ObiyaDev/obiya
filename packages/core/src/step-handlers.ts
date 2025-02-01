@@ -1,11 +1,13 @@
-import { EventConfig, EventManager, InternalStateManager, Step } from './types'
+import { EventConfig, EventManager, Step } from './types'
 import { globalLogger } from './logger'
 import { callStepFile } from './call-step-file'
 import { LockedData } from './locked-data'
 import { StateAdapter } from './state/state-adapter'
 
 export type MotiaEventManager = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createHandler: (step: Step<EventConfig<any>>) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   removeHandler: (step: Step<EventConfig<any>>) => void
 }
 
@@ -50,6 +52,7 @@ export const createStepHandlers = (
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const removeHandler = (step: Step<EventConfig<any>>) => {
     const { config, filePath } = step
     const { subscribes } = config

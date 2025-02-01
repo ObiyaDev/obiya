@@ -1,6 +1,4 @@
 import { z, ZodObject } from 'zod'
-import { Server } from 'http'
-import { Server as SocketIOServer } from 'socket.io'
 import { Logger } from './logger'
 
 export type InternalStateManager = {
