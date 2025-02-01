@@ -98,9 +98,6 @@ export type StepHandler<T> =
         ? never
         : never
 
-export type MotiaServer = Server
-export type MotiaSocketServer = SocketIOServer
-
 export type Event<TData = unknown> = {
   type: string
   data: TData
@@ -111,9 +108,22 @@ export type Event<TData = unknown> = {
 
 export type Handler<TData = unknown> = (event: Event<TData>) => Promise<void>
 
+export type SubscribeConfig<TData> = {
+  event: string
+  handlerName: string
+  filePath: string
+  handler: Handler<TData>
+}
+
+export type UnsubscribeConfig = {
+  filePath: string
+  event: string
+}
+
 export type EventManager = {
   emit: <TData>(event: Event<TData>, file?: string) => Promise<void>
-  subscribe: <TData>(event: string, handlerName: string, handler: Handler<TData>) => void
+  subscribe: <TData>(config: SubscribeConfig<TData>) => void
+  unsubscribe: (config: UnsubscribeConfig) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -125,18 +135,4 @@ export type Flow = {
   name: string
   description?: string
   steps: Step[]
-}
-
-export type LockedData = {
-  baseDir: string
-  steps: {
-    active: Step[]
-    dev: Step[]
-  }
-  flows: Record<string, Flow>
-  state: {
-    adapter: string
-    host: string
-    port: number
-  }
 }

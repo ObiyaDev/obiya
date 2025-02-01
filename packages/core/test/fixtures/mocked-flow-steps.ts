@@ -40,10 +40,3 @@ export const mockFlowSteps: Step[] = [
     filePath: '/playground/steps/motiaServerExample/finalizer.step.ts',
   },
 ]
-
-export const mockedFlows = {
-  'motia-server': {
-    name: 'Motia Server Example',
-    steps: mockFlowSteps,
-  },
-}
