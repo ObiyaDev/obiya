@@ -20,6 +20,18 @@ export const createDevWatchers = (
   const stepDir = path.join(process.cwd(), 'steps')
   const watcher = new Watcher(stepDir, lockedData)
 
+  lockedData.on('flow-created', (flowName: string) => {
+    server.socketServer.emit('flow-created', flowName)
+  })
+
+  lockedData.on('flow-removed', (flowName: string) => {
+    server.socketServer.emit('flow-removed', flowName)
+  })
+
+  lockedData.on('flow-updated', (flowName: string) => {
+    server.socketServer.emit('flow-updated', flowName)
+  })
+
   watcher.onStepChange((oldStep: Step, newStep: Step) => {
     console.log(`Step ${oldStep.config.name} changed to ${newStep.config.name}`)
 
@@ -32,7 +44,7 @@ export const createDevWatchers = (
     if (isEventStep(oldStep)) eventHandler.removeHandler(oldStep)
     if (isEventStep(newStep)) eventHandler.createHandler(newStep)
 
-    lockedData.onStepChange(oldStep, newStep)
+    lockedData.updateStep(oldStep, newStep)
 
     return lockedData
   })
@@ -44,7 +56,7 @@ export const createDevWatchers = (
     if (isEventStep(step)) eventHandler.createHandler(step)
     if (isCronStep(step)) cronManager.createCronJob(step)
 
-    lockedData.onStepCreate(step)
+    lockedData.createStep(step)
   })
 
   watcher.onStepDelete((step: Step) => {
@@ -54,7 +66,7 @@ export const createDevWatchers = (
     if (isEventStep(step)) eventHandler.removeHandler(step)
     if (isCronStep(step)) cronManager.removeCronJob(step)
 
-    lockedData.onStepDelete(step)
+    lockedData.deleteStep(step)
   })
 
   return watcher

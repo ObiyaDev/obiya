@@ -32,7 +32,7 @@ export const mockFlowSteps: Step[] = [
 describe('generateFlowsList', () => {
   it('should generate a list of flows with steps', () => {
     const lockedData = new LockedData(process.cwd())
-    mockFlowSteps.forEach((step) => lockedData.onStepCreate(step))
+    mockFlowSteps.forEach((step) => lockedData.createStep(step))
 
     const result = generateFlowsList(lockedData)
 

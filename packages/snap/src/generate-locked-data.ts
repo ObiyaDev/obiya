@@ -58,7 +58,7 @@ export const generateLockedData = async (projectDir: string): Promise<LockedData
     const sourceSteps = await collectFlows(path.join(projectDir, 'steps'))
     const lockedData = new LockedData(projectDir)
 
-    sourceSteps.forEach((step) => lockedData.onStepCreate(step))
+    sourceSteps.forEach((step) => lockedData.createStep(step))
 
     return lockedData
   } catch (error) {

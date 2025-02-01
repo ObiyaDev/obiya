@@ -2,18 +2,31 @@ import { ZodObject } from 'zod'
 import { ApiRouteConfig, CronConfig, EventConfig, Flow, Step } from './types'
 import { isApiStep, isCronStep, isEventStep } from './guards'
 
+type FlowEvent = 'flow-created' | 'flow-removed' | 'flow-updated'
+
 export class LockedData {
   public flows: Record<string, Flow>
   public activeSteps: Step[]
   public devSteps: Step[]
 
   private stepsMap: Record<string, Step>
+  private handlers: Record<FlowEvent, ((flowName: string) => void)[]>
 
   constructor(public baseDir: string) {
     this.flows = {}
     this.activeSteps = []
     this.devSteps = []
     this.stepsMap = {}
+
+    this.handlers = {
+      'flow-created': [],
+      'flow-removed': [],
+      'flow-updated': [],
+    }
+  }
+
+  on(event: FlowEvent, handler: (flowName: string) => void) {
+    this.handlers[event].push(handler)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +42,7 @@ export class LockedData {
     return this.activeSteps.filter(isCronStep)
   }
 
-  onStepChange(oldStep: Step, newStep: Step): void {
+  updateStep(oldStep: Step, newStep: Step): void {
     if (oldStep.config.type !== newStep.config.type) {
       this.activeSteps = this.activeSteps.filter((s) => s.filePath !== oldStep.filePath)
       this.devSteps = this.devSteps.filter((s) => s.filePath !== oldStep.filePath)
@@ -44,12 +57,18 @@ export class LockedData {
     const savedStep = this.stepsMap[newStep.filePath]
     const addedFlows = newStep.config.flows.filter((flowName) => !oldStep.config.flows.includes(flowName))
     const removedFlows = oldStep.config.flows.filter((flowName) => !newStep.config.flows.includes(flowName))
+    const untouchedFlows = oldStep.config.flows.filter((flowName) => newStep.config.flows.includes(flowName))
+
+    untouchedFlows.forEach((flowName) => this.onFlowUpdated(flowName))
 
     for (const flowName of addedFlows) {
       if (!this.flows[flowName]) {
-        this.flows[flowName] = { name: flowName, description: '', steps: [] }
+        const flow = this.createFlow(flowName)
+        flow.steps.push(savedStep)
+      } else {
+        this.flows[flowName].steps.push(savedStep)
+        this.onFlowUpdated(flowName)
       }
-      this.flows[flowName].steps.push(savedStep)
     }
 
     for (const flowName of removedFlows) {
@@ -57,14 +76,16 @@ export class LockedData {
       this.flows[flowName].steps = flowSteps.filter(({ filePath }) => filePath !== newStep.filePath)
 
       if (this.flows[flowName].steps.length === 0) {
-        delete this.flows[flowName]
+        this.removeFlow(flowName)
+      } else {
+        this.onFlowUpdated(flowName)
       }
     }
 
     savedStep.config = newStep.config
   }
 
-  onStepCreate(step: Step): void {
+  createStep(step: Step): void {
     this.stepsMap[step.filePath] = step
 
     if (step.config.virtualEmits) {
@@ -75,13 +96,16 @@ export class LockedData {
 
     for (const flowName of step.config.flows) {
       if (!this.flows[flowName]) {
-        this.flows[flowName] = { name: flowName, description: '', steps: [] }
+        const flow = this.createFlow(flowName)
+        flow.steps.push(step)
+      } else {
+        this.flows[flowName].steps.push(step)
+        this.onFlowUpdated(flowName)
       }
-      this.flows[flowName].steps.push(step)
     }
   }
 
-  onStepDelete(step: Step): void {
+  deleteStep(step: Step): void {
     // Remove step from active and dev steps
     this.activeSteps = this.activeSteps.filter(({ filePath }) => filePath !== step.filePath)
     this.devSteps = this.devSteps.filter(({ filePath }) => filePath !== step.filePath)
@@ -96,8 +120,27 @@ export class LockedData {
       }
 
       if (this.flows[flowName].steps.length === 0) {
-        delete this.flows[flowName]
+        this.removeFlow(flowName)
+      } else {
+        this.onFlowUpdated(flowName)
       }
     }
+  }
+
+  private createFlow(flowName: string): Flow {
+    const flow = { name: flowName, description: '', steps: [] }
+    this.flows[flowName] = flow
+    this.handlers['flow-created'].forEach((handler) => handler(flowName))
+
+    return flow
+  }
+
+  private removeFlow(flowName: string): void {
+    delete this.flows[flowName]
+    this.handlers['flow-removed'].forEach((handler) => handler(flowName))
+  }
+
+  private onFlowUpdated(flowName: string): void {
+    this.handlers['flow-updated'].forEach((handler) => handler(flowName))
   }
 }
