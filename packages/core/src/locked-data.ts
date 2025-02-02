@@ -1,4 +1,3 @@
-import colors from 'colors'
 import { ZodObject } from 'zod'
 import { ApiRouteConfig, CronConfig, EventConfig, Flow, Step } from './types'
 import { isApiStep, isCronStep, isEventStep } from './guards'
