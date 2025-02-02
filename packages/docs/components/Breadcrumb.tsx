@@ -1,4 +1,5 @@
 'use client';
+import { cn } from 'fumadocs-ui/components/api';
 import Link from 'next/link';
 import { Fragment } from 'react';
  
@@ -6,12 +7,11 @@ export function Breadcrumb({ items }: { items: { name: string, url: string }[] }
 
   if (!items || items.length === 0) return null;
 
-  const columnCount = items.length < 3 ? 2 : 3;
  
   return (
-    <div className={`grid grid-cols-${columnCount} gap-4 w-full`}>
+    <div className={cn('grid gap-4 w-full', items.length % 3  === 0 ? `grid-cols-3` : `grid-cols-2`)}>
       {items.map((item, i) => (
-        <Fragment key={i}>
+        <div key={i}>
           {item.url ? (
             <Link
               href={item.url}
@@ -26,7 +26,7 @@ export function Breadcrumb({ items }: { items: { name: string, url: string }[] }
               <span className="truncate">{item.name}</span>
             </div>
           )}
-        </Fragment>
+        </div>
       ))}
     </div>
   );
