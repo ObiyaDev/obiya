@@ -1,0 +1,22 @@
+import React from 'react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+
+export default function {{STEP_NAME}}Override() {
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>{{STEP_NAME}}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="p-4">
+          <p className="text-sm text-muted-foreground">{{DESCRIPTION}}</p>
+          {/* Add custom visualization for {{TYPE}} step */}
+          <div className="mt-4">
+            <p className="text-xs text-muted-foreground">Flows: {JSON.stringify({{FLOWS}})}</p>
+            <p className="text-xs text-muted-foreground">Emits: {JSON.stringify({{EMITS}})}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}

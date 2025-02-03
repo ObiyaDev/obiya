@@ -105,4 +105,12 @@ program
     }
   })
 
+program
+  .command('create-step')
+  .description('Create a new step with interactive prompts')
+  .action(async () => {
+    const { createStep } = require('./create-step')
+    await createStep()
+  })
+
 program.parse(process.argv)
