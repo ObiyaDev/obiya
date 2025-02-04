@@ -106,8 +106,7 @@ program
     }
   })
 
-const state = program.command('state')
-  .description('Manage application state')
+const state = program.command('state').description('Manage application state')
 
 state
   .command('list')
@@ -115,13 +114,13 @@ state
   .action(async () => {
     try {
       const statePath = path.join(process.cwd(), '.motia', 'motia.state.json')
-      
+
       if (!fs.existsSync(statePath)) {
         console.error('Error: State file not found at', statePath)
         process.exit(1)
       }
 
-      const state = require(statePath)
+      const state = require(statePath) // eslint-disable-line @typescript-eslint/no-require-imports
       console.log(JSON.stringify(state, null, 2))
     } catch (error) {
       console.error('Error:', error instanceof Error ? error.message : 'Unknown error')
