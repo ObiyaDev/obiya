@@ -8,7 +8,9 @@ import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
 import path from 'path'
 
 describe('Server', () => {
-  beforeAll(async () => {})
+  beforeAll(() => {
+    process.env._MOTIA_TEST_MODE = 'true'
+  })
 
   it('should create routes from locked data API steps', async () => {
     const eventManager = createEventManager()

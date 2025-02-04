@@ -51,7 +51,10 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: Any) -> None:
 
         context = Context(args, rpc, file_path)
 
-        await module.handler(args.data, context)
+        result = await module.handler(args.data, context)
+
+        if (result):
+            await rpc.send('result', result)
 
         rpc.close()
 

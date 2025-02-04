@@ -56,9 +56,8 @@ def run_ruby_module(file_path, args)
     # Call handler and wait for any promises
     result = handler(args.data, context)
     
-    # If handler returns a promise-like object, wait for it
-    if result.respond_to?(:value)
-      result.value
+    if result
+      rpc.send('result', result)
     end
 
   rescue => e
