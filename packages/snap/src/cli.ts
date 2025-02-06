@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander'
 import path from 'path'
+import fs from 'fs'
 
 const defaultPort = 3000
 
@@ -105,12 +106,41 @@ program
     }
   })
 
-program
-  .command('create-step')
+const generate = program.command('generate').description('Generate motia resources')
+generate
+  .command('step')
   .description('Create a new step with interactive prompts')
-  .action(async () => {
+  .option(
+    '-d, --dir <step file path>',
+    'The path relative to the steps directory, used to create the step file',
+  )
+  .action(async (arg) => {
     const { createStep } = require('./create-step')
-    await createStep()
+    await createStep({
+      stepFilePath: arg.dir,
+    })
+  })
+  
+const state = program.command('state').description('Manage application state')
+
+state
+  .command('list')
+  .description('List the current file state')
+  .action(async () => {
+    try {
+      const statePath = path.join(process.cwd(), '.motia', 'motia.state.json')
+
+      if (!fs.existsSync(statePath)) {
+        console.error('Error: State file not found at', statePath)
+        process.exit(1)
+      }
+
+      const state = require(statePath) // eslint-disable-line @typescript-eslint/no-require-imports
+      console.log(JSON.stringify(state, null, 2))
+    } catch (error) {
+      console.error('Error:', error instanceof Error ? error.message : 'Unknown error')
+      process.exit(1)
+    }
   })
 
 program.parse(process.argv)

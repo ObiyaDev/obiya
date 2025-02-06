@@ -1,12 +1,12 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { StepAnswers } from '..'
+import { StepAnswers } from '../../types'
 
 /**
  * Generates a React component override for the step
  */
 export async function generateOverride(answers: StepAnswers): Promise<string> {
-  const templatePath = path.join(__dirname, 'override', 'template.tsx.txt')
+  const templatePath = path.join(__dirname, `${answers.type}.step.txt`)
   const content = await fs.readFile(templatePath, 'utf8')
 
   const replacements: Record<string, string | string[]> = {

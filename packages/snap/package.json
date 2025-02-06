@@ -14,6 +14,7 @@
     "@motiadev/core": "workspace:*",
     "@motiadev/workbench": "workspace:*",
     "chokidar": "^4.0.3",
+    "colors": "^1.4.0",
     "commander": "^13.0.0",
     "dotenv": "^16.4.7",
     "figlet": "^1.8.0",
