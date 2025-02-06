@@ -26,7 +26,7 @@ const getLanguageBasedRunner = (
     const pythonRunner = path.join(__dirname, 'python', 'python-runner.py')
     return { runner: pythonRunner, command: 'python', args: [] }
   } else if (isRuby) {
-    const rubyRunner = path.join(__dirname, 'ruby', 'ruby_runner.rb')
+    const rubyRunner = path.join(__dirname, 'ruby', 'ruby-runner.rb')
     return { runner: rubyRunner, command: 'ruby', args: [] }
   } else if (isNode) {
     if (process.env._MOTIA_TEST_MODE === 'true') {

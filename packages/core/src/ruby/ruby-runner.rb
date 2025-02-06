@@ -16,7 +16,7 @@ def parse_args(arg)
 end
 
 class Context
-  attr_reader :trace_id, :flows, :file_name, :state, :logger
+  attr_reader :trace_id, :traceId, :flows, :file_name, :state, :logger
 
   def emit(event)
     # Add type field if not present to match Node.js/Python behavior
@@ -28,6 +28,7 @@ class Context
   def initialize(rpc, args, file_path)
     @rpc = rpc
     @trace_id = args.traceId
+    @traceId = args.traceId
     @flows = args.flows
     @file_name = file_path.split('/').last  # Consistent with Python/Node
     @state = RpcStateManager.new(rpc)

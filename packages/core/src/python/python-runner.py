@@ -22,6 +22,7 @@ def parse_args(arg: str) -> Any:
 class Context:
     def __init__(self, args: Any, rpc: RpcSender, file_name: str):
         self.trace_id = args.traceId
+        self.traceId = args.traceId
         self.flows = args.flows
         self.file_name = file_name
         self.rpc = rpc
