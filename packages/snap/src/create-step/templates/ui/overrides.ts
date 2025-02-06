@@ -14,7 +14,7 @@ export async function generateOverride(answers: StepAnswers): Promise<string> {
     DESCRIPTION: answers.description || '',
     TYPE: answers.type,
     FLOWS: JSON.stringify(answers.flows),
-    EMITS: JSON.stringify(answers.emits)
+    EMITS: JSON.stringify(answers.emits),
   }
 
   return Object.entries(replacements).reduce((content, [key, value]) => {

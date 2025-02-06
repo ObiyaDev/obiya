@@ -17,29 +17,30 @@ export const getStepAnswers = async (): Promise<StepAnswers> => {
           return 'Name must start with a letter and contain only letters, numbers, hyphens, and underscores'
         }
         return true
-      }
+      },
     },
     {
       type: 'list',
       name: 'type',
       message: 'Select step type:',
-      choices: STEP_TYPES.map(type => ({
+      choices: STEP_TYPES.map((type) => ({
         name: type.toUpperCase(),
-        value: type
-      }))
+        value: type,
+      })),
     },
   ])
 
   let answers = { ...basicInfo }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const languageAnswer: any = {
     type: 'list',
     name: 'language',
     message: 'Select language:',
-    choices: LANGUAGES.map(lang => ({
+    choices: LANGUAGES.map((lang) => ({
       name: lang.charAt(0).toUpperCase() + lang.slice(1),
-      value: lang
-    }))
+      value: lang,
+    })),
   }
 
   // Type-specific configuration prompts
@@ -49,7 +50,7 @@ export const getStepAnswers = async (): Promise<StepAnswers> => {
         type: 'list',
         name: 'method',
         message: 'HTTP method:',
-        choices: HTTP_METHODS
+        choices: HTTP_METHODS,
       },
       {
         type: 'input',
@@ -58,24 +59,26 @@ export const getStepAnswers = async (): Promise<StepAnswers> => {
         validate: (input: string) => {
           if (!input.startsWith('/')) return 'Path must start with /'
           return true
-        }
-      }
+        },
+      },
     ])
     answers = { ...answers, ...apiConfig }
-  }
-  else if (answers.type === 'event') {
+  } else if (answers.type === 'event') {
     const eventConfig = await inquirer.prompt([
       languageAnswer,
       {
         type: 'input',
         name: 'subscriptions',
         message: 'Event subscriptions (comma-separated):',
-        filter: (input: string) => input.split(',').map(s => s.trim()).filter(Boolean)
-      }
+        filter: (input: string) =>
+          input
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean),
+      },
     ])
     answers = { ...answers, ...eventConfig }
-  }
-  else if (answers.type === 'cron') {
+  } else if (answers.type === 'cron') {
     const cronConfig = await inquirer.prompt([
       languageAnswer,
       {
@@ -87,26 +90,33 @@ export const getStepAnswers = async (): Promise<StepAnswers> => {
           const parts = input.split(' ')
           if (parts.length !== 5) return 'Invalid cron expression format'
           return true
-        }
-      }
+        },
+      },
     ])
     answers = { ...answers, ...cronConfig }
-  }
-  else if (answers.type === 'noop') {
+  } else if (answers.type === 'noop') {
     const noopConfig = await inquirer.prompt([
       languageAnswer,
       {
         type: 'input',
         name: 'virtualEmits',
         message: 'Virtual emits (comma-separated):',
-        filter: (input: string) => input.split(',').map(s => s.trim()).filter(Boolean)
+        filter: (input: string) =>
+          input
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean),
       },
       {
         type: 'input',
         name: 'virtualSubscribes',
         message: 'Virtual subscribes (comma-separated):',
-        filter: (input: string) => input.split(',').map(s => s.trim()).filter(Boolean)
-      }
+        filter: (input: string) =>
+          input
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean),
+      },
     ])
     answers = { ...answers, ...noopConfig }
   }
@@ -117,35 +127,43 @@ export const getStepAnswers = async (): Promise<StepAnswers> => {
       type: 'input',
       name: 'flows',
       message: 'Flow names (comma-separated):',
-      filter: (input: string) => input.split(',').map(s => s.trim()).filter(Boolean),
+      filter: (input: string) =>
+        input
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
       validate: (input: string) => {
         if (input.length === 0) return 'At least one flow is required'
         return true
-      }
+      },
     },
     {
       type: 'input',
       name: 'emits',
       message: 'Events to emit (comma-separated):',
-      filter: (input: string) => input.split(',').map(s => s.trim()).filter(Boolean)
+      filter: (input: string) =>
+        input
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
     },
     {
       type: 'input',
       name: 'description',
-      message: 'Step description:'
+      message: 'Step description:',
     },
     {
       type: 'confirm',
       name: 'createOverride',
       message: 'Create UI component override?',
-      default: false
-    }
+      default: false,
+    },
   ])
 
   const nextAnswers = { ...answers, ...commonConfig } as StepAnswers
 
   return {
     ...nextAnswers,
-    language: nextAnswers.type === 'api' ? 'typescript' : nextAnswers.language
+    language: nextAnswers.type === 'api' ? 'typescript' : nextAnswers.language,
   }
 }

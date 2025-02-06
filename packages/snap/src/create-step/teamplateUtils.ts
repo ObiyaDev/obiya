@@ -24,7 +24,7 @@ function replaceTemplateVariables(content: string, answers: StepAnswers): string
     SUBSCRIPTIONS: JSON.stringify(answers.subscriptions || []),
     CRON_EXPRESSION: answers.cronExpression || '',
     VIRTUAL_EMITS: JSON.stringify(answers.virtualEmits || []),
-    VIRTUAL_SUBSCRIBES: JSON.stringify(answers.virtualSubscribes || [])
+    VIRTUAL_SUBSCRIBES: JSON.stringify(answers.virtualSubscribes || []),
   }
 
   return Object.entries(replacements).reduce((content, [key, value]) => {
@@ -37,7 +37,7 @@ function replaceTemplateVariables(content: string, answers: StepAnswers): string
  * Generates the appropriate template based on language and type
  */
 export async function generateTemplate(answers: StepAnswers): Promise<string> {
-  const templateDir = path.join(__dirname, 'templates',  answers.type)
+  const templateDir = path.join(__dirname, 'templates', answers.type)
   const templateFile = `template.${answers.language}.txt`
   const templatePath = path.join(templateDir, templateFile)
 
