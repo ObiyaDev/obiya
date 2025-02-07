@@ -52,7 +52,15 @@ export const createServer = async (
 
       try {
         const data = request
-        const result = await callStepFile<ApiResponse>({ data, step, lockedData, logger, eventManager, state, traceId })
+        const result = await callStepFile<ApiResponse>({
+          data,
+          step,
+          lockedData,
+          logger,
+          eventManager,
+          state,
+          traceId,
+        })
 
         if (!result) {
           res.status(500).json({ error: 'Internal server error' })
