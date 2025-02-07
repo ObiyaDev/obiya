@@ -21,7 +21,7 @@ The following properties are specific to the API Step, in addition to the [commo
     bodySchema: {
       description:
         'In TS/JS we use zod to validate the request body, in Python/Ruby we use json schema to validate the request body.',
-      type: 'ZodObject or Json Schema Object',
+      type: 'JSON Schema',
     },
   }}
 />
@@ -135,7 +135,6 @@ The following examples showcase how to configure an **API Step**
     end
 
     def handler(req, ctx)
-      # Handle the API request
       ctx.emit({
         "type" => "test-state",
         "data" => req.body
