@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto'
 import { Express } from 'express'
 import fs from 'fs'
-import zodToJsonSchema from 'zod-to-json-schema'
 import { Emit, Step } from './types'
 import { isApiStep, isEventStep, isNoopStep, isCronStep } from './guards'
 import { getStepLanguage } from './get-step-language'
