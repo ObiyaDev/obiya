@@ -64,7 +64,7 @@ The following examples showcase how to configure an **CRON Step**
 
   </Tab>
   <Tab value="Python">
-  ```python
+    ```python
     config = {
         "type": "cron",
         "name": "PeriodicJob",
@@ -73,7 +73,7 @@ The following examples showcase how to configure an **CRON Step**
         "emits": ["cron-ticked"],
         "flows": ["cron-example"]
     }
-
+  
     async def handler(context):
         await context.emit({
             "type": "cron-ticked",
