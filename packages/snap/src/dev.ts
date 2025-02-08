@@ -29,10 +29,11 @@ export const dev = async (port: number): Promise<void> => {
   console.log('🚀 Server ready and listening on port', port)
   console.log(`🔗 Open http://localhost:${port}/ to open workbench 🛠️`)
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { applyMiddleware } = process.env.__MOTIA_DEV_MODE__
-    ? require('@motiadev/workbench/middleware')
-    : require('@motiadev/workbench/dist/middleware')
+    ? // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('@motiadev/workbench/middleware')
+    : // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('@motiadev/workbench/dist/middleware')
   await applyMiddleware(motiaServer.app)
 
   // 6) Gracefully shut down on SIGTERM
