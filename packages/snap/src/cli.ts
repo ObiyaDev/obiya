@@ -63,7 +63,7 @@ program
   .action(async (arg) => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { generateLockedData } = require('./src/generate/locked-data')
-    const lockedData = await generateLockedData(path.join(process.cwd()), false)
+    const lockedData = await generateLockedData(path.join(process.cwd()))
 
     if (arg.output) {
       const fs = require('fs') // eslint-disable-line @typescript-eslint/no-require-imports

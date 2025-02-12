@@ -13,7 +13,7 @@ require('ts-node').register({
 
 export const dev = async (port: number, isVerbose: boolean): Promise<void> => {
   const baseDir = process.cwd()
-  const lockedData = await generateLockedData(baseDir, isVerbose)
+  const lockedData = await generateLockedData(baseDir)
   const eventManager = createEventManager()
   const state = createStateAdapter({
     adapter: 'default',
@@ -21,7 +21,8 @@ export const dev = async (port: number, isVerbose: boolean): Promise<void> => {
   })
   await (state as FileStateAdapter).init()
 
-  const motiaServer = await createServer(lockedData, eventManager, state)
+  const config = { isVerbose }
+  const motiaServer = await createServer(lockedData, eventManager, state, config)
   const motiaEventManager = createStepHandlers(lockedData, eventManager, state)
   const watcher = createDevWatchers(lockedData, motiaServer, motiaEventManager, motiaServer.cronManager)
 
