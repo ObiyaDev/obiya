@@ -30,13 +30,13 @@ const collectFlows = async (baseDir: string, lockedData: LockedData): Promise<St
   return steps
 }
 
-export const generateLockedData = async (projectDir: string): Promise<LockedData> => {
+export const generateLockedData = async (projectDir: string, isVerbose: boolean): Promise<LockedData> => {
   try {
     /*
      * NOTE: right now for performance and simplicity let's enforce a folder,
      * but we might want to remove this and scan the entire current directory
      */
-    const lockedData = new LockedData(projectDir)
+    const lockedData = new LockedData(projectDir, isVerbose)
 
     await collectFlows(path.join(projectDir, 'steps'), lockedData)
 

@@ -24,7 +24,8 @@ interface MotiaTester {
 export const createMotiaTester = (): MotiaTester => {
   const eventManager = createEventManager()
   const promise = (async () => {
-    const lockedData = await generateLockedData(path.join(process.cwd()))
+    const isVerbose = true
+    const lockedData = await generateLockedData(path.join(process.cwd()), isVerbose)
     const state = createStateAdapter({ adapter: 'memory' })
     const { server, socketServer, close } = await createServer(lockedData, eventManager, state)
 

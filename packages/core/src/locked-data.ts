@@ -15,7 +15,10 @@ export class LockedData {
   private stepsMap: Record<string, Step>
   private handlers: Record<FlowEvent, ((flowName: string) => void)[]>
 
-  constructor(public readonly baseDir: string) {
+  constructor(
+    public readonly baseDir: string,
+    public readonly isVerbose: boolean = false,
+  ) {
     this.flows = {}
     this.activeSteps = []
     this.devSteps = []

@@ -42,7 +42,7 @@ export const setupCronHandlers = (
 
     const task = cron.schedule(cronExpression, async () => {
       const traceId = randomUUID()
-      const logger = new Logger(traceId, config.flows, stepName, socketServer)
+      const logger = new Logger(traceId, config.flows, stepName, lockedData.isVerbose, socketServer)
 
       try {
         await callStepFile({

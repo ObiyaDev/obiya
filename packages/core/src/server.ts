@@ -40,7 +40,7 @@ export const createServer = async (
     return async (req: Request, res: Response) => {
       const traceId = randomUUID()
       const { name, flows } = step.config
-      const logger = new Logger(traceId, flows, name, io)
+      const logger = new Logger(traceId, flows, name, lockedData.isVerbose, io)
 
       logger.debug('[API] Received request, processing step', { path: req.path })
 

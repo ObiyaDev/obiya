@@ -43,6 +43,7 @@ program
   .command('dev')
   .description('Start the development server')
   .option('-p, --port <port>', 'The port to run the server on', `${defaultPort}`)
+  .option('-v, --verbose', 'Enable verbose logging')
   .option('-d, --debug', 'Enable debug logging')
   .action(async (arg) => {
     if (arg.debug) {
@@ -52,7 +53,7 @@ program
 
     const port = arg.port ? parseInt(arg.port) : defaultPort
     const { dev } = require('./dev') // eslint-disable-line @typescript-eslint/no-require-imports
-    await dev(port)
+    await dev(port, arg.verbose)
   })
 
 program
@@ -62,7 +63,7 @@ program
   .action(async (arg) => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { generateLockedData } = require('./src/generate/locked-data')
-    const lockedData = await generateLockedData(path.join(process.cwd()))
+    const lockedData = await generateLockedData(path.join(process.cwd()), false)
 
     if (arg.output) {
       const fs = require('fs') // eslint-disable-line @typescript-eslint/no-require-imports

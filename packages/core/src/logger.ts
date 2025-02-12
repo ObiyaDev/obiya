@@ -8,16 +8,19 @@ const isInfoEnabled = ['info', 'debug'].includes(logLevel)
 const isWarnEnabled = ['warn', 'info', 'debug', 'trace'].includes(logLevel)
 
 export class BaseLogger {
-  constructor(private readonly meta: Record<string, unknown> = {}) {}
+  constructor(
+    readonly isVerbose: boolean = false,
+    private readonly meta: Record<string, unknown> = {},
+  ) {}
 
   child(meta: Record<string, unknown> = {}): this {
-    return new BaseLogger({ ...this.meta, ...meta }) as this
+    return new BaseLogger(this.isVerbose, { ...this.meta, ...meta }) as this
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _log(level: string, msg: string, args?: any) {
     const time = Date.now()
-    prettyPrint({ level, time, msg, ...this.meta, ...(args ?? {}) })
+    prettyPrint({ level, time, msg, ...this.meta, ...(args ?? {}) }, !this.isVerbose)
   }
 
   info(message: string, args?: unknown) {
@@ -55,9 +58,10 @@ export class Logger extends BaseLogger {
     private readonly traceId: string,
     private readonly flows: string[] | undefined,
     private readonly step: string,
+    isVerbose: boolean,
     private readonly socketServer?: Server,
   ) {
-    super({ traceId, flows, step })
+    super(isVerbose, { traceId, flows, step })
 
     this.emitLog = (level: string, msg: string, args?: unknown) => {
       socketServer?.emit('log', {
@@ -73,7 +77,7 @@ export class Logger extends BaseLogger {
   }
 
   child(meta: Record<string, unknown> = {}): this {
-    return new Logger(this.traceId, this.flows, meta.step as string, this.socketServer) as this
+    return new Logger(this.traceId, this.flows, meta.step as string, this.isVerbose, this.socketServer) as this
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
