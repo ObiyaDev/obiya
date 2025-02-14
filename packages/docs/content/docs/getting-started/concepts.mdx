@@ -1,0 +1,59 @@
+---
+title: Core Concepts
+description: Understanding the fundamental concepts of Motia
+---
+
+# Core Concepts
+
+Learn about the key concepts that power Motia's automation framework.
+
+## Steps
+
+Steps are the fundamental building blocks in Motia. Each step represents a single action or operation in your automation flow.
+
+```typescript
+export const config = {
+  type: 'event',
+  name: 'MyStep',
+  subscribes: ['my-event'],
+  emits: ['step-complete']
+}
+
+export const handler = async (input, { emit }) => {
+  // Step logic here
+  await emit({
+    type: 'step-complete',
+    data: { result: 'success' }
+  })
+}
+```
+
+## Events
+
+Events are the communication mechanism between steps. Steps can:
+- Subscribe to events (`subscribes`)
+- Emit events (`emits`)
+- React to events (via the handler)
+
+## Flows
+
+Flows define how steps are connected and how data flows between them. A flow can be:
+- Sequential (steps run one after another)
+- Parallel (steps run simultaneously)
+- Conditional (steps run based on conditions)
+
+## Handler Context
+
+The handler context provides utilities and state management:
+
+```typescript
+export const handler = async (input, context) => {
+  const { emit, log, state } = context
+  // Use context utilities
+}
+```
+
+## Next Steps
+
+- Follow the [Quick Start Guide](/docs/getting-started/quick-start)
+- Learn about [Configuration](/docs/getting-started/configuration) 

@@ -1,0 +1,63 @@
+---
+title: Installation
+description: Install and setup Motia in your project
+---
+
+# Installation
+
+This guide will help you install Motia and set up your development environment.
+
+## Using Package Manager
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add @motiadev/core @motiadev/workbench zod
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install @motiadev/core @motiadev/workbench zod
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add @motiadev/core @motiadev/workbench zod
+    ```
+  </Tab>
+</Tabs>
+
+## TypeScript Support
+
+If you're using TypeScript (recommended), install these additional dependencies:
+
+```bash
+pnpm add -D typescript ts-node
+```
+
+## Project Setup
+
+Add the following to your package.json:
+
+```json
+{
+  "scripts": {
+    "dev": "motia dev"
+  }
+}
+```
+
+## Project Structure
+
+Create the basic folder structure:
+
+<Files>
+  <Folder name="steps" defaultOpen>
+    <File name="README.md" />
+  </Folder>
+  <File name="package.json" />
+</Files>
+
+## Next Steps
+
+Once you have Motia installed, check out the [Quick Start Guide](/docs/getting-started/quick-start) to create your first step. 

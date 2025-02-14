@@ -1,0 +1,48 @@
+---
+title: Configuration
+description: Configure your Motia environment
+---
+
+# Configuration
+
+Learn how to configure Motia for your needs.
+
+## Basic Configuration
+
+Create a `motia.config.ts` file in your project root:
+
+```typescript
+import { defineConfig } from '@motiadev/core'
+
+export default defineConfig({
+  port: 3000,
+  steps: {
+    directory: './steps'
+  },
+  logging: {
+    level: 'info'
+  }
+})
+```
+
+## Environment Variables
+
+Create a `.env` file for environment-specific settings:
+
+```env
+MOTIA_PORT=3000
+MOTIA_LOG_LEVEL=info
+```
+
+## CLI Configuration
+
+The Motia CLI can be configured through command line arguments:
+
+```bash
+motia dev --port 3001 --watch
+```
+
+## Next Steps
+
+- Explore [Core Features](/docs/core/steps)
+- Check out [Examples](/docs/examples) 

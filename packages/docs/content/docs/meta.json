@@ -1,4 +1,10 @@
 {
   "title": "Motia",
-  "pages": ["index", "quick-start", "core", "workbench", "examples"]
+  "pages": [
+    "introduction",
+    "getting-started",
+    "concepts",
+    "examples",
+    "contribution"
+  ]
 }

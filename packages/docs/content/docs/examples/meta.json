@@ -1,3 +1,7 @@
 {
-  "pages": ["index", "trello", "sentiment-analysis"]
+  "title": "Examples",
+  "pages": [
+    "sentiment-analysis",
+    "real-world-use-cases"
+  ]
 }
