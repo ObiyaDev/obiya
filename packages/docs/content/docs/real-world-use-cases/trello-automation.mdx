@@ -395,6 +395,81 @@ Here's how the automation flow works:
 3. **Review Process** → Generates AI summaries and notifies reviewers
 4. **Completion Handling** → Processes approved cards
 
+## Try It Out
+
+<Steps>
+
+### Prerequisites
+
+Make sure you have:
+- Trello account with API access
+- Node.js installed
+- Slack workspace (for notifications)
+
+### Clone the Repository
+
+```bash
+git clone git@github.com:MotiaDev/Ytallo-Challenge.git
+cd Ytallo-Challenge
+```
+
+### Install Dependencies
+
+```bash
+pnpm install
+```
+
+### Configure Environment Variables
+
+Create a `.env` file by copying the example:
+
+```bash
+cp .env.example .env
+```
+
+Update your `.env` with the following credentials:
+
+```env
+TRELLO_API_KEY=your_trello_api_key
+TRELLO_TOKEN=your_trello_token
+
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=your_openai_model
+
+SLACK_WEBHOOK_URL=your_slack_webhook_url
+
+TRELLO_NEW_TASKS_LIST_ID=your_new_tasks_list_id
+TRELLO_IN_PROGRESS_LIST_ID=your_in_progress_list_id
+TRELLO_NEEDS_REVIEW_LIST_ID=your_needs_review_list_id
+TRELLO_COMPLETED_LIST_ID=your_completed_list_id
+```
+
+### Set Up Trello Board
+
+1. Create a new Trello board with these lists:
+   - New Tasks
+   - In Progress
+   - Needs Review
+   - Completed
+
+2. Add a custom field:
+   - Status (dropdown: Todo, In Progress, Done)
+
+### Run the Application
+
+```bash
+pnpm dev
+```
+
+### Test the Flow
+
+1. Create a new card in the "New Tasks" list
+2. Assign a member to see it move to "In Progress"
+3. Add an "approved" comment to see it move to "Completed"
+4. Check Slack for notifications
+
+</Steps>
+
 <Callout type="info">
-  Want to contribute? Check out the full source code at [MotiaDev/motia-examples](https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-fow)
+  For more detailed setup instructions and configuration options, check out the [full documentation](https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow).
 </Callout> 
