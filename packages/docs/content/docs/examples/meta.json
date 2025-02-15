@@ -1,5 +1,6 @@
 {
   "title": "Examples",
+  "defaultOpen": true,
   "pages": [
     "sentiment-analysis",
     "real-world-use-cases"
