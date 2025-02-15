@@ -3,7 +3,6 @@ import { File, Logs, Workflow } from 'lucide-react'
 import { Link, useLocation } from 'react-router'
 import {
   Sidebar,
-  SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
@@ -11,7 +10,6 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
 } from './ui/sidebar'
 import { Badge } from './ui/badge'
 import { useLogs } from '../stores/use-logs'
@@ -25,53 +23,39 @@ export const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Motia</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild className="cursor-pointer" isActive={pathname === '/logs'}>
-                  <Link to="/logs">
-                    <Logs />
-                    Logs
-                    {pathname !== '/logs' && unreadLogsCount > 0 && (
-                      <Badge variant="red-rounded">{unreadLogsCount}</Badge>
-                    )}
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild className="cursor-pointer" isActive={pathname === '/states'}>
-                  <Link to="/states">
-                    <File />
-                    States
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-          <SidebarGroupLabel>Flows</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {flows.map((flow) => (
-                <SidebarMenuItem key={flow.id}>
-                  <SidebarMenuButton asChild className="cursor-pointer" isActive={isActive(flow.id)}>
-                    <Link
-                      to={`/flow/${flow.id}`}
-                      className="flex items-center gap-2"
-                      data-testid={`flow-link-${flow.id}`}
-                    >
-                      <Workflow />
-                      <span>{flow.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Motia</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuButton asChild isActive={pathname === '/logs'}>
+              <Link to="/logs">
+                <Logs />
+                <span className="text-lg">Logs</span>
+                {pathname !== '/logs' && unreadLogsCount > 0 && <Badge variant="red-rounded">{unreadLogsCount}</Badge>}
+              </Link>
+            </SidebarMenuButton>
+            <SidebarMenuButton asChild isActive={pathname === '/states'}>
+              <Link to="/states">
+                <File />
+                <span className="text-lg">States</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenu>
+        </SidebarGroupContent>
+        <SidebarGroupLabel>Flows</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {flows.map((flow) => (
+              <SidebarMenuButton asChild isActive={isActive(flow.id)}>
+                <Link to={`/flow/${flow.id}`} className="flex items-center gap-2" data-testid={`flow-link-${flow.id}`}>
+                  <Workflow />
+                  <span className="text-lg">{flow.name}</span>
+                </Link>
+              </SidebarMenuButton>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
       <SidebarFooter />
     </Sidebar>
   )

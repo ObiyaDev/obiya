@@ -36,8 +36,8 @@ export const BaseEdge: React.FC<EdgeProps> = (props: EdgeProps) => {
       <BaseReactFlowEdge
         path={edgePath}
         style={{
-          stroke: data?.variant === 'virtual' ? 'rgb(147, 169, 197)' : 'rgb(133, 176, 132)',
-          strokeWidth: 0.5,
+          stroke: data?.variant === 'virtual' ? 'rgb(111, 111, 111)' : '#0094FF',
+          strokeWidth: 2,
           shapeRendering: 'geometricPrecision',
           fill: 'none',
           mixBlendMode: 'screen',
