@@ -2,8 +2,8 @@
   "title": "Motia",
   "pages": [
     "welcome",
-    "workbench",
     "getting-started",
+    "workbench",
     "real-world-use-cases",
     "examples",
     "concepts",

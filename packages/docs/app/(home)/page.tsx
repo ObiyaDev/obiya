@@ -46,7 +46,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/docs"
+            href="/docs/welcome"
             className="px-6 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-lg 
                      backdrop-blur-lg bg-opacity-5 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all transform hover:scale-105"
           >
