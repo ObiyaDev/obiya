@@ -12,11 +12,9 @@ This guide will walk you through everything you need to define a minimal **step*
 
   <Tabs items={['Automated', 'Manual']}>
 <Tab value="Automated">
-  <Tabs items={['Using `npx`', 'Using Global CLI']}>
-    <Tab value="Using `npx`">
-      **Option 1: Using `npx` (No Global Installation Required - Recommended for Quick Start)**
-
-      This is the simplest way to get started, as it doesn't require installing Motia CLI globally. Use `npx` to run the project creation command directly:
+  <Tabs items={['npx', 'motia Global CLI']}>
+    <Tab value="npx">
+      Use `npx` to run the project creation command directly:
 
       <Tabs items={['npx']}>
         <Tab value="npx">
@@ -25,21 +23,9 @@ This guide will walk you through everything you need to define a minimal **step*
           ```
         </Tab>
       </Tabs>
-
-      *   **`npx motia create -t default -n <your-project-name>`**: This command will:
-          *   Download and run the Motia CLI project creation tool (using `npx`).
-          *   Create a new project directory named `<your-project-name>`.
-          *   Set up a basic Motia project structure inside the new folder.
-          *   Install necessary dependencies using pnpm within the project folder.
-          *   Add a `dev` script to your `package.json`.
-          *   Include example steps to get you started.
     </Tab>
 
-    <Tab value="Using Global CLI (Optional)">
-      **Option 2: Using Globally Installed Motia CLI (Optional)**
-
-      Alternatively, you can install the Motia CLI globally first. This allows you to use the `motia` command directly without `npx`.
-
+    <Tab value="motia Global CLI">
       **First, install the Motia CLI globally:**
 
       <Tabs items={['pnpm (Global)', 'npm (Global)', 'yarn (Global)', 'bun (Global)']}>
@@ -72,6 +58,14 @@ This guide will walk you through everything you need to define a minimal **step*
       ```
     </Tab>
   </Tabs>
+
+    *   **This will**:
+        *   Download and run the Motia CLI project creation tool
+        *   Create a new project directory named `<your-project-name>`.
+        *   Set up a basic Motia project structure inside the new folder.
+        *   Install necessary dependencies using pnpm within the project folder.
+        *   Add a `dev` script to your `package.json`.
+        *   Include example steps to get you started.
 
   <Callout type="info">
     **Choosing a Project Name:** Replace `<your-project-name>` with your desired project folder name.
@@ -233,6 +227,7 @@ This guide will walk you through everything you need to define a minimal **step*
 
     4.  **Observe the Visual Flow:** You should now see a visual representation of your flow in the main panel. This is the Motia Workbench visualizing the steps and event flow within your application!
 
+        TODO:
         ![Example Flow Visualization in Workbench - Placeholder Image Needed Here]
 
         <Callout type="info">

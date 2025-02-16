@@ -38,7 +38,7 @@ export default function HomePage() {
 
         <div className="flex justify-center gap-4 mb-8">
           <Link
-            href="/docs/quick-start"
+            href="/docs/getting-started/quick-start"
             className="px-6 py-3 text-sm font-medium bg-white text-black rounded-lg shadow-md hover:shadow-lg 
                      hover:bg-gray-100 transition-all transform hover:scale-105 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
           >
