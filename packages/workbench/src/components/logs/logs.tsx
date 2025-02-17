@@ -38,7 +38,7 @@ export const Logs = () => {
               className="text-white border-b border-zinc-800/50"
               onClick={() => handleLogClick(log)}
             >
-              <TableCell>{timestamp(log.time)}</TableCell>
+              <TableCell className="whitespace-nowrap">{timestamp(log.time)}</TableCell>
               <TableCell>
                 <LogLevelBadge level={log.level} />
               </TableCell>

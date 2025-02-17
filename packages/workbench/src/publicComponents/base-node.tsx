@@ -59,7 +59,7 @@ export const BaseNode = (props: Props) => {
         background: `linear-gradient(100.74deg, rgba(0, 71, 255, 0) -2.15%, ${colorMap[variant!]} 45.08%, rgba(0, 71, 255, 0) 96.79%)`,
       }}
     >
-      <div className="rounded-lg bg-black p-4">
+      <div className="rounded-lg bg-[#060014] p-4">
         <div className="group relative">
           {/* Main node content */}
           <HeaderBar text={title} variant={variant} children={<LanguageIndicator language={language} />} />

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 const labelVariants = cva('absolute pointer-events-all text-cs border p-1 px-2', {
   variants: {
     color: {
-      default: 'border-[#b3b3b3] bg-black text-gray-100 font-semibold border-solid rounded-full',
+      default: 'border-[#b3b3b3] bg-[#060014] text-gray-100 font-semibold border-solid rounded-full',
       conditional: 'bg-amber-300 border-amber-950 text-amber-950 border-solid font-semibold italic rounded-lg',
     },
   },
