@@ -1,57 +1,88 @@
-import { LogConsole } from '@/components/logs/log-console'
-import { Background, BackgroundVariant, ReactFlow } from '@xyflow/react'
-import '@xyflow/react/dist/style.css'
-import React, { useCallback, useEffect, useState } from 'react'
-import { ArrowHead } from './arrow-head'
-import { BaseEdge } from './base-edge'
-import { FlowLoader } from './flow-loader'
-import { FlowResponse, useGetFlowState } from './hooks/use-get-flow-state'
-import { Legend } from './legend'
-import { NodeOrganizer } from './node-organizer'
+// packages/workbench/src/views/flow/flow-view.tsx
+
+import { LogConsole } from '@/components/logs/log-console';
+import { Background, BackgroundVariant, ReactFlow, useReactFlow, OnNodesChange, OnEdgesChange, } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ArrowHead } from './arrow-head';
+import { BaseEdge } from './base-edge';
+import { FlowLoader } from './flow-loader';
+import { EdgeData, NodeData } from './nodes/nodes.types';
+import { FlowResponse, useGetFlowState } from './hooks/use-get-flow-state';
+import { Legend } from './legend';
+import { useSaveWorkflowConfig } from './hooks/use-save-workflow-config';
+import { NodeOrganizer } from './node-organizer';
+import { Node as ReactFlowNode, Edge as ReactFlowEdge } from '@xyflow/react';
+import { Button } from "@/components/ui/button"
+
+export type FlowNode = ReactFlowNode<NodeData>;
+export type FlowEdge = ReactFlowEdge<EdgeData>;
 
 const edgeTypes = {
   base: BaseEdge,
-}
+};
 
 type Props = {
-  flow: FlowResponse
-}
+  flow: FlowResponse;
+};
 
 export const FlowView: React.FC<Props> = ({ flow }) => {
-  const { nodes, edges, onNodesChange, onEdgesChange, nodeTypes } = useGetFlowState(flow)
-  const [initialized, setInitialized] = useState(false)
-  const [hoveredType, setHoveredType] = useState<string | null>(null)
+  const { nodes, edges, onNodesChange, onEdgesChange, nodeTypes } = useGetFlowState(flow);
+  const [initialized, setInitialized] = useState(false);
+  const { getNodes, getEdges } = useReactFlow<FlowNode, FlowEdge>();
+  const { saveConfig } = useSaveWorkflowConfig(flow.id);
+  const [hoveredType, setHoveredType] = useState<string | null>(null);
 
-  useEffect(() => setInitialized(false), [flow])
+  useEffect(() => setInitialized(false), [flow]);
   const onInitialized = useCallback(() => {
-    setTimeout(() => setInitialized(true), 10)
-  }, [])
+    setTimeout(() => setInitialized(true), 10);
+  }, []);
 
   const getClassName = (nodeType?: string) => {
-    if (!hoveredType) return ''
+    if (!hoveredType) return '';
 
     if (nodeType) {
       return nodeType === hoveredType
         ? 'shadow-[0_0_15px_rgba(255,255,255,0.15)] border border-white/30 scale-[1.02] transition-all duration-300'
-        : 'opacity-30 transition-all duration-300'
+        : 'opacity-30 transition-all duration-300';
     }
 
     // If no nodeType is provided, this is an edge
-    return 'opacity-30 transition-all duration-300'
-  }
+    return 'opacity-30 transition-all duration-300';
+  };
 
   const nodesWithHighlights = nodes.map((node) => ({
     ...node,
     className: getClassName(node.data.type),
-  }))
+  }));
 
   const edgesWithHighlights = edges.map((edge) => ({
     ...edge,
     className: getClassName(), // No argument means it's an edge
-  }))
+  }));
+
+  const onNodesChangeHandler = useCallback<OnNodesChange<FlowNode>>(
+    (changes: any) => {
+      onNodesChange(changes);
+      saveConfig({ nodes: getNodes(), edges: getEdges() });
+    },
+    [onNodesChange, saveConfig, getNodes, getEdges]
+  );
+
+  const onEdgesChangeHandler = useCallback<OnEdgesChange<FlowEdge>>(
+    (changes: any) => {
+      onEdgesChange(changes);
+      saveConfig({ nodes: getNodes(), edges: getEdges() });
+    },
+    [onEdgesChange, saveConfig, getNodes, getEdges]
+  );
+
+  const handleSaveClick = useCallback(() => {
+    saveConfig({ nodes: getNodes(), edges: getEdges() });
+  }, [saveConfig, getNodes, getEdges]);
 
   if (!nodeTypes) {
-    return null
+    return null;
   }
 
   return (
@@ -63,8 +94,8 @@ export const FlowView: React.FC<Props> = ({ flow }) => {
         edges={edgesWithHighlights}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onNodesChange={onNodesChangeHandler}
+        onEdgesChange={onEdgesChangeHandler}
       >
         <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#446" bgColor="#000" />
         <NodeOrganizer onInitialized={onInitialized} />
@@ -74,7 +105,10 @@ export const FlowView: React.FC<Props> = ({ flow }) => {
           </defs>
         </svg>
       </ReactFlow>
+      <div className="absolute top-4 right-4 z-20">
+        <Button onClick={handleSaveClick}>Save Config</Button>
+      </div>
       <LogConsole />
     </div>
-  )
-}
+  );
+};
