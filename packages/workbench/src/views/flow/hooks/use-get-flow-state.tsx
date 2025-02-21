@@ -1,6 +1,6 @@
 import { Edge, Node, useEdgesState, useNodesState } from '@xyflow/react'
 import React, { useEffect, useState } from 'react'
-import type { EdgeData, NodeData } from '../nodes/nodes.types'
+import type { EdgeData, FlowNodeData, NodeData } from '../nodes/nodes.types'
 import { ApiFlowNode } from '../nodes/api-flow-node'
 import { NoopFlowNode } from '../nodes/noop-flow-node'
 import { EventFlowNode } from '../nodes/event-flow-node'
@@ -29,6 +29,11 @@ export type FlowResponse = {
   edges: FlowEdge[]
 }
 
+export type FlowConfigResponse = {
+  steps: FlowNodeData[]
+  edges: FlowEdge[]
+}
+
 type FlowEdge = {
   id: string
   source: string
@@ -43,7 +48,7 @@ type FlowState = {
   nodeTypes: Record<string, React.ComponentType<any>>
 }
 
-async function importFlow(flow: FlowResponse): Promise<FlowState> {
+async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse): Promise<FlowState> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nodeTypes: Record<string, React.ComponentType<any>> = {
     event: EventFlowNode,
@@ -64,7 +69,7 @@ async function importFlow(flow: FlowResponse): Promise<FlowState> {
   const nodes: Node<NodeData>[] = flow.steps.map((step) => ({
     id: step.id,
     type: step.nodeComponentPath ? step.nodeComponentPath : step.type,
-    position: { x: 0, y: 0 },
+    position: flowConfig.steps?.find(configStep => configStep.data?.name === step.name)?.position || { x: 0, y: 0 },
     data: step,
     language: step.language,
   }))
@@ -78,7 +83,7 @@ async function importFlow(flow: FlowResponse): Promise<FlowState> {
   return { nodes, edges, nodeTypes }
 }
 
-export const useGetFlowState = (flow: FlowResponse) => {
+export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigResponse) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [nodeTypes, setNodeTypes] = useState<Record<string, React.ComponentType<any>>>()
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([])
@@ -87,7 +92,7 @@ export const useGetFlowState = (flow: FlowResponse) => {
   useEffect(() => {
     if (!flow) return
 
-    importFlow(flow).then(({ nodes, edges, nodeTypes }) => {
+    importFlow(flow, flowConfig).then(({ nodes, edges, nodeTypes }) => {
       setNodes(nodes)
       setEdges(edges)
       setNodeTypes(nodeTypes)
