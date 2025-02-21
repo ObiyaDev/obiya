@@ -12,7 +12,6 @@ import { Legend } from './legend';
 import { useSaveWorkflowConfig } from './hooks/use-save-workflow-config';
 import { NodeOrganizer } from './node-organizer';
 import { Node as ReactFlowNode, Edge as ReactFlowEdge } from '@xyflow/react';
-import { Button } from "@/components/ui/button"
 import { useDebounced } from '@/hooks/use-debounced';
 
 import '@xyflow/react/dist/style.css';
@@ -65,7 +64,7 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   }));
   
   const saveFlowConfig = useCallback(() => {
-    saveConfig({ steps: getNodes(), edges: getEdges() });
+    return saveConfig({ steps: getNodes(), edges: getEdges() });
   }, [saveConfig, getNodes, getEdges]);
 
   const debouncedSaveConfig = useDebounced(saveFlowConfig);
@@ -77,10 +76,6 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
     },
     [onNodesChange, debouncedSaveConfig]
   );
-
-  const handleSaveClick = useCallback(() => {
-    saveFlowConfig()
-  }, [saveFlowConfig]);
 
   if (!nodeTypes) {
     return null;
@@ -106,9 +101,6 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
           </defs>
         </svg>
       </ReactFlow>
-      <div className="absolute top-4 left-4 z-20">
-        <Button onClick={handleSaveClick}>Save Config</Button>
-      </div>
       <LogConsole />
     </div>
   );

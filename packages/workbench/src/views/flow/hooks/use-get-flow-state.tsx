@@ -41,6 +41,16 @@ type FlowEdge = {
   data: EdgeData
 }
 
+type Position = {
+  x: number;
+  y: number;
+};
+
+const getNodePosition = (flowConfig: FlowConfigResponse, stepName: string): Position => {
+  const configStep = flowConfig?.steps?.find(step => step.data?.name === stepName);
+  return configStep?.position || { x: 0, y: 0 };
+};
+
 type FlowState = {
   nodes: Node<NodeData>[]
   edges: Edge<EdgeData>[]
@@ -69,7 +79,7 @@ async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse): P
   const nodes: Node<NodeData>[] = flow.steps.map((step) => ({
     id: step.id,
     type: step.nodeComponentPath ? step.nodeComponentPath : step.type,
-    position: flowConfig.steps?.find(configStep => configStep.data?.name === step.name)?.position || { x: 0, y: 0 },
+    position: getNodePosition(flowConfig, step.name),
     data: step,
     language: step.language,
   }))
