@@ -11,10 +11,8 @@ export const Flow = () => {
   const [flowConfig, setFlowConfig] = useState<FlowConfigResponse | null>(null)
 
   const fetchFlow = useCallback(() => {
-    Promise.all([
-      fetch(`/flows/${flowId}`),
-      fetch(`/flows/${flowId}/config`),
-    ]).then(([flowRes, configRes]) => Promise.all([flowRes.json(), configRes.json()]))
+    Promise.all([fetch(`/flows/${flowId}`), fetch(`/flows/${flowId}/config`)])
+      .then(([flowRes, configRes]) => Promise.all([flowRes.json(), configRes.json()]))
       .then(([flow, config]) => {
         setFlow(flow)
         setFlowConfig(config)

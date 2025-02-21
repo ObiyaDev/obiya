@@ -42,14 +42,14 @@ type FlowEdge = {
 }
 
 type Position = {
-  x: number;
-  y: number;
-};
+  x: number
+  y: number
+}
 
 const getNodePosition = (flowConfig: FlowConfigResponse, stepName: string): Position => {
-  const configStep = flowConfig?.steps?.find(step => step.data?.name === stepName);
-  return configStep?.position || { x: 0, y: 0 };
-};
+  const configStep = flowConfig?.steps?.find((step) => step.data?.name === stepName)
+  return configStep?.position || { x: 0, y: 0 }
+}
 
 type FlowState = {
   nodes: Node<NodeData>[]
@@ -107,7 +107,7 @@ export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigRespon
       setEdges(edges)
       setNodeTypes(nodeTypes)
     })
-  }, [flow, setNodes, setEdges, setNodeTypes])
+  }, [flow, flowConfig, setNodes, setEdges, setNodeTypes])
 
   return { nodes, edges, onNodesChange, onEdgesChange, nodeTypes }
 }
