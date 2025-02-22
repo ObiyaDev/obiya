@@ -1,10 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { MotiaServer } from '@motiadev/core'
+import { Express } from 'express'
 
-export const workflowConfigEndpoints = (server: MotiaServer, baseDir: string) => {
-  const { app } = server
-
+export const flowsConfigEndpoint = (app: Express, baseDir: string) => {
   app.post('/flows/:id/config', async (req, res) => {
     const { id } = req.params
     const config = req.body
