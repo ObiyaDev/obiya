@@ -15,7 +15,7 @@ export const ApiNode = ({ data, children }: Props) => {
       disableSourceHandle={!data.emits?.length && !data.virtualEmits?.length}
       disableTargetHandle={!data.subscribes?.length && !data.virtualSubscribes?.length}
     >
-      {data.description && <div className="text-sm max-w-[300px] text-white/60">{data.description}</div>}
+      {data.description && <div className="text-sm text-white/60">{data.description}</div>}
       {children}
       {data.webhookUrl && (
         <div className="flex gap-1 items-center text-xs text-white/60">
