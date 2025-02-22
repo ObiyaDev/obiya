@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { cn } from '../../lib/utils'
 
 export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
-  return <div>{children}</div>
+  return <div className="max-h-screen overflow-y-auto">{children}</div>
 }
 
 export const SidebarGroup: React.FC<PropsWithChildren<{ title: string }>> = ({ children, title }) => {
