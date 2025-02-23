@@ -7,7 +7,8 @@
   },
   "scripts": {
     "move:templates": "sh scripts/move-templates.sh",
-    "build": "rm -rf dist && tsc && pnpm run move:templates",
+    "move:python": "sh scripts/move-python.sh",
+    "build": "rm -rf dist && tsc && pnpm run move:templates && pnpm run move:python",
     "lint": "eslint --config ../../eslint.config.js"
   },
   "dependencies": {

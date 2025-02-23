@@ -7,6 +7,7 @@ import fs from 'fs'
 import path from 'path'
 import { collectFlows } from '../generate-locked-data'
 import { BuildPrinter } from './build-printer'
+import { spawn } from 'child_process'
 
 class Builder {
   public readonly printer: BuildPrinter
@@ -22,6 +23,23 @@ class Builder {
   registerStep(relativeFilePath: string, step: Step) {
     this.stepsConfig[relativeFilePath] = step.config
   }
+}
+
+const buildPython = async (step: Step, builder: Builder) => {
+  const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
+    cwd: builder.projectDir,
+    stdio: [undefined, undefined, undefined, 'ipc'],
+  })
+
+  child.on('message', (message) => {
+    console.log(step.filePath, message)
+  })
+
+  child.on('close', (code) => {
+    if (code !== 0) {
+      return builder.printer.printStepFailed(step, new Error('Python builder failed'))
+    }
+  })
 }
 
 const buildNode = async (step: Step, builder: Builder) => {
@@ -66,6 +84,8 @@ export const build = async (): Promise<void> => {
       return
     } else if (step.filePath.endsWith('.ts') || step.filePath.endsWith('.js')) {
       return promises.push(buildNode(step, builder))
+    } else if (step.filePath.endsWith('.py')) {
+      return promises.push(buildPython(step, builder))
     } else {
       return builder.printer.printStepSkipped(step, 'File not supported')
     }
