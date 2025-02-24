@@ -8,11 +8,14 @@ import path from 'path'
 import { collectFlows } from '../generate-locked-data'
 import { BuildPrinter } from './build-printer'
 import { spawn } from 'child_process'
+import archiver from 'archiver'
+
+type StepType = 'node' | 'python'
 
 class Builder {
   public readonly printer: BuildPrinter
   public readonly distDir: string
-  public readonly stepsConfig: Record<string, StepConfig>
+  public readonly stepsConfig: Record<string, { type: StepType; entrypointPath: string; config: StepConfig }>
 
   constructor(public readonly projectDir: string) {
     this.distDir = path.join(projectDir, 'dist')
@@ -20,34 +23,71 @@ class Builder {
     this.printer = new BuildPrinter()
   }
 
-  registerStep(relativeFilePath: string, step: Step) {
-    this.stepsConfig[relativeFilePath] = step.config
+  registerStep(args: { entrypointPath: string; bundlePath: string; step: Step; type: StepType }) {
+    this.stepsConfig[args.bundlePath] = {
+      type: args.type,
+      entrypointPath: args.entrypointPath,
+      config: args.step.config,
+    }
   }
 }
 
 const buildPython = async (step: Step, builder: Builder) => {
-  const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
-    cwd: builder.projectDir,
-    stdio: [undefined, undefined, undefined, 'ipc'],
-  })
+  const archive = archiver('zip', { zlib: { level: 9 } })
+  const entrypointPath = step.filePath.replace(builder.projectDir, '')
+  const bundlePath = path.join('python', entrypointPath.replace(/(.*)\.py$/, '$1.zip'))
+  const outfile = path.join(builder.distDir, bundlePath)
 
-  child.on('message', (message) => {
-    console.log(step.filePath, message)
-  })
+  return new Promise<void>((resolve, reject) => {
+    try {
+      // Ensure output directory exists
+      fs.mkdirSync(path.dirname(outfile), { recursive: true })
+      builder.printer.printStepBuilding(step)
 
-  child.on('close', (code) => {
-    if (code !== 0) {
-      return builder.printer.printStepFailed(step, new Error('Python builder failed'))
+      const type = 'python'
+      const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
+        cwd: builder.projectDir,
+        stdio: [undefined, undefined, undefined, 'ipc'],
+      })
+
+      builder.registerStep({ entrypointPath, bundlePath, step, type })
+
+      archive.pipe(fs.createWriteStream(outfile))
+
+      child.on('message', (message: string[]) => {
+        message.forEach((file) => {
+          archive.append(fs.createReadStream(path.join(builder.projectDir, file)), { name: file })
+        })
+      })
+
+      child.on('close', (code) => {
+        if (code !== 0) {
+          builder.printer.printStepFailed(step, new Error('Python builder failed'))
+          return reject(new Error('Python builder failed'))
+        }
+
+        builder.printer.printStepBuilt(step)
+        archive.finalize()
+      })
+
+      archive.on('close', () => resolve())
+      archive.on('error', (err) => reject(err))
+    } catch (err) {
+      builder.printer.printStepFailed(step, err as Error)
+      reject(err)
     }
   })
 }
 
 const buildNode = async (step: Step, builder: Builder) => {
   const relativeFilePath = step.filePath.replace(builder.projectDir, '')
-  const outfile = path.join(builder.distDir, relativeFilePath.replace(/(.*)\.ts$/, '$1.js'))
-  const outRelativeFilepath = relativeFilePath.replace(/(.*)\.ts$/, '$1.js')
-
-  builder.registerStep(outRelativeFilepath, step)
+  const entrypointPath = relativeFilePath.replace(/(.*)\.(ts|js)$/, '$1.js')
+  const entrypointMapPath = entrypointPath.replace(/(.*)\.js$/, '$1.js.map')
+  const bundlePath = path.join('node', entrypointPath.replace(/(.*)\.js$/, '$1.zip'))
+  const outputJsFile = path.join(builder.distDir, 'node', entrypointPath)
+  const outputMapFile = path.join(builder.distDir, 'node', entrypointMapPath)
+  const type = 'node'
+  builder.registerStep({ entrypointPath, bundlePath, step, type })
   builder.printer.printStepBuilding(step)
 
   try {
@@ -55,7 +95,23 @@ const buildNode = async (step: Step, builder: Builder) => {
       entryPoints: [step.filePath],
       bundle: true,
       sourcemap: true,
-      outfile,
+      outfile: outputJsFile,
+      platform: 'node',
+    })
+
+    await new Promise<void>((resolve, reject) => {
+      const archive = archiver('zip', { zlib: { level: 9 } })
+      archive.pipe(fs.createWriteStream(path.join(builder.distDir, bundlePath)))
+      archive.append(fs.createReadStream(outputJsFile), { name: entrypointPath })
+      archive.append(fs.createReadStream(outputMapFile), { name: entrypointMapPath })
+      archive.finalize()
+
+      archive.on('close', () => {
+        fs.unlinkSync(outputJsFile)
+        fs.unlinkSync(outputMapFile)
+        resolve()
+      })
+      archive.on('error', (err) => reject(err))
     })
 
     builder.printer.printStepBuilt(step)
@@ -69,7 +125,6 @@ export const build = async (): Promise<void> => {
   const builder = new Builder(projectDir)
   const stepsConfigPath = path.join(projectDir, 'dist', 'motia.steps.json')
   const lockedData = new LockedData(projectDir)
-  const stepsConfig: Record<string, StepConfig> = {}
   const promises: Promise<unknown>[] = []
 
   const distDir = path.join(projectDir, 'dist')
@@ -94,7 +149,7 @@ export const build = async (): Promise<void> => {
   await collectFlows(path.join(projectDir, 'steps'), lockedData)
   await Promise.all(promises)
 
-  fs.writeFileSync(stepsConfigPath, JSON.stringify(stepsConfig, null, 2))
+  fs.writeFileSync(stepsConfigPath, JSON.stringify(builder.stepsConfig, null, 2))
 
   console.log(colors.green('✓ [SUCCESS] '), 'Build completed')
 }

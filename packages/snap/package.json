@@ -14,6 +14,7 @@
   "dependencies": {
     "@motiadev/core": "workspace:*",
     "@motiadev/workbench": "workspace:*",
+    "archiver": "^7.0.1",
     "chokidar": "^4.0.3",
     "colors": "^1.4.0",
     "commander": "^13.0.0",
@@ -25,6 +26,7 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.3",
     "@types/figlet": "^1.7.0",
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
