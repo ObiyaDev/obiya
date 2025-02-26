@@ -136,38 +136,39 @@ export default function GetStartedSection() {
           href="https://github.com/MotiaDev/motia" 
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-6 flex flex-col h-full border border-purple-800/20 hover:border-purple-700/40 transition-all group"
+          className="backdrop-blur-sm rounded-md p-4 flex flex-col h-full border border-[rgba(255,255,255,0.21)] hover:border-purple-700/40 transition-all group"
         >
-          <div className="flex items-center mb-4">
-            <div className="bg-purple-900/40 p-3 rounded-lg mr-4 flex items-center justify-center w-12 h-12">
-              <FaGithub className="text-white text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">Contribute to Github</h3>
+          <div className="p-3 rounded-lg mr-4 flex items-center justify-center w-12 h-12">
+            <FaGithub className="text-white text-2xl" />
           </div>
-          <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
-          <div className="mt-auto flex justify-end">
-            <div className="text-white/60 group-hover:text-white transition-colors">
-              <FaArrowRight className="h-5 w-5" />
+          <div className="flex flex-col items-start">
+            <h3 className="text-2xl font-bold text-white mb-4">Contribute to Github</h3>
+            <div className="mt-auto flex justify-between w-full">
+              <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
+              <div className="text-white/60 group-hover:text-white transition-colors">
+                <FaArrowRight className="h-5 w-5" />
+              </div>
             </div>
           </div>
         </Link>
 
         <Link 
           href="https://discord.com/channels/1322278831184281721/1323378241641123952" 
-          className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-6 flex flex-col h-full border border-purple-800/20 hover:border-purple-700/40 transition-all group"
+          className="backdrop-blur-sm rounded-md p-4 flex flex-col h-full border border-[rgba(255,255,255,0.21)] hover:border-purple-700/40 transition-all group"
         >
-          <div className="flex items-center mb-4">
-            <div className="bg-purple-900/40 p-3 rounded-lg mr-4 flex items-center justify-center w-12 h-12">
-              <FaUsers className="text-white text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">Join the community</h3>
+          <div className="p-3 rounded-lg mr-4 flex items-center justify-center w-12 h-12">
+            <FaUsers className="text-white text-2xl" />
           </div>
-          <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
-          <div className="mt-auto flex justify-end">
-            <div className="text-white/60 group-hover:text-white transition-colors">
-              <FaArrowRight className="h-5 w-5" />
+          <div className="flex flex-col items-start">
+            <h3 className="text-2xl font-bold text-white mb-4">Join the community</h3>
+            <div className="mt-auto flex justify-between w-full">
+              <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
+              <div className="text-white/60 group-hover:text-white transition-colors">
+                <FaArrowRight className="h-5 w-5" />
+              </div>
             </div>
           </div>
+
         </Link>
       </div>
     </div>
