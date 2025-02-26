@@ -8,21 +8,18 @@ export default function CodeExampleSection() {
   return (
     <div className="py-10">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-indigo-900 text-purple-300 text-sm font-mono mb-4">
-            code-first
-          </div>
+        <div className="text-center mb-12 flex flex-col items-center">
           <Typography 
             variant="title" 
             as="h2" 
-            className="text-[54px] text-white mb-6"
+            className="mb-6 w-[35rem]"
           >
-            Simple, Powerful API
+            Seamless AI Automation for Your Stack
           </Typography>
           <Typography 
             variant="description" 
             as="p" 
-            className="text-gray-300 mx-auto max-w-2xl text-lg"
+            className="mx-auto max-w-2xl"
           >
             Build automation workflows with TypeScript or JavaScript. 
             Define your workflow configuration and handlers with a clean, 
@@ -30,7 +27,7 @@ export default function CodeExampleSection() {
           </Typography>
         </div>
 
-        <div className="bg-gray-900/50 rounded-lg p-4 mb-8">
+        <div className="p-4 mb-8">
           <CodeSandbox 
             height="600px"
             repoPath="trello-flow"

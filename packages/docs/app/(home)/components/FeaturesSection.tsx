@@ -41,14 +41,14 @@ export default function FeaturesSection() {
         <Typography 
           variant="title" 
           as="h2" 
-          className="text-4xl md:text-5xl text-white mb-6"
+          className="mb-6"
         >
           Powerful Flows, Simple Steps
         </Typography>
         <Typography 
           variant="description" 
           as="p" 
-          className="text-gray-300 mx-auto max-w-2xl text-lg mb-16"
+          className="mx-auto max-w-2xl mb-16"
         >
           Effortlessly build AI-driven workflows. With a
           lightweight, developer-friendly framework, you

@@ -17,8 +17,8 @@ export default function Typography({
   as: Component = 'div',
 }: TypographyProps) {
   const styles = {
-    title: 'text-[#E9DFFF] text-center font-gt-walsheim text-[54px] font-medium leading-tight',
-    description: 'text-[#CDBCF0] text-center font-dm-mono text-[20px] font-normal',
+    title: 'text-[#E9DFFF] text-center font-gt-walsheim text-[54px] tracking-[-0.135rem] leading-[100%] font-medium leading-tight',
+    description: 'text-[#CDBCF0] text-center font-dm-mono text-[1.25rem] tracking-[-0.025rem] leading-[120%] font-normal',
   };
 
   return (

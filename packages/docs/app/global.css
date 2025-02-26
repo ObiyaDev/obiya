@@ -12,7 +12,7 @@
         --fd-tocnav-height: 0px !important;
         
         /* Font variables */
-        --font-gt-walsheim: 'GT Walsheim Trial', sans-serif;
+        --font-gt-walsheim: 'GT Walsheim Trial';
         /* DM Mono is defined via next/font as --font-dm-mono */
     }
 

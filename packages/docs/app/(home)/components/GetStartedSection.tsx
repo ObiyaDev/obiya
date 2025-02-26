@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FaGithub, FaUsers } from 'react-icons/fa';
+import { FaGithub, FaUsers, FaArrowRight } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
 import Typography from '@/components/Typography';
 import CommandDisplay from './CommandDisplay';
@@ -94,14 +94,14 @@ export default function GetStartedSection() {
         <Typography 
           variant="title" 
           as="h2" 
-          className="text-6xl text-white mb-6"
+          className="mb-6"
         >
           Get started
         </Typography>
         <Typography 
           variant="description" 
           as="p" 
-          className="text-white/70 max-w-2xl mx-auto"
+          className="max-w-2xl mx-auto"
         >
           Write in any language. Automate anything. From AI agents to backend automation, 
           Motia runs event-driven workflows with zero overhead.
@@ -118,7 +118,7 @@ export default function GetStartedSection() {
 
       <div className="flex gap-4 mb-16 relative z-10">
         <Link
-          href="/start-building"
+          href="/docs/getting-started"
           className="bg-white text-purple-900 py-3 px-6 rounded-md font-semibold hover:bg-gray-100 transition"
         >
           Start building
@@ -133,7 +133,7 @@ export default function GetStartedSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full relative z-10">
         <Link 
-          href="https://github.com/motiaai/motia" 
+          href="https://github.com/MotiaDev/motia" 
           target="_blank"
           rel="noopener noreferrer"
           className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-6 flex flex-col h-full border border-purple-800/20 hover:border-purple-700/40 transition-all group"
@@ -147,26 +147,13 @@ export default function GetStartedSection() {
           <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
           <div className="mt-auto flex justify-end">
             <div className="text-white/60 group-hover:text-white transition-colors">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M14 5l7 7m0 0l-7 7m7-7H3" 
-                />
-              </svg>
+              <FaArrowRight className="h-5 w-5" />
             </div>
           </div>
         </Link>
 
         <Link 
-          href="/community" 
+          href="https://discord.com/channels/1322278831184281721/1323378241641123952" 
           className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-6 flex flex-col h-full border border-purple-800/20 hover:border-purple-700/40 transition-all group"
         >
           <div className="flex items-center mb-4">
@@ -178,20 +165,7 @@ export default function GetStartedSection() {
           <p className="text-white/70 mb-6 text-sm">Share flows and debug together</p>
           <div className="mt-auto flex justify-end">
             <div className="text-white/60 group-hover:text-white transition-colors">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M14 5l7 7m0 0l-7 7m7-7H3" 
-                />
-              </svg>
+              <FaArrowRight className="h-5 w-5" />
             </div>
           </div>
         </Link>

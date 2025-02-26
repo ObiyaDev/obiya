@@ -3,36 +3,44 @@
 import Image from 'next/image';
 import FeatureItem from '@/app/(home)/components/FeatureItem';
 import Typography from '@/components/Typography';
+import {
+  TextFlowIcon,
+  AscendingSortIcon,
+  CrossOverIcon,
+  CheckIcon,
+  SynchronizeRefreshIcon,
+  PinLocationIcon
+} from '@/components/icons';
 
 export default function WorkbenchSection() {
   const workbenchFeatures = [
     {
-      icon: "/icons/text-flow-columns-streamline-ultimate.svg",
+      icon: <TextFlowIcon className="text-purple-300" />,
       title: "Visual Flow Explorer",
       description: "View your code-defined workflows in an interactive UI"
     },
     {
-      icon: "/icons/ascending-sort-1-streamline-ultimate.svg",
+      icon: <AscendingSortIcon className="text-purple-300" />,
       title: "Live Logging",
       description: "See inputs, outputs, and errors in real time"
     },
     {
-      icon: "/icons/cross-over-streamline-ultimate.svg",
+      icon: <CrossOverIcon className="text-purple-300" />,
       title: "Custom UI Overrides",
       description: "Add interactive elements for demos or live data tweaks"
     },
     {
-      icon: "/icons/check-1-streamline-ultimate.svg",
+      icon: <CheckIcon className="text-purple-300" />,
       title: "Manual Triggers",
       description: "Quickly test individual steps or entire flows"
     },
     {
-      icon: "/icons/synchronize-refresh.svg",
+      icon: <SynchronizeRefreshIcon className="text-purple-300" />,
       title: "Hot Reload",
       description: "Changes reflect instantly. Change it. See it. Run it."
     },
     {
-      icon: "/icons/pin-location.svg",
+      icon: <PinLocationIcon className="text-purple-300" />,
       title: "Local First",
       description: "Develop on your own machine without sign in"
     }
@@ -42,20 +50,20 @@ export default function WorkbenchSection() {
     <div className="py-20">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-block px-4 py-1 rounded-full bg-indigo-900 text-purple-300 text-sm font-mono mb-4">
-            motia-workbench
+          <div className="inline-flex px-[1.30494rem] py-[1.00381rem] justify-center items-center gap-[1.00381rem] rounded-[0.50188rem] border-[1.606px] border-dashed border-[rgba(233,223,255,0.30)] text-purple-300 text-sm font-mono mb-4">
+            <span className="text-[#E9DFFF] text-center font-dm-mono text-[1.10419rem] font-normal leading-[120%] tracking-[-0.02206rem]">motia-workbench</span>
           </div>
           <Typography 
             variant="title" 
             as="h2" 
-            className="text-4xl md:text-5xl text-white mb-6"
+            className="mb-6"
           >
             Design Workflows Effortlessly
           </Typography>
           <Typography 
             variant="description" 
             as="p" 
-            className="text-gray-300 mx-auto max-w-2xl text-lg"
+            className="mx-auto max-w-2xl"
           >
             A modern workbench that makes it easy to create,
             test, and refine automation workflows. Visually
@@ -64,13 +72,13 @@ export default function WorkbenchSection() {
           </Typography>
         </div>
 
-        <div className="relative rounded-xl overflow-hidden mb-16">
+        <div className="relative rounded-xl overflow-hidden mb-16 flex justify-center">
           <Image 
             src="/images/flow.png" 
             alt="Motia Workbench Interface" 
             width={1200} 
-            height={600}
-            className="w-full"
+            height={300}
+            className="max-w-[50%]"
           />
         </div>
 

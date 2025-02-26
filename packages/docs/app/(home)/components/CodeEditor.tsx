@@ -1,8 +1,17 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import Image from 'next/image';
+import { SiRuby as RubyIcon } from "react-icons/si";
+import { FaJava as JavaIcon } from "react-icons/fa";
+
 import { codeExamples, CodeLanguage } from './codeExamples';
+import { 
+  JavaScriptIcon, 
+  TypeScriptIcon, 
+  PythonIcon, 
+} from '../../../components/icons';
 
 // Custom dark theme for syntax highlighting
 const customStyle = {
@@ -92,28 +101,28 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               onClick={() => handleLanguageChange('javascript')}
               className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'javascript' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
             >
-              <Image src="/icons/javascript.svg" alt="JavaScript" width={14} height={14} />
+              <JavaScriptIcon width={14} height={14} className="text-[#CDBCF0]" />
               <span className="ml-1">JavaScript</span>
             </button>
             <button 
               onClick={() => handleLanguageChange('typescript')}
               className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'typescript' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
             >
-              <Image src="/icons/typescript.svg" alt="TypeScript" width={14} height={14} />
+              <TypeScriptIcon width={14} height={14} className="text-[#CDBCF0]" />
               <span className="ml-1">TypeScript</span>
             </button>
             <button 
               onClick={() => handleLanguageChange('python')}
               className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'python' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
             >
-              <Image src="/icons/python.svg" alt="Python" width={14} height={14} />
+              <PythonIcon width={14} height={14} className="text-[#CDBCF0]" />
               <span className="ml-1">Python</span>
             </button>
             <button 
               onClick={() => handleLanguageChange('ruby')}
               className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'ruby' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
             >
-              <Image src="/icons/ruby.svg" alt="Ruby" width={14} height={14} />
+              <RubyIcon width={14} height={14} className="text-[#CDBCF0]" />
               <span className="ml-1">Ruby</span>
             </button>
             <button 
@@ -121,7 +130,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'java' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
               disabled
             >
-              <Image src="/icons/java.svg" alt="Java" width={13} height={14} />
+              <JavaIcon width={13} height={14} className="text-[#CDBCF0]" />
               <span className="ml-1">Java (coming soon)</span>
             </button>
           </div>

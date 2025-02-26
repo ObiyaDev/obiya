@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ copied, onCopy }: HeroSectionProps) {
   return (
-    <div className={"w-full max-w-7xl mx-auto flex flex-col md:flex-row py-10 px-4 gap-12 items-start relative " + styles.firstSection}>
+    <div className={"w-full max-w-7xl mx-auto flex flex-col md:flex-row py-10 px-4 gap-12 md:gap-[15rem] items-start relative " + styles.firstSection}>
       <div className="md:w-1/2 flex flex-col justify-center relative overflow-hidden z-10">
         <Typography 
           variant="title" 
@@ -46,7 +46,7 @@ export default function HeroSection({ copied, onCopy }: HeroSectionProps) {
 
         <div className="flex gap-4">
           <Link
-            href="/start-building"
+            href="/docs/getting-started"
             className="bg-white text-purple-900 py-3 px-6 rounded-md hover:bg-gray-100 transition font-dm-mono"
           >
             Start building
