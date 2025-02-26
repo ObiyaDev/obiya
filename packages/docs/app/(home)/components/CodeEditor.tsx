@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SandpackProvider,
   SandpackLayout,
-  SandpackCodeEditor,
+  SandpackCodeViewer,
   SandpackThemeProvider,
   SandpackPredefinedTemplate,
 } from "@codesandbox/sandpack-react";
 import type { SandpackTheme } from "@codesandbox/sandpack-react";
 import Image from 'next/image';
+import { codeExamples, CodeLanguage } from './codeExamples';
 
 const darkTheme: SandpackTheme = {
   colors: {
@@ -37,75 +38,83 @@ const darkTheme: SandpackTheme = {
     body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     mono: '"JetBrains Mono", "Fira Mono", "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     size: '13px',
-    lineHeight: '20px',
+    lineHeight: '16px',
   },
 };
 
-// Sample OpenAI code to match the screenshot
-const openaiSampleCode = `import { OpenAI } from 'openai';
-import { z } from 'zod';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-export const config = {
-  type: 'event',
-  name: 'Auto-Reply to Support Emails',
-  subscribers: ['email.received'],
-  emits: ['email.send'],
-  flows: ['email-support'],
-  input: z.object({ subject: z.string(), body: z.string(), from: z.string() }),
-};
-
-export const handler = async (inputData, context) => {
-  const { subject, body, from } = inputData;
-  const { emit, logger } = context;
-  
-  const sentimentResponse = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [{ role: "user", content: 
-      \`Analyze the sentiment of the following text: \${body}\`}],
-  });
-`;
-
 interface CodeEditorProps {
   code?: string;
-  language?: string;
+  language?: CodeLanguage;
   title?: string;
   height?: string;
+  onLanguageChange?: (language: CodeLanguage) => void;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
-  code = openaiSampleCode,
+  code,
   language = 'typescript',
-  title = 'JavaScript',
-  height = '300px'
+  height = '300px',
+  onLanguageChange
 }) => {
+  const [selectedLanguage, setSelectedLanguage] = useState<CodeLanguage>(language);
+  const [exampleCode, setExampleCode] = useState<string>(code || '');
+
+  useEffect(() => {
+    // Set the code based on the selected language
+    if (!code) {
+      setExampleCode(codeExamples[selectedLanguage] || codeExamples.typescript);
+    } else {
+      setExampleCode(code);
+    }
+  }, [selectedLanguage, code]);
+
+  const handleLanguageChange = (lang: CodeLanguage) => {
+    setSelectedLanguage(lang);
+    if (onLanguageChange) {
+      onLanguageChange(lang);
+    }
+  };
+
   return (
-    <div className="w-full h-full rounded-md overflow-hidden border border-gray-800 bg-[#0f0d19]">
+    <div className="w-full h-full rounded-md rounded-t-[16px] overflow-hidden bg-[#0f0d19]">
       <div className="w-full h-full overflow-hidden">
-        <div className="bg-[#12111a] p-1 px-3 flex items-center justify-between border-b border-gray-800">
+        <div className="p-1 px-3 flex items-center justify-between min-h-[75px] rounded-t-[16px] border border-[#310E7F] bg-gradient-to-r from-[#160045] from-[57.54%] to-transparent to-[84.95%]">
           <div className="flex gap-1">
-            <button className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-md transition-colors ${language === 'javascript' ? 'bg-[#1a1828] text-white' : 'text-gray-400 hover:text-white'}`}>
+            <button 
+              onClick={() => handleLanguageChange('javascript')}
+              className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'javascript' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
+            >
               <Image src="/icons/javascript.svg" alt="JavaScript" width={14} height={14} />
               <span className="ml-1">JavaScript</span>
             </button>
-            <button className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-md transition-colors ${language === 'typescript' ? 'bg-[#1a1828] text-white' : 'text-gray-400 hover:text-white'}`}>
+            <button 
+              onClick={() => handleLanguageChange('typescript')}
+              className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'typescript' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
+            >
               <Image src="/icons/typescript.svg" alt="TypeScript" width={14} height={14} />
               <span className="ml-1">TypeScript</span>
             </button>
-            <button className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-md transition-colors ${language === 'python' ? 'bg-[#1a1828] text-white' : 'text-gray-400 hover:text-white'}`}>
+            <button 
+              onClick={() => handleLanguageChange('python')}
+              className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'python' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
+            >
               <Image src="/icons/python.svg" alt="Python" width={14} height={14} />
               <span className="ml-1">Python</span>
             </button>
-            <button className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-md transition-colors ${language === 'ruby' ? 'bg-[#1a1828] text-white' : 'text-gray-400 hover:text-white'}`}>
+            <button 
+              onClick={() => handleLanguageChange('ruby')}
+              className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'ruby' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
+            >
               <Image src="/icons/ruby.svg" alt="Ruby" width={14} height={14} />
               <span className="ml-1">Ruby</span>
             </button>
-            <button className={`flex items-center gap-1 text-xs px-3 py-1.5 rounded-md transition-colors ${language === 'java' ? 'bg-[#1a1828] text-white' : 'text-gray-400 hover:text-white'}`}>
+            <button 
+              onClick={() => handleLanguageChange('java')}
+              className={`flex items-center gap-1 text-xs px-3 py-1.5 transition-colors ${selectedLanguage === 'java' ? 'rounded-[4px] bg-[#3B1296] shadow-[0px_71px_20px_0px_rgba(18,0,61,0.02),0px_46px_18px_0px_rgba(18,0,61,0.15),0px_26px_15px_0px_rgba(18,0,61,0.50),0px_11px_11px_0px_rgba(18,0,61,0.85),0px_3px_6px_0px_rgba(18,0,61,0.98)] text-white' : 'text-gray-400 hover:text-white'}`}
+              disabled
+            >
               <Image src="/icons/java.svg" alt="Java" width={13} height={14} />
-              <span className="ml-1">Java</span>
+              <span className="ml-1">Java (comming soon)</span>
             </button>
           </div>
           <button className="text-gray-400 hover:text-white p-1 rounded-md hover:bg-[#1a1828] transition-colors">
@@ -117,29 +126,21 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         </div>
         <div style={{ height, position: 'relative' }}>
           <SandpackProvider 
-            template={language === 'typescript' ? "react-ts" : "react" as SandpackPredefinedTemplate}
+            template={selectedLanguage === 'typescript' ? "react-ts" : "react" as SandpackPredefinedTemplate}
             customSetup={{
-              entry: `index.${language === 'typescript' ? 'ts' : 'js'}`,
+              entry: `index.${selectedLanguage === 'typescript' ? 'ts' : selectedLanguage === 'javascript' ? 'js' : selectedLanguage === 'python' ? 'py' : selectedLanguage === 'ruby' ? 'rb' : 'java'}`,
               dependencies: {
                 "openai": "latest",
                 "zod": "latest"
               }
             }}
-            files={{
-              [`index.${language === 'typescript' ? 'ts' : 'js'}`]: {
-                code,
-                active: true
-              }
-            }}
+
           >
             <SandpackThemeProvider theme={darkTheme}>
               <SandpackLayout>
-                <SandpackCodeEditor
-                  showLineNumbers={true}
-                  showInlineErrors
-                  readOnly={true}
-                  wrapContent
-                  style={{ height: "100%", width: "100%" }}
+                <SandpackCodeViewer 
+                  showLineNumbers
+                  code={exampleCode}
                 />
               </SandpackLayout>
             </SandpackThemeProvider>

@@ -33,7 +33,7 @@ export default function HeroSection({ copied, onCopy }: HeroSectionProps) {
       {/* Right Section - Description and CTAs */}
       <div className="md:w-1/2 flex flex-col justify-center z-10">
         <p 
-          className="text-white mb-8 max-w-md font-dm-mono"
+          className="text-white mb-4 max-w-md font-dm-mono"
           style={{
             fontWeight: 400,
             fontSize: '20px',
@@ -47,17 +47,20 @@ export default function HeroSection({ copied, onCopy }: HeroSectionProps) {
         </p>
 
         {/* Command example */}
-        <div className="bg-black rounded-lg p-3 mb-8 text-gray-300 font-mono text-sm flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-gray-500 mr-2">$</span>
-            <span>npx motia create -t default -n new-project</span>
-          </div>
+        <div className="w-[342px] rounded-md [background:linear-gradient(180deg,rgb(52.65,21.36,119.16)_0%,rgba(53,21,119,0)_100%)] h-8 mb-8 relative">
+          <p className="absolute top-2.5 left-[38px] font-mono font-normal text-[#cdbcf0] text-[11px] text-center tracking-[-0.99px] leading-[13.2px] whitespace-nowrap">
+            npx motia create -t default -n new-project
+          </p>
+          
           <button 
-            onClick={onCopy} 
-            className="ml-2 text-gray-400 hover:text-white transition-colors"
+            onClick={onCopy}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
+            className="absolute w-5 h-5 top-1 left-1.5 bg-[#050013] rounded-[3.93px] shadow-[0px_0.71px_1.43px_#000000fa,0px_2.86px_2.86px_#000000d9,0px_6.43px_3.93px_#00000080,0px_11.43px_4.64px_#00000026,0px_17.86px_5px_#00000005] flex items-center justify-center"
           >
-            {copied ? <FaCheck /> : <FaClipboard />}
+            {copied ? 
+              <FaCheck className="w-2 h-2" /> : 
+              <FaClipboard className="w-2 h-2" />
+            }
           </button>
         </div>
 
@@ -65,13 +68,13 @@ export default function HeroSection({ copied, onCopy }: HeroSectionProps) {
         <div className="flex gap-4">
           <Link
             href="/start-building"
-            className="bg-white text-purple-900 py-3 px-6 rounded-md font-semibold hover:bg-gray-100 transition"
+            className="bg-white text-purple-900 py-3 px-6 rounded-md hover:bg-gray-100 transition font-dm-mono"
           >
             Start building
           </Link>
           <Link
             href="/docs"
-            className="bg-transparent border border-purple-500 text-white py-3 px-6 rounded-md font-semibold hover:bg-purple-900 transition"
+            className="bg-transparent border border-purple-500 text-white py-3 px-6 rounded-md hover:bg-purple-900 transition font-dm-mono"
           >
             Docs
           </Link>
