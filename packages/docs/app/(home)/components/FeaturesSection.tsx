@@ -2,6 +2,7 @@
 
 import CodeEditor from '@/app/(home)/components/CodeEditor';
 import FeatureCard from '@/app/(home)/components/FeatureCard';
+import Typography from '@/components/Typography';
 
 export default function FeaturesSection() {
   const powerfulFlowsFeatures = [
@@ -37,24 +38,29 @@ export default function FeaturesSection() {
   return (
     <div className="py-20">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-gt-walsheim">
+        <Typography 
+          variant="title" 
+          as="h2" 
+          className="text-4xl md:text-5xl text-white mb-6"
+        >
           Powerful Flows, Simple Steps
-        </h2>
-        <p className="text-gray-300 mx-auto max-w-2xl text-lg mb-16 font-dm-mono">
+        </Typography>
+        <Typography 
+          variant="description" 
+          as="p" 
+          className="text-gray-300 mx-auto max-w-2xl text-lg mb-16"
+        >
           Effortlessly build AI-driven workflows. With a
           lightweight, developer-friendly framework, you
           can create intelligent automations using the
           dependencies you know and love.
-        </p>
+        </Typography>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
-          {/* Code Editor Card - Now 70% width (8/12) */}
           <main className="flex flex-col items-start rounded-lg lg:col-span-7">
             <CodeEditor />
           </main>
 
-          {/* Features Cards - Now 30% width (4/12) */}
           <div className="grid grid-cols-1 gap-8 lg:col-span-5">
             <FeatureCard 
               title="Powerful Flows, Simple Steps" 

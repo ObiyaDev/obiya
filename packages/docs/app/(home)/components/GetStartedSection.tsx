@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { FaGithub, FaUsers } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
+import Typography from '@/components/Typography';
+import CommandDisplay from './CommandDisplay';
 
 export default function GetStartedSection() {
   const [copied, setCopied] = useState(false);
@@ -34,7 +36,6 @@ export default function GetStartedSection() {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
-      // Use requestAnimationFrame for smoother animation
       requestAnimationFrame(() => {
         glowElement.style.left = `${x}px`;
         glowElement.style.top = `${y}px`;
@@ -57,9 +58,8 @@ export default function GetStartedSection() {
   return (
     <div 
       ref={sectionRef}
-      className="w-full max-w-7xl mx-auto py-20 px-4 flex flex-col items-center relative overflow-hidden"
+      className="w-full max-w-7xl mx-auto py-10 px-4 flex flex-col items-center relative overflow-hidden"
     >
-      {/* Dotted Background Overlay - visible on hover */}
       <div 
         className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
           isHovering ? 'opacity-20' : 'opacity-0'
@@ -72,7 +72,6 @@ export default function GetStartedSection() {
         }}
       />
 
-      {/* Mouse follow light effect */}
       <div 
         ref={glowRef}
         className={`absolute pointer-events-none ${isHovering ? 'opacity-100' : 'opacity-0'}`}
@@ -91,28 +90,32 @@ export default function GetStartedSection() {
         }}
       />
 
-      {/* Title and Description */}
       <div className="text-center mb-12 relative z-10">
-        <h2 className="text-6xl font-bold text-white mb-6">Get started</h2>
-        <p className="text-white/70 max-w-2xl mx-auto">
+        <Typography 
+          variant="title" 
+          as="h2" 
+          className="text-6xl text-white mb-6"
+        >
+          Get started
+        </Typography>
+        <Typography 
+          variant="description" 
+          as="p" 
+          className="text-white/70 max-w-2xl mx-auto"
+        >
           Write in any language. Automate anything. From AI agents to backend automation, 
           Motia runs event-driven workflows with zero overhead.
-        </p>
+        </Typography>
       </div>
 
-      {/* Command example */}
-      <div className="bg-black/40 rounded-lg p-3 mb-12 text-gray-300 font-mono text-sm flex items-center max-w-xl w-full relative z-10 backdrop-blur-sm">
-        <div className="bg-black/60 rounded px-2 py-1 mr-2 text-gray-500">$</div>
-        <span className="flex-1">npx motia create -t default -n new-project</span>
-        <button 
-          onClick={handleCopy} 
-          className="ml-2 text-gray-400 hover:text-white transition-colors"
-        >
-          {copied ? '✓' : 'Copy'}
-        </button>
+      <div className="mb-12 relative z-10 flex justify-center">
+        <CommandDisplay
+          command="npx motia create -t default -n new-project"
+          copied={copied}
+          onCopy={handleCopy}
+        />
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-4 mb-16 relative z-10">
         <Link
           href="/start-building"
@@ -128,9 +131,7 @@ export default function GetStartedSection() {
         </Link>
       </div>
 
-      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full relative z-10">
-        {/* GitHub Card */}
         <Link 
           href="https://github.com/motiaai/motia" 
           target="_blank"
@@ -164,7 +165,6 @@ export default function GetStartedSection() {
           </div>
         </Link>
 
-        {/* Community Card */}
         <Link 
           href="/community" 
           className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-6 flex flex-col h-full border border-purple-800/20 hover:border-purple-700/40 transition-all group"
