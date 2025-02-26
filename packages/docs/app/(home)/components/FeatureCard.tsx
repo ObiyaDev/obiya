@@ -27,7 +27,7 @@ export default function FeatureCard({ title, features }: FeatureCardProps) {
             <Typography 
               variant="title" 
               as="h4" 
-              className="text-lg text-white mb-1 text-left"
+              className="text-lg text-white mb-1 text-left tracking-normal"
             >
               {feature.title}
             </Typography>

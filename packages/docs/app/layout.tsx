@@ -1,7 +1,7 @@
 import './global.css';
 import './fonts.css';
 import { RootProvider } from 'fumadocs-ui/provider';
-import { Inter, DM_Mono } from 'next/font/google';
+import { Inter, DM_Mono, DM_Sans } from 'next/font/google';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Analytics } from "@vercel/analytics/react"
@@ -15,6 +15,12 @@ const dmMono = DM_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   variable: '--font-dm-mono',
+});
+
+const dmSans = DM_Sans({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
 });
 
 export const metadata: Metadata = {
@@ -137,7 +143,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${dmMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${dmMono.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <body className="flex flex-col h-full min-h-dvh w-dvw landscape:min-h-screen landscape:h-full landscape:w-full p-0 m-0 gap-0" suppressHydrationWarning>
         <RootProvider>
           {children}
