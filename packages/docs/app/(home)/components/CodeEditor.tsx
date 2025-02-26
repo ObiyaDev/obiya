@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import {
-  SandpackProvider,
-  SandpackLayout,
-  SandpackCodeViewer,
-  SandpackThemeProvider,
-  SandpackPredefinedTemplate,
-} from "@codesandbox/sandpack-react";
-import type { SandpackTheme } from "@codesandbox/sandpack-react";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import Image from 'next/image';
 import { codeExamples, CodeLanguage } from './codeExamples';
 
-const darkTheme: SandpackTheme = {
-  colors: {
-    surface1: '#0f0d19', // Darker background
-    surface2: '#12111a', // Slightly lighter for contrast
-    surface3: '#1a1828',
-    clickable: '#6f6c81',
-    base: '#d4d2dc',
-    disabled: '#3a3550',
-    hover: '#4a445f',
-    accent: '#6c59ff',
-    error: '#ff453a',
-    errorSurface: '#2a1c1c',
+// Custom dark theme for syntax highlighting
+const customStyle = {
+  ...atomDark,
+  'pre[class*="language-"]': {
+    ...atomDark['pre[class*="language-"]'],
+    margin: 0,
+    borderRadius: 0,
+    background: '#0f0d19',
   },
-  syntax: {
-    plain: '#d4d2dc',
-    comment: '#6c7d9c',
-    keyword: '#c678dd', // Purple for keywords
-    tag: '#a5d6ff',
-    punctuation: '#d4d2dc',
-    definition: '#4bbee3', // Blue for functions
-    property: '#4bbee3',
-    static: '#d4b860',
-    string: '#98c379', // Green for strings
-  },
-  font: {
-    body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    mono: '"JetBrains Mono", "Fira Mono", "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    size: '13px',
+  'code[class*="language-"]': {
+    ...atomDark['code[class*="language-"]'],
+    background: '#0f0d19',
+    fontFamily: '"JetBrains Mono", "Fira Mono", "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    fontSize: '13px',
     lineHeight: '16px',
+  },
+  comment: {
+    ...atomDark.comment,
+    color: '#6c7d9c',
+  },
+  keyword: {
+    ...atomDark.keyword,
+    color: '#c678dd',
+  },
+  string: {
+    ...atomDark.string,
+    color: '#98c379',
+  },
+  function: {
+    ...atomDark.function,
+    color: '#4bbee3',
+  },
+  punctuation: {
+    ...atomDark.punctuation,
+    color: '#d4d2dc',
   },
 };
 
@@ -50,10 +50,18 @@ interface CodeEditorProps {
   onLanguageChange?: (language: CodeLanguage) => void;
 }
 
+// Map our language keys to react-syntax-highlighter language keys
+const languageMap: Record<CodeLanguage, string> = {
+  typescript: 'typescript',
+  javascript: 'javascript',
+  python: 'python',
+  ruby: 'ruby',
+  java: 'java',
+};
+
 const CodeEditor: React.FC<CodeEditorProps> = ({
   code,
   language = 'typescript',
-  height = '300px',
   onLanguageChange
 }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<CodeLanguage>(language);
@@ -114,7 +122,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               disabled
             >
               <Image src="/icons/java.svg" alt="Java" width={13} height={14} />
-              <span className="ml-1">Java (comming soon)</span>
+              <span className="ml-1">Java (coming soon)</span>
             </button>
           </div>
           <button className="text-gray-400 hover:text-white p-1 rounded-md hover:bg-[#1a1828] transition-colors">
@@ -124,27 +132,34 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             </svg>
           </button>
         </div>
-        <div style={{ height, position: 'relative' }}>
-          <SandpackProvider 
-            template={selectedLanguage === 'typescript' ? "react-ts" : "react" as SandpackPredefinedTemplate}
-            customSetup={{
-              entry: `index.${selectedLanguage === 'typescript' ? 'ts' : selectedLanguage === 'javascript' ? 'js' : selectedLanguage === 'python' ? 'py' : selectedLanguage === 'ruby' ? 'rb' : 'java'}`,
-              dependencies: {
-                "openai": "latest",
-                "zod": "latest"
-              }
+        <div 
+          style={{ position: 'relative' }}
+          className="overflow-auto"
+        >
+          <SyntaxHighlighter
+            language={languageMap[selectedLanguage]}
+            style={customStyle}
+            showLineNumbers={true}
+            wrapLines={true}
+            wrapLongLines
+            customStyle={{
+              margin: 0,
+              height: '100%',
+              width: '100%',
+              overflow: 'auto',
+              background: '#0f0d19',
+              scrollbarWidth: 'none',
             }}
-
+            lineNumberStyle={{
+              color: '#6f6c81',
+              opacity: 0.5,
+              paddingRight: '1em',
+              textAlign: 'right',
+              userSelect: 'none',
+            }}
           >
-            <SandpackThemeProvider theme={darkTheme}>
-              <SandpackLayout>
-                <SandpackCodeViewer 
-                  showLineNumbers
-                  code={exampleCode}
-                />
-              </SandpackLayout>
-            </SandpackThemeProvider>
-          </SandpackProvider>
+            {exampleCode}
+          </SyntaxHighlighter>
         </div>
       </div>
     </div>

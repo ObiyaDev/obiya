@@ -13,11 +13,7 @@ export const config = {
     subscribes: ['email.received'],
     emits: ['email.send'],
     flows: ['email-support'],
-    input: z.object({
-        subject: z.string(),
-        body: z.string(),
-        from: z.string()
-    }),
+    input: z.object({ subject: z.string(), body: z.string(), from: z.string() }),
 };
 
 export const handler = async (inputData, context) => {

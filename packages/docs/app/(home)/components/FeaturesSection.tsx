@@ -51,7 +51,7 @@ export default function FeaturesSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
           {/* Code Editor Card - Now 70% width (8/12) */}
           <main className="flex flex-col items-start rounded-lg lg:col-span-7">
-            <CodeEditor height="320px" />
+            <CodeEditor />
           </main>
 
           {/* Features Cards - Now 30% width (4/12) */}

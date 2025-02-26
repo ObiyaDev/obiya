@@ -1,58 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import CodeEditor from '@/app/(home)/components/CodeEditor';
+import React from 'react';
+import CodeSandbox from '@/app/(home)/components/CodeSandbox';
 
 export default function CodeExampleSection() {
-  const [activeTab, setActiveTab] = useState<'workflow' | 'handler'>('workflow');
-
-  const workflowCode = `import { z } from 'zod';
-
-export const config = {
-  type: 'event',
-  name: 'Auto-Reply to Support Emails',
-  subscribers: ['email.received'],
-  emits: ['email.send'],
-  flows: ['email-support'],
-  input: z.object({ 
-    subject: z.string(), 
-    body: z.string(), 
-    from: z.string() 
-  }),
-};`;
-
-  const handlerCode = `export const handler = async (inputData, context) => {
-  const { subject, body, from } = inputData;
-  const { emit, logger } = context;
-  
-  // Analyze sentiment with OpenAI
-  const sentimentResponse = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [{ 
-      role: "user", 
-      content: \`Analyze the sentiment of the following text: \${body}\`
-    }],
-  });
-  
-  // Generate appropriate response based on sentiment
-  const responseContent = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [{ 
-      role: "user", 
-      content: \`Write a helpful response to this support email: \${body}\`
-    }],
-  });
-  
-  // Send the response email
-  await emit('email.send', {
-    to: from,
-    subject: \`Re: \${subject}\`,
-    body: responseContent.choices[0].message.content
-  });
-  
-  return { success: true };
-};`;
-
   return (
     <div className="py-20 bg-gradient-to-b from-indigo-950/30 to-transparent">
       <div className="max-w-7xl mx-auto px-4">
@@ -70,49 +21,12 @@ export const config = {
           </p>
         </div>
 
-        {/* Code Tabs */}
+        {/* Code Example */}
         <div className="bg-gray-900/50 rounded-lg p-4 mb-8">
-          <div className="flex space-x-4 mb-4">
-            <button
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === 'workflow'
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
-              }`}
-              onClick={() => setActiveTab('workflow')}
-            >
-              Workflow Config
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === 'handler'
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
-              }`}
-              onClick={() => setActiveTab('handler')}
-            >
-              Handler Logic
-            </button>
-          </div>
-
-          {/* Code Editor */}
-          <div className="transition-all duration-300">
-            {activeTab === 'workflow' ? (
-              <CodeEditor 
-                code={workflowCode} 
-                language="typescript" 
-                title="workflow.ts" 
-                height="300px" 
-              />
-            ) : (
-              <CodeEditor 
-                code={handlerCode} 
-                language="typescript" 
-                title="handler.ts" 
-                height="400px" 
-              />
-            )}
-          </div>
+          <CodeSandbox 
+            height="600px"
+            repoPath="trello-flow"
+          />
         </div>
 
         {/* Features */}
