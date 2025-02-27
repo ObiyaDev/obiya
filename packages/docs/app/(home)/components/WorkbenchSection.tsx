@@ -78,6 +78,7 @@ export default function WorkbenchSection() {
             alt="Motia Workbench Interface" 
             width={1200} 
             height={600}
+            className="w-full"
           />
         </div>
 
