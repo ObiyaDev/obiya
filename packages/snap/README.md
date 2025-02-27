@@ -36,14 +36,7 @@ yarn add motia
 pnpm add motia
 ```
 
-### Ruby
-```sh
-gem install motia
-```
 
-### Python
-```sh
-pip install motia
 ```
 
 ## Quick Start
