@@ -155,15 +155,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             title="Copy code"
           >
             {copySuccess ? (
-              <>
                 <FaCheck className="w-3.5 h-3.5" />
-                <span className="text-xs">Copied!</span>
-              </>
             ) : (
-              <>
                 <FaClipboard className="w-3.5 h-3.5" />
-                <span className="text-xs">Copy</span>
-              </>
             )}
           </button>
         </div>
