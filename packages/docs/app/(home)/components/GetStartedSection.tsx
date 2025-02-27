@@ -65,9 +65,9 @@ export default function GetStartedSection() {
           isHovering ? 'opacity-20' : 'opacity-0'
         }`}
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, rgba(0, 0, 0, 0.9) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
-          transform: isHovering ? 'scale(1)' : 'scale(0.95)',
+          transform: isHovering ? 'scale(1.05)' : 'scale(0.9)',
           transition: 'opacity 1000ms ease, transform 1000ms ease',
         }}
       />

@@ -29,7 +29,7 @@ export default function CodeExampleSection() {
 
         <div className="p-4 mb-8">
           <CodeSandbox 
-            height="600px"
+            height="800px"
             repoPath="trello-flow"
           />
         </div>
