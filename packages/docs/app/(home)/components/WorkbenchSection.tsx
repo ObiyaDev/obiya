@@ -77,7 +77,7 @@ export default function WorkbenchSection() {
             src="/images/flow.png" 
             alt="Motia Workbench Interface" 
             width={1200} 
-            height={300}
+            height={600}
             className="max-w-[50%]"
           />
         </div>
