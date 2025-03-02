@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { Express } from 'express'
+import { Express, Request, Response } from 'express'
 
 interface FlowConfig {
   [flowName: string]: {
@@ -8,21 +8,19 @@ interface FlowConfig {
   }
 }
 
-export const flowsConfigEndpoint = (app: Express, baseDir: string) => {
-  const configDir = path.join(baseDir, '.motia', 'flow-config')
-  const configPath = path.join(configDir, 'motia-workbench.json')
+type ParamId = { id: string }
 
-  // POST endpoint to save flow configuration
-  app.post('/flows/config', (req, res) => {
+export const flowsConfigEndpoint = (app: Express, baseDir: string) => {
+  const configPath = path.join(baseDir, 'motia-workbench.json')
+
+  app.post('/flows/:id/config', (req: Request<ParamId>, res: Response) => {
     const newFlowConfig: FlowConfig = req.body
 
     try {
-      fs.mkdirSync(configDir, { recursive: true })
-      
-      let existingConfig: FlowConfig = {}
-      if (fs.existsSync(configPath)) {
-        existingConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
+      if (!fs.existsSync(configPath)) {
+        fs.writeFileSync(configPath, JSON.stringify({}, null, 2))
       }
+      const existingConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
       
       const updatedConfig: FlowConfig = {
         ...existingConfig
@@ -43,17 +41,14 @@ export const flowsConfigEndpoint = (app: Express, baseDir: string) => {
     }
   })
 
-  app.get('/flows/:id/config', async (req: Request, res) => {
+  app.get('/flows/:id/config', (req: Request<ParamId>, res: Response) => {
     const { id } = req.params
-    
-    try {
-      if (!fs.existsSync(configPath)) {
-        return res.status(200).send({})
-      }
 
-      const allFlowsConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
+    try {
+      const file = fs.readFileSync(configPath, 'utf8')
+      const allFlowsConfig = JSON.parse(file)
       const flowConfig = allFlowsConfig[id] || {}
-      
+
       res.status(200).send(flowConfig)
     } catch (error) {
       console.error('Error reading flow config:', error)

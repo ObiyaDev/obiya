@@ -8,7 +8,7 @@ export const useSaveWorkflowConfig = (flowId: string) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(config),
+        body: JSON.stringify({[flowId]: config}),
       });
 
       if (!response.ok) {

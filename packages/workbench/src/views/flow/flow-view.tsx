@@ -28,6 +28,10 @@ type Props = {
   flowConfig: FlowConfigResponse
 }
 
+type NodePosition = {
+  [key: string]: { x: number; y: number };
+};
+
 export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   const { nodes, edges, onNodesChange, onEdgesChange, nodeTypes } = useGetFlowState(flow, flowConfig)
   const [initialized, setInitialized] = useState(false)
@@ -64,12 +68,13 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   }))
 
   const saveFlowConfig = useCallback(() => {
-    const steps = getNodes().map((node) => ({
-      name: node.data.name,
-      position: node.position,
-      type: node.data.type,
-    }))
-    return saveConfig({ steps })
+    const steps = getNodes().reduce((acc, node) => {
+      if (node.data.filePath) {
+        acc[node.data.filePath] = node.position
+      }
+      return acc
+    }, {} as NodePosition)
+    return saveConfig(steps)
   }, [saveConfig, getNodes, getEdges])
 
   const debouncedSaveConfig = useDebounced(saveFlowConfig)
