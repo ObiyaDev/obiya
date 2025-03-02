@@ -1,8 +1,8 @@
 export const CONTACT_INFO = {
   EMAIL: {
-    address: 'support@motia.dev',
+    address: 'mike@motia.dev',
     title: 'Email',
-    linkText: 'support@motia.dev',
+    linkText: 'mike@motia.dev',
   },
   DISCORD: {
     url: 'https://discord.gg/sXbs97D8',
