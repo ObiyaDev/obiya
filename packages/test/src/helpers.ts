@@ -1,34 +1,39 @@
-import { Logger } from "@motiadev/core";
-import { MockFlowContext } from "./types";
-
+import { Logger } from '@motiadev/core'
+import { MockFlowContext, MockLogger } from './types'
 
 export const createMockLogger = () => {
-  const mockLogger = {
+  const mockLogger: MockLogger = {
     info: jest.fn(),
     error: jest.fn(),
     warn: jest.fn(),
     debug: jest.fn(),
     log: jest.fn(),
   }
-  return mockLogger as unknown as jest.Mocked<Logger>
+  return mockLogger as jest.Mocked<Logger>
 }
 
 export const setupLoggerMock = () => {
-  ;(Logger as jest.MockedClass<typeof Logger>).mockImplementation(
-    () => ({ info: jest.fn(), debug: jest.fn(), warn: jest.fn(), error: jest.fn(), log: jest.fn() }) as any,
-  )
+  ;(Logger as jest.MockedClass<typeof Logger>).mockImplementation(createMockLogger)
 }
 
-export const createMockContext = (logger = createMockLogger(), emit = jest.fn()): MockFlowContext => {
+export const createMockContext = (options?: {
+  logger?: jest.Mocked<Logger>
+  emit?: jest.Mock
+  traceId?: string
+  state?: Partial<MockFlowContext['state']>
+}): MockFlowContext => {
+  const { logger = createMockLogger(), emit = jest.fn(), traceId = 'mock-trace-id', state } = options || {}
+
   return {
     logger,
     emit,
-    traceId: '',
+    traceId,
     state: {
       get: jest.fn(),
       set: jest.fn(),
       delete: jest.fn(),
       clear: jest.fn(),
+      ...state,
     },
   }
 }
