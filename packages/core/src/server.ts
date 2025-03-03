@@ -139,7 +139,7 @@ export const createServer = async (
 
   flowsEndpoint(lockedData, app)
   flowsConfigEndpoint(app, process.cwd())
-  
+
   server.on('error', (error) => {
     console.error('Server error:', error)
   })

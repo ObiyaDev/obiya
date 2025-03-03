@@ -31,7 +31,7 @@ type Props = {
 export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   const { nodes, edges, onNodesChange, onEdgesChange, nodeTypes } = useGetFlowState(flow, flowConfig)
   const [initialized, setInitialized] = useState(false)
-  const { getNodes, getEdges } = useReactFlow<FlowNode, FlowEdge>()
+  const { getNodes } = useReactFlow<FlowNode, FlowEdge>()
   const { saveConfig } = useSaveWorkflowConfig(flow.id)
   const [hoveredType, setHoveredType] = useState<string | null>(null)
 
@@ -71,7 +71,7 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
       return acc
     }, {} as NodePosition)
     return saveConfig(steps)
-  }, [saveConfig, getNodes, getEdges])
+  }, [saveConfig, getNodes])
 
   const debouncedSaveConfig = useDebounced(saveFlowConfig)
 

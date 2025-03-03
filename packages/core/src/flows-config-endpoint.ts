@@ -21,15 +21,15 @@ export const flowsConfigEndpoint = (app: Express, baseDir: string) => {
         fs.writeFileSync(configPath, JSON.stringify({}, null, 2))
       }
       const existingConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'))
-      
+
       const updatedConfig: FlowConfig = {
-        ...existingConfig
+        ...existingConfig,
       }
 
       Object.entries(newFlowConfig).forEach(([flowName, filePathPositions]) => {
         updatedConfig[flowName] = {
           ...(updatedConfig[flowName] || {}),
-          ...filePathPositions
+          ...filePathPositions,
         }
       })
 
