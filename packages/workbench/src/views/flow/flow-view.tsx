@@ -9,7 +9,7 @@ import { FlowLoader } from './flow-loader'
 import { EdgeData, NodeData } from './nodes/nodes.types'
 import { FlowConfigResponse, FlowResponse, useGetFlowState } from './hooks/use-get-flow-state'
 import { Legend } from './legend'
-import { useSaveWorkflowConfig } from './hooks/use-save-workflow-config'
+import { useSaveWorkflowConfig, NodePosition } from './hooks/use-save-workflow-config'
 import { NodeOrganizer } from './node-organizer'
 import { Node as ReactFlowNode, Edge as ReactFlowEdge } from '@xyflow/react'
 import { useDebounced } from '@/hooks/use-debounced'
@@ -27,10 +27,6 @@ type Props = {
   flow: FlowResponse
   flowConfig: FlowConfigResponse
 }
-
-type NodePosition = {
-  [key: string]: { x: number; y: number };
-};
 
 export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   const { nodes, edges, onNodesChange, onEdgesChange, nodeTypes } = useGetFlowState(flow, flowConfig)
