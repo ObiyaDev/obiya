@@ -9,7 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "dist",
+    "outDir": "dist/cjs",
     "rootDir": ".",
     "baseUrl": ".",
     "declaration": true
