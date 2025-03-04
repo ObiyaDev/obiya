@@ -23,7 +23,7 @@
     }
   },
   "bin": {
-    "motia": "dist/cjs/src/cli.js"
+    "motia": "dist/cjs/cli.js"
   },
   "scripts": {
     "move:templates": "sh scripts/move-templates.sh",

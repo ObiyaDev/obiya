@@ -10,11 +10,11 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": "dist/cjs",
-    "rootDir": ".",
+    "rootDir": "src",
     "baseUrl": ".",
     "declaration": true
   },
-  "include": ["**/*.ts"],
+  "include": ["src/**/*.ts"],
   "jsx": "react-jsx",
   "exclude": ["node_modules", "dist"]
 }
