@@ -17,8 +17,6 @@ async function generateImages() {
         </clipPath>
       </defs>
     </svg>
-
-
   `
 
   // Create public directory if it doesn't exist.
