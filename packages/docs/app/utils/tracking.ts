@@ -1,4 +1,4 @@
-export function trackTwitterEvent(eventId: string, parameters: Record<string, any> = {}) {
+export function trackTwitterEvent(eventId: string, parameters: Record<string, string> = {}) {
   if (typeof window !== 'undefined' && window.twq) {
     window.twq('event', eventId, parameters);
   }
@@ -6,6 +6,6 @@ export function trackTwitterEvent(eventId: string, parameters: Record<string, an
 
 declare global {
   interface Window {
-    twq: (command: string, ...args: any[]) => void;
+    twq: (command: string, ...args: unknown[]) => void;
   }
 } 
