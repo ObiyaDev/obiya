@@ -1,24 +1,16 @@
-'use client'
+'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation'
-import { trackTwitterEvent } from './tracking'
-import { useEffect, Suspense } from 'react'
-
-function RouteTrackerInner() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    trackTwitterEvent('pageview', { pathname })
-  }, [pathname, searchParams])
-
-  return null
-}
+import { usePathname, useSearchParams } from 'next/navigation';
+import { trackTwitterEvent } from './tracking';
+import { useEffect } from 'react';
 
 export function RouteTracker() {
-  return (
-    <Suspense fallback={null}>
-      <RouteTrackerInner />
-    </Suspense>
-  )
-}
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        trackTwitterEvent('pageview', { pathname });
+    }, [pathname, searchParams]);
+  
+  return null;
+} 
