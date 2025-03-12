@@ -2,6 +2,7 @@ import { CronManager, setupCronHandlers } from './cron-handler'
 import bodyParser from 'body-parser'
 import express, { Express, Request, Response, RequestHandler } from 'express'
 import http from 'http'
+import multer from 'multer'
 import { Server as SocketIOServer } from 'socket.io'
 import { flowsEndpoint } from './flows-endpoint'
 import { isApiStep } from './guards'
@@ -41,6 +42,7 @@ export const createServer = async (
   const server = http.createServer(app)
   const io = new SocketIOServer(server)
   const loggerFactory = new LoggerFactory(config.isVerbose, io)
+  const upload = multer()
 
   const allSteps = [...systemSteps, ...lockedData.activeSteps]
   const cronManager = setupCronHandlers(lockedData, eventManager, state, loggerFactory)
@@ -58,6 +60,7 @@ export const createServer = async (
         headers: req.headers as Record<string, string | string[]>,
         pathParams: req.params,
         queryParams: req.query as Record<string, string | string[]>,
+        files: req.files,
       }
 
       const ctx = {
@@ -129,13 +132,13 @@ export const createServer = async (
     const expressHandler = asyncHandler(step)
 
     const methods: Record<ApiRouteMethod, () => void> = {
-      GET: () => router.get(path, expressHandler),
-      POST: () => router.post(path, expressHandler),
-      PUT: () => router.put(path, expressHandler),
-      DELETE: () => router.delete(path, expressHandler),
-      PATCH: () => router.patch(path, expressHandler),
-      OPTIONS: () => router.options(path, expressHandler),
-      HEAD: () => router.head(path, expressHandler),
+      GET: () => router.get(path, handler),
+      POST: () => router.post(path, upload.any(), handler),
+      PUT: () => router.put(path, upload.any(), handler),
+      DELETE: () => router.delete(path, handler),
+      PATCH: () => router.patch(path, upload.any(), handler),
+      OPTIONS: () => router.options(path, handler),
+      HEAD: () => router.head(path, handler),
     }
 
     const methodHandler = methods[method]
