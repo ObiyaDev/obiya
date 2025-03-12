@@ -3,8 +3,8 @@
 import { FormEvent } from 'react';
 import { FieldValues, SubmissionError, SubmissionSuccess } from '@formspree/core';
 import { ValidationError } from '@formspree/react';
-import { ArrowRight } from 'lucide-react';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { BsCheckCircleFill } from 'react-icons/bs';
 
 interface FormState<T extends FieldValues> {
   errors: SubmissionError<T> | null;
@@ -32,6 +32,7 @@ export const SignupForm = ({ handleSubmit, state }: SignupFormProps) => {
           required
           className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-800 dark:text-white"
           placeholder="your.email@example.com"
+          disabled={state.succeeded}
         />
         <ValidationError prefix="Email" field="email" errors={state.errors} />
       </div>
@@ -39,22 +40,33 @@ export const SignupForm = ({ handleSubmit, state }: SignupFormProps) => {
       <ValidationError errors={state.errors} />
       
       <div>
-        <button
-          type="submit"
-          disabled={state.submitting}
-          className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-70 transition"
-        >
-          {state.submitting ? (
-            <>
-              <BiLoaderAlt className="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-900" />
-              Registering...
-            </>
-          ) : (
-            <>
-              Register
-            </>
-          )}
-        </button>
+        {state.succeeded ? (
+          <div className="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md bg-green-100 text-green-800 transition-all duration-500">
+            <div className="animate-scale-in">
+              <BsCheckCircleFill className="h-8 w-8 text-green-500" />
+            </div>
+            <span className="ml-3 animate-fade-in">
+              Thanks for registering!
+            </span>
+          </div>
+        ) : (
+          <button
+            type="submit"
+            disabled={state.submitting}
+            className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-70 transition"
+          >
+            {state.submitting ? (
+              <>
+                <BiLoaderAlt className="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-900" />
+                Registering...
+              </>
+            ) : (
+              <>
+                Register
+              </>
+            )}
+          </button>
+        )}
       </div>
     </form>
   );

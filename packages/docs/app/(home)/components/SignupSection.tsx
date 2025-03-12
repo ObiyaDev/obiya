@@ -3,10 +3,20 @@
 import { useForm } from '@formspree/react';
 import Typography from '@/components/Typography';
 import { SignupForm } from './SignupForm';
-import { SignupSuccess } from './SignupSuccess';
+import { useEffect } from 'react';
 
 export default function SignupSection() {
   const [state, handleSubmit, reset] = useForm('mqaerbdp');
+
+  useEffect(() => {
+    if (state.succeeded) {
+      const timer = setTimeout(() => {
+        reset();
+      }, 10 * 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [state.succeeded, reset]);
 
   return (
     <div className="w-full max-w-7xl mx-auto py-16 px-4">
@@ -28,11 +38,7 @@ export default function SignupSection() {
       </div>
       
       <div className="max-w-md mx-auto">
-        {state.succeeded ? (
-          <SignupSuccess onReset={() => reset()} />
-        ) : (
-          <SignupForm handleSubmit={handleSubmit} state={state} />
-        )}
+        <SignupForm handleSubmit={handleSubmit} state={state} />
       </div>
     </div>
   );
