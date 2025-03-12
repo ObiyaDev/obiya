@@ -41,7 +41,7 @@ export const SignupForm = ({ handleSubmit, state }: SignupFormProps) => {
       
       <div>
         {state.succeeded ? (
-          <div className="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md bg-green-100 text-green-800 transition-all duration-500">
+          <div className="w-full flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md bg-white text-green-800 transition-all duration-500">
             <div className="animate-scale-in">
               <BsCheckCircleFill className="h-8 w-8 text-green-500" />
             </div>

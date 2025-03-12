@@ -15,10 +15,10 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-[#0E002D] to-[#2F0093]">
       <HeroSection copied={copied} onCopy={copyToClipboard} />
-      <SignupSection />
       <FeaturesSection />
       <WorkbenchSection />
       <CodeExampleSection />
+      <SignupSection />
       <CardSection />
       <GetStartedSection copied={copied} onCopy={copyToClipboard} />
     </div>
