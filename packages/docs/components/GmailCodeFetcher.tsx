@@ -11,10 +11,11 @@ const BASE_PATH = 'examples/gmail-workflow/steps'
 interface GmailTabProps {
   value: string;
   tab: string;
+  fileExtension?: string;
 }
 
-export const GmailTab = ({ value, tab }: GmailTabProps) => {
-  const fileName = `${value}.step.ts`
+export const GmailTab = ({ value, tab, fileExtension = 'ts' }: GmailTabProps) => {
+  const fileName = `${value}.step.${fileExtension}`
   const filePath = `${BASE_PATH}/${fileName}`
   const { code, loading, error } = useGitHubCode({
     repo: REPO,
