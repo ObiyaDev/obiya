@@ -15,22 +15,17 @@ export const config: ApiRouteConfig = {
   emits: ['TEST_EVENT'],
   path: '/test-express-middleware',
   method: 'POST',
-  middleware: [
-    loggerMiddleware,
-    corsMiddleware(['*']),
-    expressJsonValidator,
-    expressRateLimiter
-  ]
+  middleware: [loggerMiddleware, corsMiddleware(['*']), expressJsonValidator, expressRateLimiter],
 }
 
 export const handler: ApiRouteHandler = async (req: ApiRequest, ctx: FlowContext): Promise<ApiResponse> => {
   ctx.logger.info('Processing api-with-express-middleware', req)
-  
+
   return {
     status: 200,
-    body: { 
+    body: {
       message: 'Success',
-      receivedData: req.body
-    }
+      receivedData: req.body,
+    },
   }
-} 
+}

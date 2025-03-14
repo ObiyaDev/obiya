@@ -11,18 +11,18 @@ export const config: ApiRouteConfig = {
     loggerMiddleware,
     corsMiddleware(['*']),
     rateLimitMiddleware(100, 60000), // 100 requests per minute
-    authMiddleware('admin')
-  ]
+    authMiddleware('admin'),
+  ],
 }
 
 export const handler: ApiRouteHandler = async (req: ApiRequest, ctx: FlowContext): Promise<ApiResponse> => {
   ctx.logger.info('Processing api-step-with-middleware', req)
-  
+
   return {
     status: 200,
-    body: { 
+    body: {
       message: 'Success',
-      receivedData: req.body
-    }
+      receivedData: req.body,
+    },
   }
-} 
+}
