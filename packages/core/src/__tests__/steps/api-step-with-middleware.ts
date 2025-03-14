@@ -1,5 +1,5 @@
 import { ApiRequest, ApiResponse, ApiRouteConfig, ApiRouteHandler, FlowContext } from '../../types'
-import { authMiddleware, corsMiddleware, loggerMiddleware, rateLimitMiddleware } from '../../middlewares'
+import { authMiddleware, corsMiddleware, loggerMiddleware, rateLimitMiddleware } from '../utils/middlewares'
 
 export const config: ApiRouteConfig = {
   type: 'api',
