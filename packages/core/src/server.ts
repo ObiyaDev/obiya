@@ -102,7 +102,6 @@ export const createServer = async (
 
     const handler = asyncHandler(step)
     
-    // Get middleware if defined
     const middleware = step.config.middleware || []
 
     const methods: Record<ApiRouteMethod, () => void> = {

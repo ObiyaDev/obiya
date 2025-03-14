@@ -2,10 +2,8 @@ import { ApiRequest, ApiResponse, ApiRouteConfig, ApiRouteHandler, FlowContext }
 import express from 'express'
 import { corsMiddleware, loggerMiddleware } from '../../middlewares'
 
-// Example Express middleware
 const expressJsonValidator = express.json({ strict: true })
 const expressRateLimiter = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // Simple rate limiting example
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
   console.log(`Request from IP: ${ip}`)
   next()
@@ -20,7 +18,6 @@ export const config: ApiRouteConfig = {
   middleware: [
     loggerMiddleware,
     corsMiddleware(['*']),
-    // Use Express middleware directly
     expressJsonValidator,
     expressRateLimiter
   ]

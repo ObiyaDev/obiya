@@ -88,7 +88,6 @@ describe('Middleware Management', () => {
   })
   
   it('should update middleware when re-adding a route', async () => {
-    // Create a step with middleware
     const step: Step<ApiRouteConfig> = {
       filePath: path.join(__dirname, 'steps', 'api-step.ts'),
       version: '1.0.0',

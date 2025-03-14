@@ -37,7 +37,6 @@ export const rateLimitMiddleware = (limit: number, windowMs: number): ApiMiddlew
       requests[ipStr] = []
     }
     
-    // Remove old requests outside the time window
     requests[ipStr] = requests[ipStr].filter(time => now - time < windowMs)
     
     if (requests[ipStr].length >= limit) {
@@ -45,7 +44,6 @@ export const rateLimitMiddleware = (limit: number, windowMs: number): ApiMiddlew
       return
     }
     
-    // Add current request
     requests[ipStr].push(now)
     next()
   }
