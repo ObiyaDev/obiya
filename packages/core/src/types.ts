@@ -1,5 +1,6 @@
 import { z, ZodObject } from 'zod'
 import { BaseLogger, Logger } from './logger'
+import { RequestHandler } from 'express'
 
 export type InternalStateManager = {
   get<T>(traceId: string, key: string): Promise<T | null>
@@ -50,6 +51,8 @@ export type NoopConfig = {
 
 export type ApiRouteMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD'
 
+export type ApiMiddleware = RequestHandler
+
 export type ApiRouteConfig = {
   type: 'api'
   name: string
@@ -60,6 +63,7 @@ export type ApiRouteConfig = {
   virtualEmits?: Emit[]
   virtualSubscribes?: string[]
   flows?: string[]
+  middleware?: ApiMiddleware[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bodySchema?: ZodObject<any>
   /**

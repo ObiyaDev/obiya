@@ -101,14 +101,18 @@ export const createServer = async (
     globalLogger.debug('[API] Registering route', step.config)
 
     const handler = asyncHandler(step)
+    
+    // Get middleware if defined
+    const middleware = step.config.middleware || []
+
     const methods: Record<ApiRouteMethod, () => void> = {
-      GET: () => router.get(path, handler),
-      POST: () => router.post(path, handler),
-      PUT: () => router.put(path, handler),
-      DELETE: () => router.delete(path, handler),
-      PATCH: () => router.patch(path, handler),
-      OPTIONS: () => router.options(path, handler),
-      HEAD: () => router.head(path, handler),
+      GET: () => router.get(path, ...middleware, handler),
+      POST: () => router.post(path, ...middleware, handler),
+      PUT: () => router.put(path, ...middleware, handler),
+      DELETE: () => router.delete(path, ...middleware, handler),
+      PATCH: () => router.patch(path, ...middleware, handler),
+      OPTIONS: () => router.options(path, ...middleware, handler),
+      HEAD: () => router.head(path, ...middleware, handler),
     }
 
     const methodHandler = methods[method]

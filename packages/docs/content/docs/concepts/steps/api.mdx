@@ -23,10 +23,123 @@ The following properties are specific to the API Step, in addition to the [commo
         'In TS/JS we use zod to validate the request body, in Python/Ruby we use json schema to validate the request body.',
       type: 'JSON Schema',
     },
+    middleware: {
+      description:
+        'An array of middleware functions to be applied to the request before it reaches the handler. Middleware functions can perform tasks like authentication, logging, rate limiting, etc.',
+      type: 'ApiMiddleware[]',
+    },
   }}
 />
 
 The following examples showcase how to configure an **API Step**
+
+## Using Middleware
+
+API Steps support middleware functions that can be applied to requests before they reach your handler. Middleware functions can perform tasks such as:
+
+- Authentication and authorization
+- Request logging
+- Rate limiting
+- CORS handling
+- Request validation
+- Response transformation
+
+### Middleware Function Signature
+
+```typescript
+import { RequestHandler } from 'express'
+
+type ApiMiddleware = RequestHandler
+```
+
+Express middleware functions follow this pattern:
+
+```typescript
+(req: Request, res: Response, next: NextFunction) => void
+```
+
+### Example Middleware Usage
+
+```typescript
+import { authMiddleware, corsMiddleware, loggerMiddleware } from './middlewares'
+
+export const config: ApiRouteConfig = {
+  type: 'api',
+  name: 'protected-endpoint',
+  path: '/api/protected',
+  method: 'POST',
+  emits: ['USER_ACTION'],
+  middleware: [
+    loggerMiddleware,
+    corsMiddleware(['https://example.com']),
+    authMiddleware('admin')
+  ]
+}
+
+export const handler = async (req, ctx) => {
+  // This handler will only be called if all middleware pass
+  return {
+    status: 200,
+    body: { message: 'Protected data accessed successfully' }
+  }
+}
+```
+
+### Creating Custom Middleware
+
+You can create your own Express middleware functions:
+
+```typescript
+import { ApiMiddleware } from 'motia'
+
+const customMiddleware: ApiMiddleware = (req, res, next) => {
+  // Perform operations on the request
+  req.body.timestamp = Date.now()
+  
+  // Set response headers
+  res.setHeader('X-Custom-Header', 'Custom Value')
+  
+  // Call next() to continue to the next middleware or handler
+  next()
+  
+  // Or send a response and stop the chain
+  // res.status(403).json({ error: 'Access denied' })
+}
+```
+### Using Express Middleware
+
+You can use Express middleware directly with your API steps:
+
+```typescript
+import express from 'express'
+import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
+import { corsMiddleware } from 'motia'
+
+// Create Express middleware
+const securityMiddleware = helmet()
+const rateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+})
+
+export const config: ApiRouteConfig = {
+  type: 'api',
+  name: 'secure-endpoint',
+  path: '/api/secure',
+  method: 'POST',
+  emits: ['SECURE_ACTION'],
+  middleware: [
+    // Use Express middleware directly
+    securityMiddleware,
+    rateLimiter,
+    // Mix with Motia middleware
+    corsMiddleware(['*'])
+  ]
+}
+```
+
+This allows you to leverage the vast ecosystem of Express middleware in your Motia API steps.
 
 <Tabs items={['TypeScript', 'JavaScript', 'Python', 'Ruby']}>
   <Tab value="TypeScript">
