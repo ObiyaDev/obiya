@@ -1,6 +1,5 @@
 import { z, ZodObject } from 'zod'
 import { BaseLogger, Logger } from './logger'
-import { RequestHandler } from 'express'
 
 export type InternalStateManager = {
   get<T>(traceId: string, key: string): Promise<T | null>
@@ -51,7 +50,11 @@ export type NoopConfig = {
 
 export type ApiRouteMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD'
 
-export type ApiMiddleware = RequestHandler
+export type ApiMiddleware = (
+  req: ApiRequest, 
+  ctx: FlowContext, 
+  next: () => Promise<ApiResponse>
+) => Promise<ApiResponse>
 
 export type ApiRouteConfig = {
   type: 'api'
