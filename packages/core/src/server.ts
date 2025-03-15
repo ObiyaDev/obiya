@@ -101,13 +101,13 @@ export const createServer = async (
 
       try {
         const middleware = step.config.middleware || []
-        
+
         const result = await composeMiddleware(...middleware)(request, ctx, finalHandler)
-        
+
         if (result.headers) {
           Object.entries(result.headers).forEach(([key, value]) => res.setHeader(key, value))
         }
-        
+
         res.status(result.status)
         res.json(result.body)
       } catch (error) {
@@ -127,7 +127,7 @@ export const createServer = async (
     globalLogger.debug('[API] Registering route', step.config)
 
     const expressHandler = asyncHandler(step)
-    
+
     const methods: Record<ApiRouteMethod, () => void> = {
       GET: () => router.get(path, expressHandler),
       POST: () => router.post(path, expressHandler),

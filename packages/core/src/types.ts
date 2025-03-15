@@ -51,9 +51,9 @@ export type NoopConfig = {
 export type ApiRouteMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD'
 
 export type ApiMiddleware = (
-  req: ApiRequest, 
-  ctx: FlowContext, 
-  next: () => Promise<ApiResponse>
+  req: ApiRequest,
+  ctx: FlowContext,
+  next: () => Promise<ApiResponse>,
 ) => Promise<ApiResponse>
 
 export type ApiRouteConfig = {

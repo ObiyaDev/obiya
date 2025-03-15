@@ -10,15 +10,15 @@ import { Printer } from '../printer'
 describe('Middleware Management', () => {
   let server: ReturnType<typeof createServer> extends Promise<infer T> ? T : never
 
-  const testMiddleware: ApiMiddleware = async (req, ctx, next) => {
+  const testMiddleware: ApiMiddleware = async (req, _, next) => {
     req.body.middlewareApplied = true
     return next()
   }
 
-  const blockingMiddleware: ApiMiddleware = async (req, ctx, next) => {
+  const blockingMiddleware: ApiMiddleware = async () => {
     return {
       status: 403,
-      body: { error: 'Access denied by middleware' }
+      body: { error: 'Access denied by middleware' },
     }
   }
 
