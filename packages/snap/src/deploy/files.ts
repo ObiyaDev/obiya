@@ -4,15 +4,8 @@ import { StepsConfig, ZipFileInfo, DeploymentResult, DeploymentSummary } from '.
 import { logger } from './logger'
 
 export class FileService {
-  static retrieveZipFiles(projectDir: string = process.cwd()): ZipFileInfo[] {
+  static retrieveZipFiles(projectDir: string, stepsConfig: StepsConfig): ZipFileInfo[] {
     const distDir = path.join(projectDir, 'dist')
-    const stepsConfigPath = path.join(distDir, 'motia.steps.json')
-    
-    if (!fs.existsSync(stepsConfigPath)) {
-      throw new Error('motia.steps.json not found. Please run the build command first.')
-    }
-    
-    const stepsConfig: StepsConfig = JSON.parse(fs.readFileSync(stepsConfigPath, 'utf-8'))
     const zipFiles: ZipFileInfo[] = []
     
     for (const bundlePath in stepsConfig) {
@@ -21,14 +14,12 @@ export class FileService {
       
       if (fs.existsSync(zipPath)) {
         const stepName = stepConfig.config.name || path.basename(bundlePath, '.zip')
-        const flowNames = stepConfig.config.flows || []
         
         zipFiles.push({
           zipPath,
           bundlePath,
           config: stepConfig,
-          stepName,
-          flowNames
+          stepName
         })
       } else {
         logger.warning(`Zip file not found: ${zipPath}`)
@@ -42,8 +33,10 @@ export class FileService {
     const flowGroups: Record<string, ZipFileInfo[]> = {}
     
     zipFiles.forEach(zipFile => {
-      if (zipFile.flowNames && zipFile.flowNames.length > 0) {
-        zipFile.flowNames.forEach(flowName => {
+      const flowNames = zipFile.config.config?.flows || []
+      
+      if (flowNames && flowNames.length > 0) {
+        flowNames.forEach((flowName: string) => {
           if (!flowGroups[flowName]) {
             flowGroups[flowName] = []
           }
@@ -87,7 +80,7 @@ export class FileService {
           .filter(result => result.flowName === flowName)
           .map(result => ({
             name: result.stepName,
-            type: result.stepType,
+            type: result.stepType as 'node' | 'python',
             path: result.stepPath,
             success: result.success,
             deploymentId: result.deploymentId,
@@ -97,6 +90,6 @@ export class FileService {
     }
     
     fs.writeFileSync(summaryPath, JSON.stringify(summary, null, 2))
-    logger.summaryWritten(summaryPath)
+    logger.info(`Deployment summary written to: ${summaryPath}`)
   }
 } 

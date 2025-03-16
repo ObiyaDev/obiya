@@ -22,7 +22,7 @@ export interface StepsConfig {
  * Configuration for deployment
  */
 export interface DeploymentConfig {
-  apiKey?: string
+  apiKey: string
   environment: string
   version: string
 }
@@ -33,11 +33,10 @@ export interface DeploymentConfig {
 export interface DeploymentResult {
   bundlePath: string
   deploymentId?: string
-  stepType: 'node' | 'python'
-  stepName?: string
+  stepType: string
+  stepName: string
   stepPath?: string
-  flowName?: string
-  stepConfig?: Record<string, any>
+  flowName: string
   environment: string
   version: string
   error?: string
@@ -50,9 +49,11 @@ export interface DeploymentResult {
 export interface ZipFileInfo {
   zipPath: string
   bundlePath: string
-  config: StepConfig
   stepName: string
-  flowNames: string[]
+  config: {
+    type: string
+    [key: string]: any
+  }
 }
 
 /**
@@ -76,4 +77,13 @@ export interface DeploymentSummary {
       error?: string
     }[]
   }[]
+}
+
+export interface UploadResult {
+  bundlePath: string
+  uploadId?: string
+  stepType: string
+  stepName: string
+  error?: string
+  success: boolean
 } 
