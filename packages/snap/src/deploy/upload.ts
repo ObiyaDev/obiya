@@ -4,43 +4,36 @@ import axios from 'axios'
 import FormData from 'form-data'
 import { DeploymentConfig, ZipFileInfo } from './types'
 import { logger } from './logger'
-import { 
-  DeploymentError, 
-  ZipFileNotFoundError, 
-  EmptyStepsConfigError,
-  GenericDeploymentError
-} from './error'
+import { DeploymentError, ZipFileNotFoundError, EmptyStepsConfigError, GenericDeploymentError } from './error'
 import { handleAxiosError } from './utils/error-handler'
 
 export const API_URL = 'https://api.motiadev.com/deploy'
 
 export class DeploymentService {
   private async makeApiRequest<T>(
-    url: string, 
-    data: any, 
-    headers: Record<string, string>, 
+    url: string,
+    data: any,
+    headers: Record<string, string>,
     operation: string,
-    options: { 
-      timeout?: number;
-      maxContentLength?: number;
-      maxBodyLength?: number;
-    } = {}
+    options: {
+      timeout?: number
+      maxContentLength?: number
+      maxBodyLength?: number
+    } = {},
   ): Promise<T> {
     try {
-      const response = await axios.post(url, data, { 
+      const response = await axios.post(url, data, {
         headers,
         timeout: options.timeout || 30000,
-        ...options
+        ...options,
       })
-      
+
       if (response.status >= 200 && response.status < 300) {
-        return response.data;
+        return response.data
       } else {
-        throw new DeploymentError(
-          `API responded with status ${response.status}: ${response.statusText}`,
-          'API_ERROR',
-          { response: response.data }
-        );
+        throw new DeploymentError(`API responded with status ${response.status}: ${response.statusText}`, 'API_ERROR', {
+          response: response.data,
+        })
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -56,129 +49,120 @@ export class DeploymentService {
     apiKey: string,
     environment: string = 'dev',
     version: string = 'latest',
-    deploymentId?: string
+    deploymentId?: string,
   ): Promise<string> {
     if (!fs.existsSync(zipPath)) {
-      throw new ZipFileNotFoundError(zipPath);
+      throw new ZipFileNotFoundError(zipPath)
     }
 
     logger.info(`Uploading zip file: ${path.basename(zipPath)}`)
-    
+
     const formData = new FormData()
-    
+
     try {
       formData.append('file', fs.createReadStream(zipPath), {
         filename: path.basename(zipPath),
-        contentType: 'application/zip'
+        contentType: 'application/zip',
       })
     } catch (error) {
-      throw new GenericDeploymentError(
-        error, 
-        'FILE_READ_ERROR', 
-        `Failed to read zip file ${zipPath}`
-      );
+      throw new GenericDeploymentError(error, 'FILE_READ_ERROR', `Failed to read zip file ${zipPath}`)
     }
-    
+
     formData.append('path', relativePath)
     formData.append('environment', environment)
     formData.append('version', version)
-    
+
     if (deploymentId) {
       formData.append('deploymentId', deploymentId)
     }
-    
+
     const headers: Record<string, string> = {
       ...formData.getHeaders(),
-      'Authorization': `Bearer ${apiKey}`
+      Authorization: `Bearer ${apiKey}`,
     }
-    
+
     const response = await this.makeApiRequest<{ uploadId: string }>(
-      `${API_URL}/files`, 
-      formData, 
-      headers, 
+      `${API_URL}/files`,
+      formData,
+      headers,
       'zip file',
       {
         maxContentLength: 50 * 1024 * 1024, // 50MB max file size
-        maxBodyLength: 50 * 1024 * 1024 // 50MB max body size
-      }
-    );
-    
-    return response.uploadId || `upload-${Date.now()}`;
+        maxBodyLength: 50 * 1024 * 1024, // 50MB max body size
+      },
+    )
+
+    return response.uploadId || `upload-${Date.now()}`
   }
 
   async uploadStepsConfig(
     stepsConfig: Record<string, any>,
     apiKey: string,
     environment: string = 'dev',
-    version: string = 'latest'
+    version: string = 'latest',
   ): Promise<string> {
     if (!stepsConfig || Object.keys(stepsConfig).length === 0) {
-      throw new EmptyStepsConfigError();
+      throw new EmptyStepsConfigError()
     }
-    
+
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    };
-    
-    const data = { 
+      Authorization: `Bearer ${apiKey}`,
+    }
+
+    const data = {
       config: stepsConfig,
       environment,
       version,
-      createDeployment: true
-    };
-    
+      createDeployment: true,
+    }
+
     const response = await this.makeApiRequest<{ deploymentId: string }>(
-      `${API_URL}/config`, 
-      data, 
-      headers, 
-      'configuration'
-    );
-    
-    return response.deploymentId;
+      `${API_URL}/config`,
+      data,
+      headers,
+      'configuration',
+    )
+
+    return response.deploymentId
   }
 
   async finalizeDeployment(
     deploymentId: string,
     uploadIds: string[],
-    deploymentConfig: DeploymentConfig
-  ): Promise<void> {    
+    deploymentConfig: DeploymentConfig,
+  ): Promise<void> {
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${deploymentConfig.apiKey}`,
+      Authorization: `Bearer ${deploymentConfig.apiKey}`,
       'X-Environment': deploymentConfig.environment,
-      'X-Version': deploymentConfig.version
-    };
-    
+      'X-Version': deploymentConfig.version,
+    }
+
     const data = {
       deploymentId,
       uploadIds,
       environment: deploymentConfig.environment,
-      version: deploymentConfig.version
-    };
-    
-    await this.makeApiRequest<void>(
-      `${API_URL}/finalize`, 
-      data, 
-      headers, 
-      'deployment finalization'
-    );
+      version: deploymentConfig.version,
+    }
+
+    await this.makeApiRequest<void>(`${API_URL}/finalize`, data, headers, 'deployment finalization')
   }
 
   async uploadStepZip(
     zipFile: ZipFileInfo,
     deploymentConfig: DeploymentConfig,
-    deploymentId?: string
+    deploymentId?: string,
   ): Promise<string> {
     return this.uploadZipFile(
-      zipFile.zipPath, 
-      zipFile.bundlePath, 
-      deploymentConfig.apiKey, 
-      deploymentConfig.environment, 
+      zipFile.zipPath,
+      zipFile.bundlePath,
+      deploymentConfig.apiKey,
+      deploymentConfig.environment,
       deploymentConfig.version,
-      deploymentId
+      deploymentId,
     )
   }
-} 
+}
 
 export const deploymentService = new DeploymentService()

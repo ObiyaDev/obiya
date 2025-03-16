@@ -3,82 +3,73 @@ import path from 'path'
 import { DeploymentResult, DeploymentConfig } from './types'
 import { FileService } from './files'
 import { logger } from './logger'
-import { 
-  GenericDeploymentError,
-  MissingApiKeyError,
-  MissingStepsConfigError
-} from './error'
-import { deploymentApiService } from './services'
+import { GenericDeploymentError, MissingApiKeyError, MissingStepsConfigError } from './error'
+import { deploymentApiService } from './services/deployment-api-service'
 
 export class DeploymentManager {
   async deploy(
     apiKey: string,
     projectDir: string = process.cwd(),
     environment: string = 'dev',
-    version: string = 'latest'
+    version: string = 'latest',
   ): Promise<void> {
     if (!apiKey) {
-      throw new MissingApiKeyError();
+      throw new MissingApiKeyError()
     }
 
     const distDir = path.join(projectDir, 'dist')
     const stepsConfigPath = path.join(distDir, 'motia.steps.json')
-    
+
     if (!fs.existsSync(stepsConfigPath)) {
-      throw new MissingStepsConfigError();
+      throw new MissingStepsConfigError()
     }
-    
+
     const stepsConfig = JSON.parse(fs.readFileSync(stepsConfigPath, 'utf-8'))
     const zipFiles = FileService.retrieveZipFiles(projectDir, stepsConfig)
-    
+
     if (zipFiles.length === 0) {
       logger.warning('No zip files found to deploy')
       return
     }
-    
+
     logger.info(`Found ${zipFiles.length} zip files to deploy`)
-    
+
     const deploymentConfig: DeploymentConfig = {
       apiKey,
       environment,
-      version
+      version,
     }
-    
+
     logger.info(`Deploying to environment: ${environment}, version: ${version}`)
-    
+
     const flowGroups = FileService.groupStepsByFlow(zipFiles)
     logger.info(`Deploying steps for ${Object.keys(flowGroups).length} flows`)
-    
+
     // First, upload the steps configuration to get a deploymentId
-    const deploymentId = await deploymentApiService.uploadConfiguration(
-      stepsConfig, 
-      apiKey, 
-      environment, 
-      version
-    )
-    
+    const deploymentId = await deploymentApiService.uploadConfiguration(stepsConfig, apiKey, environment, version)
+
     // Then upload all zip files with the deploymentId
     const { uploadResults, failedUploads, allSuccessful } = await deploymentApiService.uploadZipFiles(
       zipFiles,
       apiKey,
       environment,
       version,
-      deploymentId
+      deploymentId,
     )
-    
+
     if (!allSuccessful) {
       throw new GenericDeploymentError(
         new Error(`Deployment aborted due to ${failedUploads.length} upload failures out of ${zipFiles.length} files.`),
         'UPLOAD_FAILURES',
-        `Deployment aborted due to ${failedUploads.length} upload failures out of ${zipFiles.length} files.`
-      );
+        `Deployment aborted due to ${failedUploads.length} upload failures out of ${zipFiles.length} files.`,
+      )
     }
-    
+
     // Finally, finalize the deployment
-    const uploadIds = uploadResults.map(upload => upload.uploadId as string)
+    const uploadIds = uploadResults.map((upload) => upload.uploadId as string)
     await deploymentApiService.finalizeDeployment(deploymentId, uploadIds, deploymentConfig)
-    
-    const deploymentResults: DeploymentResult[] = uploadResults.map(result => ({
+
+    const deploymentResults: DeploymentResult[] = uploadResults.map((result) => ({
       bundlePath: result.bundlePath,
       deploymentId: result.success ? deploymentId : undefined,
       stepType: result.stepType,
@@ -88,18 +79,11 @@ export class DeploymentManager {
       environment: environment,
       version: version,
       error: result.error,
-      success: result.success
+      success: result.success,
     }))
-    
-    FileService.writeDeploymentResults(
-      projectDir,
-      deploymentResults,
-      zipFiles,
-      flowGroups,
-      environment,
-      version
-    )
-    
+
+    FileService.writeDeploymentResults(projectDir, deploymentResults, zipFiles, flowGroups, environment, version)
+
     logger.success('Deployment process completed successfully')
   }
 }

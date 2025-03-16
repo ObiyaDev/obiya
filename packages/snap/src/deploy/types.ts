@@ -86,4 +86,4 @@ export interface UploadResult {
   stepName: string
   error?: string
   success: boolean
-} 
+}

@@ -1,11 +1,7 @@
 import { DeploymentConfig, UploadResult, ZipFileInfo } from '../types'
 import { deploymentService } from '../upload'
 import { logger } from '../logger'
-import { 
-  ConfigUploadFailureError, 
-  DeploymentFailureError,
-  FailedUpload
-} from '../error'
+import { ConfigUploadFailureError, DeploymentFailureError, FailedUpload } from '../error'
 import { formatError, logFailures } from '../utils/error-handler'
 
 export class DeploymentApiService {
@@ -15,7 +11,7 @@ export class DeploymentApiService {
     stepsConfig: Record<string, any>,
     apiKey: string,
     environment: string,
-    version: string
+    version: string,
   ): Promise<string> {
     try {
       logger.info('Uploading configuration...')
@@ -35,79 +31,79 @@ export class DeploymentApiService {
     apiKey: string,
     environment: string,
     version: string,
-    deploymentId: string
-  ): Promise<{ 
-    uploadResults: UploadResult[], 
-    failedUploads: FailedUpload[], 
-    allSuccessful: boolean 
+    deploymentId: string,
+  ): Promise<{
+    uploadResults: UploadResult[]
+    failedUploads: FailedUpload[]
+    allSuccessful: boolean
   }> {
     logger.info('Uploading zip files...')
-    
+
     let allSuccessful = true
     const uploadResults: UploadResult[] = []
     const failedUploads: FailedUpload[] = []
-    
+
     for (const zipFile of zipFiles) {
       try {
         const relativePath = zipFile.bundlePath
         const uploadId = await deploymentService.uploadZipFile(
-          zipFile.zipPath, 
-          relativePath, 
-          apiKey, 
-          environment, 
+          zipFile.zipPath,
+          relativePath,
+          apiKey,
+          environment,
           version,
-          deploymentId
+          deploymentId,
         )
-        
+
         uploadResults.push({
           bundlePath: zipFile.bundlePath,
           uploadId,
           stepType: zipFile.config.type,
           stepName: zipFile.stepName,
-          success: true
+          success: true,
         })
-        
+
         logger.success(`Uploaded ${zipFile.bundlePath}`)
       } catch (error) {
         allSuccessful = false
         const errorMessage = formatError(error)
-        
+
         logger.error(`Failed to upload ${zipFile.bundlePath}: ${errorMessage}`)
-        
+
         failedUploads.push({
           path: zipFile.bundlePath,
           name: zipFile.stepName,
           type: zipFile.config.type,
-          error: errorMessage
+          error: errorMessage,
         })
-        
+
         uploadResults.push({
           bundlePath: zipFile.bundlePath,
           stepType: zipFile.config.type,
           stepName: zipFile.stepName,
           error: errorMessage,
-          success: false
+          success: false,
         })
       }
     }
-    
+
     if (allSuccessful) {
       logger.success(`All ${zipFiles.length} zip files uploaded successfully`)
     } else {
       logFailures(failedUploads, zipFiles.length)
     }
-    
+
     return {
       uploadResults,
       failedUploads,
-      allSuccessful
+      allSuccessful,
     }
   }
 
   async finalizeDeployment(
     deploymentId: string,
     uploadIds: string[],
-    deploymentConfig: DeploymentConfig
+    deploymentConfig: DeploymentConfig,
   ): Promise<void> {
     try {
       logger.info('Finalizing deployment...')
@@ -120,4 +116,4 @@ export class DeploymentApiService {
   }
 }
 
-export const deploymentApiService = new DeploymentApiService() 
+export const deploymentApiService = new DeploymentApiService()

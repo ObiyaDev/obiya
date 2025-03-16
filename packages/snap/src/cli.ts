@@ -15,8 +15,7 @@ require('ts-node').register({
 const packageJsonPath = path.resolve(__dirname, '..', '..', 'package.json')
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
 
-program
-  .version(packageJson.version, '-v, --version', 'Output the current version')
+program.version(packageJson.version, '-v, --version', 'Output the current version')
 
 program
   .command('version')

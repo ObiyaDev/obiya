@@ -1,14 +1,12 @@
-import { AxiosError } from 'axios'
-
 export class DeploymentError extends Error {
-  public readonly code: string;
-  public readonly context?: Record<string, any>;
+  public readonly code: string
+  public readonly context?: Record<string, string>
 
-  constructor(message: string, code: string, context?: Record<string, any>) {
-    super(message);
-    this.name = 'DeploymentError';
-    this.code = code;
-    this.context = context;
-    Object.setPrototypeOf(this, DeploymentError.prototype);
+  constructor(message: string, code: string, context?: Record<string, string>) {
+    super(message)
+    this.name = 'DeploymentError'
+    this.code = code
+    this.context = context
+    Object.setPrototypeOf(this, DeploymentError.prototype)
   }
-} 
+}
