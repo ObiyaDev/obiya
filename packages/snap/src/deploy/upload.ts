@@ -10,9 +10,9 @@ import { handleAxiosError } from './utils/error-handler'
 export const API_URL = 'https://api.motiadev.com/deploy'
 
 export class DeploymentService {
-  private async makeApiRequest<T>(
+  private async makeApiRequest<T, D = unknown>(
     url: string,
-    data: any,
+    data: D,
     headers: Record<string, string>,
     operation: string,
     options: {
@@ -22,7 +22,7 @@ export class DeploymentService {
     } = {},
   ): Promise<T> {
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post<T>(url, data, {
         headers,
         timeout: options.timeout || 30000,
         ...options,
@@ -96,7 +96,7 @@ export class DeploymentService {
   }
 
   async uploadStepsConfig(
-    stepsConfig: Record<string, any>,
+    stepsConfig: { [key: string]: unknown },
     apiKey: string,
     environment: string = 'dev',
     version: string = 'latest',

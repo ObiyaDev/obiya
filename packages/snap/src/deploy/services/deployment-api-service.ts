@@ -8,7 +8,7 @@ export class DeploymentApiService {
   constructor() {}
 
   async uploadConfiguration(
-    stepsConfig: Record<string, any>,
+    stepsConfig: { [key: string]: unknown },
     apiKey: string,
     environment: string,
     version: string,

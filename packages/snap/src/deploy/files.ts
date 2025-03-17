@@ -34,8 +34,8 @@ export class FileService {
 
     zipFiles.forEach((zipFile) => {
       const flowNames = zipFile.config.config?.flows || []
-
-      if (flowNames && flowNames.length > 0) {
+      const isArray = Array.isArray(flowNames)
+      if (isArray && flowNames.length > 0) {
         flowNames.forEach((flowName: string) => {
           if (!flowGroups[flowName]) {
             flowGroups[flowName] = []

@@ -188,9 +188,7 @@ export const build = async (): Promise<void> => {
     } else if (step.filePath.endsWith('.ts') || step.filePath.endsWith('.js')) {
       return promises.push(buildNode(step, builder))
     } else if (step.filePath.endsWith('.py')) {
-      const setupPromise = !builder.modulegraphInstalled
-        ? installModulegraph(builder)
-        : Promise.resolve()
+      const setupPromise = !builder.modulegraphInstalled ? installModulegraph(builder) : Promise.resolve()
 
       setupPromise.then(() => promises.push(buildPython(step, builder)))
     } else {

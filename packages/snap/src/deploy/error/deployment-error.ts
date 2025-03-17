@@ -1,8 +1,8 @@
 export class DeploymentError extends Error {
   public readonly code: string
-  public readonly context?: Record<string, string>
+  public readonly context?: { [key: string]: unknown }
 
-  constructor(message: string, code: string, context?: Record<string, string>) {
+  constructor(message: string, code: string, context?: { [key: string]: unknown }) {
     super(message)
     this.name = 'DeploymentError'
     this.code = code

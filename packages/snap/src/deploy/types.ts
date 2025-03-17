@@ -8,7 +8,7 @@
 export interface StepConfig {
   type: 'node' | 'python'
   entrypointPath: string
-  config: Record<string, any>
+  config: { [key: string]: string }
 }
 
 /**
@@ -50,10 +50,7 @@ export interface ZipFileInfo {
   zipPath: string
   bundlePath: string
   stepName: string
-  config: {
-    type: string
-    [key: string]: any
-  }
+  config: StepConfig
 }
 
 /**
