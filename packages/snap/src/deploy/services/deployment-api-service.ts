@@ -100,14 +100,10 @@ export class DeploymentApiService {
     }
   }
 
-  async finalizeDeployment(
-    deploymentId: string,
-    uploadIds: string[],
-    deploymentConfig: DeploymentConfig,
-  ): Promise<void> {
+  async startDeployment(deploymentId: string, deploymentConfig: DeploymentConfig): Promise<void> {
     try {
       logger.info('Finalizing deployment...')
-      await deploymentService.finalizeDeployment(deploymentId, uploadIds, deploymentConfig)
+      await deploymentService.startDeployment(deploymentId, deploymentConfig)
     } catch (error) {
       const errorMessage = formatError(error)
       logger.error(`Failed to finalize deployment: ${errorMessage}`)

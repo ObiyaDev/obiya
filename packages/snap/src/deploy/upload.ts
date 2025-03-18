@@ -78,7 +78,7 @@ export class DeploymentService {
 
     const headers: Record<string, string> = {
       ...formData.getHeaders(),
-      Authorization: `Bearer ${apiKey}`,
+      'x-api-key': apiKey,
     }
 
     const response = await this.makeApiRequest<{ uploadId: string }>(
@@ -107,7 +107,7 @@ export class DeploymentService {
 
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
+      'x-api-key': apiKey,
     }
 
     const data = {
@@ -127,26 +127,19 @@ export class DeploymentService {
     return response.deploymentId
   }
 
-  async finalizeDeployment(
-    deploymentId: string,
-    uploadIds: string[],
-    deploymentConfig: DeploymentConfig,
-  ): Promise<void> {
+  async startDeployment(deploymentId: string, deploymentConfig: DeploymentConfig): Promise<void> {
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${deploymentConfig.apiKey}`,
-      'X-Environment': deploymentConfig.environment,
-      'X-Version': deploymentConfig.version,
+      'x-api-key': deploymentConfig.apiKey,
     }
 
     const data = {
       deploymentId,
-      uploadIds,
       environment: deploymentConfig.environment,
       version: deploymentConfig.version,
     }
 
-    await this.makeApiRequest<void>(`${API_URL}/finalize`, data, headers, 'deployment finalization')
+    await this.makeApiRequest<void>(`${API_URL}/start`, data, headers, 'deployment finalization')
   }
 
   async uploadStepZip(
