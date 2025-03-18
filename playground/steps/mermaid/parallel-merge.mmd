@@ -1,0 +1,20 @@
+flowchart TD
+    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff
+    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff
+    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinComplete_step_ts["⚡ Join Complete"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinStep_step_ts["⚡ join-step"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_noopStartButton_step_ts["⚙️ Test the flow"]:::noopStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_startParallelMerge_step_ts["🌐 Parallel Merge"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepA_step_ts["⚡ stepA"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepB_step_py["⚡ stepB"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepC_step_rb["⚡ stepC"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinStep_step_ts -->|pms.join.complete| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinComplete_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_noopStartButton_step_ts -->|/api/parallel-merge| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_startParallelMerge_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_startParallelMerge_step_ts -->|pms.start| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepA_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_startParallelMerge_step_ts -->|pms.start| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepB_step_py
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_startParallelMerge_step_ts -->|pms.start| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepC_step_rb
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepA_step_ts -->|pms.stepA.done| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinStep_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepB_step_py -->|pms.stepB.done| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinStep_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_stepC_step_rb -->|pms.stepC.done| _Users_mikepiccolo_code_motia_playground_steps_parallelMergeState_joinStep_step_ts

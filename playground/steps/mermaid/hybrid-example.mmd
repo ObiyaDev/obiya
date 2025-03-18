@@ -1,0 +1,14 @@
+flowchart TD
+    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff
+    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff
+    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_analyzeData_step_py["⚡ Analyze Data"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_enrichData_step_ts["⚡ Enrich Data"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_finalizeData_step_ts["⚡ Fanialize Data"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_hybridApi_step_ts["🌐 Hybrid Endpoint Example"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_transformData_step_py["⚡ Transform Data"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_analyzeData_step_py -->|hybrid.analyzed| _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_finalizeData_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_enrichData_step_ts -->|hybrid.enriched| _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_analyzeData_step_py
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_hybridApi_step_ts -->|hybrid.validated| _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_transformData_step_py
+    _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_transformData_step_py -->|hybrid.transformed| _Users_mikepiccolo_code_motia_playground_steps_hybridEndpointExample_enrichData_step_ts

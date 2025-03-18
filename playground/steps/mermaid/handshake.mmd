@@ -1,0 +1,12 @@
+flowchart TD
+    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff
+    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff
+    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_apiCaller_step_ts["⚡ API Caller"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_handshakeApi_step_ts["🌐 Endpoint Server Handshake"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_nodeFinalizer_step_ts["⚡ Node Finalizer"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_nodeStarter_step_ts["⚡ Node Starter"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_apiCaller_step_ts -->|handshake.apiResponse| _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_nodeFinalizer_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_handshakeApi_step_ts -->|handshake.initiate| _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_nodeStarter_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_nodeStarter_step_ts -->|handshake.callApi| _Users_mikepiccolo_code_motia_playground_steps_endpointServerHandshake_apiCaller_step_ts

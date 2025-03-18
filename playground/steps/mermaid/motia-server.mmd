@@ -1,0 +1,10 @@
+flowchart TD
+    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff
+    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff
+    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff
+    _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_finalizer_step_ts["⚡ Finalizer"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_processor_step_ts["⚡ Processor"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_startServerExample_step_ts["🌐 Start Event"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_processor_step_ts -->|ws-server-example.processed| _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_finalizer_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_startServerExample_step_ts -->|ws-server-example.start| _Users_mikepiccolo_code_motia_playground_steps_wistroServerExample_processor_step_ts

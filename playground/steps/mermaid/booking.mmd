@@ -1,0 +1,17 @@
+flowchart TD
+    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff
+    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff
+    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff
+    _Users_mikepiccolo_code_motia_playground_steps_booking_initializeApi_step_ts["🌐 initialize"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_noop_userSendsMessage_step_ts["⚙️ User Sends Message"]:::noopStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchCustomer_step_ts["⚡ Search Customer"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchTicketUpgrades_step_ts["⚡ Search Ticket Upgrades"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchUpgradesApi_step_ts["🌐 DBZ Search Upgrades"]:::apiStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_sendText_step_ts["⚡ Send SMS"]:::eventStyle
+    _Users_mikepiccolo_code_motia_playground_steps_booking_initializeApi_step_ts -->|dbz.search-customer| _Users_mikepiccolo_code_motia_playground_steps_booking_searchCustomer_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_booking_noop_userSendsMessage_step_ts -->|/api/dbz/search-upgrades| _Users_mikepiccolo_code_motia_playground_steps_booking_searchUpgradesApi_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchCustomer_step_ts -->|dbz.send-text| _Users_mikepiccolo_code_motia_playground_steps_booking_sendText_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchTicketUpgrades_step_ts -->|dbz.send-text| _Users_mikepiccolo_code_motia_playground_steps_booking_sendText_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_booking_searchUpgradesApi_step_ts -->|dbz.evaluate-upgrades| _Users_mikepiccolo_code_motia_playground_steps_booking_searchTicketUpgrades_step_ts
+    _Users_mikepiccolo_code_motia_playground_steps_booking_sendText_step_ts -->|dbz.message-sent| _Users_mikepiccolo_code_motia_playground_steps_booking_noop_userSendsMessage_step_ts
