@@ -5,9 +5,9 @@ import os
 import asyncio
 import traceback
 from logger import Logger
-from rpc import RpcSender
+from rpc import RpcSender, serialize_for_json
 from rpc_state_manager import RpcStateManager
-from typing import Any
+from typing import Any, Optional
 
 def parse_args(arg: str) -> Any:
     from types import SimpleNamespace

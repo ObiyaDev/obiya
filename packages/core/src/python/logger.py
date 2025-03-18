@@ -1,6 +1,6 @@
 import time
 from typing import Any, Dict, Optional
-from rpc import RpcSender
+from rpc import RpcSender, serialize_for_json
 
 class Logger:
     def __init__(self, trace_id: str, flows: list[str], rpc: RpcSender):
@@ -18,11 +18,13 @@ class Logger:
         }
 
         if args:
-            # Convert SimpleNamespace to dict if needed
+            # Use our serializer to ensure args are JSON-serializable
             if hasattr(args, '__dict__'):
-                args = vars(args)
+                args = serialize_for_json(args)
             elif not isinstance(args, dict):
-                args = {"data": args}
+                args = {"data": serialize_for_json(args)}
+            
+            # Add the serialized args to the log entry
             log_entry.update(args)
 
         self.rpc.send_no_wait('log', log_entry)
