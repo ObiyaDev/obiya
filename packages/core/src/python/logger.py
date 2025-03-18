@@ -20,11 +20,9 @@ class Logger:
         if args:
             # Use our serializer to ensure args are JSON-serializable
             if hasattr(args, '__dict__'):
-                args = serialize_for_json(args)
+                args = vars(args)
             elif not isinstance(args, dict):
-                args = {"data": serialize_for_json(args)}
-            
-            # Add the serialized args to the log entry
+                args = {"data": args}
             log_entry.update(args)
 
         self.rpc.send_no_wait('log', log_entry)

@@ -31,7 +31,7 @@ class RpcSender:
         request = {
             'type': 'rpc_request',
             'method': method,
-            'args': serialize_for_json(args)
+            'args': args
         }
         # encode message as json string + newline in bytes
         bytesMessage = (json.dumps(request) + "\n").encode('utf-8')
@@ -47,7 +47,7 @@ class RpcSender:
             'type': 'rpc_request',
             'id': request_id,
             'method': method,
-            'args': serialize_for_json(args)
+            'args': args
         }
         # encode message as json string + newline in bytes
         bytesMessage = (json.dumps(request) + "\n").encode('utf-8')

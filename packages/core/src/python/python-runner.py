@@ -65,6 +65,8 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: Any) -> None:
         if contextInFirstArg:
             result = await module.handler(context)
         else:
+            if hasattr(args.data, 'body'):
+                args.data.body = serialize_for_json(args.data.body)
             result = await module.handler(args.data, context)
 
         if result:
