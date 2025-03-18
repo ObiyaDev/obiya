@@ -1,6 +1,12 @@
 // packages/snap/src/dev.ts
-import { createServer, createStepHandlers, createEventManager, globalLogger, createStateAdapter } from '@motiadev/core'
-import { MermaidGenerator } from '@motiadev/core/src/mermaid-generator'
+import {
+  createServer,
+  createStepHandlers,
+  createEventManager,
+  globalLogger,
+  createStateAdapter,
+  createMermaidGenerator,
+} from '@motiadev/core'
 import { generateLockedData } from './generate-locked-data'
 import path from 'path'
 import { FileStateAdapter } from '@motiadev/core/dist/src/state/adapters/default-state-adapter'
@@ -29,7 +35,7 @@ export const dev = async (port: number, isVerbose: boolean): Promise<void> => {
   const watcher = createDevWatchers(lockedData, motiaServer, motiaEventManager, motiaServer.cronManager)
 
   // Initialize mermaid generator
-  const mermaidGenerator = new MermaidGenerator(baseDir)
+  const mermaidGenerator = createMermaidGenerator(baseDir)
   mermaidGenerator.initialize(lockedData)
 
   watcher.init()
