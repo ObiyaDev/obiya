@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { createMermaidGenerator } from '../mermaid-generator'
-import { createApiStep, createEventStep, createCronStep, createNoopStep } from './fixtures/step-fixtures'
+import { createApiStep, createEventStep, createNoopStep } from './fixtures/step-fixtures'
 import { LockedData } from '../locked-data'
 
 // Mock fs module
@@ -82,9 +82,9 @@ describe('Mermaid Generator', () => {
   describe('event handlers', () => {
     let lockedData: LockedData
     let generator: ReturnType<typeof createMermaidGenerator>
-    let flowCreatedHandler: Function
-    let flowUpdatedHandler: Function
-    let flowRemovedHandler: Function
+    let flowCreatedHandler: (flowName: string) => void
+    let flowUpdatedHandler: (flowName: string) => void
+    let flowRemovedHandler: (flowName: string) => void
 
     beforeEach(() => {
       lockedData = new LockedData(baseDir)
