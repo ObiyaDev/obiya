@@ -9,7 +9,7 @@ const bodySchema = z.object({
 export const config: ApiRouteConfig = {
   type: 'api',
   name: 'initialize',
-  description: 'Initialize the booking flow process',
+  description: 'Initialize the booking flow',
   path: '/api/booking/initialize',
   method: 'POST',
   virtualSubscribes: ['/api/booking/initialize'],
