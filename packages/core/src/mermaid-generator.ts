@@ -58,10 +58,10 @@ const generateConnections = (
   sourceId: string,
   baseDir: string,
 ): string => {
-  let connections = ''
+  const connections: string[] = []
 
   if (!emits || !Array.isArray(emits) || emits.length === 0) {
-    return connections
+    return ''
   }
 
   emits.forEach((emit) => {
@@ -77,7 +77,7 @@ const generateConnections = (
         targetStep.config.subscribes.includes(topic)
       ) {
         const targetId = getNodeId(targetStep, baseDir)
-        connections += `    ${sourceId} -->|${label}| ${targetId}\n`
+        connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
       }
       // Check for virtual subscribes in noop steps
       else if (
@@ -87,7 +87,7 @@ const generateConnections = (
         targetStep.config.virtualSubscribes.includes(topic)
       ) {
         const targetId = getNodeId(targetStep, baseDir)
-        connections += `    ${sourceId} -->|${label}| ${targetId}\n`
+        connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
       }
       // Check if API steps have virtualSubscribes
       else if (
@@ -97,12 +97,12 @@ const generateConnections = (
         targetStep.config.virtualSubscribes.includes(topic)
       ) {
         const targetId = getNodeId(targetStep, baseDir)
-        connections += `    ${sourceId} -->|${label}| ${targetId}\n`
+        connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
       }
     })
   })
 
-  return connections
+  return connections.join('\n')
 }
 
 // Pure function to generate flow diagram
@@ -154,12 +154,18 @@ const generateFlowDiagram = (flowName: string, steps: Step[], baseDir: string): 
 
     // Process regular emissions if supported
     if (supportsEmits) {
-      connectionsStr += processEmissions(sourceStep.config.emits, sourceStep, steps, sourceId)
+      const emitConnections = processEmissions(sourceStep.config.emits, sourceStep, steps, sourceId)
+      if (emitConnections) {
+        connectionsStr += emitConnections + '\n'
+      }
     }
 
     // Process virtual emissions if supported
     if (supportsVirtualEmits) {
-      connectionsStr += processEmissions(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
+      const virtualEmitConnections = processEmissions(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
+      if (virtualEmitConnections) {
+        connectionsStr += virtualEmitConnections + '\n'
+      }
     }
   })
 
