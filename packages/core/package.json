@@ -10,7 +10,7 @@
     "build": "rm -rf dist && tsc && npm run move:python && npm run move:rb && npm run move:steps",
     "lint": "eslint --config ../../eslint.config.js",
     "watch": "tsc --watch",
-    "test": "jest"
+    "test": "_MOTIA_TEST_MODE=true jest"
   },
   "dependencies": {
     "body-parser": "^1.20.3",

@@ -111,10 +111,13 @@ const generateFlowDiagram = (flowName: string, steps: Step[], baseDir: string): 
   let diagram = `flowchart TD\n`
 
   // Add class definitions for styling with explicit text color
-  diagram += `    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff\n`
-  diagram += `    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff\n`
-  diagram += `    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff\n`
-  diagram += `    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff\n`
+  const classDefinitions = [
+    `    classDef apiStyle fill:#f96,stroke:#333,stroke-width:2px,color:#fff`,
+    `    classDef eventStyle fill:#69f,stroke:#333,stroke-width:2px,color:#fff`,
+    `    classDef cronStyle fill:#9c6,stroke:#333,stroke-width:2px,color:#fff`,
+    `    classDef noopStyle fill:#3f3a50,stroke:#333,stroke-width:2px,color:#fff`,
+  ]
+  diagram += classDefinitions.join('\n') + '\n'
 
   // Check if we have any steps
   if (!steps || steps.length === 0) {
