@@ -11,9 +11,16 @@ const ensureDiagramsDirectory = (diagramsDir: string): void => {
 }
 
 // Pure function to get node ID
-const getNodeId = (step: Step): string => {
-  // Create a valid mermaid node ID from the file path
-  return step.filePath.replace(/[^a-zA-Z0-9]/g, '_')
+const getNodeId = (step: Step, baseDir: string): string => {
+  // Get relative path from the base directory
+  const relativePath = path.relative(baseDir, step.filePath)
+
+  // Remove common file extensions
+  const pathWithoutExtension = relativePath.replace(/\.(ts|js|tsx|jsx)$/, '')
+
+  // Replace slashes with underscores and dots with underscores
+  // Only keep alphanumeric characters and underscores
+  return pathWithoutExtension.replace(/[^a-zA-Z0-9]/g, '_')
 }
 
 // Pure function to get node label
@@ -48,6 +55,7 @@ const generateConnections = (
   sourceStep: Step,
   steps: Step[],
   sourceId: string,
+  baseDir: string,
 ): string => {
   let connections = ''
 
@@ -67,7 +75,7 @@ const generateConnections = (
         Array.isArray(targetStep.config.subscribes) &&
         targetStep.config.subscribes.includes(topic)
       ) {
-        const targetId = getNodeId(targetStep)
+        const targetId = getNodeId(targetStep, baseDir)
         connections += `    ${sourceId} -->|${label}| ${targetId}\n`
       }
       // Check for virtual subscribes in noop steps
@@ -77,7 +85,7 @@ const generateConnections = (
         Array.isArray(targetStep.config.virtualSubscribes) &&
         targetStep.config.virtualSubscribes.includes(topic)
       ) {
-        const targetId = getNodeId(targetStep)
+        const targetId = getNodeId(targetStep, baseDir)
         connections += `    ${sourceId} -->|${label}| ${targetId}\n`
       }
       // Check if API steps have virtualSubscribes
@@ -87,7 +95,7 @@ const generateConnections = (
         Array.isArray(targetStep.config.virtualSubscribes) &&
         targetStep.config.virtualSubscribes.includes(topic)
       ) {
-        const targetId = getNodeId(targetStep)
+        const targetId = getNodeId(targetStep, baseDir)
         connections += `    ${sourceId} -->|${label}| ${targetId}\n`
       }
     })
@@ -97,7 +105,7 @@ const generateConnections = (
 }
 
 // Pure function to generate flow diagram
-const generateFlowDiagram = (flowName: string, steps: Step[]): string => {
+const generateFlowDiagram = (flowName: string, steps: Step[], baseDir: string): string => {
   // Start mermaid flowchart with top-down direction
   let diagram = `flowchart TD\n`
 
@@ -114,7 +122,7 @@ const generateFlowDiagram = (flowName: string, steps: Step[]): string => {
 
   // Create node definitions with proper format
   steps.forEach((step) => {
-    const nodeId = getNodeId(step)
+    const nodeId = getNodeId(step, baseDir)
     const nodeLabel = getNodeLabel(step)
     const nodeStyle = getNodeStyle(step)
     diagram += `    ${nodeId}${nodeLabel}${nodeStyle}\n`
@@ -124,33 +132,33 @@ const generateFlowDiagram = (flowName: string, steps: Step[]): string => {
   let connectionsStr = ''
 
   steps.forEach((sourceStep) => {
-    const sourceId = getNodeId(sourceStep)
+    const sourceId = getNodeId(sourceStep, baseDir)
 
-    if (isApiStep(sourceStep)) {
-      if (sourceStep.config.emits && Array.isArray(sourceStep.config.emits)) {
-        connectionsStr += generateConnections(sourceStep.config.emits, sourceStep, steps, sourceId)
+    // Helper function to process emissions if they exist
+    function processEmissions(
+      emissionsArray: Array<string | { topic: string; label?: string }> | undefined,
+      stepSource: Step,
+      stepsCollection: Step[],
+      sourceIdentifier: string,
+    ): string {
+      if (emissionsArray && Array.isArray(emissionsArray)) {
+        return generateConnections(emissionsArray, stepSource, stepsCollection, sourceIdentifier, baseDir)
       }
-      if (sourceStep.config.virtualEmits && Array.isArray(sourceStep.config.virtualEmits)) {
-        connectionsStr += generateConnections(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
-      }
-    } else if (isEventStep(sourceStep)) {
-      if (sourceStep.config.emits && Array.isArray(sourceStep.config.emits)) {
-        connectionsStr += generateConnections(sourceStep.config.emits, sourceStep, steps, sourceId)
-      }
-      if (sourceStep.config.virtualEmits && Array.isArray(sourceStep.config.virtualEmits)) {
-        connectionsStr += generateConnections(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
-      }
-    } else if (isCronStep(sourceStep)) {
-      if (sourceStep.config.emits && Array.isArray(sourceStep.config.emits)) {
-        connectionsStr += generateConnections(sourceStep.config.emits, sourceStep, steps, sourceId)
-      }
-      if (sourceStep.config.virtualEmits && Array.isArray(sourceStep.config.virtualEmits)) {
-        connectionsStr += generateConnections(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
-      }
-    } else if (isNoopStep(sourceStep)) {
-      if (sourceStep.config.virtualEmits && Array.isArray(sourceStep.config.virtualEmits)) {
-        connectionsStr += generateConnections(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
-      }
+      return ''
+    }
+
+    // Semantic variables to clarify which step types support which emission types
+    const supportsEmits = isApiStep(sourceStep) || isEventStep(sourceStep) || isCronStep(sourceStep)
+    const supportsVirtualEmits = supportsEmits || isNoopStep(sourceStep)
+
+    // Process regular emissions if supported
+    if (supportsEmits) {
+      connectionsStr += processEmissions(sourceStep.config.emits, sourceStep, steps, sourceId)
+    }
+
+    // Process virtual emissions if supported
+    if (supportsVirtualEmits) {
+      connectionsStr += processEmissions(sourceStep.config.virtualEmits, sourceStep, steps, sourceId)
     }
   })
 
@@ -175,8 +183,8 @@ const removeDiagram = (diagramsDir: string, flowName: string): void => {
 }
 
 // Function to generate and save a diagram
-const generateAndSaveDiagram = (diagramsDir: string, flowName: string, flow: Flow): void => {
-  const diagram = generateFlowDiagram(flowName, flow.steps)
+const generateAndSaveDiagram = (diagramsDir: string, flowName: string, flow: Flow, baseDir: string): void => {
+  const diagram = generateFlowDiagram(flowName, flow.steps, baseDir)
   saveDiagram(diagramsDir, flowName, diagram)
 }
 
@@ -187,11 +195,11 @@ export const createMermaidGenerator = (baseDir: string) => {
 
   // Event handlers
   const handleFlowCreated = (flowName: string, flow: Flow): void => {
-    generateAndSaveDiagram(diagramsDir, flowName, flow)
+    generateAndSaveDiagram(diagramsDir, flowName, flow, baseDir)
   }
 
   const handleFlowUpdated = (flowName: string, flow: Flow): void => {
-    generateAndSaveDiagram(diagramsDir, flowName, flow)
+    generateAndSaveDiagram(diagramsDir, flowName, flow, baseDir)
   }
 
   const handleFlowRemoved = (flowName: string): void => {
@@ -216,7 +224,7 @@ export const createMermaidGenerator = (baseDir: string) => {
     // Generate diagrams for all existing flows
     if (lockedData.flows && typeof lockedData.flows === 'object') {
       Object.entries(lockedData.flows).forEach(([flowName, flow]) => {
-        generateAndSaveDiagram(diagramsDir, flowName, flow as Flow)
+        generateAndSaveDiagram(diagramsDir, flowName, flow as Flow, baseDir)
       })
     }
   }
