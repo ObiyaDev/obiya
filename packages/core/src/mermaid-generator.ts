@@ -64,38 +64,37 @@ const generateConnections = (
     return ''
   }
 
+  // Helper function to check if a step subscribes to a topic
+  const stepSubscribesToTopic = (step: Step, topic: string): boolean => {
+    // Event steps use regular subscribes
+    if (
+      isEventStep(step) &&
+      step.config.subscribes &&
+      Array.isArray(step.config.subscribes) &&
+      step.config.subscribes.includes(topic)
+    ) {
+      return true
+    }
+
+    // Noop and API steps use virtualSubscribes
+    if (
+      (isNoopStep(step) || isApiStep(step)) &&
+      step.config.virtualSubscribes &&
+      Array.isArray(step.config.virtualSubscribes) &&
+      step.config.virtualSubscribes.includes(topic)
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   emits.forEach((emit) => {
     const topic = typeof emit === 'string' ? emit : emit.topic
     const label = typeof emit === 'string' ? topic : emit.label || topic
 
     steps.forEach((targetStep) => {
-      // Check for regular subscribes in event steps
-      if (
-        isEventStep(targetStep) &&
-        targetStep.config.subscribes &&
-        Array.isArray(targetStep.config.subscribes) &&
-        targetStep.config.subscribes.includes(topic)
-      ) {
-        const targetId = getNodeId(targetStep, baseDir)
-        connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
-      }
-      // Check for virtual subscribes in noop steps
-      else if (
-        isNoopStep(targetStep) &&
-        targetStep.config.virtualSubscribes &&
-        Array.isArray(targetStep.config.virtualSubscribes) &&
-        targetStep.config.virtualSubscribes.includes(topic)
-      ) {
-        const targetId = getNodeId(targetStep, baseDir)
-        connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
-      }
-      // Check if API steps have virtualSubscribes
-      else if (
-        isApiStep(targetStep) &&
-        targetStep.config.virtualSubscribes &&
-        Array.isArray(targetStep.config.virtualSubscribes) &&
-        targetStep.config.virtualSubscribes.includes(topic)
-      ) {
+      if (stepSubscribesToTopic(targetStep, topic)) {
         const targetId = getNodeId(targetStep, baseDir)
         connections.push(`    ${sourceId} -->|${label}| ${targetId}`)
       }
