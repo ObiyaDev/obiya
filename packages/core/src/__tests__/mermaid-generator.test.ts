@@ -3,6 +3,7 @@ import path from 'path'
 import { createMermaidGenerator } from '../mermaid-generator'
 import { createApiStep, createEventStep, createNoopStep } from './fixtures/step-fixtures'
 import { LockedData } from '../locked-data'
+import { NoPrinter } from '../printer'
 
 // Mock fs module
 jest.mock('fs', () => ({
@@ -47,6 +48,7 @@ describe('Mermaid Generator', () => {
 
     beforeEach(() => {
       lockedData = new LockedData(baseDir)
+      lockedData.printer = new NoPrinter(baseDir) // Suppress console output
       generator = createMermaidGenerator(baseDir)
 
       // Mock the on method of lockedData
@@ -88,6 +90,7 @@ describe('Mermaid Generator', () => {
 
     beforeEach(() => {
       lockedData = new LockedData(baseDir)
+      lockedData.printer = new NoPrinter(baseDir) // Suppress console output
       generator = createMermaidGenerator(baseDir)
 
       // Mock the on method of lockedData to capture the handlers
@@ -183,6 +186,7 @@ describe('Mermaid Generator', () => {
 
       // Create a mock LockedData instance
       const lockedData = new LockedData(baseDir)
+      lockedData.printer = new NoPrinter(baseDir) // Suppress console output
       lockedData.flows = { 'flow-1': flow }
 
       // Generate the diagram
@@ -191,8 +195,20 @@ describe('Mermaid Generator', () => {
       // Use a spy to capture the diagram content
       const writeFileSpy = jest.spyOn(fs, 'writeFileSync')
 
+      // Mock the on method to capture the handler directly
+      let flowCreatedHandler: ((flowName: string) => void) | undefined
+      lockedData.on = jest.fn().mockImplementation((event, handler) => {
+        if (event === 'flow-created') flowCreatedHandler = handler
+      })
+
       // Initialize the generator with the mock LockedData
       generator.initialize(lockedData)
+
+      // Trigger the flow-created event handler
+      if (!flowCreatedHandler) {
+        throw new Error('flowCreatedHandler was not captured')
+      }
+      flowCreatedHandler('flow-1')
 
       // Get the diagram content from the spy
       const diagramContent = writeFileSpy.mock.calls[0][1] as string
@@ -223,6 +239,7 @@ describe('Mermaid Generator', () => {
 
       // Create a mock LockedData instance
       const lockedData = new LockedData(baseDir)
+      lockedData.printer = new NoPrinter(baseDir) // Suppress console output
       lockedData.flows = { 'empty-flow': flow }
 
       // Generate the diagram
@@ -231,8 +248,20 @@ describe('Mermaid Generator', () => {
       // Use a spy to capture the diagram content
       const writeFileSpy = jest.spyOn(fs, 'writeFileSync')
 
+      // Mock the on method to capture the handler directly
+      let flowCreatedHandler: ((flowName: string) => void) | undefined
+      lockedData.on = jest.fn().mockImplementation((event, handler) => {
+        if (event === 'flow-created') flowCreatedHandler = handler
+      })
+
       // Initialize the generator with the mock LockedData
       generator.initialize(lockedData)
+
+      // Trigger the flow-created event handler
+      if (!flowCreatedHandler) {
+        throw new Error('flowCreatedHandler was not captured')
+      }
+      flowCreatedHandler('empty-flow')
 
       // Get the diagram content from the spy
       const diagramContent = writeFileSpy.mock.calls[0][1] as string
