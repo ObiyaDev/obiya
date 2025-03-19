@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { Flow, Step } from './types'
 import { isApiStep, isCronStep, isEventStep, isNoopStep } from './guards'
+import { LockedData } from './locked-data'
 
 // Pure function to ensure diagrams directory exists
 const ensureDiagramsDirectory = (diagramsDir: string): void => {
@@ -207,7 +208,7 @@ export const createMermaidGenerator = (baseDir: string) => {
   }
 
   // Initialize function to hook into LockedData events
-  const initialize = (lockedData: any): void => {
+  const initialize = (lockedData: LockedData): void => {
     // Hook into flow events
     lockedData.on('flow-created', (flowName: string) => {
       handleFlowCreated(flowName, lockedData.flows[flowName])
