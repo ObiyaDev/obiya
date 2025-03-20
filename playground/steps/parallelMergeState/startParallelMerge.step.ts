@@ -1,13 +1,13 @@
 import { ApiRouteConfig, StepHandler, ApiMiddleware } from '@motiadev/core'
 
-const timingMiddleware: ApiMiddleware = async (req, ctx, next) => {
+const timingMiddleware: ApiMiddleware = async (_, ctx, next) => {
   const start = Date.now()
-  
+
   const response = await next()
-  
+
   const duration = Date.now() - start
   ctx.logger.info(`Request completed in ${duration}ms`)
-  
+
   return response
 }
 

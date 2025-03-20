@@ -11,8 +11,8 @@ import { Printer } from '../printer'
 jest.mock('../call-step-file', () => ({
   callStepFile: jest.fn().mockImplementation(async () => ({
     status: 200,
-    body: { success: true, middlewareApplied: true }
-  }))
+    body: { success: true, middlewareApplied: true },
+  })),
 }))
 
 describe('Middleware Management', () => {
@@ -33,7 +33,7 @@ describe('Middleware Management', () => {
   beforeEach(async () => {
     // Set test mode environment variable
     process.env._MOTIA_TEST_MODE = 'true'
-    
+
     const baseDir = path.resolve(__dirname)
     const printer = new Printer(baseDir)
     const lockedData = {
@@ -101,13 +101,13 @@ describe('Middleware Management', () => {
   it('should update middleware when re-adding a route', async () => {
     // Import the actual callStepFile module to mock it specifically for this test
     const callStepFileModule = require('../call-step-file')
-    
+
     // First, set up normal behavior
     callStepFileModule.callStepFile.mockImplementation(async () => ({
       status: 200,
-      body: { success: true }
+      body: { success: true },
     }))
-    
+
     const step: Step<ApiRouteConfig> = {
       filePath: path.join(__dirname, 'steps', 'api-step.ts'),
       version: '1.0.0',
@@ -123,13 +123,13 @@ describe('Middleware Management', () => {
 
     server.addRoute(step)
     server.removeRoute(step)
-    
+
     // Change implementation to simulate the blocking middleware
     callStepFileModule.callStepFile.mockImplementation(async () => ({
       status: 403,
-      body: { error: 'Access denied by middleware' }
+      body: { error: 'Access denied by middleware' },
     }))
-    
+
     step.config.middleware = [blockingMiddleware]
     server.addRoute(step)
 
