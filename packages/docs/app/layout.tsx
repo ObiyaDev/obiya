@@ -147,7 +147,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${dmMono.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
-        <script id="google-tag-manager" strategy="afterInteractive">
+        <script id="google-tag-manager" >
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -158,7 +158,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </script>
 
         {/* Add the GitHub buttons script here */}
-        <script src="https://buttons.github.io/buttons.js" strategy="afterInteractive" async defer />
+        <Script src="https://buttons.github.io/buttons.js" strategy="afterInteractive" async defer />
 
         <script id="twitter-pixel">
           {`
