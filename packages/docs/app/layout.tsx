@@ -5,7 +5,6 @@ import { Inter, DM_Mono, DM_Sans } from 'next/font/google'
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
-import Script from 'next/script'
 import { RouteTracker } from './utils/RouteTracker'
 
 const inter = Inter({
