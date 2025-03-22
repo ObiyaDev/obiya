@@ -8,7 +8,6 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { RouteTracker } from './utils/RouteTracker'
 
-// Initialize dataLayer
 const GTM_ID = 'GTM-P6672CSW'
 
 const inter = Inter({
