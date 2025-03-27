@@ -5,7 +5,6 @@ import React, { PropsWithChildren } from 'react'
 import { BaseHandle } from './base-handle'
 import { LanguageIndicator } from '../views/flow/nodes/language-indicator'
 import { colorMap } from './colorMap'
-import { BaseNodeProps } from './node-props'
 
 const baseDot = cva('w-[6px] h-[6px] rounded-full', {
   variants: {
@@ -22,7 +21,6 @@ type Props = PropsWithChildren<{
   title: string
   variant: VariantProps<typeof baseDot>['variant']
   language?: string
-  data?: BaseNodeProps
   headerChildren?: React.ReactNode
   className?: string
   disableSourceHandle?: boolean
