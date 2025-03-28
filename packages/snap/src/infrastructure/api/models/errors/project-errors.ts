@@ -6,7 +6,7 @@ export class ProjectError extends ApiError {
       status: 500,
       message,
       details,
-      code
+      code,
     })
     this.name = 'ProjectError'
   }
@@ -17,7 +17,7 @@ export class ProjectNotFoundError extends ProjectError {
     super(
       `Project ${projectId} not found`,
       'The specified project does not exist or has been deleted',
-      'PROJECT_NOT_FOUND'
+      'PROJECT_NOT_FOUND',
     )
     this.name = 'ProjectNotFoundError'
   }
@@ -25,11 +25,7 @@ export class ProjectNotFoundError extends ProjectError {
 
 export class DuplicateProjectError extends ProjectError {
   constructor(projectName: string) {
-    super(
-      `Project with name "${projectName}" already exists`,
-      'Project names must be unique',
-      'DUPLICATE_PROJECT'
-    )
+    super(`Project with name "${projectName}" already exists`, 'Project names must be unique', 'DUPLICATE_PROJECT')
     this.name = 'DuplicateProjectError'
   }
-} 
+}

@@ -15,4 +15,4 @@ export interface Deployment {
 export interface DeploymentConfig {
   config: Record<string, unknown>
   version: string
-} 
+}

@@ -1,8 +1,6 @@
 import { HttpClient } from '../core/http-client'
 import { Project } from '../models/entities/project'
 import { ENDPOINTS } from '../core/api-constants'
-import { CreateProjectRequest, UpdateProjectRequest } from '../models/requests/project-requests'
-import { ProjectResponse, ProjectListResponse } from '../models/responses/project-responses'
 import { ProjectNotFoundError, DuplicateProjectError, ProjectError } from '../models/errors/project-errors'
 import { ApiError } from '../core/api-base'
 
@@ -21,7 +19,7 @@ export class ProjectsClient extends HttpClient {
         throw new ProjectError(
           'Unable to create project',
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -36,7 +34,7 @@ export class ProjectsClient extends HttpClient {
         throw new ProjectError(
           'Unable to retrieve projects',
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -54,7 +52,7 @@ export class ProjectsClient extends HttpClient {
         throw new ProjectError(
           `Unable to retrieve project ${projectId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -75,7 +73,7 @@ export class ProjectsClient extends HttpClient {
         throw new ProjectError(
           `Unable to update project ${projectId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -93,7 +91,7 @@ export class ProjectsClient extends HttpClient {
         throw new ProjectError(
           `Unable to delete project ${projectId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error

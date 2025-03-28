@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, RawAxiosRequestHeaders } from 'axios'
 import { ApiBase } from './api-base'
-import { API_BASE_URL, DEFAULT_TIMEOUT } from './api-constants'
+import { API_BASE_URL } from './api-constants'
 
 interface ErrorResponse {
   error?: {
@@ -22,7 +22,7 @@ export class AxiosClient extends ApiBase {
     endpoint: string,
     method: string = 'GET',
     data?: unknown,
-    config: Omit<AxiosRequestConfig, 'url' | 'method' | 'data' | 'headers'> & { headers?: RawAxiosRequestHeaders } = {}
+    config: Omit<AxiosRequestConfig, 'url' | 'method' | 'data' | 'headers'> & { headers?: RawAxiosRequestHeaders } = {},
   ): Promise<T> {
     const url = this.getUrl(endpoint)
 
@@ -31,7 +31,7 @@ export class AxiosClient extends ApiBase {
         url,
         method,
         data,
-        headers: this.getHeaders(config.headers as Record<string, string> || {}),
+        headers: this.getHeaders((config.headers as Record<string, string>) || {}),
         ...config,
       })
 
@@ -45,7 +45,7 @@ export class AxiosClient extends ApiBase {
           axiosError.response?.status || 0,
           responseData.error?.message || responseData.message || axiosError.message,
           responseData.error?.details || responseData.details,
-          responseData.error?.code || responseData.code || `HTTP_${axiosError.response?.status}`
+          responseData.error?.code || responseData.code || `HTTP_${axiosError.response?.status}`,
         )
       }
 

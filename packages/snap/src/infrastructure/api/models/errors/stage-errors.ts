@@ -6,7 +6,7 @@ export class StageError extends ApiError {
       status: 500,
       message,
       details,
-      code
+      code,
     })
     this.name = 'StageError'
   }
@@ -14,11 +14,7 @@ export class StageError extends ApiError {
 
 export class StageNotFoundError extends StageError {
   constructor(stageId: string) {
-    super(
-      `Stage ${stageId} not found`,
-      'The specified stage does not exist or has been deleted',
-      'STAGE_NOT_FOUND'
-    )
+    super(`Stage ${stageId} not found`, 'The specified stage does not exist or has been deleted', 'STAGE_NOT_FOUND')
     this.name = 'StageNotFoundError'
   }
 }
@@ -28,8 +24,8 @@ export class DuplicateStageError extends StageError {
     super(
       `Stage with name "${stageName}" already exists in project ${projectId}`,
       'Stage names must be unique within a project',
-      'DUPLICATE_STAGE'
+      'DUPLICATE_STAGE',
     )
     this.name = 'DuplicateStageError'
   }
-} 
+}

@@ -25,7 +25,7 @@ export class NetworkError extends ApiError {
       status: 0,
       message: 'Network Error',
       details: error.message,
-      code: 'NETWORK_ERROR'
+      code: 'NETWORK_ERROR',
     })
     this.name = 'NetworkError'
   }
@@ -36,7 +36,7 @@ export class UnauthorizedError extends ApiError {
     super({
       status: 401,
       message,
-      code: 'UNAUTHORIZED'
+      code: 'UNAUTHORIZED',
     })
     this.name = 'UnauthorizedError'
   }
@@ -47,7 +47,7 @@ export class ForbiddenError extends ApiError {
     super({
       status: 403,
       message,
-      code: 'FORBIDDEN'
+      code: 'FORBIDDEN',
     })
     this.name = 'ForbiddenError'
   }
@@ -58,7 +58,7 @@ export class NotFoundError extends ApiError {
     super({
       status: 404,
       message: `${resource} not found`,
-      code: 'NOT_FOUND'
+      code: 'NOT_FOUND',
     })
     this.name = 'NotFoundError'
   }
@@ -118,7 +118,7 @@ export class ApiBase {
       status,
       message,
       details,
-      code
+      code,
     })
   }
 }

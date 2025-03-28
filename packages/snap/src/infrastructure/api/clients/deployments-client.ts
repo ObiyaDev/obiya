@@ -3,7 +3,7 @@ import path from 'path'
 import axios from 'axios'
 import { AxiosClient } from '../core/axios-client'
 import { ENDPOINTS, MAX_UPLOAD_SIZE } from '../core/api-constants'
-import { Deployment, DeploymentConfig } from '../models/entities/deployment'
+import { Deployment } from '../models/entities/deployment'
 import { ApiError } from '../core/api-base'
 import { logger } from '../../deploy/logger'
 import {
@@ -12,16 +12,12 @@ import {
   DeploymentStartError,
   FileUploadError,
   InvalidConfigError,
-  VersionPromotionError
+  VersionPromotionError,
 } from '../models/errors/deployment-errors'
 import { DeploymentStartResponse } from '../models/responses/deployment-responses'
 
 export class DeploymentsClient extends AxiosClient {
-  async uploadStepsConfig(
-    stepsConfig: Record<string, unknown>,
-    stageId = 'dev',
-    version = 'latest',
-  ): Promise<string> {
+  async uploadStepsConfig(stepsConfig: Record<string, unknown>, stageId = 'dev', version = 'latest'): Promise<string> {
     if (!stepsConfig || Object.keys(stepsConfig).length === 0) {
       throw new InvalidConfigError()
     }
@@ -30,16 +26,12 @@ export class DeploymentsClient extends AxiosClient {
       const response = await this.makeRequest<{ deploymentId: string }>(
         `${ENDPOINTS.STAGES}/${stageId}/deployments`,
         'POST',
-        { config: stepsConfig, version }
+        { config: stepsConfig, version },
       )
       return response.deploymentId
     } catch (error) {
       if (error instanceof ApiError) {
-        throw new DeploymentError(
-          error.message,
-          error.details,
-          error.code
-        )
+        throw new DeploymentError(error.message, error.details, error.code)
       }
       throw error
     }
@@ -73,15 +65,11 @@ export class DeploymentsClient extends AxiosClient {
 
   async startDeployment(deploymentId: string, envData: Record<string, string> = {}): Promise<DeploymentStartResponse> {
     try {
-      return await this.makeRequest<DeploymentStartResponse>(
-        `${ENDPOINTS.DEPLOYMENTS}/${deploymentId}/start`,
-        'POST',
-        { environmentVariables: envData }
-      )
+      return await this.makeRequest<DeploymentStartResponse>(`${ENDPOINTS.DEPLOYMENTS}/${deploymentId}/start`, 'POST', {
+        environmentVariables: envData,
+      })
     } catch (error) {
-      throw error instanceof ApiError 
-        ? new DeploymentStartError(deploymentId, error)
-        : error
+      throw error instanceof ApiError ? new DeploymentStartError(deploymentId, error) : error
     }
   }
 
@@ -89,9 +77,7 @@ export class DeploymentsClient extends AxiosClient {
     try {
       await this.makeRequest<void>(`${ENDPOINTS.STAGES}/${stageId}/${version}/promote`, 'POST')
     } catch (error) {
-      throw error instanceof ApiError 
-        ? new VersionPromotionError(version, stageId, error)
-        : error
+      throw error instanceof ApiError ? new VersionPromotionError(version, stageId, error) : error
     }
   }
 
@@ -103,11 +89,7 @@ export class DeploymentsClient extends AxiosClient {
         if (error.status === 404) {
           throw new DeploymentNotFoundError(deploymentId)
         }
-        throw new DeploymentError(
-          error.message,
-          error.details,
-          error.code
-        )
+        throw new DeploymentError(error.message, error.details, error.code)
       }
       throw error
     }
@@ -118,11 +100,7 @@ export class DeploymentsClient extends AxiosClient {
       return await this.makeRequest<Deployment[]>(`${ENDPOINTS.STAGES}/${stageId}/deployments`, 'GET')
     } catch (error) {
       if (error instanceof ApiError) {
-        throw new DeploymentError(
-          error.message,
-          error.details,
-          error.code
-        )
+        throw new DeploymentError(error.message, error.details, error.code)
       }
       throw error
     }
@@ -141,11 +119,7 @@ export class DeploymentsClient extends AxiosClient {
         throw error
       }
       if (error instanceof ApiError) {
-        throw new DeploymentError(
-          error.message,
-          error.details,
-          error.code
-        )
+        throw new DeploymentError(error.message, error.details, error.code)
       }
       throw error
     }

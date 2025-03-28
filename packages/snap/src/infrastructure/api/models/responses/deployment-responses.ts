@@ -21,4 +21,4 @@ export interface DeploymentListResponse {
     createdAt: string
     updatedAt: string
   }>
-} 
+}

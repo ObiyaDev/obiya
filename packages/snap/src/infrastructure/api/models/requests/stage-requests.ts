@@ -9,4 +9,4 @@ export interface UpdateStageRequest {
   name?: string
   description?: string
   apiUrl?: string
-} 
+}

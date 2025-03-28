@@ -1,9 +1,7 @@
 import { HttpClient } from '../core/http-client'
 import { Stage } from '../models/entities/stage'
 import { ENDPOINTS } from '../core/api-constants'
-import { CreateStageRequest, UpdateStageRequest } from '../models/requests/stage-requests'
-import { StageResponse, StageListResponse } from '../models/responses/stage-responses'
-import { StageNotFoundError, DuplicateStageError, StageError } from '../models/errors/stage-errors'
+import { DuplicateStageError, StageError, StageNotFoundError } from '../models/errors/stage-errors'
 import { ApiError } from '../core/api-base'
 
 export class StagesClient extends HttpClient {
@@ -21,7 +19,7 @@ export class StagesClient extends HttpClient {
         throw new StageError(
           'Unable to create stage',
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -36,7 +34,7 @@ export class StagesClient extends HttpClient {
         throw new StageError(
           'Unable to retrieve stages',
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -54,7 +52,7 @@ export class StagesClient extends HttpClient {
         throw new StageError(
           `Unable to retrieve stage ${stageId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -75,7 +73,7 @@ export class StagesClient extends HttpClient {
         throw new StageError(
           `Unable to update stage ${stageId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error
@@ -93,7 +91,7 @@ export class StagesClient extends HttpClient {
         throw new StageError(
           `Unable to delete stage ${stageId}`,
           `${error.message}${error.details ? `\nDetails: ${error.details}` : ''}`,
-          error.code
+          error.code,
         )
       }
       throw error

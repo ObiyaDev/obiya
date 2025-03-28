@@ -2,7 +2,7 @@ import { API_BASE_URL } from './api/core/api-constants'
 import { ApiFactory } from './api/api-factory'
 import { ApiError } from './api/core/api-base'
 import { ProjectConfig, readConfig, writeConfig, question, readline, exitWithError } from './config-utils'
-import { logger } from './deploy/logger';
+import { logger } from './deploy/logger'
 
 export async function createProject(options: { name?: string; description?: string; apiKey: string }): Promise<void> {
   try {

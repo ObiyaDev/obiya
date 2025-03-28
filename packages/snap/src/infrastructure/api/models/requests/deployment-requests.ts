@@ -13,4 +13,4 @@ export interface UpdateDeploymentRequest {
 export interface PromoteDeploymentRequest {
   targetStageId: string
   version: string
-} 
+}

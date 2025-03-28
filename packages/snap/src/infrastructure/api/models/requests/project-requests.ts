@@ -6,4 +6,4 @@ export interface CreateProjectRequest {
 export interface UpdateProjectRequest {
   name?: string
   description?: string
-} 
+}

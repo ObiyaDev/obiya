@@ -7,7 +7,7 @@ export class DeploymentError extends ApiError {
       status: 500,
       message,
       details,
-      code
+      code,
     })
     this.name = 'DeploymentError'
   }
@@ -50,8 +50,8 @@ export class DeploymentNotFoundError extends DeploymentError {
     super(
       `Deployment ${deploymentId} not found`,
       'The specified deployment does not exist or has been deleted',
-      'DEPLOYMENT_NOT_FOUND'
+      'DEPLOYMENT_NOT_FOUND',
     )
     this.name = 'DeploymentNotFoundError'
   }
-} 
+}

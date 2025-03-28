@@ -156,13 +156,19 @@ state
     }
   })
 
-const infrastructure = program.command('infrastructure').description('Manage motia infrastructure deployment services')
-.option('--verbose', 'Enable verbose logging')
+const infrastructure = program
+  .command('infrastructure')
+  .description('Manage motia infrastructure deployment services')
+  .option('--verbose', 'Enable verbose logging')
 
 infrastructure
   .command('init')
   .description('Initialize a new Motia infrastructure deployment project')
-  .requiredOption('-k, --api-key <api key>', 'API key for authentication (not stored in config)', process.env.MOTIA_API_KEY)
+  .requiredOption(
+    '-k, --api-key <api key>',
+    'API key for authentication (not stored in config)',
+    process.env.MOTIA_API_KEY,
+  )
   .option('-n, --name <project name>', 'The name for your infrastructure deployment project')
   .option('-d, --description <description>', 'Description of the infrastructure deployment service')
   .action(async (arg) => {
@@ -215,7 +221,11 @@ infrastructure
 infrastructure
   .command('list-projects')
   .description('List all projects')
-  .requiredOption('-k, --api-key <api key>', 'API key for authentication (not stored in config)', process.env.MOTIA_API_KEY)
+  .requiredOption(
+    '-k, --api-key <api key>',
+    'API key for authentication (not stored in config)',
+    process.env.MOTIA_API_KEY,
+  )
   .option(
     '-u, --api-base-url <url>',
     'Base URL for the API (defaults to MOTIA_API_URL env var or https://api.motia.io)',
@@ -240,7 +250,11 @@ infrastructure
 infrastructure
   .command('create-stage')
   .description('Create a new deployment stage')
-  .requiredOption('-k, --api-key <api key>', 'API key for authentication (not stored in config)', process.env.MOTIA_API_KEY)
+  .requiredOption(
+    '-k, --api-key <api key>',
+    'API key for authentication (not stored in config)',
+    process.env.MOTIA_API_KEY,
+  )
   .option('-n, --name <stage name>', 'The name for your deployment stage')
   .option('-d, --description <description>', 'Description of the deployment stage')
   .action(async (arg) => {
@@ -281,7 +295,7 @@ infrastructure
       if (!stageName) {
         const stageChoices = Object.entries(config.stages as Record<string, Stage>).map(([name, stage]) => ({
           name: `${name}${stage.description ? ` - ${stage.description}` : ''}`,
-          value: name
+          value: name,
         }))
 
         const answer = await inquirer.prompt([
@@ -291,7 +305,7 @@ infrastructure
             message: 'Select a deployment stage:',
             choices: stageChoices,
             default: config.selectedStage,
-          }
+          },
         ])
         stageName = answer.stage
       }

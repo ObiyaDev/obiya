@@ -1,4 +1,4 @@
-import { ApiBase, ApiResponse } from './api-base'
+import { ApiBase } from './api-base'
 import { API_BASE_URL } from './api-constants'
 
 export class HttpClient extends ApiBase {
@@ -28,7 +28,7 @@ export class HttpClient extends ApiBase {
           response.status,
           data.error?.message || data.message || response.statusText || 'Request failed',
           data.error?.details || data.details,
-          data.error?.code || `HTTP_${response.status}`
+          data.error?.code || `HTTP_${response.status}`,
         )
       }
 
