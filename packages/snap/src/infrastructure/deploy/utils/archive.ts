@@ -26,7 +26,7 @@ export async function createFolderZip(
 
     const output = fs.createWriteStream(zipFilePath)
     const archive = archiver('zip', {
-      zlib: { level: 9 },
+      zlib: { level: 0 },
     })
 
     output.on('close', () => {
