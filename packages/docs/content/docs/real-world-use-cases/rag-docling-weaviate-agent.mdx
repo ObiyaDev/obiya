@@ -89,85 +89,61 @@ import { CodeFetcher } from '../../../components/CodeFetcher'
 
 ## 🚦 API Endpoints
 
-### Start Research
+### Process PDFs
 
 ```
-POST /research
+POST /api/rag/process-pdfs
 Content-Type: application/json
 
 {
-  "query": "The research topic or question",
-  "breadth": 4,  // Number of search queries to generate (1-10)
-  "depth": 2     // Depth of research iterations (1-5)
+  "folderPath": "path/to/pdf/folder"
 }
 ```
 
 Response:
 ```json
 {
-  "message": "Research process started",
-  "requestId": "unique-trace-id"
+  "message": "PDF processing workflow started",
+  "folderPath": "path/to/pdf/folder"
 }
 ```
 
-### Check Research Status
+### Query RAG System
 
 ```
-GET /research/status?requestId=unique-trace-id
+POST /api/rag/query
+Content-Type: application/json
+
+{
+  "query": "Your question about the PDF content",
+  "limit": 5  // Optional, defaults to 5
+}
 ```
 
 Response:
 ```json
 {
-  "message": "Research status retrieved successfully",
-  "requestId": "unique-trace-id",
-  "originalQuery": "The research topic or question",
-  "status": "in-progress",
-  "progress": {
-    "currentDepth": 1,
-    "totalDepth": 2,
-    "percentComplete": 50
-  },
-  "reportAvailable": false
-}
-```
-
-### Get Research Report
-
-```
-GET /research/report?requestId=unique-trace-id
-```
-
-Response:
-```json
-{
-  "message": "Research report retrieved successfully",
-  "report": {
-    "title": "Research Report Title",
-    "overview": "Executive summary...",
-    "sections": [
-      {
-        "title": "Section Title",
-        "content": "Section content..."
+  "query": "Your question about the PDF content",
+  "answer": "Generated answer based on the PDF content",
+  "chunks": [
+    {
+      "text": "Relevant text chunk from the document",
+      "title": "Document title",
+      "metadata": {
+        "source": "Document source",
+        "page": 1
       }
-    ],
-    "keyTakeaways": [
-      "Key takeaway 1",
-      "Key takeaway 2"
-    ],
-    "sources": [
-      {
-        "title": "Source Title",
-        "url": "Source URL"
-      }
-    ],
-    "originalQuery": "The research topic or question",
-    "metadata": {
-      "depthUsed": 2,
-      "completedAt": "2025-03-18T16:45:30Z"
     }
-  },
-  "requestId": "unique-trace-id"
+    // ... additional chunks up to the specified limit
+  ]
+}
+```
+
+Error Response:
+```json
+{
+  "error": "Failed to process RAG query",
+  "message": "Error details"
 }
 ```
 
@@ -183,19 +159,28 @@ Response:
    http://localhost:3000
    ```
 
-3. Make a test request:
+3. Make test requests:
    ```bash
+   # Process PDFs
    curl --request POST \
-   --url http://localhost:3000/research \
+   --url http://localhost:3000/api/rag/process-pdfs \
    --header 'Content-Type: application/json' \
    --data '{
-      "query": "Advancements in renewable energy storage",
-      "depth": 1,
-      "breadth": 1
+      "folderPath": "path/to/pdf/folder"
+   }'
+
+   # Query the RAG system
+   curl --request POST \
+   --url http://localhost:3000/api/rag/query \
+   --header 'Content-Type: application/json' \
+   --data '{
+      "query": "Your question about the PDF content",
+      "limit": 5
    }'
    ```
 ## 🙏 Acknowledgments
 
 - [Motia Framework](https://motia.dev) for the event-driven workflow engine
+- [Docling](https://github.com/MotiaDev/docling) for PDF parsing and hybrid chunking
+- [Weaviate](https://www.weaviate.io/) for Vector Database
 - [OpenAI](https://platform.openai.com/) for AI analysis 
-- [Firecrawl](https://www.firecrawl.dev/) for Web search and content extraction API
