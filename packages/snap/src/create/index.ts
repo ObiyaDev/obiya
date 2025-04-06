@@ -135,12 +135,15 @@ export const create = async ({ projectName, template }: Args): Promise<void> => 
 
   if (!checkIfFileExists(rootDir, 'package.json')) {
     const packageJsonContent = {
-      name: 'my-motia-project',
+      name: projectName,
       description: '',
       scripts: {
+        postinstall: 'motia install',
         dev: 'motia dev',
         'dev:debug': 'motia dev --debug',
-        'generate:config': 'motia get-config --output ./',
+        //'build': 'motia build', TODO: doesnt work at the moment
+        'clean': 'rm -rf dist node_modules python_modules .motia .mermaid',
+        //'generate:config': 'motia get-config --output ./', TODO: doesnt work at the moment
       },
       keywords: ['motia'],
     }
@@ -190,6 +193,32 @@ export const create = async ({ projectName, template }: Args): Promise<void> => 
 
     fs.writeFileSync(path.join(rootDir, 'tsconfig.json'), JSON.stringify(tsconfigContent, null, 2))
     console.log('✅ tsconfig.json created')
+  }
+
+  if (!checkIfFileExists(rootDir, 'requirements.txt')) {
+    const requirementsContent = [
+      // TODO: motia PyPi package
+      // Add other Python dependencies as needed
+    ].join('\n')
+
+    fs.writeFileSync(path.join(rootDir, 'requirements.txt'), requirementsContent)
+    console.log('✅ requirements.txt created')
+  }
+
+  if (!checkIfFileExists(rootDir, '.gitignore')) {
+    const gitignoreContent = [
+      'node_modules',
+      'python_modules',
+      '.venv',
+      'venv',
+      '.motia',
+      '.mermaid',
+      'dist',
+      '*.pyc',
+    ].join('\n')
+
+    fs.writeFileSync(path.join(rootDir, '.gitignore'), gitignoreContent)
+    console.log('✅ .gitignore created')
   }
 
   const stepsDir = path.join(rootDir, 'steps')
