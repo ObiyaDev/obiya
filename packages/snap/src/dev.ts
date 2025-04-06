@@ -22,11 +22,11 @@ require('ts-node').register({
 
 export const dev = async (port: number, isVerbose: boolean, enableMermaid: boolean): Promise<void> => {
   const baseDir = process.cwd()
-  
+
   // Set the virtual environment path
   const venvPath = path.join(baseDir, 'python_modules')
   const venvBinPath = path.join(venvPath, process.platform === 'win32' ? 'Scripts' : 'bin')
-  
+
   // Verify that the virtual environment exists
   if (fs.existsSync(venvPath)) {
     // Add virtual environment to PATH
@@ -38,9 +38,8 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
 
     // Log Python environment information if verbose mode is enabled
     if (isVerbose) {
-      const pythonPath = process.platform === 'win32' 
-        ? path.join(venvBinPath, 'python.exe')
-        : path.join(venvBinPath, 'python')
+      const pythonPath =
+        process.platform === 'win32' ? path.join(venvBinPath, 'python.exe') : path.join(venvBinPath, 'python')
       console.log('🐍 Using Python from:', pythonPath)
     }
   } else {

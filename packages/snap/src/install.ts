@@ -21,7 +21,7 @@ export const install = async (isVerbose: boolean = false): Promise<void> => {
     await executeCommand(`${pipPath} install -r requirements.txt`, baseDir)
 
     console.log('✅ Installation completed successfully!')
-    
+
     if (isVerbose) {
       const pythonPath = path.join(venvBinPath, isWindows ? 'python.exe' : 'python')
       console.log('🐍 Using Python from:', pythonPath)
@@ -32,4 +32,4 @@ export const install = async (isVerbose: boolean = false): Promise<void> => {
   } finally {
     process.exit(0)
   }
-} 
+}

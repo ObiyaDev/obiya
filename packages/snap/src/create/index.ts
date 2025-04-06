@@ -127,7 +127,7 @@ export const create = async ({ projectName, template }: Args): Promise<void> => 
         dev: 'motia dev',
         'dev:debug': 'motia dev --debug',
         //'build': 'motia build', TODO: doesnt work at the moment
-        'clean': 'rm -rf dist node_modules python_modules .motia .mermaid',
+        clean: 'rm -rf dist node_modules python_modules .motia .mermaid',
         //'generate:config': 'motia get-config --output ./', TODO: doesnt work at the moment
       },
       keywords: ['motia'],
