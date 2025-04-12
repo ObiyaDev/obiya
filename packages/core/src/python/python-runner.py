@@ -4,13 +4,14 @@ import importlib.util
 import os
 import asyncio
 import traceback
-from typing import Optional, Any
+from typing import Optional, Any, Callable, List
 from types import SimpleNamespace
 
 from rpc import RpcSender, serialize_for_json
 from type_definitions import HandlerArgs, FlowConfig, ApiResponse
 from context import Context
 from validation import validate_with_jsonschema
+from middleware import compose_middleware
 
 def parse_args(arg: str) -> HandlerArgs:
     """Parse command line arguments into HandlerArgs"""
@@ -84,12 +85,19 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: HandlerArgs) -
             await rpc.send('result', validation_result)
             return
 
-        if args.contextInFirstArg:
-            result = await module.handler(context)
-        else:
-            if hasattr(args.data, 'body'):
-                args.data.body = serialize_for_json(args.data.body)
-            result = await module.handler(args.data, context)
+    
+        middlewares: List[Callable] = module.config.get('middleware', []) if module.config else []
+        composed_middleware = compose_middleware(*middlewares)
+        
+        async def handler_fn():
+            if args.contextInFirstArg:
+                return await module.handler(context)
+            else:
+                if hasattr(args.data, 'body'):
+                    args.data.body = serialize_for_json(args.data.body)
+                return await module.handler(args.data, context)
+
+        result = await composed_middleware(args.data, context, handler_fn)
 
         if not is_api_handler:
             pending = asyncio.all_tasks() - {asyncio.current_task()}

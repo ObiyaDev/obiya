@@ -42,6 +42,9 @@ async def run_python_module(file_path: str) -> None:
         if not hasattr(module, 'config'):
             raise AttributeError(f"No 'config' found in module {file_path}")
 
+        if 'middleware' in module.config:
+            del module.config['middleware']
+
         sendMessage(module.config)
 
     except Exception as error:
