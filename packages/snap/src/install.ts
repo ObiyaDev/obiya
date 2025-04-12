@@ -7,8 +7,6 @@ export const install = async (isVerbose: boolean = false): Promise<void> => {
   const baseDir = process.cwd()
   const venvPath = path.join(baseDir, 'python_modules')
   console.log('📦 Installing Python dependencies...', venvPath)
-  const isWindows = process.platform === 'win32'
-  const venvBinPath = path.join(venvPath, isWindows ? 'Scripts' : 'bin')
 
   try {
     // Check if virtual environment exists
@@ -19,10 +17,9 @@ export const install = async (isVerbose: boolean = false): Promise<void> => {
 
     // Install requirements
     console.log('📥 Installing Python dependencies...')
-    const pipPath = path.join(venvBinPath, isWindows ? 'pip.exe' : 'pip')
 
     activatePythonVenv({ baseDir, isVerbose })
-    
+
     const coreRequirementsPath = path.join(baseDir, 'node_modules', 'motia', 'dist', 'requirements.txt')
     if (fs.existsSync(coreRequirementsPath)) {
       if (isVerbose) {

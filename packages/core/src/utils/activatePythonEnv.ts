@@ -23,12 +23,10 @@ export const activatePythonVenv = ({ baseDir, isVerbose = false }: VenvConfig): 
     // Log Python environment information if verbose mode is enabled
     if (isVerbose) {
       const pythonPath =
-        process.platform === 'win32' 
-          ? path.join(venvBinPath, 'python.exe') 
-          : path.join(venvBinPath, 'python')
+        process.platform === 'win32' ? path.join(venvBinPath, 'python.exe') : path.join(venvBinPath, 'python')
       console.log('🐍 Using Python from:', pythonPath)
     }
   } else {
     console.warn('❌ Python virtual environment not found in python_modules/')
   }
-} 
+}
