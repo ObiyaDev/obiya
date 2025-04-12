@@ -1,1 +1,2 @@
 modulegraph>=0.17.1
+jsonschema>=4.23.0
