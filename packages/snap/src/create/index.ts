@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { templates } from './templates'
 import figlet from 'figlet'
-import { executeCommand } from '@/utils/executeCommand'
+import { executeCommand } from '../utils/executeCommand'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -207,7 +207,7 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
     console.log('✅ .gitignore created')
   }
 
-  const cursorTemplateDir = path.join(__dirname, '../dot-files/.cursor')
+  const cursorTemplateDir = path.join(__dirname, '../../dot-files/.cursor')
   const cursorTargetDir = path.join(rootDir, '.cursor')
 
   if (cursorEnabled && !checkIfDirectoryExists(cursorTargetDir)) {

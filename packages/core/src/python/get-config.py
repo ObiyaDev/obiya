@@ -39,10 +39,10 @@ async def run_python_module(file_path: str) -> None:
         spec.loader.exec_module(module)
 
         # Print the config if it exists
-        if hasattr(module, 'config'):
-            sendMessage(module.config)
-        else:
+        if not hasattr(module, 'config'):
             raise AttributeError(f"No 'config' found in module {file_path}")
+
+        sendMessage(module.config)
 
     except Exception as error:
         print('Error running Python module:', str(error), file=sys.stderr)

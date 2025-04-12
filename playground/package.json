@@ -2,9 +2,11 @@
   "name": "playground",
   "private": true,
   "scripts": {
+    "postinstall": "motia install",
     "dev": "motia dev",
     "dev:workbench": "__MOTIA_DEV_MODE__=1 motia dev",
     "dev:debug": "motia dev --debug",
+    "clean": "rm -rf .mermaid node_modules python_modules",
     "get-config": "motia get-config --output ./",
     "test:tsc-check": "tsc -p ./tests/tsconfig.test.json --noEmit",
     "test": "jest",
@@ -15,8 +17,8 @@
   },
   "dependencies": {
     "@motiadev/core": "workspace:*",
-    "motia": "workspace:*",
     "@motiadev/workbench": "workspace:*",
+    "motia": "workspace:*",
     "deep-equal": "^2.2.3",
     "openai": "^4.78.1",
     "zod": "^3.24.1"

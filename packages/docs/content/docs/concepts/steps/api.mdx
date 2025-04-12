@@ -1,8 +1,8 @@
 ---
-title: Api Step
+title: API Step
 ---
 
-An API step is exposed as an HTTP endpoint that acts as an entry point into your sequence of steps, or **flow**. It allows external systems or clients to trigger and interact with your flows through a REST API interface. Like any Motia Step, an API Step can be configured to emit events or wait for events to occur.
+An **API step** is exposed as an HTTP endpoint that acts as an entry point into your sequence of steps, or **flow**. It allows external systems or clients to trigger and interact with your flows through a REST API interface. Like any Motia Step, an API Step can be configured to emit events or wait for events to occur.
 
 ## Config
 
@@ -11,22 +11,20 @@ The following properties are specific to the API Step, in addition to the [commo
 <DescriptionTable
   type={{
     path: {
-      description: 'The development server api path to expose your api step handler',
+      description: 'The HTTP path for the API endpoint',
       type: 'string',
     },
     method: {
-      description: 'The HTTP method to use for the development server api endpoint',
-      type: 'GET | POST',
+      description: 'The HTTP method for the API endpoint (GET, POST, PUT, DELETE, etc.)',
+      type: 'string',
     },
     bodySchema: {
-      description:
-        'In TS/JS we use zod to validate the request body, in Python/Ruby we use json schema to validate the request body.',
-      type: 'JSON Schema',
+      description: 'Schema for validating the request body. For TypeScript/JavaScript steps, it uses zod schemas. For Python steps, it uses Pydantic models.',
+      type: 'object',
     },
     middleware: {
-      description:
-        'An array of middleware functions to be applied to the request before it reaches the handler. Middleware functions can perform tasks like authentication, logging, rate limiting, etc.',
-      type: 'ApiMiddleware[]',
+      description: 'Optional middleware functions to run before the handler',
+      type: 'array',
     },
   }}
 />
@@ -265,6 +263,12 @@ const rateLimiterMiddleware: ApiMiddleware = (() => {
 
   <Tab value="Python">
     ```python
+    from pydantic import BaseModel
+    
+    # Define a Pydantic model for request body validation
+    class RequestBody(BaseModel):
+        message: str
+    
     config = {
         'type': 'api',
         'name': 'Test state api trigger',
@@ -272,7 +276,8 @@ const rateLimiterMiddleware: ApiMiddleware = (() => {
         'path': '/test-state',
         'method': 'POST',
         'emits': ['test-state'],
-        'flows': ['test-state']
+        'flows': ['test-state'],
+        'bodySchema': RequestBody.model_json_schema(), # We use jsonschema to validate
     }
 
     async def handler(req, context):
