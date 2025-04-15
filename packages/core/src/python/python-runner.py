@@ -73,9 +73,10 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: HandlerArgs) -
         if not hasattr(module, 'handler'):
             raise AttributeError(f"Function 'handler' not found in module {file_path}")
 
+        config = getattr(module, 'config', {})
         is_api_handler = (
-            hasattr(module, 'config') and
-            getattr(getattr(module, 'config'), 'type', None) == 'api'
+            module.config and
+            config.get('type') is 'api'
         )
 
         context = Context(args.traceId, args.flows, rpc, is_api_handler)
@@ -86,7 +87,7 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: HandlerArgs) -
             return
 
     
-        middlewares: List[Callable] = module.config.get('middleware', []) if module.config else []
+        middlewares: List[Callable] = config.get('middleware', [])
         composed_middleware = compose_middleware(*middlewares)
         
         async def handler_fn():
