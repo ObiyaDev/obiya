@@ -11,7 +11,7 @@
     "build": "rm -rf dist && tsc && npm run move:python && npm run move:rb && npm run move:steps",
     "lint": "eslint --config ../../eslint.config.js",
     "watch": "tsc --watch",
-    "test": "source python_modules/bin/activate && jest",
+    "test": "PATH=python_modules/bin:$PATH jest",
     "clean": "rm -rf python_modules dist"
   },
   "dependencies": {
