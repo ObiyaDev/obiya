@@ -76,7 +76,7 @@ async def run_python_module(file_path: str, rpc: RpcSender, args: HandlerArgs) -
         config = getattr(module, 'config', {})
         is_api_handler = (
             module.config and
-            config.get('type') is 'api'
+            config.get('type') == 'api'
         )
 
         context = Context(args.traceId, args.flows, rpc, is_api_handler)
