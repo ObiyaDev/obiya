@@ -3,6 +3,7 @@ import styles from '../page.module.css'
 import Typography from '@/components/Typography'
 import CommandDisplay from './CommandDisplay'
 import Image from 'next/image'
+import illustration from './images/Illustration.png'
 
 export default function HeroSection() {
   return (
@@ -14,7 +15,7 @@ export default function HeroSection() {
     >
       <Image
         alt="illustration"
-        src={'/images/Illustration.png'}
+        src={illustration}
         placeholder="blur"
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 768px) 85vw, (max-width: 1024px) 75vw, 1280px"

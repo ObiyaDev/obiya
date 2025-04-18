@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Typography from '@/components/Typography';
+import card from './images/card.png'
 
 export default function CardSection() {
   return (
@@ -12,7 +13,7 @@ export default function CardSection() {
               <div className="absolute -top-4 -left-4 right-4 bottom-4 rounded-xl opacity-50"></div>
               <div className="relative">
                 <Image
-                  src={'/images/card.png'}
+                  src={card}
                   placeholder="blur"
                   alt="Motia Dashboard"
                   width={600}

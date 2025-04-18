@@ -9,7 +9,7 @@ import {
   SynchronizeRefreshIcon,
   PinLocationIcon
 } from '@/components/icons';
-
+import flow from './images/flow.png'
 export default function WorkbenchSection() {
   const workbenchFeatures = [
     {
@@ -72,7 +72,7 @@ export default function WorkbenchSection() {
 
         <div className="relative rounded-xl overflow-hidden mb-16 flex justify-center">
           <Image 
-            src={'/images/flow.png'} 
+            src={flow} 
             placeholder="blur"
             alt="Motia Workbench Interface" 
             quality={90}
