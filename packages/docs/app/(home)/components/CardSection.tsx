@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import Typography from '@/components/Typography';
 
@@ -14,12 +12,16 @@ export default function CardSection() {
               <div className="absolute -top-4 -left-4 right-4 bottom-4 rounded-xl opacity-50"></div>
               <div className="relative">
                 <Image
-                  src="/images/card.png"
+                  src={'/images/card.png'}
+                  placeholder="blur"
                   alt="Motia Dashboard"
                   width={600}
                   height={400}
                   className="rounded-2xl shadow-2xl"
+                  sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, 600px"
                   priority
+                  quality={85}
+                  loading="eager"
                 />
               </div>
             </div>
@@ -55,6 +57,8 @@ export default function CardSection() {
                     alt="Zero Config Icon" 
                     width={28} 
                     height={28}
+                    sizes="28px"
+                    className="w-7 h-7"
                   />
                 </div>
                 <div>
@@ -70,6 +74,8 @@ export default function CardSection() {
                     alt="Monitoring Icon" 
                     width={28} 
                     height={28}
+                    sizes="28px"
+                    className="w-7 h-7"
                   />
                 </div>
                 <div>
@@ -85,6 +91,8 @@ export default function CardSection() {
                     alt="Team Collaboration Icon" 
                     width={28} 
                     height={28}
+                    sizes="28px"
+                    className="w-7 h-7"
                   />
                 </div>
                 <div>
