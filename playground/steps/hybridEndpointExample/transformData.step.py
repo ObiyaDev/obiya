@@ -18,30 +18,23 @@ config = {
     "flows": ["hybrid-example"]
 }
 
-# Add a static counter at module level
-instance_id = id(object())  # or random, e.g., random.randint(1, 10000)
-invocation_count = 0
+async def handler(input, context):
+    context.logger.info("Received input", input)
 
-async def handler(input, ctx):
-    global invocation_count
-    invocation_count += 1
-
-    print(f"[Python:transform-data] instance_id={instance_id}, "
-        f"invocation_count={invocation_count} | "
-        f"Received input={input}")    
-
-    items = input.items
+    items = input.get("items")
     # Transform each item
-    transformed = [{
-        "id": getattr(item, "id", None),
-        "value": getattr(item, "value", None) * 2 if hasattr(item, "value") else None,
-        "transformed_by": "python"
-    } for item in items]
+    transformed = [
+        {
+            "id": item.get("id"),
+            "value": item.get("value", 0) * 2,
+            "transformed_by": "python"
+        } for item in items
+    ]
     
-    await ctx.emit({
+    await context.emit({
         "topic": "hybrid.transformed",
         "data": {
             "items": transformed,
-            "timestamp": getattr(input, "timestamp")
+            "timestamp": input.get("timestamp")
         }
     })

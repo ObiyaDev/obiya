@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Any
-from datetime import datetime
+from typing import List
 
 class EnrichedItem(BaseModel):
     enriched_by: str
@@ -21,23 +20,15 @@ config = {
     "flows": ["hybrid-example"]
 }
 
-# Add a static counter at module level
-instance_id = id(object())  # or random, e.g., random.randint(1, 10000)
-invocation_count = 0
+async def handler(input, context):
+    context.logger.info("[Analyze Data] Received hybrid.enriched event", {
+        "input": input,
+    })
 
-async def handler(input, ctx):
-    global invocation_count
-    invocation_count += 1
-
-    print(f"[Python:transform-data] instance_id={instance_id}, "
-        f"invocation_count={invocation_count} | "
-        f"Received input={input}")
-
-    items = input.items
-    
+    items = input.get('items')
     # Calculate some statistics
     total_items = len(items)
-    total = sum(getattr(item, "value", 0) for item in items if hasattr(item, "value"))
+    total = sum(item.get('value', 0) for item in items)
     average = total / total_items if items else 0
     
     analysis = {
@@ -46,15 +37,20 @@ async def handler(input, ctx):
         "count": total_items,
         "analyzed_by": "python"
     }
+
+    context.logger.info("[Analyze Data] Received hybrid.enriched event", {
+        "analysis": analysis,
+        "timestamp": input.get('timestamp')
+    })
     
     # Convert items to a JSON serializable format
     serializable_items = [item.__dict__ for item in items]
 
-    await ctx.emit({
+    await context.emit({
         "topic": "hybrid.analyzed",
         "data": {
             "items": serializable_items,
             "analysis": analysis,
-            "timestamp": getattr(input, "timestamp")
+            "timestamp": input.get('timestamp')
         }
     })
