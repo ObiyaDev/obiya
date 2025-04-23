@@ -1,7 +1,5 @@
 import { createMotiaTester } from '@motiadev/test'
 
-const ISO_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/
-
 describe('simplePython', () => {
   let server: ReturnType<typeof createMotiaTester>
 
@@ -9,7 +7,6 @@ describe('simplePython', () => {
   afterEach(async () => server.close())
 
   it('should run steps concurrently', async () => {
-    const timestamp = expect.any(Number)
     // Creating a watcher for the event we want to test
     const testedEvent = await server.watch('tested')
 
