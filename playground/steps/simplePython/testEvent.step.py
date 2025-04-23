@@ -10,7 +10,12 @@ config = {
 async def handler(input, context):
     context.logger.info("this is a test", input)
 
+    enriched = await context.state.get(context.trace_id, "enriched")
+
     await context.emit({
         "topic": "tested",
-        "data": { "message": "hello world" }
+        "data": { 
+            "message": "hello world",
+            "enriched": enriched
+        }
     })
