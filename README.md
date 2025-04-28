@@ -11,12 +11,11 @@
   <a href="https://motia.dev/docs"><img src="https://img.shields.io/badge/DOCS-READ%20NOW-000000?style=for-the-badge&labelColor=555555" alt="Documentation"></a>
   <a href="https://www.npmjs.com/package/motia"><img src="https://img.shields.io/npm/v/motia?style=for-the-badge&label=NPM&labelColor=555555&color=CB3837" alt="NPM Version"></a>
   <a href="https://www.npmjs.com/package/motia"><img src="https://img.shields.io/npm/dt/motia?style=for-the-badge&label=DOWNLOADS&labelColor=555555&color=CB3837" alt="NPM Downloads"></a>
+  <a href="#"><img src="https://img.shields.io/badge/STATUS-BETA-FFE165?style=for-the-badge&labelColor=555555" alt="Status Beta"></a>
   <hr>
 </div>
 
 Motia is a modern backend framework that combines APIs, background jobs, event systems, and AI agents into one unified, observable runtime. Stop context-switching between multiple runtimes—build your entire backend with event-driven steps, mixing JavaScript, TypeScript, and Python freely, while keeping shared state, tracing, and deployment simplicity.
-
-_⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shape the future!_
 
 <style>
   :root {
@@ -165,7 +164,7 @@ _⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shap
         <td><span class="checkmark">✅</span> Combine deterministic logic & autonomous AI Steps seamlessly.</td>
       </tr>
     </table>
-    <strong>Benefits of Motia:</strong>
+    <strong>Benefits of Unifying with Motia:</strong>
     <ul>
       <li>🎯 <strong>Unified Deployment:</strong> One consistent scaling and deployment model</li>
       <li>🔍 <strong>Enhanced Observability:</strong> End-to-end tracing and simplified debugging</li>
@@ -177,27 +176,59 @@ _⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shap
 
 </div>
 
-## 🎯 Key Features
+## 🗂 Features
 
-- **Single-command Deploy:** Local, MotiaCloud, or self-hosted Lambda
-- **Code-first & Multi-language:** JavaScript, TypeScript, Python—all in one workflow
-- **Flexible Execution Modes:** Deterministic steps or autonomous agentic logic
-- **Runtime Validations:** Ensure step integrity and safe refactors
-- **Integrated Observability:** Comprehensive tracing, retries, and logging
-- **Automatic APIs & Webhooks:** Instantly expose any step over HTTP
-- **Bring-your-own AI Stack:** Integrate any LLM, embedding model, or vector store
-- **Visual Development Environment:** Interactive event flow visualization and debugging
+<td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+    <h4 style="margin-bottom:10px;">🛠️ Framework Features</h4>
+    <strong style="color:#4CAF50;">✅ Beta</strong>
+    <ul style="list-style:none; padding:0; text-align:left;">
+      <li>API Steps (APIs/Webhooks)</li>
+      <li>Motia Workbench</li>
+      <li>Trace IDs</li>
+      <li>Logging</li>
+      <li>Middleware</li>
+      <li>CLI</li>
+      <li>Short-term State (KV)</li>
+      <li>Hot-Reloading</li>
+      <li>Mermaid Diagrams</li>
+    </ul>
+    <strong style="color:#FF9800;">🔜 Roadmap</strong>
+    <ul style="list-style:none; padding:0; text-align:left;">
+      <li>Tree-Shaking Python</li>
+      <li>Long-term State (RDB)</li>
+      <li>Streaming State</li>
+      <li>Sockets</li>
+      <li>State Adapters</li>
+      <li>Logging Adapters</li>
+      <li>Shared Components</li>
+    </ul>
+  </td>
 
-## Motia Workbench: Your Visual Control Center
+  <!-- Ecosystem & Tools -->
+  <td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+    <h4 style="margin-bottom:10px;">🌐 Ecosystem & Tools</h4>
+    <strong style="color:#4CAF50;">✅ Beta</strong>
+    <ul style="list-style:none; padding:0; text-align:left;">
+      <li>Motia Cursor Rules</li>
+      <li>Workbench VS-Code/Cursor Extension</li>
+      <li>Motia Test Helpers</li>
+    </ul>
+  </td>
 
-The Motia Workbench is your browser-based development environment.
-
-![Motia Workbench Interface](./assets/gmail-example.png)
-
-- **Interactive Flow Visualization:** See your steps connected in a dynamic, visual graph. Understand event flow and step interactions at a glance.
-- **Real-time Testing:** Trigger API endpoints and emit events directly from the UI to test your flows and agents in real-time.
-- **Live Log Streaming:** Monitor logs in real-time within the Workbench, making debugging and observing execution a breeze.
-- **Step Customization:** Create custom UI components for your steps to enhance visualization and tailor the Workbench to your workflows.
+  <!-- Motia Cloud -->
+  <td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+    <h4 style="margin-bottom:10px;">☁️ Motia Cloud</h4>
+    <strong style="color:#4CAF50;">✅ Beta</strong>
+    <ul style="list-style:none; padding:0; text-align:left;">
+      <li>One-Command Deploys</li>
+      <li>Observability</li>
+      <li>Logging, State & Error Monitoring</li>
+      <li>Environments</li>
+      <li>Secret Management</li>
+      <li>Canary & Rollback Deployments</li>
+    </ul>
+  </td>
+</tr>
 
 ## 🗂 Examples
 
