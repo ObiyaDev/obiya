@@ -187,59 +187,23 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
 
 </div>
 
-## 🗂 Features
+## 🎯 Key Motia Features
 
-<td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-    <h4 style="margin-bottom:10px;">🛠️ Framework Features</h4>
-    <strong style="color:#4CAF50;">✅ Beta</strong>
-    <ul style="list-style:none; padding:0; text-align:left;">
-      <li>API Steps (APIs/Webhooks)</li>
-      <li>Motia Workbench</li>
-      <li>Trace IDs</li>
-      <li>Logging</li>
-      <li>Middleware</li>
-      <li>CLI</li>
-      <li>Short-term State (KV)</li>
-      <li>Hot-Reloading</li>
-      <li>Mermaid Diagrams</li>
-    </ul>
-    <strong style="color:#FF9800;">🔜 Roadmap</strong>
-    <ul style="list-style:none; padding:0; text-align:left;">
-      <li>Tree-Shaking Python</li>
-      <li>Long-term State (RDB)</li>
-      <li>Streaming State</li>
-      <li>Sockets</li>
-      <li>State Adapters</li>
-      <li>Logging Adapters</li>
-      <li>Shared Components</li>
-    </ul>
-  </td>
-
-  <!-- Ecosystem & Tools -->
-  <td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-    <h4 style="margin-bottom:10px;">🌐 Ecosystem & Tools</h4>
-    <strong style="color:#4CAF50;">✅ Beta</strong>
-    <ul style="list-style:none; padding:0; text-align:left;">
-      <li>Motia Cursor Rules</li>
-      <li>Workbench VS-Code/Cursor Extension</li>
-      <li>Motia Test Helpers</li>
-    </ul>
-  </td>
-
-  <!-- Motia Cloud -->
-  <td width="25%" valign="top" style="padding:15px; border-radius:10px; background:#f8f8f8; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-    <h4 style="margin-bottom:10px;">☁️ Motia Cloud</h4>
-    <strong style="color:#4CAF50;">✅ Beta</strong>
-    <ul style="list-style:none; padding:0; text-align:left;">
-      <li>One-Command Deploys</li>
-      <li>Observability</li>
-      <li>Logging, State & Error Monitoring</li>
-      <li>Environments</li>
-      <li>Secret Management</li>
-      <li>Canary & Rollback Deployments</li>
-    </ul>
-  </td>
-</tr>
+| Features                             | Description                                                                                                                                                                                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📦 **Full PyPi & NPM Support**       | Seamlessly integrate and leverage packages from the vast ecosystems of PyPi and NPM in your workflows.                                                                                                                                            |
+| 🚏 **Built-in Routing**              | Motia provides out-of-the-box routing capabilities, allowing instant setup of APIs and webhooks with no additional configuration required.                                                                                                        |
+| 🧪 **Fully Testable**                | Integrates effortlessly with your existing test suite, enabling comprehensive testing of workflows and steps using your preferred testing tools.                                                                                                  |
+| 👤 **Human-in-the-Loop**             | Built-in mechanisms for human intervention, making it easy to integrate review or approval steps directly into automated workflows.                                                                                                               |
+| 📜 **Minimal DSL**                   | Motia uses a minimal and intuitive domain-specific language (DSL), reducing learning curves and enabling quicker adoption.                                                                                                                        |
+| 🚀 **API Steps (APIs/Webhooks)**     | Quickly expose workflow steps as APIs or webhooks without additional server setup, ideal for integrating into existing web infrastructure.                                                                                                        |
+| 🖥️ **Motia Workbench**               | Provides a visual interface for workflow management, debugging, and monitoring, allowing easy visualization and manipulation of workflow execution.                                                                                               |
+| 🔎 **Trace IDs & Logging**           | Integrated trace IDs and structured logging enable end-to-end observability, simplifying debugging and improving reliability.                                                                                                                     |
+| 🔄 **Middleware & CLI**              | Easily extend workflow capabilities with middleware, and rapidly create, manage, and deploy projects through a powerful CLI tool.                                                                                                                 |
+| ⚡ **Hot-Reloading**                 | Real-time development experience allowing you to instantly see changes without restarting your workflows, significantly speeding up the development cycle.                                                                                        |
+| 📊 **Mermaid Diagrams**              | Automatic generation of Mermaid diagrams for each workflow, offering clear visualization of flow logic and dependencies.                                                                                                                          |
+| 🌐 **Motia Cursor & IDE Extensions** | Enhance productivity with Motia-specific rules in Cursor and VS-Code extensions, integrating workflow management directly into your preferred IDE environment.                                                                                    |
+| ☁️ **Motia Cloud**                   | One-command deployments, integrated observability tools, centralized logging, secret management, and environment-specific configurations including canary and rollback deployments, enabling robust and reliable workflow hosting and management. |
 
 ## 🗂 Examples
 
