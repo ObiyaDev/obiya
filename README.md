@@ -264,55 +264,48 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
   </table>
 </div>
 
-## Quick Start
+## 🚀 Quick Start
 
-Ready to get started in minutes? Follow these simple steps using **pnpm** and the automated project creation:
+Get your first Motia workflow running in minutes:
 
-1.  **Create a new project using the Motia CLI:**
+**1. Create a Project**
 
-    ```bash
-    npx motia create -n my-first-agent
-    ```
+Create a new project with the Motia CLI:
 
-    _(Replace `my-first-agent` with your desired project name)_
+```bash
+npx motia create -n my-first-agent
+```
 
-    This command will:
+_This sets up a starter project in the `my-first-agent` folder._
 
-    - Create a new folder `my-first-agent`
-    - Set up a basic Motia project with example steps
-    - Install dependencies using pnpm
+** 2. Launch the Dev Server**
 
-2.  **Navigate into your new project directory:**
+Navigate into your project and start the server:
 
-    ```bash
-    cd my-first-agent
-    ```
+```bash
+cd my-first-agent
+pnpm run dev
+```
 
-3.  **Start the Motia development server:**
+**3. Open the Workbench**
 
-    ```bash
-    pnpm run dev
-    ```
+Open [http://localhost:3000](http://localhost:3000) to see your workflow visualized in the Motia Workbench.
 
-4.  **Open the Motia Workbench in your browser (usually `http://localhost:3000`)**. You should see a pre-built flow named "default" with example steps visualized.
+### 4. Trigger Your Workflow
 
-5.  **Test an example API Step:** In your terminal, use `curl` to trigger the example API endpoint (often `/default` in the default template):
+Trigger your API Step:
 
-    ```bash
-    curl -X POST http://localhost:3000/default \
-    -H "Content-Type: application/json" \
-    -d '{}'
-    ```
+```bash
+curl -X POST http://localhost:3000/default -H "Content-Type: application/json" -d '{}'
+```
 
-    Alternatively, use the Motia CLI to emit an event (for event-based steps in the template):
+Trigger your Event Step (directly):
 
-    ```bash
-    npx motia emit --topic test-state --message '{}'
-    ```
+```bash
+npx motia emit --topic test-state --message '{}'
+```
 
-    Check the Workbench logs – you should see logs indicating the step execution and event flow!
-
-**Congratulations! You've just created and run your first Motia workflow using the automated project setup.**
+🎉 **That's it!** You're ready to build with Motia.
 
 ## Start building your AI powered agents with simple steps
 
