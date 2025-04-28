@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="assets/PNGs/icon.png" alt="Logo" width="180">
-  <h1 align="center"> AI Agent Framework Built for Software Engineers </h1>
+  <h1 align="center"> Unified Backend for APIs, Queues, Events, and Agents </h1>
 </div>
 
 <div align="center">
@@ -14,50 +14,192 @@
   <hr>
 </div>
 
-Motia lets developers create, test, and deploy production-ready AI agents in minutes, in a framework that will feel familar to software engineering teams. Write your agent logic in the languages and package you know and love. Visualize execution in real-time, and deploy without DevOps headaches.
+Motia is a modern backend framework that combines APIs, background jobs, event systems, and AI agents into one unified, observable runtime. Stop context-switching between multiple runtimes—build your entire backend with event-driven steps, mixing JavaScript, TypeScript, and Python freely, while keeping shared state, tracing, and deployment simplicity.
 
-*Motia is currently in Beta. This means we're actively developing, iterating quickly, and looking for feedback from early adopters like you!*
+_⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shape the future!_
 
-## Start Building Now
+<style>
+  :root {
+    --border-radius: 12px;
+    --shadow: rgba(0,0,0,0.1) 0 2px 6px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: transparent;
+      --card-bg: #1f1f1f;
+      --text: #eaeaea;
+      --border: #333;
+      --accent: #4caf50;
+      --issue-color: #ffb74d;
+      --muted: #aaa;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: transparent;
+      --card-bg: #ffffff;
+      --text: #333;
+      --border: #ddd;
+      --accent: #2e7d32;
+      --issue-color: #e65100;
+      --muted: #666;
+    }
+  }
+
+  .grid-container {
+    display: flex;
+    gap: 20px;
+    font-family: sans-serif;
+    color: var(--text);
+    background-color: var(--bg);
+    align-items: flex-start;
+  }
+
+  .card {
+    flex: 1;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    background-color: var(--card-bg);
+  }
+
+  h3 {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+  }
+
+  th {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+
+  td {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  ul {
+    padding-left: 18px;
+    font-size: 0.85em;
+    margin: 8px 0 0;
+  }
+
+  .issue {
+    color: var(--issue-color);
+  }
+
+  .benefit {
+    color: var(--accent);
+  }
+
+  .checkmark {
+    color: var(--accent);
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+</style>
+
+<div class="grid-container">
+  
+  <!-- Problem Card -->
+  <div class="card">
+    <h3>🚧 The Problem: Fragmented Runtimes</h3>
+<table>
+  <tr>
+    <th align="left">Runtime Layer</th>
+    <th align="left">Common Tools</th>
+  </tr>
+  <tr>
+    <td>🖥️ API Servers</td>
+    <td>Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask,  Nest</td>
+  </tr>
+  <tr>
+    <td>📬 Job Queues / Events</td>
+    <td>Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams</td>
+  </tr>
+  <tr>
+    <td>🤖 AI & Agents</td>
+    <td>LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agnu, AgentGPT</td>
+  </tr>
+</table>
+    <strong class="muted">Issues caused collectively:</strong>
+    <ul>
+      <li class="issue">Multiple deploy targets & scaling complexities</li>
+      <li class="issue">Partial observability causing debugging pain</li>
+      <li class="issue">Language constraints limiting flexibility</li>
+      <li class="issue">Cognitive overhead from context switching</li>
+      <li class="issue">Repeated boilerplate for error handling & retries</li>
+    </ul>
+  </div>
+
+  <!-- Solution Card -->
+  <div class="card">
+    <h3>✅ Motia’s Unified Solution</h3>
+    <table>
+      <tr>
+        <th align="left">Runtime Layer</th>
+        <th align="left">How Motia Solves It</th>
+      </tr>
+      <tr>
+        <td>🖥️ API Servers</td>
+        <td><span class="checkmark">✅</span> Expose <strong>Steps</strong> instantly as APIs/webhooks, no extra server setup.</td>
+      </tr>
+      <tr>
+        <td>📬 Job Queues / Events</td>
+        <td><span class="checkmark">✅</span> Unified runtime with built-in queueing, retries & state management.</td>
+      </tr>
+      <tr>
+        <td>🤖 AI & Agents</td>
+        <td><span class="checkmark">✅</span> Combine deterministic logic & autonomous AI Steps seamlessly.</td>
+      </tr>
+    </table>
+    <strong class="muted">Additional Benefits:</strong>
+    <ul>
+      <li class="benefit"><strong>Single Deploy Target:</strong> Simplified scaling & deployment</li>
+      <li class="benefit"><strong>Complete Observability:</strong> Easier debugging & unified tracing</li>
+      <li class="benefit"><strong>Language Flexibility:</strong> JS, TS, Python integration</li>
+      <li class="benefit"><strong>Reduced Cognitive Load:</strong> One consistent mental model</li>
+      <li class="benefit"><strong>Reduced Boilerplate:</strong> Automatic retries, idempotency & errors</li>
+    </ul>
+  </div>
+
+</div>
+
+## 🚀 Quickstart
+
+Get started instantly with Motia CLI:
+
 ```bash
 npx motia@latest create -n new-project
 cd new-project && npm run dev
 ```
 
-## The Problem Motia Solves
+Now, visit http://localhost:3000 to open your visual Motia Workbench!
 
-Building production-grade AI agents is tough. You're usually forced to choose:
+Smaller workbench image here: TODO
 
-- No-code/Low-code tools: Quick to start, but can't handle real-world complexity at scale.
-- Fully-agentic Frameworks: Great for creative tasks but difficult to manage and control consistent outputs
-- ML-focused Frameworks: Designed for model training and optimization, not for orchestrating complex business workflows.
-- Custom code: Quickly becomes unmanageable as agents grow in complexity and span across teams.
+## 🎯 Key Features
 
-Motia gives you full, code-first control of your agents and automations with the simplicity of a visual interface, letting you focus on what truly matters: your business logic, not your infrastructure.
-
-![Motia Example](assets/flow.png)
-
-## Why Choose Motia?
-
-Motia is built for developers who want to build agentic and intelligent, event-driven systems rapidly and reliably. Here's what makes Motia the ideal choice:
-
-- **🚀 Zero Infrastructure Headaches** - No Kubernetes expertise required. Deploy agents with a single command.
-- **💻 True Code-First Development** - Write agent logic in familiar languages, not proprietary DSLs.
-- **🔀 Unique Multi-Language Support** - Mix Python for ML, TypeScript for type safety, and Ruby for APIs in the same agent.
-- **🧩 Composable Steps with Runtime Validation** - Build agents from modular, reusable components with automatic input/output validation.
-- **📊 Built-in Observability** - Debug agent behavior with visual execution graphs and real-time logging.
-- **⚡️ Instant APIs & Webhooks** - Expose agent functionality via HTTP endpoints without extra code.
-- **🧠 Full Control Over AI Logic** - Use any LLM, vector store, or reasoning pattern without restrictions.
-- **🤸‍♀️ Flexible Control** - Easilty switch between agentic and deterministic control within the same flow.
-
-## Ideal for Agents & Intelligent Automations
-
-Motia's event-driven architecture and modular steps are perfectly suited for building sophisticated agents and intelligent automations. Whether you're creating GenAI-powered workflows, complex decision-making systems, or data processing pipelines, Motia provides the ideal foundation.
-
-- **Create Agent Components as Steps:** Encapsulate agent logic, tool integrations, and decision-making processes within individual steps, leveraging the rich ecosystems of JavaScript, Python, and Ruby.
-- **Orchestrate Agent Interactions with Flows:** Design complex agentic workflows by connecting steps to create sophisticated sequences of actions and reactions, easily integrating steps written in different languages.
-- **Test and Evaluate Agent Behavior Visually:** The Motia Workbench provides real-time visualization and testing tools to observe and refine your agents' behavior and ensure they perform as expected, regardless of the underlying step language.
-- **Iterate and Evolve Agents Rapidly:** Motia's modularity and observability make it easy to iterate on agent logic, experiment with different approaches, and continuously improve your intelligent systems, taking advantage of the strengths of each supported language.
+- **Single-command Deploy:** Local, MotiaCloud, or self-hosted Lambda
+- **Code-first & Multi-language:** JavaScript, TypeScript, Python—all in one workflow
+- **Flexible Execution Modes:** Deterministic steps or autonomous agentic logic
+- **Runtime Validations:** Ensure step integrity and safe refactors
+- **Integrated Observability:** Comprehensive tracing, retries, and logging
+- **Automatic APIs & Webhooks:** Instantly expose any step over HTTP
+- **Bring-your-own AI Stack:** Integrate any LLM, embedding model, or vector store
+- **Visual Development Environment:** Interactive event flow visualization and debugging
 
 ## Motia Workbench: Your Visual Control Center
 
@@ -72,133 +214,62 @@ The Motia Workbench is your browser-based development environment.
 
 ## 🗂 Examples
 
-### Finance Agent
-
-A powerful event-driven financial analysis workflow built with Motia that combines web search, financial data, and AI analysis to provide comprehensive investment insights.
-
-![Finance Agent](assets/examples/finance-agent.png)
-
-**Key Features:**
-
-- Real-time Financial Analysis: Combines multiple data sources for comprehensive insights
-- AI-Powered Insights: Leverages OpenAI GPT-4 for intelligent market analysis
-- Web Search Integration: Aggregates latest market news and analysis
-- Financial Data Integration: Real-time stock and company information
-
-**Technologies:** TypeScript, Alpha Vantage API, SerperDev, OpenAI
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent)
-
-<hr/>
-
-### GitHub Integration Agent
-
-A comprehensive agent for automating GitHub issue and pull request management using AI-powered classification and routing.
-
-<div style="display: flex; gap: 10px;">
-  <img src="assets/examples/github-pr-management.png" width="49%" alt="GitHub PR Integration Agent" />
-  <img src="assets/examples/github-issue-management.png" width="49%" alt="GitHub Issue Integration Agent" />
+<div align="center">
+  <table>
+    <tr>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent">
+          <img src="assets/examples/finance-agent.png" width="200" alt="Finance Agent"><br>
+          <strong>Finance Agent</strong>
+        </a>
+        <p><em>AI-driven financial market insights.</em></p>
+        <small>TypeScript, Alpha Vantage, SerperDev, OpenAI</small>
+      </td>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow">
+          <img src="assets/examples/github-pr-management.png" width="200" alt="GitHub Agent"><br>
+          <strong>GitHub Agent</strong>
+        </a>
+        <p><em>AI-based GitHub issue & PR automation.</em></p>
+        <small>TypeScript, OpenAI, GitHub API</small>
+      </td>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow">
+          <img src="assets/examples/gmail-flow.png" width="200" alt="Gmail Manager"><br>
+          <strong>Gmail Manager</strong>
+        </a>
+        <p><em>Intelligent email classification & auto-response.</em></p>
+        <small>TypeScript, Python, Google APIs, Discord</small>
+      </td>
+    </tr>
+    <tr>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow">
+          <img src="assets/examples/trello-manager.png" width="200" alt="Trello Automation"><br>
+          <strong>Trello Automation</strong>
+        </a>
+        <p><em>Automated task progression & summaries.</em></p>
+        <small>TypeScript, Trello API, OpenAI, Slack</small>
+      </td>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example">
+          <img src="assets/examples/parse-embed-rag.png" width="200" alt="RAG Agent"><br>
+          <strong>RAG Agent</strong>
+        </a>
+        <p><em>Knowledge retrieval & Q&A applications.</em></p>
+        <small>Python, TypeScript, FAISS, Google's Generative AI</small>
+      </td>
+      <td width="33%" align="center">
+        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example">
+          <img src="assets/examples/generate-image.png" width="200" alt="AI Image Generation"><br>
+          <strong>AI Image Generation</strong>
+        </a>
+        <p><em>Generate & evaluate AI images.</em></p>
+        <small>TypeScript, Python, Claude, Flux, OpenAI</small>
+      </td>
+    </tr>
+  </table>
 </div>
-
-**Key Features:**
-
-- AI-powered issue and PR classification
-- Automatic label assignment based on content
-- Smart reviewer suggestions based on expertise
-- Automatic movement between stages in the development lifecycle
-
-**Technologies:** TypeScript, OpenAI, GitHub API
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow)
-
-<hr/>
-
-### Gmail Account Manager
-
-An intelligent Gmail agent that monitors, analyzes, and automatically responds to incoming emails.
-
-![Gmail Agent](assets/examples/gmail-flow.png)
-
-**Key Features:**
-
-- Email classification and urgency detection
-- Automated responses based on content analysis
-- Smart email organization
-- Daily summaries via Discord
-
-**Technologies:** TypeScript, Python, Google APIs, Discord, Hugging Face
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow)
-
-<hr/>
-
-### Trello Task Automation
-
-Streamline development processes with an intelligent task progression agent for Trello boards.
-
-![Trello Agent](assets/examples/trello-manager.png)
-
-**Key Features:**
-
-- Automated card movement between lists
-- Task validation and requirement checking
-- AI-generated task summaries
-- Slack integration for notifications
-
-**Technologies:** TypeScript, Trello API, OpenAI, Slack
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow)
-
-<hr/>
-
-### Retrieval-Augmented Generation (RAG)
-
-A complete RAG agent implementation for building knowledge-based AI applications.
-
-![RAG Agent](assets/examples/parse-embed-rag.png)
-
-**Key Features:**
-
-- Web page content extraction and parsing
-- Text chunking and embedding
-- Vector database integration
-- AI-powered question answering
-
-**Technologies:** Python, TypeScript, FAISS, Google's Generative AI
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example)
-
-<hr/>
-
-### AI Image Generation and Evaluation
-
-An agent that generates and evaluates AI images with feedback loops and quality metrics.
-
-<div style="display: flex; gap: 10px;">
-  <img src="assets/examples/generate-image.png" width="49%" alt="Vision Agent" />
-  <img src="assets/examples/eval-agent.png" width="49%" alt="Evaluation Results" />
-</div>
-
-**Key Features:**
-
-- Prompt enhancement with AI
-- Image generation with Flux
-- Evaluation of generated images
-- Dataset reports with quality metrics
-
-**Technologies:** TypeScript, Python, Claude, Flux, OpenAI
-
-[View Example →](https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example)
-
-## 🚀 Getting Started
-
-Each example includes its own README with detailed setup instructions. Generally, you'll need:
-
-1. Clone this repository
-2. Navigate to the example directory
-3. Install dependencies
-4. Configure environment variables
-5. Run the agent with Motia
 
 ## Quick Start
 
