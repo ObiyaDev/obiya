@@ -116,31 +116,31 @@ _⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shap
   <!-- Problem Card -->
   <div class="card">
     <h3>🚧 The Problem: Fragmented Runtimes</h3>
-<table>
-  <tr>
-    <th align="left">Runtime Layer</th>
-    <th align="left">Common Tools</th>
-  </tr>
-  <tr>
-    <td>🖥️ API Servers</td>
-    <td>Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask,  Nest</td>
-  </tr>
-  <tr>
-    <td>📬 Job Queues / Events</td>
-    <td>Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams</td>
-  </tr>
-  <tr>
-    <td>🤖 AI & Agents</td>
-    <td>LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agnu, AgentGPT</td>
-  </tr>
-</table>
-    <strong class="muted">Issues caused collectively:</strong>
+    <table>
+      <tr>
+        <th align="left">Runtime Layer</th>
+        <th align="left">Common Tools</th>
+      </tr>
+      <tr>
+        <td>🖥️ API Servers</td>
+        <td>Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask,  Nest</td>
+      </tr>
+      <tr>
+        <td>📬 Job Queues / Events</td>
+        <td>Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams</td>
+      </tr>
+      <tr>
+        <td>🤖 AI & Agents</td>
+        <td>LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agnu, AgentGPT</td>
+      </tr>
+    </table>
+    <strong>Issues Caused by Fragmentation:</strong>
     <ul>
-      <li class="issue">Multiple deploy targets & scaling complexities</li>
-      <li class="issue">Partial observability causing debugging pain</li>
-      <li class="issue">Language constraints limiting flexibility</li>
-      <li class="issue">Cognitive overhead from context switching</li>
-      <li class="issue">Repeated boilerplate for error handling & retries</li>
+      <li>🔸 <strong>Deployment Complexity:</strong> Multiple scaling models and deployment targets</li>
+      <li>🔸 <strong>Debugging Difficulty:</strong> Fragmented observability, incomplete traces</li>
+      <li>🔸 <strong>Developer Constraints:</strong> Language lock-in, limited flexibility</li>
+      <li>🔸 <strong>Cognitive Overhead:</strong> Context-switching across different frameworks</li>
+      <li>🔸 <strong>Redundant Boilerplate:</strong> Repeated logic for retries, errors, and idempotency</li>
     </ul>
   </div>
 
@@ -165,30 +165,17 @@ _⚠️ Motia is currently in Beta: Actively evolving—your feedback helps shap
         <td><span class="checkmark">✅</span> Combine deterministic logic & autonomous AI Steps seamlessly.</td>
       </tr>
     </table>
-    <strong class="muted">Additional Benefits:</strong>
+    <strong>Benefits of Motia:</strong>
     <ul>
-      <li class="benefit"><strong>Single Deploy Target:</strong> Simplified scaling & deployment</li>
-      <li class="benefit"><strong>Complete Observability:</strong> Easier debugging & unified tracing</li>
-      <li class="benefit"><strong>Language Flexibility:</strong> JS, TS, Python integration</li>
-      <li class="benefit"><strong>Reduced Cognitive Load:</strong> One consistent mental model</li>
-      <li class="benefit"><strong>Reduced Boilerplate:</strong> Automatic retries, idempotency & errors</li>
+      <li>🎯 <strong>Unified Deployment:</strong> One consistent scaling and deployment model</li>
+      <li>🔍 <strong>Enhanced Observability:</strong> End-to-end tracing and simplified debugging</li>
+      <li>⚙️ <strong>Full Language Flexibility:</strong> Mix JavaScript, TypeScript, Python freely</li>
+      <li>🧠 <strong>Lower Cognitive Load:</strong> Single intuitive model for backend workflows</li>
+      <li>♻️ <strong>Simplified Error Handling:</strong> Automatic retries and consistent error management</li>
     </ul>
   </div>
 
 </div>
-
-## 🚀 Quickstart
-
-Get started instantly with Motia CLI:
-
-```bash
-npx motia@latest create -n new-project
-cd new-project && npm run dev
-```
-
-Now, visit http://localhost:3000 to open your visual Motia Workbench!
-
-Smaller workbench image here: TODO
 
 ## 🎯 Key Features
 
