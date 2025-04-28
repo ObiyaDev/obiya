@@ -58,6 +58,7 @@ Motia solves this fragmentation by unifying your backend into a single runtime:
 - ⚙️ **Full Language Flexibility:** JavaScript, TypeScript, Python
 - 🧠 **Lower Cognitive Load:** Single intuitive backend model
 - ♻️ **Simplified Error Handling:** Automatic retries & error management
+- 🛡️ **Resilient Architecture:** Fault-tolerant event-based system
 
 ---
 
