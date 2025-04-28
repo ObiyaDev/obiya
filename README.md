@@ -207,61 +207,114 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
 
 ## 🗂 Examples
 
-<div align="center">
-  <table>
-    <tr>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent">
-          <img src="assets/examples/finance-agent.png" width="200" alt="Finance Agent"><br>
-          <strong>Finance Agent</strong>
-        </a>
-        <p><em>AI-driven financial market insights.</em></p>
-        <small>TypeScript, Alpha Vantage, SerperDev, OpenAI</small>
-      </td>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow">
-          <img src="assets/examples/github-pr-management.png" width="200" alt="GitHub Agent"><br>
-          <strong>GitHub Agent</strong>
-        </a>
-        <p><em>AI-based GitHub issue & PR automation.</em></p>
-        <small>TypeScript, OpenAI, GitHub API</small>
-      </td>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow">
-          <img src="assets/examples/gmail-flow.png" width="200" alt="Gmail Manager"><br>
-          <strong>Gmail Manager</strong>
-        </a>
-        <p><em>Intelligent email classification & auto-response.</em></p>
-        <small>TypeScript, Python, Google APIs, Discord</small>
-      </td>
-    </tr>
-    <tr>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow">
-          <img src="assets/examples/trello-manager.png" width="200" alt="Trello Automation"><br>
-          <strong>Trello Automation</strong>
-        </a>
-        <p><em>Automated task progression & summaries.</em></p>
-        <small>TypeScript, Trello API, OpenAI, Slack</small>
-      </td>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example">
-          <img src="assets/examples/parse-embed-rag.png" width="200" alt="RAG Agent"><br>
-          <strong>RAG Agent</strong>
-        </a>
-        <p><em>Knowledge retrieval & Q&A applications.</em></p>
-        <small>Python, TypeScript, FAISS, Google's Generative AI</small>
-      </td>
-      <td width="33%" align="center">
-        <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example">
-          <img src="assets/examples/generate-image.png" width="200" alt="AI Image Generation"><br>
-          <strong>AI Image Generation</strong>
-        </a>
-        <p><em>Generate & evaluate AI images.</em></p>
-        <small>TypeScript, Python, Claude, Flux, OpenAI</small>
-      </td>
-    </tr>
-  </table>
+<style>
+.example-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.example-card {
+  flex: 1 1 300px;
+  max-width: calc(33% - 32px); /* ensures max 3 cards per row */
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: center;
+  background-color: transparent; /* Removed white background */
+}
+
+.example-card img {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.example-card strong {
+  display: block;
+  margin-top: 8px;
+}
+
+.example-card em {
+  color: #555;
+  font-size: 0.9em;
+}
+
+.example-card small {
+  color: #888;
+}
+
+/* Medium screens: 2-column layout */
+@media (max-width: 960px) {
+  .example-card {
+    max-width: calc(50% - 32px);
+  }
+}
+
+/* Small screens: single-column layout */
+@media (max-width: 600px) {
+  .example-card {
+    max-width: 100%;
+  }
+}
+</style>
+
+<div class="example-container">
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent">
+      <img src="assets/examples/finance-agent.png" alt="Finance Agent">
+      <strong>Finance Agent</strong>
+    </a>
+    <p><em>AI-driven financial market insights.</em></p>
+    <small>TypeScript, Alpha Vantage, SerperDev, OpenAI</small>
+  </div>
+
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow">
+      <img src="assets/examples/github-pr-management.png" alt="GitHub Agent">
+      <strong>GitHub Agent</strong>
+    </a>
+    <p><em>GitHub issue & PR automation.</em></p>
+    <small>TypeScript, OpenAI, GitHub API</small>
+  </div>
+
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow">
+      <img src="assets/examples/gmail-flow.png" alt="Gmail Manager">
+      <strong>Gmail Manager</strong>
+    </a>
+    <p><em>Email classification & auto-response.</em></p>
+    <small>TypeScript, Python, Google APIs, Discord</small>
+  </div>
+
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow">
+      <img src="assets/examples/trello-manager.png" alt="Trello Automation">
+      <strong>Trello Automation</strong>
+    </a>
+    <p><em>Task progression & summaries.</em></p>
+    <small>TypeScript, Trello API, OpenAI, Slack</small>
+  </div>
+
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example">
+      <img src="assets/examples/parse-embed-rag.png" alt="RAG Agent">
+      <strong>RAG Agent</strong>
+    </a>
+    <p><em>Knowledge retrieval & Q&A.</em></p>
+    <small>Python, TypeScript, FAISS, Google AI</small>
+  </div>
+
+  <div class="example-card">
+    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example">
+      <img src="assets/examples/generate-image.png" alt="AI Image Generation">
+      <strong>AI Image Generation</strong>
+    </a>
+    <p><em>Generate & evaluate AI images.</em></p>
+    <small>TypeScript, Python, Claude, Flux, OpenAI</small>
+  </div>
 </div>
 
 ## 🚀 Quick Start
@@ -278,7 +331,7 @@ npx motia create -n my-first-agent
 
 _This sets up a starter project in the `my-first-agent` folder._
 
-** 2. Launch the Dev Server**
+**2. Launch the Dev Server**
 
 Navigate into your project and start the server:
 
@@ -291,7 +344,7 @@ pnpm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see your workflow visualized in the Motia Workbench.
 
-### 4. Trigger Your Workflow
+**4. Trigger Your Workflow**
 
 Trigger your API Step:
 
@@ -307,7 +360,7 @@ npx motia emit --topic test-state --message '{}'
 
 🎉 **That's it!** You're ready to build with Motia.
 
-## Start building your AI powered agents with simple steps
+## Start building your APIs, agents and automations with simple steps
 
 - Configure a simple to emit/subscribe, assign to a flow and inculde runtime validation
 - Define a function to handle when the step is triggered
