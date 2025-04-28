@@ -15,179 +15,55 @@
   <hr>
 </div>
 
+---
+
 Motia is a modern backend framework that combines APIs, background jobs, event systems, and AI agents into one unified, observable runtime. Stop context-switching between multiple runtimes—build your entire backend with event-driven steps, mixing JavaScript, TypeScript, and Python freely, while keeping shared state, tracing, and deployment simplicity.
 
-<style>
-  :root {
-    --border-radius: 12px;
-    --shadow: rgba(0,0,0,0.1) 0 2px 6px;
-  }
+---
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: transparent;
-      --card-bg: #1f1f1f;
-      --text: #eaeaea;
-      --border: #333;
-      --accent: #4caf50;
-      --issue-color: #ffb74d;
-      --muted: #aaa;
-    }
-  }
+## 🚧 The Problem: Fragmented Runtimes
 
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: transparent;
-      --card-bg: #ffffff;
-      --text: #333;
-      --border: #ddd;
-      --accent: #2e7d32;
-      --issue-color: #e65100;
-      --muted: #666;
-    }
-  }
+Backend engineering teams often juggle multiple fragmented runtimes:
 
-  .grid-container {
-    display: flex;
-    gap: 10px;
-    font-family: sans-serif;
-    color: var(--text);
-    background-color: var(--bg);
-    align-items: flex-start;
-  }
+| Runtime Layer            | Common Tools                                                        |
+| ------------------------ | ------------------------------------------------------------------- |
+| 🖥️ **API Servers**       | Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask, Nest |
+| 📬 **Job Queues/Events** | Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams  |
+| 🤖 **AI & Agents**       | LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agnu, AgentGPT       |
 
-  /* Responsive layout for mobile */
-  @media (max-width: 960px) {
-    .grid-container {
-      flex-direction: column;
-    }
+**Common issues caused by fragmentation:**
 
-    .card {
-      width: 100%;
-    }
-  }
+- **Deployment Complexity:** Multiple scaling models and deployment targets
+- **Debugging Difficulty:** Fragmented observability, incomplete traces
+- **Developer Constraints:** Language lock-in, limited flexibility
+- **Cognitive Overhead:** Context-switching across frameworks
+- **Redundant Boilerplate:** Duplicated logic and complex code-sharing
 
-  .card {
-    flex: 1;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    background-color: var(--card-bg);
-  }
+---
 
-  h3 {
-    text-align: center;
-    margin-top: 0;
-  }
+## ✅ Motia’s Unified Solution
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-    font-size: 0.9em;
-  }
+Motia solves this fragmentation by unifying your backend into a single runtime:
 
-  th {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 6px;
-  }
+| Runtime Layer            | Motia's Approach                                                |
+| ------------------------ | --------------------------------------------------------------- |
+| 🖥️ **API Servers**       | ✅ Expose workflow steps instantly as APIs/webhooks             |
+| 📬 **Job Queues/Events** | ✅ Unified runtime with built-in queuing, retries, and state    |
+| 🤖 **AI & Agents**       | ✅ Seamlessly combine deterministic logic & AI-driven workflows |
 
-  td {
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-  }
+**Benefits of Unifying with Motia:**
 
-  ul {
-    padding-left: 18px;
-    font-size: 0.85em;
-    margin: 8px 0 0;
-  }
+- 🎯 **Unified Deployment:** Single consistent scaling model
+- 🔍 **Enhanced Observability:** Simplified end-to-end tracing
+- ⚙️ **Full Language Flexibility:** JavaScript, TypeScript, Python
+- 🧠 **Lower Cognitive Load:** Single intuitive backend model
+- ♻️ **Simplified Error Handling:** Automatic retries & error management
 
-  .issue {
-    color: var(--issue-color);
-  }
-
-  .benefit {
-    color: var(--accent);
-  }
-
-  .checkmark {
-    color: var(--accent);
-  }
-
-  .muted {
-    color: var(--muted);
-  }
-</style>
-
-<div class="grid-container">
-  
-  <!-- Problem Card -->
-  <div class="card">
-    <h3>🚧 The Problem: Fragmented Runtimes</h3>
-    <table>
-      <tr>
-        <th align="left">Runtime Layer</th>
-        <th align="left">Common Tools</th>
-      </tr>
-      <tr>
-        <td>🖥️ API Servers</td>
-        <td>Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask,  Nest</td>
-      </tr>
-      <tr>
-        <td>📬 Job Queues / Events</td>
-        <td>Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams</td>
-      </tr>
-      <tr>
-        <td>🤖 AI & Agents</td>
-        <td>LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agnu, AgentGPT</td>
-      </tr>
-    </table>
-    <strong>Issues Caused by Fragmentation:</strong>
-    <ul>
-      <li>🔸 <strong>Deployment Complexity:</strong> Multiple scaling models and deployment targets</li>
-      <li>🔸 <strong>Debugging Difficulty:</strong> Fragmented observability, incomplete traces</li>
-      <li>🔸 <strong>Developer Constraints:</strong> Language lock-in, limited flexibility</li>
-      <li>🔸 <strong>Cognitive Overhead:</strong> Context-switching across different frameworks</li>
-      <li>🔸 <strong>Redundant Boilerplate:</strong> Repeated logic for retries, errors, and idempotency</li>
-    </ul>
-  </div>
-
-  <!-- Solution Card -->
-  <div class="card">
-    <h3>✅ Motia’s Unified Solution</h3>
-    <table>
-      <tr>
-        <th align="left">Runtime Layer</th>
-        <th align="left">How Motia Solves It</th>
-      </tr>
-      <tr>
-        <td>🖥️ API Servers</td>
-        <td><span class="checkmark">✅</span> Expose <strong>Steps</strong> instantly as APIs/webhooks, no extra server setup.</td>
-      </tr>
-      <tr>
-        <td>📬 Job Queues / Events</td>
-        <td><span class="checkmark">✅</span> Unified runtime with built-in queueing, retries & state management.</td>
-      </tr>
-      <tr>
-        <td>🤖 AI & Agents</td>
-        <td><span class="checkmark">✅</span> Combine deterministic logic & agentic AI Steps seamlessly.</td>
-      </tr>
-    </table>
-    <strong>Benefits of Unifying with Motia:</strong>
-    <ul>
-      <li>🎯 <strong>Unified Deployment:</strong> One consistent scaling and deployment model</li>
-      <li>🔍 <strong>Enhanced Observability:</strong> End-to-end tracing and simplified debugging</li>
-      <li>⚙️ <strong>Full Language Flexibility:</strong> Mix JavaScript, TypeScript, Python freely</li>
-      <li>🧠 <strong>Lower Cognitive Load:</strong> Single intuitive model for backend workflows</li>
-      <li>♻️ <strong>Simplified Error Handling:</strong> Automatic retries and consistent error management</li>
-    </ul>
-  </div>
-
-</div>
+---
 
 ## 🎯 Key Motia Features
+
+Motia is engineered to scale seamlessly from early prototypes into robust, maintainable systems, providing a structured foundation for building reliable, production-ready applications.
 
 | Features                             | Description                                                                                                                                                                                                                                       |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -207,115 +83,15 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
 
 ## 🗂 Examples
 
-<style>
-.example-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  font-family: sans-serif;
-}
+| [Finance Agent](https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent) | [GitHub Agent](https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow) | [Gmail Manager](https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow) |
+| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| ![Finance](assets/examples/finance-agent.png)<br>Financial insights                          | ![GitHub](assets/examples/github-pr-management.png)<br>PR automation                                      | ![Gmail](assets/examples/gmail-flow.png)<br>Email automation                                  |
 
-.example-card {
-  flex: 1 1 300px;
-  max-width: calc(33% - 32px); /* ensures max 3 cards per row */
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  text-align: center;
-  background-color: transparent; /* Removed white background */
-}
+| [Trello Automation](https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow) | [RAG Agent](https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example) | [AI Image Gen](https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example) |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| ![Trello](assets/examples/trello-manager.png)<br>Task automation                               | ![RAG](assets/examples/parse-embed-rag.png)<br>Knowledge retrieval                     | ![AI Image](assets/examples/generate-image.png)<br>Generate images                           |
 
-.example-card img {
-  width: 100%;
-  border-radius: 6px;
-}
-
-.example-card strong {
-  display: block;
-  margin-top: 8px;
-}
-
-.example-card em {
-  color: #555;
-  font-size: 0.9em;
-}
-
-.example-card small {
-  color: #888;
-}
-
-/* Medium screens: 2-column layout */
-@media (max-width: 960px) {
-  .example-card {
-    max-width: calc(50% - 32px);
-  }
-}
-
-/* Small screens: single-column layout */
-@media (max-width: 600px) {
-  .example-card {
-    max-width: 100%;
-  }
-}
-</style>
-
-<div class="example-container">
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/finance-agent">
-      <img src="assets/examples/finance-agent.png" alt="Finance Agent">
-      <strong>Finance Agent</strong>
-    </a>
-    <p><em>AI-driven financial market insights.</em></p>
-    <small>TypeScript, Alpha Vantage, SerperDev, OpenAI</small>
-  </div>
-
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/github-integration-workflow">
-      <img src="assets/examples/github-pr-management.png" alt="GitHub Agent">
-      <strong>GitHub Agent</strong>
-    </a>
-    <p><em>GitHub issue & PR automation.</em></p>
-    <small>TypeScript, OpenAI, GitHub API</small>
-  </div>
-
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow">
-      <img src="assets/examples/gmail-flow.png" alt="Gmail Manager">
-      <strong>Gmail Manager</strong>
-    </a>
-    <p><em>Email classification & auto-response.</em></p>
-    <small>TypeScript, Python, Google APIs, Discord</small>
-  </div>
-
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/trello-flow">
-      <img src="assets/examples/trello-manager.png" alt="Trello Automation">
-      <strong>Trello Automation</strong>
-    </a>
-    <p><em>Task progression & summaries.</em></p>
-    <small>TypeScript, Trello API, OpenAI, Slack</small>
-  </div>
-
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/rag_example">
-      <img src="assets/examples/parse-embed-rag.png" alt="RAG Agent">
-      <strong>RAG Agent</strong>
-    </a>
-    <p><em>Knowledge retrieval & Q&A.</em></p>
-    <small>Python, TypeScript, FAISS, Google AI</small>
-  </div>
-
-  <div class="example-card">
-    <a href="https://github.com/MotiaDev/motia-examples/tree/main/examples/vision-example">
-      <img src="assets/examples/generate-image.png" alt="AI Image Generation">
-      <strong>AI Image Generation</strong>
-    </a>
-    <p><em>Generate & evaluate AI images.</em></p>
-    <small>TypeScript, Python, Claude, Flux, OpenAI</small>
-  </div>
-</div>
+---
 
 ## 🚀 Quick Start
 
