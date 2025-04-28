@@ -49,11 +49,22 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
 
   .grid-container {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     font-family: sans-serif;
     color: var(--text);
     background-color: var(--bg);
     align-items: flex-start;
+  }
+
+  /* Responsive layout for mobile */
+  @media (max-width: 960px) {
+    .grid-container {
+      flex-direction: column;
+    }
+
+    .card {
+      width: 100%;
+    }
   }
 
   .card {
@@ -161,7 +172,7 @@ Motia is a modern backend framework that combines APIs, background jobs, event s
       </tr>
       <tr>
         <td>🤖 AI & Agents</td>
-        <td><span class="checkmark">✅</span> Combine deterministic logic & autonomous AI Steps seamlessly.</td>
+        <td><span class="checkmark">✅</span> Combine deterministic logic & agentic AI Steps seamlessly.</td>
       </tr>
     </table>
     <strong>Benefits of Unifying with Motia:</strong>
