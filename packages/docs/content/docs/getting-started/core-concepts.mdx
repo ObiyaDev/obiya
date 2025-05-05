@@ -63,9 +63,10 @@ to create virtual connections between steps, ensuring your flow remains visually
 In this example, step 2 (moderator review) is a virtual connection between steps 1 and 3.
 This can be represented by a Noop Step:
 
-```mermaid
-flowchart LR
-create_article_api["POST /article"] --> mod_review["Moderator review"] --> mod_review_api["POST /article/:id/review"]
+```
+┌──────────────────┐      ┌─────────────────────┐      ┌────────────────────────────┐
+│  POST /article   │ ───► │  Moderator review   │ ───► │  POST /article/:id/review  │
+└──────────────────┘      └─────────────────────┘      └────────────────────────────┘
 ```
 
 Without a Noop Step, the other two steps would appear disconnected, which could lead to confusion in the flow diagram.
