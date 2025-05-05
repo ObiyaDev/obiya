@@ -1,13 +1,15 @@
-import { defineDocs, defineConfig } from 'fumadocs-mdx/config';
-import { remarkInstall } from 'fumadocs-docgen';
+import { defineDocs, defineConfig } from 'fumadocs-mdx/config'
+import { remarkInstall } from 'fumadocs-docgen'
+import mdxMermaid from 'mdx-mermaid'
 
 export const { docs, meta } = defineDocs({
   dir: 'content/docs',
-});
+})
 
 export default defineConfig({
   mdxOptions: {
     remarkPlugins: [
+      [mdxMermaid, { output: 'svg' }],
       [
         remarkInstall,
         {
@@ -27,10 +29,10 @@ export default defineConfig({
             {
               name: 'bun',
               command: (cmd: string) => cmd.replace('npm install', 'bun add').replace('-D', '--dev'),
-            }
-          ]
+            },
+          ],
         },
       ],
     ],
-  }
-});
+  },
+})
