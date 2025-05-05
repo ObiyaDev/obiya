@@ -1,6 +1,5 @@
 import { defineDocs, defineConfig } from 'fumadocs-mdx/config'
 import { remarkInstall } from 'fumadocs-docgen'
-import mdxMermaid from 'mdx-mermaid'
 
 export const { docs, meta } = defineDocs({
   dir: 'content/docs',
@@ -9,7 +8,6 @@ export const { docs, meta } = defineDocs({
 export default defineConfig({
   mdxOptions: {
     remarkPlugins: [
-      [mdxMermaid, { output: 'svg' }],
       [
         remarkInstall,
         {
