@@ -18,7 +18,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install && pnpm python-setup
+      run: pnpm install && pnpm -r --filter @motiadev/core exec pnpm python-setup
 
     - name: Build packages
       shell: bash
