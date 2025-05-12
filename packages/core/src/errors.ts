@@ -31,6 +31,19 @@ export class MotiaError extends Error {
   }
 }
 
+export type ErrorCategoryResolver = (error?: Error) => ErrorCategory
+
+// Default resolver: always returns UNKNOWN
+let errorCategoryResolver: ErrorCategoryResolver = () => ErrorCategory.UNKNOWN
+
+export function setErrorCategoryResolver(resolver: ErrorCategoryResolver) {
+  errorCategoryResolver = resolver
+}
+
+export function getErrorCategoryResolver(): ErrorCategoryResolver {
+  return errorCategoryResolver
+}
+
 export const createErrorContext = <T extends EventConfig | CronConfig>(
   step: Step<T>,
   traceId: string,
@@ -42,28 +55,7 @@ export const createErrorContext = <T extends EventConfig | CronConfig>(
   traceId,
   flows: step.config.flows,
   inputData,
-  category: determineErrorCategory(error),
+  category: errorCategoryResolver(error),
   timestamp: new Date().toISOString(),
   stack: error?.stack,
 })
-
-const determineErrorCategory = (error?: Error): ErrorCategory => {
-  if (!error) return ErrorCategory.UNKNOWN
-
-  const message = error.message.toLowerCase()
-
-  if (message.includes('validation') || message.includes('invalid')) {
-    return ErrorCategory.VALIDATION
-  }
-  if (message.includes('network') || message.includes('connection') || message.includes('timeout')) {
-    return ErrorCategory.NETWORK
-  }
-  if (message.includes('business') || message.includes('domain')) {
-    return ErrorCategory.BUSINESS_LOGIC
-  }
-  if (message.includes('system') || message.includes('internal')) {
-    return ErrorCategory.SYSTEM
-  }
-
-  return ErrorCategory.UNKNOWN
-}
