@@ -82,7 +82,7 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
       </div>
       <span className="text-xs text-muted-foreground">{endpoint.description}</span>
 
-      {pathParams && (
+      {!!pathParams.length && (
         <div className="flex flex-col gap-2 p-4 rounded-lg bg-muted">
           <span className="text-xs font-bold">Path Params</span>
           <div className="flex flex-col gap-4">
@@ -100,7 +100,7 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
         </div>
       )}
 
-      {endpoint.queryParams && (
+      {!!endpoint.queryParams?.length && (
         <div className="flex flex-col gap-2 p-4 rounded-lg bg-muted">
           <span className="text-xs font-bold">Query Params</span>
           <div className="flex flex-col gap-4">
