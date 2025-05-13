@@ -20,7 +20,7 @@ export const config: ApiRouteConfig = {
   ],
 }
 
-export const handler: StepHandler<typeof config> = async (req, { logger, emit }) => {
+export const handler: StepHandler<typeof config> = async (req, { logger }) => {
   logger.info('[Call OpenAI] Received callOpenAi event', req)
 
   return {
