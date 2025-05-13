@@ -1,5 +1,5 @@
+import React, { useMemo, useState } from 'react'
 import { Loader2, Play, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
@@ -8,7 +8,7 @@ import { ApiEndpoint } from './hooks/use-get-endpoints'
 import { useJsonSchemaToJson } from './hooks/use-json-schema-to-json'
 import { usePathParams } from './hooks/use-path-params'
 
-type Props = { endpoint: ApiEndpoint; onClose: VoidFunction }
+type Props = { endpoint: ApiEndpoint; onClose: () => void }
 
 export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const shouldHaveBody = ['post', 'put', 'patch'].includes(endpoint.method.toLowerCase())
