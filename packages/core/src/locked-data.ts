@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { ZodObject } from 'zod'
 import { ApiRouteConfig, CronConfig, EventConfig, Flow, Step } from './types'
 import { isApiStep, isCronStep, isEventStep } from './guards'
 import { Printer } from './printer'
@@ -54,8 +53,7 @@ export class LockedData {
     this.stepHandlers[event].push(handler)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  eventSteps(): Step<EventConfig<ZodObject<any>>>[] {
+  eventSteps(): Step<EventConfig>[] {
     return this.activeSteps.filter(isEventStep)
   }
 

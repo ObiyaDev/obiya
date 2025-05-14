@@ -43,6 +43,15 @@ program
   })
 
 program
+  .command('create-types')
+  .description('Create types.d.ts file for your project')
+  .action(async () => {
+    const { createTypes } = require('./create-types')
+    await createTypes(process.cwd())
+    process.exit(0)
+  })
+
+program
   .command('templates')
   .description('Prints the list of available templates')
   .action(async () => {

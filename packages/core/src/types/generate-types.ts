@@ -41,7 +41,8 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
         topicsSteps[topic].push(step)
 
         try {
-          const schema = existingSchema ? mergeSchemas(existingSchema, step.config.input) : step.config.input
+          const input = step.config.input as never as JsonSchema
+          const schema = existingSchema ? mergeSchemas(existingSchema, input) : input
           topics[topic] = generateTypeFromSchema(schema)
           topicsSchemas[topic] = schema
         } catch (error) {
@@ -77,7 +78,7 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
   for (const step of steps) {
     if (isEventStep(step)) {
       const emits = generateEmitData(step.config.emits)
-      const input = step.config.input ? generateTypeFromSchema(step.config.input) : 'never'
+      const input = step.config.input ? generateTypeFromSchema(step.config.input as never as JsonSchema) : 'never'
       handlers[step.config.name] = { type: 'EventHandler', generics: [input, emits] }
     } else if (isApiStep(step)) {
       const emits = generateEmitData(step.config.emits)
