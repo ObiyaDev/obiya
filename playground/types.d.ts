@@ -10,10 +10,12 @@ declare module 'motia' {
   type Handlers = {
     'Test State With Python': EventHandler<never, { topic: 'check-state-change'; data: { key: string; expected?: unknown } }>
     'Test state api trigger': ApiRouteHandler<{}, never, never>
+    'Test State With Ruby': EventHandler<never, never>
     'Check state change': EventHandler<{ key: string; expected?: unknown }, never>
     'Tested Event': EventHandler<never, never>
     'Test Event': EventHandler<never, never>
     'Test API Endpoint': ApiRouteHandler<never, never, never>
+    'stepC': EventHandler<never, { topic: 'pms.stepC.done'; data: { msg: string; timestamp: number } }>
     'stepB': EventHandler<never, { topic: 'pms.stepB.done'; data: { msg: string; timestamp: number } }>
     'stepA': EventHandler<{}, { topic: 'pms.stepA.done'; data: { msg: string; timestamp: number } }>
     'Parallel Merge': ApiRouteHandler<never, never, { topic: 'pms.start'; data: {} }>
