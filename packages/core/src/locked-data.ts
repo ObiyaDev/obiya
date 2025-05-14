@@ -65,7 +65,7 @@ export class LockedData {
     return this.activeSteps.filter(isCronStep)
   }
 
-  updateStep(oldStep: Step, newStep: Step): boolean {
+  updateStep(oldStep: Step, newStep: Step, options: { disableTypeCreation?: boolean } = {}): boolean {
     if (!this.isValidStep(newStep)) {
       this.deleteStep(oldStep)
 
@@ -113,7 +113,10 @@ export class LockedData {
 
     savedStep.config = newStep.config
 
-    this.saveTypes()
+    if (!options.disableTypeCreation) {
+      this.saveTypes()
+    }
+
     this.stepHandlers['step-updated'].forEach((handler) => handler(newStep))
     this.printer.printStepUpdated(newStep)
 
@@ -153,7 +156,7 @@ export class LockedData {
     return true
   }
 
-  deleteStep(step: Step): void {
+  deleteStep(step: Step, options: { disableTypeCreation?: boolean } = {}): void {
     // Remove step from active and dev steps
     this.activeSteps = this.activeSteps.filter(({ filePath }) => filePath !== step.filePath)
     this.devSteps = this.devSteps.filter(({ filePath }) => filePath !== step.filePath)
@@ -174,7 +177,10 @@ export class LockedData {
       }
     }
 
-    this.saveTypes()
+    if (!options.disableTypeCreation) {
+      this.saveTypes()
+    }
+
     this.stepHandlers['step-removed'].forEach((handler) => handler(step))
     this.printer.printStepRemoved(step)
   }
