@@ -1,8 +1,11 @@
+import fs from 'fs'
+import path from 'path'
 import { ZodObject } from 'zod'
 import { ApiRouteConfig, CronConfig, EventConfig, Flow, Step } from './types'
 import { isApiStep, isCronStep, isEventStep } from './guards'
-import { validateStep } from './step-validator'
 import { Printer } from './printer'
+import { validateStep } from './step-validator'
+import { generateTypesString, generateTypesFromSteps } from './types/generate-types'
 
 type FlowEvent = 'flow-created' | 'flow-removed' | 'flow-updated'
 type StepEvent = 'step-created' | 'step-removed' | 'step-updated'
@@ -35,6 +38,12 @@ export class LockedData {
       'step-removed': [],
       'step-updated': [],
     }
+  }
+
+  saveTypes() {
+    const types = generateTypesFromSteps(this.activeSteps, this.printer)
+    const typesString = generateTypesString(types)
+    fs.writeFileSync(path.join(this.baseDir, 'types.d.ts'), typesString)
   }
 
   on(event: FlowEvent, handler: (flowName: string) => void) {
@@ -106,13 +115,14 @@ export class LockedData {
 
     savedStep.config = newStep.config
 
+    this.saveTypes()
     this.stepHandlers['step-updated'].forEach((handler) => handler(newStep))
     this.printer.printStepUpdated(newStep)
 
     return true
   }
 
-  createStep(step: Step): boolean {
+  createStep(step: Step, options: { disableTypeCreation?: boolean } = {}): boolean {
     if (!this.isValidStep(step)) {
       return false
     }
@@ -133,6 +143,10 @@ export class LockedData {
         this.flows[flowName].steps.push(step)
         this.onFlowUpdated(flowName)
       }
+    }
+
+    if (!options.disableTypeCreation) {
+      this.saveTypes()
     }
 
     this.stepHandlers['step-created'].forEach((handler) => handler(step))
@@ -162,6 +176,7 @@ export class LockedData {
       }
     }
 
+    this.saveTypes()
     this.stepHandlers['step-removed'].forEach((handler) => handler(step))
     this.printer.printStepRemoved(step)
   }
