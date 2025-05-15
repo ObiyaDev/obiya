@@ -84,10 +84,10 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
       const emits = generateEmitData(step.config.emits)
       const input = step.config.bodySchema
         ? generateTypeFromSchema(step.config.bodySchema as never as JsonSchema)
-        : 'never'
+        : 'Record<string, unknown>'
       const result = step.config.responseBody
         ? generateTypeFromSchema(step.config.responseBody as never as JsonSchema)
-        : 'never'
+        : 'unknown'
       handlers[step.config.name] = { type: 'ApiRouteHandler', generics: [input, result, emits] }
     } else if (isCronStep(step)) {
       const emits = generateEmitData(step.config.emits)

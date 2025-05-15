@@ -3,7 +3,7 @@ import fs from 'fs'
 import { templates } from './templates'
 import figlet from 'figlet'
 import { executeCommand } from '../utils/executeCommand'
-import { createTypes } from '../create-types'
+import { generateTypes } from '../generate-types'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -237,7 +237,7 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   await templates[template](stepsDir)
 
   await wrapUpSetup(rootDir)
-  await createTypes(rootDir)
+  await generateTypes(rootDir)
 
   process.exit(0)
 }

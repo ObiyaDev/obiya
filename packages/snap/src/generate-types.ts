@@ -5,7 +5,7 @@ import path from 'path'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
 
-export const createTypes = async (projectDir: string) => {
+export const generateTypes = async (projectDir: string) => {
   const files = globSync(path.join(projectDir, 'steps/**/*.step.{ts,js,py,rb}'))
   const lockedData = new LockedData(projectDir)
 

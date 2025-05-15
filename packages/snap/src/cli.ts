@@ -43,11 +43,11 @@ program
   })
 
 program
-  .command('create-types')
-  .description('Create types.d.ts file for your project')
+  .command('generate-types')
+  .description('Generate types.d.ts file for your project')
   .action(async () => {
-    const { createTypes } = require('./create-types')
-    await createTypes(process.cwd())
+    const { generateTypes } = require('./generate-types')
+    await generateTypes(process.cwd())
     process.exit(0)
   })
 
