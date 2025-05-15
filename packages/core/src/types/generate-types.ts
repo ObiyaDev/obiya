@@ -76,12 +76,12 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
   }
 
   for (const step of steps) {
+    const emits = 'emits' in step.config ? generateEmitData(step.config.emits) : 'never'
+
     if (isEventStep(step)) {
-      const emits = generateEmitData(step.config.emits)
       const input = step.config.input ? generateTypeFromSchema(step.config.input as never as JsonSchema) : 'never'
       handlers[step.config.name] = { type: 'EventHandler', generics: [input, emits] }
     } else if (isApiStep(step)) {
-      const emits = generateEmitData(step.config.emits)
       const input = step.config.bodySchema
         ? generateTypeFromSchema(step.config.bodySchema as never as JsonSchema)
         : 'Record<string, unknown>'
@@ -90,7 +90,6 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
         : 'unknown'
       handlers[step.config.name] = { type: 'ApiRouteHandler', generics: [input, result, emits] }
     } else if (isCronStep(step)) {
-      const emits = generateEmitData(step.config.emits)
       handlers[step.config.name] = { type: 'CronHandler', generics: [emits] }
     }
   }
