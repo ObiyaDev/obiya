@@ -38,8 +38,6 @@ Motia documentation has been created with [Create Fumadocs](https://github.com/f
 
     ``` bash
       pnpm i
-      # or
-      npm i
     ```
 
 5. Run the local development server:
