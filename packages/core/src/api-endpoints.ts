@@ -1,10 +1,8 @@
 import { Express, Response } from 'express'
-import zodToJsonSchema from 'zod-to-json-schema'
+import { Server as SocketIOServer } from 'socket.io'
+import { isApiStep } from './guards'
 import { LockedData } from './locked-data'
 import { ApiRouteMethod, Step } from './types'
-import { ZodObject } from 'zod'
-import { isApiStep } from './guards'
-import { Server as SocketIOServer } from 'socket.io'
 import { JsonSchema } from './types/schema.types'
 
 type QueryParam = {
