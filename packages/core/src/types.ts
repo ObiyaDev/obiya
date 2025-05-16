@@ -129,7 +129,7 @@ export type CronHandler<TEmitData = never> = (ctx: FlowContext<TEmitData>) => Pr
 export type StepHandler<T> = T extends EventConfig
   ? EventHandler<z.infer<T['input']>, { topic: string; data: any }> // eslint-disable-line @typescript-eslint/no-explicit-any
   : T extends ApiRouteConfig
-    ? ApiRouteHandler<any, any, { topic: string; data: any }> // eslint-disable-line @typescript-eslint/no-explicit-any
+    ? ApiRouteHandler<any, ApiResponse<number, any>, { topic: string; data: any }> // eslint-disable-line @typescript-eslint/no-explicit-any
     : T extends CronConfig
       ? CronHandler<{ topic: string; data: any }> // eslint-disable-line @typescript-eslint/no-explicit-any
       : never

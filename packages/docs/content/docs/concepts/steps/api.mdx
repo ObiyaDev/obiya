@@ -44,7 +44,7 @@ The following properties are specific to the API Step, in addition to the [commo
 <Tabs items={['TypeScript', 'JavaScript', 'Python']}>
   <Tab value="TypeScript">
     ```typescript
-    import { ApiRouteConfig, Handlers } from '@motiadev/core'
+    import { ApiRouteConfig, Handlers } from 'motia'
     import { z } from 'zod'
 
     export const config: ApiRouteConfig = {
@@ -323,12 +323,12 @@ const rateLimiterMiddleware: ApiMiddleware = (() => {
 <Tabs items={['TypeScript', 'JavaScript', 'Python']}>
   <Tab value="TypeScript">
     ```typescript
-      import { ApiRouteConfig, StepHandler } from 'motia'
+      import { ApiRouteConfig, Handlers } from 'motia'
       import { z } from 'zod'
 
       export const config: ApiRouteConfig = {
         type: 'api',
-        name: 'Test state api trigger',
+        name: 'TestStateApiTrigger',
         description: 'test state',
         path: '/test-state',
         method: 'POST',
@@ -337,7 +337,7 @@ const rateLimiterMiddleware: ApiMiddleware = (() => {
         flows: ['test-state'],
       }
 
-      export const handler: StepHandler<typeof config> = async (req, { logger, emit }) => {
+      export const handler: Handlers['TestStateApiTrigger'] = async (req, { logger, emit }) => {
         logger.info('[Test State] Received request', req)
 
         await emit({

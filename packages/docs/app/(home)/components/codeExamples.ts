@@ -2,7 +2,7 @@
 export const codeExamples = {
   typescript: `import { OpenAI } from 'openai';
 import { z } from 'zod';
-import type { EventConfig, StepHandler } from 'motia';
+import type { EventConfig, Handlers } from 'motia';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -17,7 +17,7 @@ export const config: EventConfig = {
   input: z.object({ subject: z.string(), body: z.string(), from: z.string() }),
 };
 
-export const handler: StepHandler<typeof config> = async (inputData, context) => {
+export const handler: Handlers['Auto-Reply to Support Emails'] = async (inputData, context) => {
     const { subject, body, from } = inputData;
     const { emit, logger } = context;
 
