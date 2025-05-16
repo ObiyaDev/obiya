@@ -54,7 +54,8 @@ Motia documentation has been created with [Create Fumadocs](https://github.com/f
 
 6. Open http://localhost:3000 with your browser to see the result.
 
-## Guidelines:
+## Guidelines
+
 - We love contributions! You can help by:
   - Fixing typos and broken links
   - Adding missing sections
@@ -75,6 +76,8 @@ resources:
 - [Fumadocs](https://fumadocs.vercel.app) - learn about Fumadocs
 
 ## 🌐 Community
-We'd love to hear your ideas or feedback:
+
+We'd love to hear your ideas or feedback. Don't forget to star this repository!
+
 - X/Twitter -> [@motiadev](https://x.com/motiadev)
 - Discord -> [Join the fun!](https://discord.gg/m3XN23Kp)
