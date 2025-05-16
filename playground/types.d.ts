@@ -21,6 +21,6 @@ declare module 'motia' {
     'Parallel Merge': ApiRouteHandler<never, never, { topic: 'pms.start'; data: {} }>
     'join-step': EventHandler<{ msg: string; timestamp: number }, { topic: 'pms.join.complete'; data: { stepA: { msg: string; timestamp: number }; stepB: unknown; stepC: unknown; mergedAt: string } }>
     'Join Complete': EventHandler<{ stepA: { msg: string; timestamp: number }; stepB: unknown; stepC: unknown; mergedAt: string }, never>
-    'HandlePeriodicJob': EventHandler<never, never>
+   'HandlePeriodicJob': EventHandler<never, never>
   }
 }

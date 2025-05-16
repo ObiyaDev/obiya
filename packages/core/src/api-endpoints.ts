@@ -5,6 +5,7 @@ import { ApiRouteMethod, Step } from './types'
 import { ZodObject } from 'zod'
 import { isApiStep } from './guards'
 import { Server as SocketIOServer } from 'socket.io'
+import { JsonSchema } from './types/schema.types'
 
 type QueryParam = {
   name: string
@@ -16,8 +17,8 @@ type ApiEndpoint = {
   path: string
   description?: string
   queryParams?: QueryParam[]
-  responseBody?: Record<string, unknown>
-  bodySchema?: Record<string, unknown>
+  responseSchema?: JsonSchema
+  bodySchema?: JsonSchema
 }
 
 export const apiEndpoints = (lockedData: LockedData, app: Express, io: SocketIOServer) => {
@@ -35,14 +36,8 @@ export const apiEndpoints = (lockedData: LockedData, app: Express, io: SocketIOS
       path: step.config.path,
       description: step.config.description,
       queryParams: step.config.queryParams,
-      responseBody:
-        step.config.responseBody instanceof ZodObject
-          ? zodToJsonSchema(step.config.responseBody)
-          : step.config.responseBody,
-      bodySchema:
-        step.config.bodySchema instanceof ZodObject //
-          ? zodToJsonSchema(step.config.bodySchema)
-          : step.config.bodySchema,
+      responseSchema: step.config.responseSchema as never as JsonSchema,
+      bodySchema: step.config.bodySchema as never as JsonSchema,
     }))
 
     res.status(200).send(endpoints)
