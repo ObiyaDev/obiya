@@ -127,6 +127,7 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
         postinstall: 'motia install',
         dev: 'motia dev',
         'dev:debug': 'motia dev --verbose',
+        'generate-types': 'motia generate-types',
         build: 'motia build',
         clean: 'rm -rf dist node_modules python_modules .motia .mermaid',
         //'generate:config': 'motia get-config --output ./', TODO: doesnt work at the moment
@@ -237,7 +238,11 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   await templates[template](stepsDir)
 
   await wrapUpSetup(rootDir)
-  await generateTypes(rootDir)
+  await executeCommand(`pnpm generate-types`, rootDir)
+
+  if(template === 'python') {
+    await executeCommand('motia install', rootDir);
+  }
 
   process.exit(0)
 }
