@@ -44,7 +44,7 @@ const installRequiredDependencies = async (packageManager: string, rootDir: stri
     pnpm: 'pnpm add',
   }[packageManager]
 
-  const dependencies = ['motia', 'zod'].join(' ')
+  const dependencies = ['motia', 'zod@^3.24.4'].join(' ')
   const devDependencies = ['ts-node@^10.9.2', 'typescript@^5.7.3', '@types/react@^18.3.18'].join(' ')
 
   try {
@@ -57,7 +57,7 @@ const installRequiredDependencies = async (packageManager: string, rootDir: stri
 }
 
 const preparePackageManager = async (rootDir: string) => {
-  let packageManager = 'pnpm'
+  let packageManager = 'npm'
   const detectedPackageManager = getPackageManager(rootDir)
 
   if (detectedPackageManager !== 'unknown') {
@@ -65,12 +65,6 @@ const preparePackageManager = async (rootDir: string) => {
     packageManager = detectedPackageManager
   } else {
     console.log(`📦 Using default package manager: ${packageManager}`)
-    const pnpmCheck = await executeCommand('pnpm --version', rootDir).catch(() => null)
-    if (!pnpmCheck) {
-      console.log('📦 pnpm is not installed. Installing pnpm...')
-      await executeCommand('npm install -g pnpm', rootDir)
-      console.log('✅ pnpm installed globally')
-    }
   }
 
   return packageManager
@@ -238,7 +232,7 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   await templates[template](stepsDir)
 
   await wrapUpSetup(rootDir)
-  await executeCommand(`pnpm generate-types`, rootDir)
+  await executeCommand(`npm run generate-types`, rootDir)
 
   if(template === 'python') {
     await executeCommand('motia install', rootDir);
