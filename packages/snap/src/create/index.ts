@@ -3,7 +3,6 @@ import fs from 'fs'
 import { templates } from './templates'
 import figlet from 'figlet'
 import { executeCommand } from '../utils/executeCommand'
-import { generateTypes } from '../generate-types'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -234,8 +233,8 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   await wrapUpSetup(rootDir)
   await executeCommand(`npm run generate-types`, rootDir)
 
-  if(template === 'python') {
-    await executeCommand('motia install', rootDir);
+  if (template === 'python') {
+    await executeCommand('motia install', rootDir)
   }
 
   process.exit(0)
