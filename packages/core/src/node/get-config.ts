@@ -9,8 +9,8 @@ require('ts-node').register({
   compilerOptions: { module: 'commonjs' },
 })
 
-function isZodSchema(value: unknown): value is z.ZodTypeAny {
-  return Boolean(value && typeof (value as any).safeParse === 'function' && (value as any)._def)
+function isZodSchema(value: unknown): value is z.ZodType {
+  return Boolean(value && typeof (value as z.ZodType).safeParse === 'function' && (value as z.ZodType)._def)
 }
 
 async function getConfig(filePath: string) {
