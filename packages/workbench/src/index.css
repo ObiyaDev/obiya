@@ -167,22 +167,3 @@ strong {
   stroke-linecap: round; /* round the dash ends */
   animation: flowDash 1s linear infinite;
 }
-
-.resize-handle:hover {
-  background-color: rgba(74, 222, 128, 0.2);
-}
-.resize-handle.dragging {
-  background-color: rgba(74, 222, 128, 0.4);
-}
-
-.bg-muted {
-  background-color: rgba(120, 120, 120, 0.10);
-}
-
-.text-muted {
-  color: rgba(120, 120, 120, 0.5);
-}
-
-.text-muted-foreground {
-  color: rgba(255, 255, 255, 0.8);
-}

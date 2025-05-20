@@ -1,8 +1,8 @@
 {
   "simple-python": {
     "steps/simplePython/apiEndpoint.step.py": {
-      "x": 0,
-      "y": 0
+      "x": -80,
+      "y": 7
     },
     "steps/simplePython/testEvent.step.py": {
       "x": 23.5,
