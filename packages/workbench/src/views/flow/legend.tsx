@@ -69,7 +69,7 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
     <div className={'absolute right-4 top-4 z-10 max-w-[500px]'}>
       <div
         className={cn(
-          'rounded-lg border border-zinc-700 bg-zinc-900/90 p-4 flex flex-col gap-4',
+          'rounded-lg border border-border bg-background/90 p-4 flex flex-col gap-4',
           !isExpanded && 'rounded-b-lg',
         )}
       >
@@ -107,8 +107,8 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
                     <div className="flex items-start gap-3">
                       <div className="w-[8px] h-[8px] mt-[4px] rounded-full" style={{ backgroundColor: item.color }} />
                       <div className="flex-1">
-                        <div className="text-white text-sm font-medium">{item.label}</div>
-                        <div className="text-white/60 text-sm mt-0.5">{item.description}</div>
+                        <div className="text-foreground text-sm font-medium">{item.label}</div>
+                        <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
                       </div>
                     </div>
                   </div>
@@ -123,8 +123,8 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
                   <div key={item.label} className="flex items-start gap-3">
                     <EdgeSwatch color={item.color} dashed={item.dashed} />
                     <div className="flex-1">
-                      <div className="text-white text-sm font-medium">{item.label}</div>
-                      <div className="text-white/60 text-sm mt-0.5">{item.description}</div>
+                      <div className="text-foreground text-sm font-medium">{item.label}</div>
+                      <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
                     </div>
                   </div>
                 ))}

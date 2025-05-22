@@ -16,7 +16,7 @@ export const Index = () => {
         <div className="rounded-lg bg-black p-8 font-semibold text-xl min-h-[100px] flex items-center">
           <div className="flex items-center gap-2 font-mono">
             <span className="text-[rgb(0,117,255)]">$</span>
-            <span className="text-white">npx motia generate step</span>
+            <span className="text-foreground">npx motia generate step</span>
           </div>
         </div>
       </div>

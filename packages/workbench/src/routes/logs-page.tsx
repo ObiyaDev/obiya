@@ -3,7 +3,7 @@ import { useLogs } from '../stores/use-logs'
 import { useEffect } from 'react'
 
 export const LogsPage = () => {
-  const { setUnreadLogsCount } = useLogs((state) => state)
+  const setUnreadLogsCount = useLogs((state) => state.setUnreadLogsCount)
 
   useEffect(() => {
     setUnreadLogsCount(0)

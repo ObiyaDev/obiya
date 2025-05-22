@@ -45,7 +45,7 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
 
     if (nodeType) {
       return nodeType === hoveredType
-        ? 'border border-white/30 scale-[1.02] transition-all duration-300'
+        ? 'border border-gray-300 dark:border-white/30 scale-[1.02] transition-all duration-300'
         : 'opacity-30 transition-all duration-300'
     }
 
@@ -88,7 +88,7 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
   }
 
   return (
-    <div className="w-full h-full relative bg-black">
+    <div className="w-full h-full relative bg-white dark:bg-black">
       {!initialized && <FlowLoader />}
       <Legend onHover={setHoveredType} />
       <ReactFlow
@@ -99,11 +99,16 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
         onNodesChange={onNodesChangeHandler}
         onEdgesChange={onEdgesChange}
       >
-        <Background variant={BackgroundVariant.Dots} gap={50} size={2} color="#222" bgColor="#000" />
+        <Background 
+          variant={BackgroundVariant.Dots} 
+          gap={50} 
+          size={2} 
+          className="[--xy-background-color-dots:theme(colors.gray.300)] dark:[--xy-background-color-dots:theme(colors.gray.700)] [--xy-background-color:theme(colors.white)] dark:[--xy-background-color:theme(colors.black)]"
+        />
         <NodeOrganizer onInitialized={onInitialized} />
-        <svg>
+        <svg className="[--arrow-color:theme(colors.gray.500)] dark:[--arrow-color:theme(colors.gray.400)]">
           <defs>
-            <ArrowHead color="#B3B3B3" id="arrowhead" />
+            <ArrowHead id="arrowhead" />
           </defs>
         </svg>
       </ReactFlow>
