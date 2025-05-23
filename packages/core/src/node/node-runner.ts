@@ -1,9 +1,9 @@
 import path from 'path'
-import { StateStreamConfig } from '../types'
 import { Logger } from './logger'
 import { composeMiddleware } from './middleware-compose'
 import { RpcSender } from './rpc'
 import { RpcStateManager } from './rpc-state-manager'
+import { StateStreamConfig } from '../types-stream'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config()

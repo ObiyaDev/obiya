@@ -1,12 +1,27 @@
-import { BaseStreamItem, InternalStateManager, IStateStream } from './types'
+import type { InternalStateManager } from './types'
+import type { BaseStreamItem, IStateStream, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 
-export type StateStreamFactory<TData> = (state: InternalStateManager) => IStateStream<TData>
+export type StateStreamFactory<TData> = () => IStateStream<TData>
 
-export class StateStream<TData> implements IStateStream<TData> {
+export abstract class StateStream<TData> implements IStateStream<TData> {
+  abstract get(id: string): Promise<BaseStreamItem<TData> | null>
+  abstract update(id: string, data: TData): Promise<BaseStreamItem<TData> | null>
+  abstract delete(id: string): Promise<BaseStreamItem<TData> | null>
+  abstract create(id: string, data: TData): Promise<BaseStreamItem<TData>>
+  abstract getGroupId(data: TData): string | null
+  abstract getList(groupId: string): Promise<BaseStreamItem<TData>[]>
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async send<T>(channel: StateStreamEventChannel, event: StateStreamEvent<T>): Promise<void> {}
+}
+
+export class InternalStateStream<TData> extends StateStream<TData> {
   constructor(
     private readonly state: InternalStateManager,
     private readonly propertyName: string,
-  ) {}
+  ) {
+    super()
+  }
 
   async get(id: string): Promise<BaseStreamItem<TData> | null> {
     return this.state.get<BaseStreamItem<TData>>(id, this.propertyName)

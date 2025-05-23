@@ -1,7 +1,8 @@
 import { spawn } from 'child_process'
 import path from 'path'
-import { StateStreamConfig, StepConfig } from './types'
+import { StepConfig } from './types'
 import { globalLogger } from './logger'
+import { StateStreamConfig } from './types-stream'
 
 const getLanguageBasedRunner = (
   stepFilePath = '',

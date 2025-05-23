@@ -1,6 +1,6 @@
 import { Logger } from './logger'
+import { StateStream } from './state-stream'
 import { Log } from './streams/logs-stream'
-import { IStateStream } from './types'
 
 type CreateLogger = {
   traceId: string
@@ -11,7 +11,7 @@ type CreateLogger = {
 export class LoggerFactory {
   constructor(
     private readonly isVerbose: boolean,
-    private readonly logStream: IStateStream<Log>,
+    private readonly logStream: StateStream<Log>,
   ) {}
 
   create({ stepName, traceId, flows }: CreateLogger): Logger {

@@ -48,7 +48,7 @@ type FlowResponse = FlowListResponse & {
   edges: FlowEdge[]
 }
 
-export const flowsEndpoint = (lockedData: LockedData, app: Express, state: InternalStateManager) => {
+export const flowsEndpoint = (lockedData: LockedData, app: Express) => {
   const flowsStream = lockedData.createStream(
     {
       filePath: '__motia.flows',
@@ -60,7 +60,7 @@ export const flowsEndpoint = (lockedData: LockedData, app: Express, state: Inter
       },
     },
     { disableTypeCreation: true },
-  )(state)
+  )()
 
   lockedData.on('flow-created', (flow) => flowsStream.create(flow, { id: flow, name: flow }))
   lockedData.on('flow-updated', (flow) => flowsStream.update(flow, { id: flow, name: flow }))

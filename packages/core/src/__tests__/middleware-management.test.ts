@@ -4,7 +4,7 @@ import { createEventManager } from '../event-manager'
 import { LockedData } from '../locked-data'
 import { Printer } from '../printer'
 import { createServer } from '../server'
-import { StateStream } from '../state-stream'
+import { InternalStateStream, StateStream } from '../state-stream'
 import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
 import { ApiMiddleware, ApiRouteConfig, InternalStateManager, Step } from '../types'
 
@@ -44,7 +44,7 @@ describe('Middleware Management', () => {
       cronSteps: () => [],
       onStep: () => {},
       applyStreamWrapper: () => {},
-      createStream: () => (state: InternalStateManager) => new StateStream(state, 'test'),
+      createStream: () => (state: InternalStateManager) => new InternalStateStream(state, 'test'),
       on: () => {},
     } as unknown as LockedData
 

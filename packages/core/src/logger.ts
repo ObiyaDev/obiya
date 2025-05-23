@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 import { prettyPrint } from './pretty-print'
 import { Log } from './streams/logs-stream'
-import { IStateStream } from './types'
+import { StateStream } from './state-stream'
 
 const logLevel = process.env.LOG_LEVEL ?? 'info'
 
@@ -61,7 +61,7 @@ export class Logger extends BaseLogger {
     private readonly flows: string[] | undefined,
     private readonly step: string,
     isVerbose: boolean,
-    private readonly logStream?: IStateStream<Log>,
+    private readonly logStream?: StateStream<Log>,
   ) {
     super(isVerbose, { traceId, flows, step })
 

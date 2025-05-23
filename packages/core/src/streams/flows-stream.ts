@@ -1,13 +1,15 @@
 import { LockedData } from '../locked-data'
-import { IStateStream } from '../types'
+import { StateStream } from '../state-stream'
 
 export type Flow = {
   id: string
   name: string
 }
 
-export class FlowsStream implements IStateStream<Flow> {
-  constructor(private readonly lockedData: LockedData) {}
+export class FlowsStream extends StateStream<Flow> {
+  constructor(private readonly lockedData: LockedData) {
+    super()
+  }
 
   async get(id: string): Promise<Flow | null> {
     return (
@@ -30,12 +32,17 @@ export class FlowsStream implements IStateStream<Flow> {
   }
 
   async getList(): Promise<Flow[]> {
+    /**
+     * Get list should receive a groupId argument but that's irrelevant for this stream
+     * since we only have one group of flows.
+     */
     return Object.entries(this.lockedData.flows).map(([id, flow]) => ({ id, name: flow.name }))
   }
 
   getGroupId(): string {
+    /**
+     * We're making it static to default because we only have one group of flows
+     */
     return 'default'
   }
-
-  async send() {}
 }

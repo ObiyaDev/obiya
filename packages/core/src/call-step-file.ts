@@ -4,8 +4,9 @@ import { LockedData } from './locked-data'
 import { BaseLogger, Logger } from './logger'
 import { Printer } from './printer'
 import { RpcProcessor } from './step-handler-rpc-processor'
-import { BaseStreamItem, EmitData, EventManager, InternalStateManager, Step } from './types'
+import { EmitData, EventManager, InternalStateManager, Step } from './types'
 import { isAllowedToEmit } from './utils'
+import { BaseStreamItem } from './types-stream'
 
 type StateGetInput = { traceId: string; key: string }
 type StateSetInput = { traceId: string; key: string; value: unknown }
@@ -84,7 +85,8 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     const rpcProcessor = new RpcProcessor(child)
 
     Object.entries(streamConfig).forEach(([name, streamFactory]) => {
-      const stateStream = streamFactory(state)
+      const stateStream = streamFactory()
+
       rpcProcessor.handler<StateStreamGetInput>(`streams.${name}.get`, (input) => stateStream.get(input.id))
       rpcProcessor.handler<StateStreamMutateInput>(`streams.${name}.update`, (input) =>
         stateStream.update(input.id, input.data),

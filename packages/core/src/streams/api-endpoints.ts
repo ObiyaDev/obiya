@@ -1,6 +1,7 @@
 import { isApiStep } from '../guards'
 import { LockedData } from '../locked-data'
-import { ApiRouteConfig, ApiRouteMethod, InternalStateManager, IStateStream, Step } from '../types'
+import { StateStream } from '../state-stream'
+import { ApiRouteConfig, ApiRouteMethod, Step } from '../types'
 import { JsonSchema } from '../types/schema.types'
 
 type QueryParam = {
@@ -30,8 +31,10 @@ const mapEndpoint = (step: Step<ApiRouteConfig>): ApiEndpoint => {
   }
 }
 
-class ApiEndpointsStream implements IStateStream<ApiEndpoint> {
-  constructor(private readonly lockedData: LockedData) {}
+class ApiEndpointsStream extends StateStream<ApiEndpoint> {
+  constructor(private readonly lockedData: LockedData) {
+    super()
+  }
 
   async get(id: string): Promise<ApiEndpoint | null> {
     const endpoint = this.lockedData.apiSteps().find((step) => step.config.path === id)
@@ -55,14 +58,17 @@ class ApiEndpointsStream implements IStateStream<ApiEndpoint> {
   }
 
   getGroupId(): string {
+    /**
+     * We're making it static to default because we only have one group of api endpoints
+     *
+     * In the future, we might want to have group of endpoints by Flows
+     */
     return 'default'
   }
-
-  async send() {}
 }
 
-export const apiEndpoints = (lockedData: LockedData, state: InternalStateManager) => {
-  const streamFactory = lockedData.createStream({
+export const apiEndpoints = (lockedData: LockedData) => {
+  const stream = lockedData.createStream({
     filePath: '__motia.api-endpoints.ts',
     hidden: true,
     config: {
@@ -70,11 +76,11 @@ export const apiEndpoints = (lockedData: LockedData, state: InternalStateManager
       baseConfig: { storageType: 'custom', factory: () => new ApiEndpointsStream(lockedData) },
       schema: null as never,
     },
-  })
+  })()
 
   const apiStepCreated = (step: Step) => {
     if (isApiStep(step)) {
-      streamFactory(state).create(step.filePath, {
+      stream.create(step.filePath, {
         id: step.filePath,
         method: step.config.method,
         path: step.config.path,
@@ -86,13 +92,13 @@ export const apiEndpoints = (lockedData: LockedData, state: InternalStateManager
 
   const apiStepUpdated = (step: Step) => {
     if (isApiStep(step)) {
-      streamFactory(state).update(step.filePath, mapEndpoint(step))
+      stream.update(step.filePath, mapEndpoint(step))
     }
   }
 
   const apiStepRemoved = (step: Step) => {
     if (isApiStep(step)) {
-      streamFactory(state).delete(step.filePath)
+      stream.delete(step.filePath)
     }
   }
 

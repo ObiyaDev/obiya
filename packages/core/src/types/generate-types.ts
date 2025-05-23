@@ -1,6 +1,7 @@
 import { isApiStep, isCronStep, isEventStep } from '../guards'
 import { Printer } from '../printer'
-import { Emit, Step, Stream } from '../types'
+import { Emit, Step } from '../types'
+import { Stream } from '../types-stream'
 import { generateTypeFromSchema } from './generate-type-from-schema'
 import { generateTypesFromResponse } from './generate-types-from-response'
 import { mergeSchemas } from './merge-schemas'

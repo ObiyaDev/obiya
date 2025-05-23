@@ -1,4 +1,4 @@
-import { IStateStream, StateStreamEvent, StateStreamEventChannel } from '../types'
+import { StateStream } from '../state-stream'
 
 export type Log = {
   id: string
@@ -10,24 +10,20 @@ export type Log = {
   [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export class LogsStream implements IStateStream<Log> {
+/*
+ * We're not storing logs in the state because of size of data
+ * if process stays for to long it would consume too much memory
+ * in this case, we're just streaming through events.
+ */
+export class LogsStream extends StateStream<Log> {
   get = async () => null
   update = async () => null
   delete = async () => null
+  getList = async () => []
+  getGroupId = () => null
 
   async create(_: string, data: Log): Promise<Log> {
     await this.send({ groupId: 'default' }, { type: 'log', data })
     return data
   }
-
-  async getList(): Promise<Log[]> {
-    return []
-  }
-
-  getGroupId(data: Log): string {
-    return data.traceId
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async send<T>(_: StateStreamEventChannel, __: StateStreamEvent<T>) {}
 }

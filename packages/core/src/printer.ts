@@ -1,8 +1,9 @@
 import colors from 'colors'
 import path from 'path'
 import { ValidationError } from './step-validator'
-import { Step, Stream } from './types'
+import { Step } from './types'
 import { isApiStep, isCronStep, isEventStep, isNoopStep } from './guards'
+import { Stream } from './types-stream'
 
 const stepTag = colors.bold(colors.magenta('Step'))
 const flowTag = colors.bold(colors.blue('Flow'))

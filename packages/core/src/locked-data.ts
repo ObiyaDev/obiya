@@ -2,9 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import { isApiStep, isCronStep, isEventStep } from './guards'
 import { Printer } from './printer'
-import { StateStream, StateStreamFactory } from './state-stream'
+import { InternalStateStream, StateStreamFactory } from './state-stream'
 import { validateStep } from './step-validator'
-import { ApiRouteConfig, CronConfig, EventConfig, Flow, InternalStateManager, Step, Stream } from './types'
+import { ApiRouteConfig, CronConfig, EventConfig, Flow, InternalStateManager, Step } from './types'
+import { Stream } from './types-stream'
 import { generateTypesFromSteps, generateTypesFromStreams, generateTypesString } from './types/generate-types'
 
 type FlowEvent = 'flow-created' | 'flow-removed' | 'flow-updated'
@@ -24,6 +25,7 @@ export class LockedData {
   private stepHandlers: Record<StepEvent, ((step: Step) => void)[]>
   private streamHandlers: Record<StreamEvent, ((stream: Stream) => void)[]>
   private streams: Record<string, Stream>
+  private state: InternalStateManager | null = null
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private streamWrapper?: StreamWrapper<any>
@@ -56,8 +58,9 @@ export class LockedData {
     this.streams = {}
   }
 
-  applyStreamWrapper<TData>(streamWrapper: StreamWrapper<TData>): void {
+  applyStreamWrapper<TData>(state: InternalStateManager, streamWrapper: StreamWrapper<TData>): void {
     this.streamWrapper = streamWrapper
+    this.state = state
   }
 
   saveTypes() {
@@ -241,11 +244,11 @@ export class LockedData {
   }
 
   private createFactoryWrapper<TData>(stream: Stream, factory: StateStreamFactory<TData>): StateStreamFactory<TData> {
-    return (state: InternalStateManager) => {
+    return () => {
       const streamFactory = this.streamWrapper //
         ? this.streamWrapper(stream.config.name, factory)
         : factory
-      return streamFactory(state)
+      return streamFactory()
     }
   }
 
@@ -257,7 +260,7 @@ export class LockedData {
 
     if (stream.config.baseConfig.storageType === 'state') {
       const property = stream.config.baseConfig.property
-      factory = this.createFactoryWrapper(stream, (state) => new StateStream<TData>(state, property))
+      factory = this.createFactoryWrapper(stream, () => new InternalStateStream<TData>(this.state!, property))
     } else {
       factory = this.createFactoryWrapper(stream, stream.config.baseConfig.factory)
     }
@@ -303,7 +306,7 @@ export class LockedData {
 
     if (stream.config.baseConfig.storageType === 'state') {
       const property = stream.config.baseConfig.property
-      factory = this.createFactoryWrapper(stream, (state) => new StateStream(state, property))
+      factory = this.createFactoryWrapper(stream, () => new InternalStateStream(this.state!, property))
     } else {
       factory = this.createFactoryWrapper(stream, stream.config.baseConfig.factory)
     }

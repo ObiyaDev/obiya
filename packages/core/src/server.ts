@@ -13,12 +13,8 @@ import {
   ApiResponse,
   ApiRouteConfig,
   ApiRouteMethod,
-  BaseStreamItem,
   EventManager,
   InternalStateManager,
-  IStateStream,
-  StateStreamEvent,
-  StateStreamEventChannel,
   Step,
 } from './types'
 import { systemSteps } from './steps'
@@ -30,6 +26,7 @@ import { flowsConfigEndpoint } from './flows-config-endpoint'
 import { apiEndpoints } from './streams/api-endpoints'
 import { createSocketServer } from './socket-server'
 import { Log, LogsStream } from './streams/logs-stream'
+import { BaseStreamItem, IStateStream, StateStreamEventChannel, StateStreamEvent } from './types-stream'
 
 export type MotiaServer = {
   app: Express
@@ -63,7 +60,7 @@ export const createServer = async (
       const stream = streams[streamName]
 
       if (stream) {
-        const result = await stream(state).get(id)
+        const result = await stream().get(id)
         delete result.__motia // deleting because we don't need it in the socket
         return result
       }
@@ -73,16 +70,16 @@ export const createServer = async (
       const stream = streams[streamName]
 
       if (stream) {
-        const result = stream ? await stream(state).getList(groupId) : []
+        const result = stream ? await stream().getList(groupId) : []
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return result.map(({ __motia, ...rest }) => rest)
       }
     },
   })
 
-  lockedData.applyStreamWrapper((streamName, stream) => {
-    return (state: InternalStateManager): IStateStream<BaseStreamItem> => {
-      const suuper = stream(state)
+  lockedData.applyStreamWrapper(state, (streamName, stream) => {
+    return (): IStateStream<BaseStreamItem> => {
+      const suuper = stream()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const wrapObject = (id: string, object: any) => ({
         ...object,
@@ -166,7 +163,7 @@ export const createServer = async (
       baseConfig: { storageType: 'custom', factory: () => new LogsStream() },
       schema: null as never,
     },
-  })(state)
+  })()
 
   const allSteps = [...systemSteps, ...lockedData.activeSteps]
   const loggerFactory = new LoggerFactory(config.isVerbose, logStream)
@@ -269,8 +266,8 @@ export const createServer = async (
   app.use(cors())
   app.use(router)
 
-  apiEndpoints(lockedData, state)
-  flowsEndpoint(lockedData, app, state)
+  apiEndpoints(lockedData)
+  flowsEndpoint(lockedData, app)
   flowsConfigEndpoint(app, process.cwd())
 
   server.on('error', (error) => {
