@@ -7,7 +7,7 @@ import { getStepLanguage } from './get-step-language'
 import { isApiStep, isCronStep, isEventStep, isNoopStep } from './guards'
 import { LockedData } from './locked-data'
 import { FlowsStream } from './streams/flows-stream'
-import { Emit, InternalStateManager, Step } from './types'
+import { Emit, Step } from './types'
 
 // Types
 type FlowListResponse = { id: string; name: string }

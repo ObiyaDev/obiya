@@ -4,7 +4,7 @@ import { createEventManager } from '../event-manager'
 import { LockedData } from '../locked-data'
 import { Printer } from '../printer'
 import { createServer } from '../server'
-import { InternalStateStream, StateStream } from '../state-stream'
+import { InternalStateStream } from '../state-stream'
 import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
 import { ApiMiddleware, ApiRouteConfig, InternalStateManager, Step } from '../types'
 
