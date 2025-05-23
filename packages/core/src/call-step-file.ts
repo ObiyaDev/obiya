@@ -1,6 +1,6 @@
 import { RpcProcessor } from './step-handler-rpc-processor'
 import { Event, EventManager, InternalStateManager, Step } from './types'
-import { spawn } from 'child_process'
+import { spawn, ChildProcess, SpawnOptions } from 'child_process'
 import path from 'path'
 import { isAllowedToEmit } from './utils'
 import { BaseLogger } from './logger'
@@ -62,9 +62,12 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     const { runner, command, args } = getLanguageBasedRunner(step.filePath)
     let result: TData | undefined
 
-    const child = spawn(command, [...args, runner, step.filePath, jsonData], {
-      stdio: [undefined, undefined, undefined, 'ipc'],
-    })
+    // Use stdout/stdin pipes instead of IPC for cross-platform compatibility
+    const spawnOptions: SpawnOptions = {
+      stdio: ['pipe', 'pipe', 'pipe'], // stdin, stdout, stderr - no IPC
+    }
+
+    const child: ChildProcess = spawn(command, [...args, runner, step.filePath, jsonData], spawnOptions)
 
     const rpcProcessor = new RpcProcessor(child)
 
@@ -86,15 +89,6 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     })
 
     rpcProcessor.init()
-
-    child.stdout?.on('data', (data) => {
-      try {
-        const message = JSON.parse(data.toString())
-        logger.log(message)
-      } catch {
-        logger.info(Buffer.from(data).toString())
-      }
-    })
 
     child.stderr?.on('data', (data) => logger.error(Buffer.from(data).toString()))
 

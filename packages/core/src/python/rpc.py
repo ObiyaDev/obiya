@@ -1,12 +1,10 @@
 import uuid
 import asyncio
-import os
 import json
 import sys
-from typing import Any, Dict, Tuple
-
-# get the FD from ENV
-NODEIPCFD = int(os.environ["NODE_CHANNEL_FD"])
+import threading
+import time
+from typing import Any, Dict, Optional, Callable
 
 def serialize_for_json(obj: Any) -> Any:
     """Convert Python objects to JSON-serializable types"""
@@ -19,28 +17,35 @@ def serialize_for_json(obj: Any) -> Any:
     elif isinstance(obj, dict):
         return {k: serialize_for_json(v) for k, v in obj.items()}
     else:
-        # Try to return the object as is, letting json handle basic types
         return obj
 
 class RpcSender:
+    """Cross-platform RPC communication using stdout/stdin"""
+    
     def __init__(self):
         self.executing = True
-        self.pending_requests: Dict[str, Tuple[asyncio.Future, str, Any]] = {}
-
+        self.pending_requests: Dict[str, asyncio.Future] = {}
+        self.stdin_reader_task: Optional[asyncio.Task] = None
+        self.message_handlers: Dict[str, Callable] = {}
+        
     def send_no_wait(self, method: str, args: Any) -> None:
+        """Send RPC request without waiting for response"""
         request = {
             'type': 'rpc_request',
             'method': method,
             'args': args
         }
-        # encode message as json string + newline in bytes
-        bytesMessage = (json.dumps(request) + "\n").encode('utf-8')
-        # send message
-        os.write(NODEIPCFD, bytesMessage)
+        
+        try:
+            json_str = json.dumps(request, default=serialize_for_json)
+            print(json_str, flush=True)
+        except Exception as e:
+            print(f"ERROR: Failed to send RPC request: {e}", file=sys.stderr)
 
-    async def send(self, method: str, args: Any) -> asyncio.Future[Any]:
-        future = asyncio.Future()
+    async def send(self, method: str, args: Any) -> Any:
+        """Send RPC request and wait for response"""
         request_id = str(uuid.uuid4())
+        future = asyncio.Future()
         self.pending_requests[request_id] = future
 
         request = {
@@ -49,57 +54,79 @@ class RpcSender:
             'method': method,
             'args': args
         }
-        # encode message as json string + newline in bytes
-        bytesMessage = (json.dumps(request) + "\n").encode('utf-8')
-        # send message
-        os.write(NODEIPCFD, bytesMessage)
+        
+        try:
+            json_str = json.dumps(request, default=serialize_for_json)
+            print(json_str, flush=True)
+        except Exception as e:
+            future.set_exception(e)
+            return await future
 
         return await future
 
-    async def init(self):
-        def on_message(msg: Dict[str, Any]):
-            if msg.get('type') == 'rpc_response':
-                request_id = msg['id']
-
-                if request_id in self.pending_requests:
-                    future = self.pending_requests[request_id]
-                    del self.pending_requests[request_id]
-                    
-                    if msg.get('error'):
-                        future.set_exception(msg['error'])
-                    elif msg.get('result'):
-                        future.set_result(msg['result'])
-                    else:
-                        # It's a void response
-                        future.set_result(None)
-            
-        # Read messages from Node IPC file descriptor
-        while self.executing:
-            # Use asyncio to read from fd without blocking
+    def _handle_message(self, msg: Dict[str, Any]) -> None:
+        """Handle incoming message from Node.js"""
+        msg_type = msg.get('type')
+        
+        if msg_type == 'rpc_response':
+            request_id = msg.get('id')
+            if request_id in self.pending_requests:
+                future = self.pending_requests[request_id]
+                del self.pending_requests[request_id]
+                
+                error = msg.get('error')
+                if error is not None:
+                    # Only treat non-None errors as actual errors
+                    future.set_exception(Exception(str(error)))
+                else:
+                    future.set_result(msg.get('result'))
+        
+        elif msg_type in self.message_handlers:
             try:
-                message = await asyncio.get_event_loop().run_in_executor(
-                    None, lambda: os.read(NODEIPCFD, 4096).decode('utf-8')
-                )
-                if not message:
-                    await asyncio.sleep(0.01)  # Add small delay to prevent busy-waiting
-                    continue
-                    
-                # Parse messages (may be multiple due to buffering)
-                for line in message.splitlines():
-                    if line:
-                        try:
-                            msg = json.loads(line)
-                            on_message(msg)
-                        except json.JSONDecodeError:
-                            pass
+                self.message_handlers[msg_type](msg)
             except Exception as e:
-                print(f"Error reading from IPC: {e}", file=sys.stderr)
-                await asyncio.sleep(0.01)
+                print(f"ERROR: Handler for {msg_type} failed: {e}", file=sys.stderr)
+
+    async def _read_stdin(self) -> None:
+        """Read messages from stdin in background"""
+        loop = asyncio.get_event_loop()
+        
+        while self.executing:
+            try:
+                # Read line from stdin asynchronously
+                line = await loop.run_in_executor(None, sys.stdin.readline)
+                
+                if not line:  # EOF
+                    break
+                    
+                line = line.strip()
+                if line:
+                    try:
+                        msg = json.loads(line)
+                        self._handle_message(msg)
+                    except json.JSONDecodeError as e:
+                        print(f"WARNING: Failed to parse JSON: {e}", file=sys.stderr)
+                        print(f"Raw line: {line}", file=sys.stderr)
+                        
+            except Exception as e:
+                print(f"ERROR: Reading stdin failed: {e}", file=sys.stderr)
+                await asyncio.sleep(0.1)
+
+    async def init(self) -> None:
+        """Initialize RPC communication"""
+        if not self.stdin_reader_task:
+            self.stdin_reader_task = asyncio.create_task(self._read_stdin())
 
     def close(self) -> None:
+        """Close RPC communication"""
         self.executing = False
-        outstanding_requests = list(self.pending_requests.values())
         
-        if len(outstanding_requests) > 0:
-            print("Process ended while there are some promises outstanding", file=sys.stderr)
-            sys.exit(1)
+        # Cancel pending requests
+        for future in self.pending_requests.values():
+            if not future.done():
+                future.set_exception(Exception("RPC connection closed"))
+        self.pending_requests.clear()
+        
+        # Cancel stdin reader
+        if self.stdin_reader_task and not self.stdin_reader_task.done():
+            self.stdin_reader_task.cancel()
