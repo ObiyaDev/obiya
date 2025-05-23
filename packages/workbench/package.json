@@ -5,13 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "pnpm run lint:ts && pnpm run lint:tsx",
-    "lint:ts": "eslint",
-    "lint:tsx": "eslint --config ../../eslint.config.tsx.js",
+    "lint:ts": "eslint --fix",
+    "lint:tsx": "eslint --config ../../eslint.config.tsx.js --fix",
     "build": "rm -rf dist && tsc --build && sh post-build.sh"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.13",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-label": "^2.1.6",
     "@radix-ui/react-select": "^2.2.4",
     "@radix-ui/react-separator": "^1.1.6",

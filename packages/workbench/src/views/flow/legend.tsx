@@ -56,7 +56,7 @@ const edgeLegendItems = [
   },
   {
     label: 'Virtual Edge',
-    color: 'rgb(111, 111, 111)',
+    color: 'hsl(var(--muted-foreground))',
     description: 'Represents virtual connections.',
     dashed: true,
   },
@@ -74,14 +74,9 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
         )}
       >
         <div className="flex items-center gap-2">
-          {isExpanded && <div className="text-sm text-gray-400 uppercase">Flow Legend</div>}
+          {isExpanded && <div className="text-sm text-muted-foreground uppercase">Flow Legend</div>}
           <div className="flex-1 flex justify-end">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="p-2 hover:bg-white/10"
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded)} className="p-2 hover:bg-muted">
               {isExpanded ? <X size={16} /> : <LayoutList size={16} />}
             </Button>
           </div>
@@ -102,7 +97,7 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
                     key={item.type}
                     onMouseEnter={() => onHover(item.type)}
                     onMouseLeave={() => onHover(null)}
-                    className="group cursor-pointer transition-all hover:bg-white/5 rounded-md p-2"
+                    className="group cursor-pointer transition-all hover:bg-muted/20 rounded-md p-2"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-[8px] h-[8px] mt-[4px] rounded-full" style={{ backgroundColor: item.color }} />
@@ -115,9 +110,9 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
                 ))}
               </div>
 
-              <div className="h-px bg-zinc-700 my-4" />
+              <div className="h-px bg-border my-4" />
 
-              <div className="text-sm text-gray-400 uppercase pb-4">Edge Legend</div>
+              <div className="text-sm text-muted-foreground uppercase pb-4">Edge Legend</div>
               <div className="grid grid-cols-2 gap-3">
                 {edgeLegendItems.map((item) => (
                   <div key={item.label} className="flex items-start gap-3">

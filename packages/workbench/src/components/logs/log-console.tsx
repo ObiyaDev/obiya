@@ -13,7 +13,7 @@ const ClearLogsButton = () => {
   const hasLog = useLogs((state) => state.logs.length > 0)
   const resetLogs = useLogs((state) => state.resetLogs)
 
-  if(!hasLog) {
+  if (!hasLog) {
     return null
   }
 
@@ -76,7 +76,7 @@ export const LogConsole = () => {
       />
       <div className="text-muted-foreground flex justify-between w-full items-center p-4 gap-2">
         <label className="w-full text-left justify-start h-full text-md uppercase">Logs</label>
-        <ClearLogsButton/>
+        <ClearLogsButton />
         <Button variant="outline" onClick={toggleExpand}>
           {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
         </Button>

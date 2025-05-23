@@ -4,7 +4,7 @@
  * 
  * Consider adding this file to .prettierignore and eslint ignore.
  */
-import { EventHandler, ApiRouteHandler } from 'motia'
+import { EventHandler, ApiRouteHandler, ApiResponse } from 'motia'
 
 declare module 'motia' {
   type Handlers = {

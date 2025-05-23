@@ -8,13 +8,12 @@ import { useLogs } from '@/stores/use-logs'
 const BadgeCount = () => {
   const unreadLogsCount = useLogs((state) => state.unreadLogsCount)
 
-  if(!unreadLogsCount) {
+  if (!unreadLogsCount) {
     return null
   }
 
   return <Badge variant="red-rounded">{unreadLogsCount}</Badge>
 }
-
 
 export const AppSidebar = () => {
   const { flows } = useListFlows()
@@ -27,7 +26,7 @@ export const AppSidebar = () => {
         <Link to="/logs">
           <SidebarButton isActive={pathname === '/logs'} icon={<Logs className="w-4 h-4" />}>
             Logs
-            {pathname !== '/logs' && <BadgeCount/>}
+            {pathname !== '/logs' && <BadgeCount />}
           </SidebarButton>
         </Link>
         <Link to="/states">
