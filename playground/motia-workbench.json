@@ -5,12 +5,12 @@
       "y": 7
     },
     "steps/simplePython/testEvent.step.py": {
-      "x": -149.93491309621044,
-      "y": 234.29009690214752
+      "x": 65.56508690378956,
+      "y": 267.7900969021475
     },
     "steps/simplePython/testedEvent.step.py": {
-      "x": -236.79933481152995,
-      "y": 249.06430155210643
+      "x": -346.79933481152995,
+      "y": 278.06430155210643
     }
   },
   "openai": {
@@ -59,8 +59,8 @@
       "y": 238
     },
     "steps/testState/testState.api.step.ts": {
-      "x": 139.5,
-      "y": 0
+      "x": 129.46609766882642,
+      "y": -195.66109545788373
     },
     "steps/testState/check_state_change.step.rb": {
       "x": -10.508301404853128,

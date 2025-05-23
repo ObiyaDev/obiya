@@ -1,8 +1,6 @@
-// packages/workbench/src/views/flow/flow-view.tsx
-
 import { LogConsole } from '@/components/logs/log-console'
 import { Background, BackgroundVariant, NodeChange, OnNodesChange, ReactFlow, useReactFlow } from '@xyflow/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowHead } from './arrow-head'
 import { BaseEdge } from './base-edge'
 import { FlowLoader } from './flow-loader'
@@ -40,28 +38,39 @@ export const FlowView: React.FC<Props> = ({ flow, flowConfig }) => {
     setTimeout(() => setInitialized(true), 10)
   }, [])
 
-  const getClassName = (nodeType?: string) => {
-    if (!hoveredType) return ''
+  const getClassName = useCallback(
+    (nodeType?: string) => {
+      if (!hoveredType) return ''
 
-    if (nodeType) {
-      return nodeType === hoveredType
-        ? 'border border-border scale-[1.02] transition-all duration-300'
-        : 'opacity-30 transition-all duration-300'
-    }
+      if (nodeType) {
+        return nodeType === hoveredType
+          ? 'border border-border scale-[1.02] transition-all duration-300'
+          : 'opacity-30 transition-all duration-300'
+      }
 
-    // If no nodeType is provided, this is an edge
-    return 'opacity-30 transition-all duration-300'
-  }
+      // If no nodeType is provided, this is an edge
+      return 'opacity-30 transition-all duration-300'
+    },
+    [hoveredType],
+  )
 
-  const nodesWithHighlights = nodes.map((node) => ({
-    ...node,
-    className: getClassName(node.data.type),
-  }))
+  const nodesWithHighlights = useMemo(
+    () =>
+      nodes.map((node) => ({
+        ...node,
+        className: getClassName(node.data.type),
+      })),
+    [nodes, getClassName],
+  )
 
-  const edgesWithHighlights = edges.map((edge) => ({
-    ...edge,
-    className: getClassName(), // No argument means it's an edge
-  }))
+  const edgesWithHighlights = useMemo(
+    () =>
+      edges.map((edge) => ({
+        ...edge,
+        className: getClassName(), // No argument means it's an edge
+      })),
+    [edges, getClassName],
+  )
 
   const saveFlowConfig = useCallback(() => {
     const steps = getNodes().reduce((acc, node) => {
