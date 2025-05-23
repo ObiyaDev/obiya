@@ -1,11 +1,9 @@
-import { RpcProcessor } from './step-handler-rpc-processor'
-import { RpcStdinProcessor } from './step-handler-rpc-stdin-processor'
 import { Event, EventManager, InternalStateManager, Step } from './types'
-import { spawn, ChildProcess, SpawnOptions } from 'child_process'
 import path from 'path'
 import { isAllowedToEmit } from './utils'
 import { BaseLogger } from './logger'
 import { Printer } from './printer'
+import { ProcessManager } from './process-communication/process-manager'
 
 type StateGetInput = { traceId: string; key: string }
 type StateSetInput = { traceId: string; key: string; value: unknown }
@@ -63,44 +61,35 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     const { runner, command, args } = getLanguageBasedRunner(step.filePath)
     let result: TData | undefined
 
-    // Decision logic: Python + Windows = RPC (stdin/stdout), everything else = IPC
-    const shouldUseRpc = command === 'python' && process.platform === 'win32'
-
-    const spawnOptions: SpawnOptions = {
-      stdio: shouldUseRpc 
-        ? ['pipe', 'pipe', 'pipe']  // RPC: stdin, stdout, stderr
-        : [undefined, undefined, undefined, 'ipc'],  // IPC: includes IPC channel
-    }
-
-    const child: ChildProcess = spawn(command, [...args, runner, step.filePath, jsonData], spawnOptions)
-
-    // Choose processor based on communication method
-    const processor = shouldUseRpc 
-      ? new RpcStdinProcessor(child)
-      : new RpcProcessor(child)
-
-    processor.handler<StateGetInput>('close', async () => child.kill())
-    processor.handler<StateGetInput>('log', async (input: unknown) => logger.log(input))
-    processor.handler<StateGetInput>('state.get', (input) => state.get(input.traceId, input.key))
-    processor.handler<StateSetInput>('state.set', (input) => state.set(input.traceId, input.key, input.value))
-    processor.handler<StateDeleteInput>('state.delete', (input) => state.delete(input.traceId, input.key))
-    processor.handler<StateClearInput>('state.clear', (input) => state.clear(input.traceId))
-    processor.handler<TData>('result', async (input) => {
-      result = input
-    })
-    processor.handler<Event>('emit', async (input) => {
-      if (!isAllowedToEmit(step, input.topic)) {
-        return printer.printInvalidEmit(step, input.topic)
-      }
-
-      return eventManager.emit({ ...input, traceId, flows: step.config.flows, logger }, step.filePath)
+    // Create process manager with unified communication handling
+    const processManager = new ProcessManager({
+      command,
+      args: [...args, runner, step.filePath, jsonData],
+      logger,
+      context: 'StepExecution'
     })
 
-    processor.init()
+    processManager.spawn().then(() => {
+      // Register all step handlers
+      processManager.handler<StateGetInput>('close', async () => processManager.kill())
+      processManager.handler<unknown>('log', async (input: unknown) => logger.log(input))
+      processManager.handler<StateGetInput, unknown>('state.get', (input) => state.get(input.traceId, input.key))
+      processManager.handler<StateSetInput, void>('state.set', (input) => state.set(input.traceId, input.key, input.value))
+      processManager.handler<StateDeleteInput, void>('state.delete', (input) => state.delete(input.traceId, input.key))
+      processManager.handler<StateClearInput, void>('state.clear', (input) => state.clear(input.traceId))
+      processManager.handler<TData, void>('result', async (input) => {
+        result = input
+      })
+      processManager.handler<Event, unknown>('emit', async (input) => {
+        if (!isAllowedToEmit(step, input.topic)) {
+          return printer.printInvalidEmit(step, input.topic)
+        }
 
-    // For IPC mode, we might still want to capture stdout for logging
-    if (!shouldUseRpc) {
-      child.stdout?.on('data', (data) => {
+        return eventManager.emit({ ...input, traceId, flows: step.config.flows, logger }, step.filePath)
+      })
+
+      // Handle stdout for non-RPC mode (logging)
+      processManager.onStdout((data) => {
         try {
           const message = JSON.parse(data.toString())
           logger.log(message)
@@ -108,26 +97,32 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
           logger.info(Buffer.from(data).toString())
         }
       })
-    }
 
-    child.stderr?.on('data', (data) => logger.error(Buffer.from(data).toString()))
+      // Handle stderr
+      processManager.onStderr((data) => logger.error(Buffer.from(data).toString()))
 
-    child.on('close', (code) => {
-      processor.close()
-      if (code !== 0 && code !== null) {
-        reject(`Process exited with code ${code}`)
-      } else {
-        resolve(result)
-      }
-    })
+      // Handle process close
+      processManager.onProcessClose((code) => {
+        processManager.close()
+        if (code !== 0 && code !== null) {
+          reject(`Process exited with code ${code}`)
+        } else {
+          resolve(result)
+        }
+      })
 
-    child.on('error', (error: { code?: string }) => {
-      processor.close()
-      if (error.code === 'ENOENT') {
-        reject(`Executable ${command} not found`)
-      } else {
-        reject(error)
-      }
+      // Handle process errors
+      processManager.onProcessError((error) => {
+        processManager.close()
+        if (error.code === 'ENOENT') {
+          reject(`Executable ${command} not found`)
+        } else {
+          reject(error)
+        }
+      })
+
+    }).catch((error) => {
+      reject(`Failed to spawn process: ${error}`)
     })
   })
 }

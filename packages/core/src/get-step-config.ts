@@ -1,7 +1,7 @@
 import path from 'path'
 import { StepConfig } from './types'
 import { globalLogger } from './logger'
-import { SimpleProcessManager } from './process-communication/simple-process-manager'
+import { ProcessManager } from './process-communication/process-manager'
 
 const getLanguageBasedRunner = (
   stepFilePath = '',
@@ -39,8 +39,8 @@ export const getStepConfig = (file: string): Promise<StepConfig | null> => {
   return new Promise((resolve, reject) => {
     let config: StepConfig | null = null
 
-    // Create simple process manager for unidirectional communication
-    const processManager = new SimpleProcessManager<StepConfig>({
+    // Create process manager for unified communication handling
+    const processManager = new ProcessManager({
       command,
       args: [...args, runner, file],
       logger: globalLogger,
@@ -48,9 +48,9 @@ export const getStepConfig = (file: string): Promise<StepConfig | null> => {
     })
 
     processManager.spawn().then(() => {
-      // Handle config message (works for both RPC and IPC automatically)
-      processManager.onMessage((data) => {
-        config = data
+      // Use onMessage to handle direct config messages (not RPC format)
+      processManager.onMessage<StepConfig>((message) => {
+        config = message
         globalLogger.debug(`[Config] Read config via ${processManager.commType?.toUpperCase()}`, { 
           config,
           communicationType: processManager.commType 

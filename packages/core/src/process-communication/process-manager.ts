@@ -2,6 +2,7 @@ import { spawn, ChildProcess } from 'child_process'
 import { createCommunicationConfig, CommunicationType } from './communication-config'
 import { RpcProcessor } from '../step-handler-rpc-processor'
 import { RpcStdinProcessor } from '../step-handler-rpc-stdin-processor'
+import { RpcProcessorInterface, RpcHandler, MessageCallback } from './rpc-processor-interface'
 import { BaseLogger } from '../logger'
 
 export interface ProcessManagerOptions {
@@ -11,11 +12,9 @@ export interface ProcessManagerOptions {
   context?: string
 }
 
-type ProcessorType = RpcProcessor | RpcStdinProcessor
-
 export class ProcessManager {
   private child?: ChildProcess
-  private processor?: ProcessorType
+  private processor?: RpcProcessorInterface
   private communicationType?: CommunicationType
 
   constructor(private options: ProcessManagerOptions) {}
@@ -47,11 +46,18 @@ export class ProcessManager {
     return this.child
   }
 
-  handler<TInput, TOutput = unknown>(method: string, handler: (input: TInput) => Promise<TOutput>): void {
+  handler<TInput, TOutput = unknown>(method: string, handler: RpcHandler<TInput, TOutput>): void {
     if (!this.processor) {
       throw new Error('Process not spawned yet. Call spawn() first.')
     }
     this.processor.handler(method, handler)
+  }
+
+  onMessage<T = unknown>(callback: MessageCallback<T>): void {
+    if (!this.processor) {
+      throw new Error('Process not spawned yet. Call spawn() first.')
+    }
+    this.processor.onMessage(callback)
   }
 
   onProcessClose(callback: (code: number | null) => void): void {

@@ -1,7 +1,7 @@
 import { ChildProcess } from 'child_process'
 import readline from 'readline'
+import { RpcProcessorInterface, RpcHandler, MessageCallback } from './process-communication/rpc-processor-interface'
 
-type RpcHandler<TInput, TOutput> = (input: TInput) => Promise<TOutput>
 export type RpcMessage = {
   type: 'rpc_request'
   id: string | undefined
@@ -9,8 +9,9 @@ export type RpcMessage = {
   args: unknown
 }
 
-export class RpcStdinProcessor {
+export class RpcStdinProcessor implements RpcProcessorInterface {
   private handlers: Record<string, RpcHandler<any, any>> = {}
+  private messageCallback?: MessageCallback<any>
   private isClosed = false
   private rl?: readline.Interface
 
@@ -18,6 +19,10 @@ export class RpcStdinProcessor {
 
   handler<TInput, TOutput = unknown>(method: string, handler: RpcHandler<TInput, TOutput>) {
     this.handlers[method] = handler
+  }
+
+  onMessage<T = unknown>(callback: MessageCallback<T>): void {
+    this.messageCallback = callback
   }
 
   async handle(method: string, input: unknown) {
@@ -50,9 +55,16 @@ export class RpcStdinProcessor {
 
       this.rl.on('line', (line) => {
         try {
-          const msg: RpcMessage = JSON.parse(line.trim())
-          if (msg.type === 'rpc_request') {
-            const { id, method, args } = msg
+          const msg = JSON.parse(line.trim())
+          
+          // Call generic message callback if registered
+          if (this.messageCallback) {
+            this.messageCallback(msg)
+          }
+
+          // Handle RPC requests specifically
+          if (msg && msg.type === 'rpc_request') {
+            const { id, method, args } = msg as RpcMessage
             this.handle(method, args)
               .then((result) => this.response(id, result, null))
               .catch((error) => this.response(id, null, error))
@@ -77,6 +89,7 @@ export class RpcStdinProcessor {
 
   close() {
     this.isClosed = true
+    this.messageCallback = undefined
     if (this.rl) {
       this.rl.close()
     }
