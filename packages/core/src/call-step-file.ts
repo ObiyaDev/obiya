@@ -1,4 +1,5 @@
 import { RpcProcessor } from './step-handler-rpc-processor'
+import { RpcStdinProcessor } from './step-handler-rpc-stdin-processor'
 import { Event, EventManager, InternalStateManager, Step } from './types'
 import { spawn, ChildProcess, SpawnOptions } from 'child_process'
 import path from 'path'
@@ -48,8 +49,8 @@ type CallStepFileOptions = {
   state: InternalStateManager
   traceId: string
   printer: Printer
-  data?: any // eslint-disable-line @typescript-eslint/no-explicit-any
-  contextInFirstArg: boolean // if true, the step file will only receive the context object
+  data?: any
+  contextInFirstArg: boolean
 }
 
 export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData | undefined> => {
@@ -62,25 +63,32 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     const { runner, command, args } = getLanguageBasedRunner(step.filePath)
     let result: TData | undefined
 
-    // Use stdout/stdin pipes instead of IPC for cross-platform compatibility
+    // Decision logic: Python + Windows = RPC (stdin/stdout), everything else = IPC
+    const shouldUseRpc = command === 'python' && process.platform === 'win32'
+
     const spawnOptions: SpawnOptions = {
-      stdio: ['pipe', 'pipe', 'pipe'], // stdin, stdout, stderr - no IPC
+      stdio: shouldUseRpc 
+        ? ['pipe', 'pipe', 'pipe']  // RPC: stdin, stdout, stderr
+        : [undefined, undefined, undefined, 'ipc'],  // IPC: includes IPC channel
     }
 
     const child: ChildProcess = spawn(command, [...args, runner, step.filePath, jsonData], spawnOptions)
 
-    const rpcProcessor = new RpcProcessor(child)
+    // Choose processor based on communication method
+    const processor = shouldUseRpc 
+      ? new RpcStdinProcessor(child)
+      : new RpcProcessor(child)
 
-    rpcProcessor.handler<StateGetInput>('close', async () => child.kill())
-    rpcProcessor.handler<StateGetInput>('log', async (input: unknown) => logger.log(input))
-    rpcProcessor.handler<StateGetInput>('state.get', (input) => state.get(input.traceId, input.key))
-    rpcProcessor.handler<StateSetInput>('state.set', (input) => state.set(input.traceId, input.key, input.value))
-    rpcProcessor.handler<StateDeleteInput>('state.delete', (input) => state.delete(input.traceId, input.key))
-    rpcProcessor.handler<StateClearInput>('state.clear', (input) => state.clear(input.traceId))
-    rpcProcessor.handler<TData>('result', async (input) => {
+    processor.handler<StateGetInput>('close', async () => child.kill())
+    processor.handler<StateGetInput>('log', async (input: unknown) => logger.log(input))
+    processor.handler<StateGetInput>('state.get', (input) => state.get(input.traceId, input.key))
+    processor.handler<StateSetInput>('state.set', (input) => state.set(input.traceId, input.key, input.value))
+    processor.handler<StateDeleteInput>('state.delete', (input) => state.delete(input.traceId, input.key))
+    processor.handler<StateClearInput>('state.clear', (input) => state.clear(input.traceId))
+    processor.handler<TData>('result', async (input) => {
       result = input
     })
-    rpcProcessor.handler<Event>('emit', async (input) => {
+    processor.handler<Event>('emit', async (input) => {
       if (!isAllowedToEmit(step, input.topic)) {
         return printer.printInvalidEmit(step, input.topic)
       }
@@ -88,11 +96,24 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
       return eventManager.emit({ ...input, traceId, flows: step.config.flows, logger }, step.filePath)
     })
 
-    rpcProcessor.init()
+    processor.init()
+
+    // For IPC mode, we might still want to capture stdout for logging
+    if (!shouldUseRpc) {
+      child.stdout?.on('data', (data) => {
+        try {
+          const message = JSON.parse(data.toString())
+          logger.log(message)
+        } catch {
+          logger.info(Buffer.from(data).toString())
+        }
+      })
+    }
 
     child.stderr?.on('data', (data) => logger.error(Buffer.from(data).toString()))
 
     child.on('close', (code) => {
+      processor.close()
       if (code !== 0 && code !== null) {
         reject(`Process exited with code ${code}`)
       } else {
@@ -101,6 +122,7 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
     })
 
     child.on('error', (error: { code?: string }) => {
+      processor.close()
       if (error.code === 'ENOENT') {
         reject(`Executable ${command} not found`)
       } else {

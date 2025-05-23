@@ -1,7 +1,7 @@
-import { spawn } from 'child_process'
 import path from 'path'
 import { StepConfig } from './types'
 import { globalLogger } from './logger'
+import { SimpleProcessManager } from './process-communication/simple-process-manager'
 
 const getLanguageBasedRunner = (
   stepFilePath = '',
@@ -35,52 +35,54 @@ const getLanguageBasedRunner = (
 
 export const getStepConfig = (file: string): Promise<StepConfig | null> => {
   const { runner, command, args } = getLanguageBasedRunner(file)
-  const isWindows = process.platform === 'win32'
 
   return new Promise((resolve, reject) => {
     let config: StepConfig | null = null
 
-    const child = spawn(command, [...args, runner, file], {
-      stdio: isWindows 
-        ? ['inherit', 'pipe', 'inherit', 'ipc']  // On Windows, capture stdout
-        : ['inherit', 'inherit', 'inherit', 'ipc']  // Original config for Unix
+    // Create simple process manager for unidirectional communication
+    const processManager = new SimpleProcessManager<StepConfig>({
+      command,
+      args: [...args, runner, file],
+      logger: globalLogger,
+      context: 'Config'
     })
 
-    // On Windows, we need to listen for stdout data
-    if (isWindows) {
-      child.stdout?.on('data', (data) => {
-        const message = JSON.parse(data.toString());
-        globalLogger.debug('[Config] Read config', { config: message });
-        config = message;
-        resolve(config);
-        child.kill();
-      });
-    }
+    processManager.spawn().then(() => {
+      // Handle config message (works for both RPC and IPC automatically)
+      processManager.onMessage((data) => {
+        config = data
+        globalLogger.debug(`[Config] Read config via ${processManager.commType?.toUpperCase()}`, { 
+          config,
+          communicationType: processManager.commType 
+        })
+        resolve(config)
+        processManager.kill()
+      })
 
-    // Original IPC message handler
-    child.on('message', (message: StepConfig) => {
-      globalLogger.debug('[Config] Read config', { config: message })
-      config = message
-      resolve(config)
-      child.kill() // we can kill the child process since we already received the message
-    })
+      // Handle process close
+      processManager.onProcessClose((code) => {
+        processManager.close()
+        if (config) {
+          return // Config was already resolved
+        } else if (code !== 0) {
+          reject(`Process exited with code ${code}`)
+        } else if (!config) {
+          reject(`No config found for file ${file}`)
+        }
+      })
 
-    child.on('close', (code) => {
-      if (config) {
-        return // Config was already resolved
-      } else if (code !== 0) {
-        reject(`Process exited with code ${code}`)
-      } else if (!config) {
-        reject(`No config found for file ${file}`)
-      }
-    })
+      // Handle process errors
+      processManager.onProcessError((error) => {
+        processManager.close()
+        if (error.code === 'ENOENT') {
+          reject(`Executable ${command} not found`)
+        } else {
+          reject(error)
+        }
+      })
 
-    child.on('error', (error: { code?: string }) => {
-      if (error.code === 'ENOENT') {
-        reject(`Executable ${command} not found`)
-      } else {
-        reject(error)
-      }
+    }).catch((error) => {
+      reject(`Failed to spawn process: ${error}`)
     })
   })
 }

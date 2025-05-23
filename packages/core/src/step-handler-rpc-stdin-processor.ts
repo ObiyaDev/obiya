@@ -1,4 +1,5 @@
 import { ChildProcess } from 'child_process'
+import readline from 'readline'
 
 type RpcHandler<TInput, TOutput> = (input: TInput) => Promise<TOutput>
 export type RpcMessage = {
@@ -8,9 +9,10 @@ export type RpcMessage = {
   args: unknown
 }
 
-export class RpcProcessor {
+export class RpcStdinProcessor {
   private handlers: Record<string, RpcHandler<any, any>> = {}
   private isClosed = false
+  private rl?: readline.Interface
 
   constructor(private child: ChildProcess) {}
 
@@ -27,26 +29,43 @@ export class RpcProcessor {
   }
 
   private response(id: string | undefined, result: unknown, error: unknown) {
-    if (id && !this.isClosed && this.child.send && this.child.connected) {
+    if (id && !this.isClosed && this.child.stdin && !this.child.killed) {
       const responseMessage = { 
         type: 'rpc_response', 
         id, 
         result: error ? undefined : result,
         error: error ? String(error) : undefined
       }
-      this.child.send(responseMessage)
+      const messageStr = JSON.stringify(responseMessage)
+      this.child.stdin.write(messageStr + '\n')
     }
   }
 
   async init() {
-    this.child.on('message', (msg: RpcMessage) => {
-      if (msg.type === 'rpc_request') {
-        const { id, method, args } = msg
-        this.handle(method, args)
-          .then((result) => this.response(id, result, null))
-          .catch((error) => this.response(id, null, error))
-      }
-    })
+    if (this.child.stdout) {
+      this.rl = readline.createInterface({
+        input: this.child.stdout,
+        crlfDelay: Infinity
+      })
+
+      this.rl.on('line', (line) => {
+        try {
+          const msg: RpcMessage = JSON.parse(line.trim())
+          if (msg.type === 'rpc_request') {
+            const { id, method, args } = msg
+            this.handle(method, args)
+              .then((result) => this.response(id, result, null))
+              .catch((error) => this.response(id, null, error))
+          }
+        } catch (error) {
+          console.error('Failed to parse RPC message:', error, 'Raw line:', line)
+        }
+      })
+
+      this.rl.on('close', () => {
+        this.isClosed = true
+      })
+    }
 
     this.child.on('exit', () => {
       this.isClosed = true
@@ -54,12 +73,12 @@ export class RpcProcessor {
     this.child.on('close', () => {
       this.isClosed = true
     })
-    this.child.on('disconnect', () => {
-      this.isClosed = true
-    })
   }
 
   close() {
     this.isClosed = true
+    if (this.rl) {
+      this.rl.close()
+    }
   }
 } 
