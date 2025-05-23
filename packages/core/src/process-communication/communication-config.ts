@@ -7,13 +7,8 @@ export interface CommunicationConfig {
   spawnOptions: SpawnOptions
 }
 
-export function decideCommunicationType(command: string): CommunicationType {
-  // Decision logic: Python + Windows = RPC, everything else = IPC
-  return command === 'python' && process.platform === 'win32' ? 'rpc' : 'ipc'
-}
-
 export function createCommunicationConfig(command: string): CommunicationConfig {
-  const type = decideCommunicationType(command)
+  const type = command === 'python' && process.platform === 'win32' ? 'rpc' : 'ipc'
   
   const spawnOptions: SpawnOptions = {
     stdio: type === 'rpc' 
