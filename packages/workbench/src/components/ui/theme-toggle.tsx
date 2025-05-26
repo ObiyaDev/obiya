@@ -1,7 +1,7 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
+import { cn } from '@/lib/utils'
 import React from 'react'
-import { Button } from './button'
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme()
@@ -17,21 +17,28 @@ export const ThemeToggle: React.FC = () => {
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
     >
       <div
-        className={`absolute w-6 h-6 bg-background border border-border rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
+        className={cn(
+          "absolute w-6 h-6 bg-background border border-border rounded-full shadow-sm transition-transform duration-200 ease-in-out",
           theme === 'dark' ? 'translate-x-8' : 'translate-x-0'
-        }`}
+        )}
       />
-      
+
       <div className="flex items-center justify-center w-6 h-6 z-10">
-        <Sun className={`h-3.5 w-3.5 transition-colors duration-200 ${
-          theme === 'light' ? 'text-foreground' : 'text-muted-foreground'
-        }`} />
+        <Sun
+          className={cn(
+            "h-3.5 w-3.5 transition-colors duration-200",
+            theme === 'light' ? 'text-foreground' : 'text-muted-foreground'
+          )}
+        />
       </div>
-      
+
       <div className="flex items-center justify-center w-6 h-6 z-10 ml-2">
-        <Moon className={`h-3.5 w-3.5 transition-colors duration-200 ${
-          theme === 'dark' ? 'text-foreground' : 'text-muted-foreground'
-        }`} />
+        <Moon
+          className={cn(
+            "h-3.5 w-3.5 transition-colors duration-200",
+            theme === 'dark' ? 'text-foreground' : 'text-muted-foreground'
+          )}
+        />
       </div>
     </button>
   )
