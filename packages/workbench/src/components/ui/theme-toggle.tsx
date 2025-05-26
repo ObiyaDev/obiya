@@ -18,16 +18,16 @@ export const ThemeToggle: React.FC = () => {
     >
       <div
         className={cn(
-          "absolute w-6 h-6 bg-background border border-border rounded-full shadow-sm transition-transform duration-200 ease-in-out",
-          theme === 'dark' ? 'translate-x-8' : 'translate-x-0'
+          'absolute w-6 h-6 bg-background border border-border rounded-full shadow-sm transition-transform duration-200 ease-in-out',
+          theme === 'dark' ? 'translate-x-8' : 'translate-x-0',
         )}
       />
 
       <div className="flex items-center justify-center w-6 h-6 z-10">
         <Sun
           className={cn(
-            "h-3.5 w-3.5 transition-colors duration-200",
-            theme === 'light' ? 'text-foreground' : 'text-muted-foreground'
+            'h-3.5 w-3.5 transition-colors duration-200',
+            theme === 'light' ? 'text-foreground' : 'text-muted-foreground',
           )}
         />
       </div>
@@ -35,8 +35,8 @@ export const ThemeToggle: React.FC = () => {
       <div className="flex items-center justify-center w-6 h-6 z-10 ml-2">
         <Moon
           className={cn(
-            "h-3.5 w-3.5 transition-colors duration-200",
-            theme === 'dark' ? 'text-foreground' : 'text-muted-foreground'
+            'h-3.5 w-3.5 transition-colors duration-200',
+            theme === 'dark' ? 'text-foreground' : 'text-muted-foreground',
           )}
         />
       </div>

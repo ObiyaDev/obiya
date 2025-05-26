@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 type Theme = 'dark' | 'light' | 'system'
 
 const storageKey = 'motia-workbench-theme'
-const defaultTheme = 'system'
+const defaultTheme = (localStorage.getItem(storageKey) as Theme) || 'system'
 
 const updateTheme = (theme: Theme) => {
   const root = window.document.body
@@ -21,10 +21,10 @@ const updateTheme = (theme: Theme) => {
 }
 
 export const useTheme = () => {
-  const [theme, _setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme)
+  const [theme, _setTheme] = useState<Theme>(defaultTheme)
 
   useEffect(() => {
-    updateTheme(theme)
+    updateTheme(defaultTheme)
   }, [])
 
   const setTheme = useCallback((newTheme: Theme) => {
