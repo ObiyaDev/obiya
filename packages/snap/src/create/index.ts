@@ -93,7 +93,7 @@ type Args = {
 export const create = async ({ projectName, template, cursorEnabled }: Args): Promise<void> => {
   console.log(
     '\n\n' +
-    `
+      `
          _____   ______  ______   ______     
  /'\\_/\`\\/\\  __\`\\/\\__  _\\/\\__  _\\ /\\  _  \\    
 /\\      \\ \\ \\/\\ \\/_/\\ \\/\\/_/\\ \\/ \\ \\ \\L\\ \\   
@@ -102,7 +102,7 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   \\ \\_\\\\ \\_\\ \\_____\\ \\ \\_\\  /\\_____\\\\ \\_\\ \\_\\
    \\/_/ \\/_/\\/_____/  \\/_/  \\/_____/ \\/_/\\/_/
       ` +
-    '\n\n',
+      '\n\n',
   )
 
   const isCurrentDir = projectName === '.' || projectName === './' || projectName === '.\\'

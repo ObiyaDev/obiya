@@ -70,7 +70,7 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
         className={cn(
           'rounded-lg border border-border bg-background/90 p-4 flex flex-col',
           !isExpanded && 'rounded-b-lg',
-          isExpanded && 'gap-4'
+          isExpanded && 'gap-4',
         )}
       >
         <div className="flex items-center gap-2">
@@ -85,45 +85,45 @@ export const Legend: FC<{ onHover: (type: string | null) => void }> = ({ onHover
         <div
           className={cn(
             'overflow-hidden transition-all duration-200 ease-in-out',
-            isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+            isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0',
           )}
         >
           {isExpanded && (
-           <>
-            <div className="grid grid-cols-2 gap-3">
-            {legendItems.map((item) => (
-              <div
-                key={item.type}
-                onMouseEnter={() => onHover(item.type)}
-                onMouseLeave={() => onHover(null)}
-                className="group cursor-pointer transition-all hover:bg-muted/20 rounded-md p-2"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-[8px] h-[8px] mt-[4px] rounded-full" style={{ backgroundColor: item.color }} />
-                  <div className="flex-1">
-                    <div className="text-foreground text-sm font-medium">{item.label}</div>
-                    <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                {legendItems.map((item) => (
+                  <div
+                    key={item.type}
+                    onMouseEnter={() => onHover(item.type)}
+                    onMouseLeave={() => onHover(null)}
+                    className="group cursor-pointer transition-all hover:bg-muted/20 rounded-md p-2"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-[8px] h-[8px] mt-[4px] rounded-full" style={{ backgroundColor: item.color }} />
+                      <div className="flex-1">
+                        <div className="text-foreground text-sm font-medium">{item.label}</div>
+                        <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="h-px bg-border my-4" />
+              <div className="h-px bg-border my-4" />
 
-          <div className="text-sm text-muted-foreground uppercase pb-4">Edge Legend</div>
-          <div className="grid grid-cols-2 gap-3">
-            {edgeLegendItems.map((item) => (
-              <div key={item.label} className="flex items-start gap-3">
-                <EdgeSwatch color={item.color} dashed={item.dashed} />
-                <div className="flex-1">
-                  <div className="text-foreground text-sm font-medium">{item.label}</div>
-                  <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
-                </div>
+              <div className="text-sm text-muted-foreground uppercase pb-4">Edge Legend</div>
+              <div className="grid grid-cols-2 gap-3">
+                {edgeLegendItems.map((item) => (
+                  <div key={item.label} className="flex items-start gap-3">
+                    <EdgeSwatch color={item.color} dashed={item.dashed} />
+                    <div className="flex-1">
+                      <div className="text-foreground text-sm font-medium">{item.label}</div>
+                      <div className="text-muted-foreground text-sm mt-0.5">{item.description}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-           </>
+            </>
           )}
         </div>
       </div>
