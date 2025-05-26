@@ -1,5 +1,4 @@
 import { z, ZodObject } from 'zod'
-import type { Express } from 'express'
 import { BaseLogger, Logger } from './logger'
 
 export type InternalStateManager = {
