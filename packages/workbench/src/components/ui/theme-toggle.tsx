@@ -1,59 +1,38 @@
-import { Moon, Sun, Monitor } from 'lucide-react'
-import { Button } from './button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
+import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
-import React, { useCallback, useMemo } from 'react'
+import React from 'react'
+import { Button } from './button'
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme()
 
-  const toggleTheme = useCallback(() => {
-    switch (theme) {
-      case 'light':
-        setTheme('dark')
-        break
-      case 'dark':
-        setTheme('system')
-        break
-      case 'system':
-        setTheme('light')
-        break
-      default:
-        setTheme('light')
-    }
-  }, [setTheme, theme])
-
-  const tooltipText = useMemo(() => {
-    switch (theme) {
-      case 'light':
-        return 'Light theme - Click to switch to dark'
-      case 'dark':
-        return 'Dark theme - Click to switch to system'
-      case 'system':
-        return 'System theme - Click to switch to light'
-      default:
-        return 'Toggle theme'
-    }
-  }, [theme])
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" className="w-9 h-9" onClick={toggleTheme}>
-            {theme === 'system' ? (
-              <Monitor className="h-[1.2rem] w-[1.2rem]" />
-            ) : (
-              <>
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              </>
-            )}
-            <span className="sr-only">Toggle theme</span>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>{tooltipText}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <button
+      onClick={toggleTheme}
+      className="relative flex items-center cursor-pointer w-16 h-8 bg-muted rounded-full p-1 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+    >
+      <div
+        className={`absolute w-6 h-6 bg-background border border-border rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
+          theme === 'dark' ? 'translate-x-8' : 'translate-x-0'
+        }`}
+      />
+      
+      <div className="flex items-center justify-center w-6 h-6 z-10">
+        <Sun className={`h-3.5 w-3.5 transition-colors duration-200 ${
+          theme === 'light' ? 'text-foreground' : 'text-muted-foreground'
+        }`} />
+      </div>
+      
+      <div className="flex items-center justify-center w-6 h-6 z-10 ml-2">
+        <Moon className={`h-3.5 w-3.5 transition-colors duration-200 ${
+          theme === 'dark' ? 'text-foreground' : 'text-muted-foreground'
+        }`} />
+      </div>
+    </button>
   )
 }
