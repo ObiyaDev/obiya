@@ -53,7 +53,7 @@ type CallStepFileOptions = {
   traceId: string
   lockedData: LockedData
   printer: Printer
-  data?: any
+  data?: any // eslint-disable-line @typescript-eslint/no-explicit-any
   contextInFirstArg: boolean
 }
 
@@ -74,75 +74,81 @@ export const callStepFile = <TData>(options: CallStepFileOptions): Promise<TData
       command,
       args: [...args, runner, step.filePath, jsonData],
       logger,
-      context: 'StepExecution'
+      context: 'StepExecution',
     })
 
-    processManager.spawn().then(() => {
-      // Register all step handlers
-      processManager.handler<StateGetInput>('close', async () => processManager.kill())
-      processManager.handler<unknown>('log', async (input: unknown) => logger.log(input))
-      processManager.handler<StateGetInput, unknown>('state.get', (input) => state.get(input.traceId, input.key))
-      processManager.handler<StateSetInput, unknown>('state.set', (input) => state.set(input.traceId, input.key, input.value))
-      processManager.handler<StateDeleteInput, unknown>('state.delete', (input) => state.delete(input.traceId, input.key))
-      processManager.handler<StateClearInput, void>('state.clear', (input) => state.clear(input.traceId))
-      processManager.handler<TData, void>('result', async (input) => {
-        result = input
-      })
-      processManager.handler<Event, unknown>('emit', async (input) => {
-        if (!isAllowedToEmit(step, input.topic)) {
-          return printer.printInvalidEmit(step, input.topic)
-        }
-
-        return eventManager.emit({ ...input, traceId, flows: step.config.flows, logger }, step.filePath)
-      })
-
-      Object.entries(streamConfig).forEach(([name, streamFactory]) => {
-        const stateStream = streamFactory()
-
-        processManager.handler<StateStreamGetInput>(`streams.${name}.get`, (input) => stateStream.get(input.id))
-        processManager.handler<StateStreamMutateInput>(`streams.${name}.update`, (input) =>
-          stateStream.update(input.id, input.data),
+    processManager
+      .spawn()
+      .then(() => {
+        // Register all step handlers
+        processManager.handler<StateGetInput>('close', async () => processManager.kill())
+        processManager.handler<unknown>('log', async (input: unknown) => logger.log(input))
+        processManager.handler<StateGetInput, unknown>('state.get', (input) => state.get(input.traceId, input.key))
+        processManager.handler<StateSetInput, unknown>('state.set', (input) =>
+          state.set(input.traceId, input.key, input.value),
         )
-        processManager.handler<StateStreamGetInput>(`streams.${name}.delete`, (input) => stateStream.delete(input.id))
-        processManager.handler<StateStreamMutateInput>(`streams.${name}.create`, (input) =>
-          stateStream.create(input.id, input.data),
+        processManager.handler<StateDeleteInput, unknown>('state.delete', (input) =>
+          state.delete(input.traceId, input.key),
         )
+        processManager.handler<StateClearInput, void>('state.clear', (input) => state.clear(input.traceId))
+        processManager.handler<TData, void>('result', async (input) => {
+          result = input
+        })
+        processManager.handler<Event, unknown>('emit', async (input) => {
+          if (!isAllowedToEmit(step, input.topic)) {
+            return printer.printInvalidEmit(step, input.topic)
+          }
+
+          return eventManager.emit({ ...input, traceId, flows: step.config.flows, logger }, step.filePath)
+        })
+
+        Object.entries(streamConfig).forEach(([name, streamFactory]) => {
+          const stateStream = streamFactory()
+
+          processManager.handler<StateStreamGetInput>(`streams.${name}.get`, (input) => stateStream.get(input.id))
+          processManager.handler<StateStreamMutateInput>(`streams.${name}.update`, (input) =>
+            stateStream.update(input.id, input.data),
+          )
+          processManager.handler<StateStreamGetInput>(`streams.${name}.delete`, (input) => stateStream.delete(input.id))
+          processManager.handler<StateStreamMutateInput>(`streams.${name}.create`, (input) =>
+            stateStream.create(input.id, input.data),
+          )
+        })
+
+        processManager.onStdout((data) => {
+          try {
+            const message = JSON.parse(data.toString())
+            logger.log(message)
+          } catch {
+            logger.info(Buffer.from(data).toString())
+          }
+        })
+
+        // Handle stderr
+        processManager.onStderr((data) => logger.error(Buffer.from(data).toString()))
+
+        // Handle process close
+        processManager.onProcessClose((code) => {
+          processManager.close()
+          if (code !== 0 && code !== null) {
+            reject(`Process exited with code ${code}`)
+          } else {
+            resolve(result)
+          }
+        })
+
+        // Handle process errors
+        processManager.onProcessError((error) => {
+          processManager.close()
+          if (error.code === 'ENOENT') {
+            reject(`Executable ${command} not found`)
+          } else {
+            reject(error)
+          }
+        })
       })
-
-      processManager.onStdout((data) => {
-        try {
-          const message = JSON.parse(data.toString())
-          logger.log(message)
-        } catch {
-          logger.info(Buffer.from(data).toString())
-        }
+      .catch((error) => {
+        reject(`Failed to spawn process: ${error}`)
       })
-
-      // Handle stderr
-      processManager.onStderr((data) => logger.error(Buffer.from(data).toString()))
-
-      // Handle process close
-      processManager.onProcessClose((code) => {
-        processManager.close()
-        if (code !== 0 && code !== null) {
-          reject(`Process exited with code ${code}`)
-        } else {
-          resolve(result)
-        }
-      })
-
-      // Handle process errors
-      processManager.onProcessError((error) => {
-        processManager.close()
-        if (error.code === 'ENOENT') {
-          reject(`Executable ${command} not found`)
-        } else {
-          reject(error)
-        }
-      })
-
-    }).catch((error) => {
-      reject(`Failed to spawn process: ${error}`)
-    })
   })
 }

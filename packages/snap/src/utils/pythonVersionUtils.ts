@@ -17,7 +17,7 @@ export async function getPythonCommand(requestedVersion: string, baseDir: string
   if (await checkPythonVersionExists(specificPythonCmd, baseDir)) {
     return specificPythonCmd
   }
-  
+
   // Check if python exists and is version 3+
   try {
     const result = await executeCommand('python --version', baseDir, { silent: true })
@@ -28,24 +28,24 @@ export async function getPythonCommand(requestedVersion: string, baseDir: string
   } catch (error) {
     // If error, python command doesn't exist or can't be executed
   }
-  
+
   throw new Error('No compatible Python 3 installation found. Please install Python 3.')
 }
 
 export function findPythonSitePackagesDir(venvLibPath: string, pythonVersion: string, isVerbose = false): string {
   let pythonVersionPath = `python${pythonVersion}`
-  
+
   if (!venvLibPath || !pythonVersion) {
     return pythonVersionPath
   }
-  
+
   try {
     // Check if the exact version exists
     if (venvLibPath && !fs.existsSync(path.join(venvLibPath, pythonVersionPath))) {
       // Try to find any python3.x directory
       const libContents = fs.readdirSync(venvLibPath)
-      const pythonDirs = libContents.filter(item => item.startsWith('python3'))
-      
+      const pythonDirs = libContents.filter((item) => item.startsWith('python3'))
+
       if (pythonDirs.length > 0) {
         // Use the first python3.x directory found
         pythonVersionPath = pythonDirs[0]
@@ -59,6 +59,6 @@ export function findPythonSitePackagesDir(venvLibPath: string, pythonVersion: st
       console.warn(`Warning: Could not determine Python version directory: ${error}`)
     }
   }
-  
+
   return pythonVersionPath
-} 
+}

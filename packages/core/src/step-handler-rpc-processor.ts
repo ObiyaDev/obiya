@@ -9,7 +9,9 @@ export type RpcMessage = {
 }
 
 export class RpcProcessor implements RpcProcessorInterface {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handlers: Record<string, RpcHandler<any, any>> = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private messageCallback?: MessageCallback<any>
   private isClosed = false
 
@@ -33,17 +35,18 @@ export class RpcProcessor implements RpcProcessorInterface {
 
   private response(id: string | undefined, result: unknown, error: unknown) {
     if (id && !this.isClosed && this.child.send && this.child.connected) {
-      const responseMessage = { 
-        type: 'rpc_response', 
-        id, 
+      const responseMessage = {
+        type: 'rpc_response',
+        id,
         result: error ? undefined : result,
-        error: error ? String(error) : undefined
+        error: error ? String(error) : undefined,
       }
       this.child.send(responseMessage)
     }
   }
 
   async init() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.child.on('message', (msg: any) => {
       // Call generic message callback if registered
       if (this.messageCallback) {
@@ -74,4 +77,4 @@ export class RpcProcessor implements RpcProcessorInterface {
     this.isClosed = true
     this.messageCallback = undefined
   }
-} 
+}

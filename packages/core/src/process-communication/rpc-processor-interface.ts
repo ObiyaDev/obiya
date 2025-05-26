@@ -7,4 +7,4 @@ export interface RpcProcessorInterface {
   onMessage<T = unknown>(callback: MessageCallback<T>): void
   init(): Promise<void>
   close(): void
-} 
+}

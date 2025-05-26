@@ -21,24 +21,22 @@ export class ProcessManager {
 
   async spawn(): Promise<ChildProcess> {
     const { command, args, logger, context = 'Process' } = this.options
-    
+
     // Get communication configuration
     const commConfig = createCommunicationConfig(command)
     this.communicationType = commConfig.type
-    
-    logger.debug(`[${context}] Spawning process`, { 
-      command, 
-      args, 
-      communicationType: this.communicationType 
+
+    logger.debug(`[${context}] Spawning process`, {
+      command,
+      args,
+      communicationType: this.communicationType,
     })
 
     // Spawn the process
     this.child = spawn(command, args, commConfig.spawnOptions)
-    
+
     // Create appropriate processor based on communication type
-    this.processor = this.communicationType === 'rpc' 
-      ? new RpcStdinProcessor(this.child)
-      : new RpcProcessor(this.child)
+    this.processor = this.communicationType === 'rpc' ? new RpcStdinProcessor(this.child) : new RpcProcessor(this.child)
 
     // Initialize the processor
     await this.processor.init()
@@ -112,4 +110,4 @@ export class ProcessManager {
   get commType(): CommunicationType | undefined {
     return this.communicationType
   }
-} 
+}

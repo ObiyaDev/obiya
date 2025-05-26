@@ -44,43 +44,45 @@ const getConfig = <T>(file: string): Promise<T | null> => {
       command,
       args: [...args, runner, file],
       logger: globalLogger,
-      context: 'Config'
+      context: 'Config',
     })
 
-    processManager.spawn().then(() => {
-      processManager.onMessage<T>((message) => {
-        config = message
-        globalLogger.debug(`[Config] Read config via ${processManager.commType?.toUpperCase()}`, {
-          config,
-          communicationType: processManager.commType
+    processManager
+      .spawn()
+      .then(() => {
+        processManager.onMessage<T>((message) => {
+          config = message
+          globalLogger.debug(`[Config] Read config via ${processManager.commType?.toUpperCase()}`, {
+            config,
+            communicationType: processManager.commType,
+          })
+          resolve(config)
+          processManager.kill()
         })
-        resolve(config)
-        processManager.kill()
-      })
 
-      processManager.onProcessClose((code) => {
-        processManager.close()
-        if (config) {
-          return
-        } else if (code !== 0) {
-          reject(`Process exited with code ${code}`)
-        } else if (!config) {
-          reject(`No config found for file ${file}`)
-        }
-      })
+        processManager.onProcessClose((code) => {
+          processManager.close()
+          if (config) {
+            return
+          } else if (code !== 0) {
+            reject(`Process exited with code ${code}`)
+          } else if (!config) {
+            reject(`No config found for file ${file}`)
+          }
+        })
 
-      processManager.onProcessError((error) => {
-        processManager.close()
-        if (error.code === 'ENOENT') {
-          reject(`Executable ${command} not found`)
-        } else {
-          reject(error)
-        }
+        processManager.onProcessError((error) => {
+          processManager.close()
+          if (error.code === 'ENOENT') {
+            reject(`Executable ${command} not found`)
+          } else {
+            reject(error)
+          }
+        })
       })
-
-    }).catch((error) => {
-      reject(`Failed to spawn process: ${error}`)
-    })
+      .catch((error) => {
+        reject(`Failed to spawn process: ${error}`)
+      })
   })
 }
 
@@ -91,4 +93,3 @@ export const getStepConfig = (file: string): Promise<StepConfig | null> => {
 export const getStreamConfig = (file: string): Promise<StateStreamConfig | null> => {
   return getConfig<StateStreamConfig>(file)
 }
-

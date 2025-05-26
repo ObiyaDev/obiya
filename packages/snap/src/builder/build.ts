@@ -42,7 +42,7 @@ const includeStaticFiles = (step: Step, builder: Builder, archive: archiver.Arch
     if (!staticFiles || !Array.isArray(staticFiles) || staticFiles.length === 0) {
       return
     }
-    
+
     staticFiles.forEach((file) => {
       const matches = globSync(file, { absolute: true, cwd: path.dirname(step.filePath) })
       matches.forEach((filePath: string) => {

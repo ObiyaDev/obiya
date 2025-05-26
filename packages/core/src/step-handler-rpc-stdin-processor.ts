@@ -10,7 +10,9 @@ export type RpcMessage = {
 }
 
 export class RpcStdinProcessor implements RpcProcessorInterface {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handlers: Record<string, RpcHandler<any, any>> = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private messageCallback?: MessageCallback<any>
   private isClosed = false
   private rl?: readline.Interface
@@ -35,11 +37,11 @@ export class RpcStdinProcessor implements RpcProcessorInterface {
 
   private response(id: string | undefined, result: unknown, error: unknown) {
     if (id && !this.isClosed && this.child.stdin && !this.child.killed) {
-      const responseMessage = { 
-        type: 'rpc_response', 
-        id, 
+      const responseMessage = {
+        type: 'rpc_response',
+        id,
         result: error ? undefined : result,
-        error: error ? String(error) : undefined
+        error: error ? String(error) : undefined,
       }
       const messageStr = JSON.stringify(responseMessage)
       this.child.stdin.write(messageStr + '\n')
@@ -50,13 +52,13 @@ export class RpcStdinProcessor implements RpcProcessorInterface {
     if (this.child.stdout) {
       this.rl = readline.createInterface({
         input: this.child.stdout,
-        crlfDelay: Infinity
+        crlfDelay: Infinity,
       })
 
       this.rl.on('line', (line) => {
         try {
           const msg = JSON.parse(line.trim())
-          
+
           // Call generic message callback if registered
           if (this.messageCallback) {
             this.messageCallback(msg)
@@ -94,4 +96,4 @@ export class RpcStdinProcessor implements RpcProcessorInterface {
       this.rl.close()
     }
   }
-} 
+}
