@@ -1,70 +1,40 @@
 import { test, expect } from '@playwright/test'
-import { TestHelpers } from './utils/test-helpers'
+import { MotiaApplicationPage, WorkbenchPage, ApiHelpers } from './page-objects'
 
 test.describe('CLI Generated Project - Smoke Tests', () => {
-  let helpers: TestHelpers
+  let motiaApp: MotiaApplicationPage
+  let workbench: WorkbenchPage
+  let api: ApiHelpers
 
   test.beforeEach(async ({ page }) => {
-    helpers = new TestHelpers(page)
+    motiaApp = new MotiaApplicationPage(page)
+    workbench = new WorkbenchPage(page)
+    api = new ApiHelpers(page)
   })
 
   test('CLI generated project loads successfully', async ({ page }) => {
-    await page.goto('/')
-    await helpers.waitForMotiaApplication()
+    await motiaApp.goto('/')
     
-    await expect(page).toHaveTitle(/.*/)
-    await expect(page.locator('body')).toBeVisible()
-    
-    const pageContent = await page.content()
-    expect(pageContent.length).toBeGreaterThan(100)
+    await motiaApp.hasTitle()
+    await motiaApp.isApplicationLoaded()
   })
 
   test('CLI generated project has basic API endpoints', async ({ page }) => {
-    const commonEndpoints = [
-      '/default',
-    ]
+    const commonEndpoints = ['/default']
     
-    let workingEndpoint = false
-    
-    for (const endpoint of commonEndpoints) {
-      try {
-        const response = await helpers.createApiRequest(endpoint)
-        if ([200, 404].includes(response.status())) {
-          workingEndpoint = true
-          break
-        }
-      } catch (error) {
-      }
-    }
-    
-    expect(workingEndpoint).toBeTruthy()
+    const hasWorkingEndpoint = await api.verifyCommonEndpoints(commonEndpoints)
+    expect(hasWorkingEndpoint).toBeTruthy()
   })
 
   test('CLI generated project workbench is functional', async ({ page }) => {
-    await page.goto('/')
-    await helpers.waitForMotiaApplication()
+    await motiaApp.goto('/')
     
-    const workbenchIndicators = [
-      page.locator('text=/workbench/i'),
-      page.locator('text=/motia/i'),
-      page.locator('nav'),
-      page.locator('main')
-    ]
-    
-    let hasWorkbenchFeatures = false
-    for (const indicator of workbenchIndicators) {
-      if (await indicator.first().isVisible({ timeout: 3000 })) {
-        hasWorkbenchFeatures = true
-        break
-      }
-    }
-    
+    const hasWorkbenchFeatures = await workbench.hasWorkbenchFeatures()
     expect(hasWorkbenchFeatures).toBeTruthy()
   })
 
   test('CLI generated project handles navigation', async ({ page }) => {
-    await page.goto('/')
-    await helpers.waitForMotiaApplication()
+    await motiaApp.goto('/')
     
     const links = page.locator('a[href]')
     const linkCount = await links.count()
@@ -75,9 +45,9 @@ test.describe('CLI Generated Project - Smoke Tests', () => {
       
       if (href && !href.startsWith('http') && href !== '/') {
         await firstLink.click()
-        await page.waitForLoadState('networkidle')
+        await motiaApp.waitForApplication()
         
-        await expect(page.locator('body')).toBeVisible()
+        await expect(motiaApp.body).toBeVisible()
       }
     }
     
@@ -85,33 +55,17 @@ test.describe('CLI Generated Project - Smoke Tests', () => {
   })
 
   test('CLI generated project has no critical console errors', async ({ page }) => {
-    const errors = []
+    const errors = await motiaApp.collectConsoleErrors()
     
-    page.on('pageerror', error => {
-      if (!error.message.includes('favicon.ico')) {
-        errors.push(error.message)
-      }
-    })
-    
-    page.on('console', msg => {
-      if (msg.type() === 'error' && !msg.text().includes('favicon.ico')) {
-        errors.push(msg.text())
-      }
-    })
-    
-    await page.goto('/')
-    await helpers.waitForMotiaApplication()
+    await motiaApp.goto('/')
     
     expect(errors.length).toBeLessThanOrEqual(2)
   })
 
   test('CLI generated project responds to basic HTTP requests', async ({ page }) => {
-    const response = await helpers.createApiRequest('/')
+    const response = await api.get('/')
     
-    expect(response.status()).toBeLessThan(500)
-    
-    const headers = response.headers()
-    expect(headers).toBeDefined()
-    expect(Object.keys(headers).length).toBeGreaterThan(0)
+    await api.verifyResponseNotError(response)
+    await api.verifyResponseHeaders(response)
   })
 }) 
