@@ -6,8 +6,7 @@ import { BaseMessage } from './stream.types'
 
 export class Stream {
   private ws: WebSocket
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private listeners: Record<string, Set<StreamSubscription<any, any>>> = {}
+  private listeners: { [channelId: string]: Set<StreamSubscription> } = {}
 
   constructor(private address: string) {
     this.ws = this.createSocket()
@@ -85,6 +84,7 @@ export class Stream {
     this.listeners[room]?.forEach((listener) => listener.listener(message as unknown))
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private subscribe(subscription: StreamSubscription<any, any>): void {
     const room = this.roomName(subscription.sub)
 
