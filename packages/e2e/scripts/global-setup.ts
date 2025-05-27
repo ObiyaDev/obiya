@@ -15,7 +15,8 @@ async function globalSetup() {
     }
 
     console.log('📦 Creating test project with Motia CLI...')
-    execSync(`npx motia@next create -n ${TEST_PROJECT_NAME}`, {
+    const motiaVersion = process.env.MOTIA_VERSION || 'next'
+    execSync(`npx motia@${motiaVersion} create -n ${TEST_PROJECT_NAME}`, {
       stdio: 'pipe',
       cwd: process.cwd()
     })

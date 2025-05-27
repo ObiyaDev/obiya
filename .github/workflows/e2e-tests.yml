@@ -20,38 +20,70 @@ on:
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     outputs:
       result: ${{ steps.test_result.outputs.result }}
+    env:
+      CI: true
+      NODE_ENV: test
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install pre-release packages
+      - name: Install pre-release packages globally
         run: |
-          cd packages/e2e
-          npm install @motiadev/core@${{ github.event.inputs.version }} --tag pre-release
-          npm install @motiadev/test@${{ github.event.inputs.version }} --tag pre-release
-          npm install motia@${{ github.event.inputs.version }} --tag pre-release
+          npm install -g @motiadev/core@${{ github.event.inputs.version }} --tag pre-release
+          npm install -g @motiadev/test@${{ github.event.inputs.version }} --tag pre-release
+          npm install -g motia@${{ github.event.inputs.version }} --tag pre-release
 
-      - name: Run E2E tests
-        id: run_tests
+      - name: Install E2E dependencies and browsers
         run: |
           cd packages/e2e
           pnpm install
-          pnpm test:e2e
+          pnpm exec playwright install
+          pnpm exec playwright install-deps
+
+      - name: Clean previous test artifacts
+        run: |
+          cd packages/e2e
+          pnpm clean
+          
+      - name: Kill any existing processes
+        run: |
+          pkill -f "motia" || true
+          pkill -f "npm run dev" || true
+          pkill -f "node.*3000" || true
+
+      - name: Verify Motia CLI installation
+        run: |
+          which motia || echo "Motia CLI not found in PATH"
+          npx motia --version || echo "Motia CLI version check failed"
+          node --version
+          npm --version
+          
+      - name: Run E2E tests
+        id: run_tests
+        env:
+          MOTIA_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          cd packages/e2e
+          echo "Starting E2E tests with Motia version: $MOTIA_VERSION"
+          pnpm test:e2e --reporter=line,html,github
         continue-on-error: true
 
       - name: Set test result
         id: test_result
         run: |
-          if [ ${{ steps.run_tests.outcome }} == "success" ]; then
+          echo "Test outcome: ${{ steps.run_tests.outcome }}"
+          if [ "${{ steps.run_tests.outcome }}" == "success" ]; then
             echo "result=success" >> $GITHUB_OUTPUT
-            echo "E2E tests passed successfully"
+            echo "✅ E2E tests passed successfully"
           else
             echo "result=failure" >> $GITHUB_OUTPUT
-            echo "E2E tests failed"
+            echo "❌ E2E tests failed"
+            echo "Check the test results and logs for details"
             exit 1
           fi
 
