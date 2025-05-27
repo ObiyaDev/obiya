@@ -20,11 +20,12 @@ export const Flow = () => {
 
   useEffect(fetchFlow, [fetchFlow])
 
-  if (!flow || flow.error) return (
-    <div className="w-full h-screen bg-background flex flex-col items-center justify-center">
-      <p>{flow?.error}</p>
-    </div>
-  )
+  if (!flow || flow.error)
+    return (
+      <div className="w-full h-screen bg-background flex flex-col items-center justify-center">
+        <p>{flow?.error}</p>
+      </div>
+    )
 
   return (
     <div className="w-full h-screen bg-background">
