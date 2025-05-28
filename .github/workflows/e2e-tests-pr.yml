@@ -44,7 +44,10 @@ jobs:
       - name: Start playground
         run: |
           cd playground
-          pnpm run dev
+          pnpm run dev &
+          echo "Waiting for playground server to start..."
+          timeout 60 bash -c 'until curl -f http://localhost:3000 >/dev/null 2>&1; do sleep 2; done'
+          echo "Playground server is ready!"
 
       - name: Run PR E2E tests
         id: run_tests
@@ -78,4 +81,10 @@ jobs:
           path: |
             packages/e2e/playwright-report/
             packages/e2e/test-results/
-          retention-days: 7 
+          retention-days: 7
+
+      - name: Stop playground server
+        if: always()
+        run: |
+          pkill -f "pnpm run dev" || true
+          pkill -f "node.*3000" || true 
