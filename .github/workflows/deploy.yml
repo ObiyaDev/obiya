@@ -61,6 +61,9 @@ jobs:
   trigger-e2e:
     needs: pre-release
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     steps:
       - name: Generate token
         id: generate_token
