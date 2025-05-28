@@ -44,7 +44,7 @@ jobs:
 
       - name: Start playground
         run: |
-          cd packages/playground
+          cd ../packages/playground
           pnpm run dev
 
       - name: Run PR E2E tests
