@@ -10,7 +10,7 @@ export class MotiaApplicationPage {
   constructor(page: Page) {
     this.page = page
     this.body = page.locator('body')
-    this.title = page.locator('h1, [data-testid="motia-title"]')
+    this.title = page.getByTestId('motia-title')
     this.navigation = page.locator('nav')
     this.mainContent = page.locator('main')
   }

@@ -1,19 +1,30 @@
 import { execSync } from 'child_process'
 import { existsSync, rmSync } from 'fs'
+import { platform } from 'os'
 
 async function globalTeardown() {
   console.log('🧹 Cleaning up E2E test environment...')
 
   try {
     console.log('🛑 Stopping test project server...')
-    try {
-      execSync('pkill -f "npm run dev"', { stdio: 'pipe' })
-    } catch (error) {
-    }
+    
+    const isWindows = platform() === 'win32'
+    
+    if (isWindows) {
+      try {
+        execSync('taskkill /F /IM node.exe /T', { stdio: 'pipe' })
+      } catch (error) {
+      }
+    } else {
+      try {
+        execSync('pkill -f "npm run dev"', { stdio: 'pipe' })
+      } catch (error) {
+      }
 
-    try {
-      execSync('pkill -f "motia"', { stdio: 'pipe' })
-    } catch (error) {
+      try {
+        execSync('pkill -f "motia"', { stdio: 'pipe' })
+      } catch (error) {
+      }
     }
 
     await new Promise(resolve => setTimeout(resolve, 2000))

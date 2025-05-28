@@ -14,65 +14,67 @@ export class LogsPage extends MotiaApplicationPage {
     this.logsTable = page.locator('table')
     this.logTableRows = page.locator('tbody tr')
     this.logEntries = this.logTableRows
-    this.clearLogsButton = page.locator('button:has-text("Clear logs")')
+    this.clearLogsButton = page.getByRole('button', { name: 'Clear logs' })
   }
 
-  async waitForLogEntry(logText: string, timeout: number = 15000) {
-    const logElement = this.page.locator(`[aria-label="${logText}"]`).first()
+  async waitForLogContainingText(logText: string, timeout: number = 15000) {
+    const logElement = this.page.getByTestId(/msg-\d+/).filter({ hasText: logText }).first()
     await logElement.waitFor({ timeout })
     return logElement
   }
 
-  async waitForMultipleLogEntries(logTexts: string[], timeout: number = 15000) {
+  async waitForLogFromStep(stepName: string, timeout: number = 15000) {
+    const logElement = this.page.getByTestId(/step-\d+/).filter({ hasText: stepName }).first()
+    await logElement.waitFor({ timeout })
+    return logElement
+  }
+
+  async waitForLogAtIndex(index: number, timeout: number = 15000) {
+    const logElement = this.page.getByTestId(`msg-${index}`)
+    await logElement.waitFor({ timeout })
+    return logElement
+  }
+
+  async waitForLogsContainingTexts(logTexts: string[], timeout: number = 15000) {
     const results = []
     for (const logText of logTexts) {
-      const logElement = await this.waitForLogEntry(logText, timeout)
+      const logElement = await this.waitForLogContainingText(logText, timeout)
       results.push(logElement)
     }
     return results
   }
 
-  async verifyLogEntry(logText: string) {
-    const logElement = await this.waitForLogEntry(logText)
+  async verifyLogContainingText(logText: string) {
+    const logElement = await this.waitForLogContainingText(logText)
     await expect(logElement).toBeVisible()
   }
 
-  async verifyMultipleLogEntries(logTexts: string[]) {
+  async verifyLogsContainingTexts(logTexts: string[]) {
     for (const logText of logTexts) {
-      await this.verifyLogEntry(logText)
+      await this.verifyLogContainingText(logText)
     }
   }
 
-  async clickLogEntry(index: number) {
+  async clickLogAtIndex(index: number) {
     await this.logTableRows.nth(index).click()
   }
 
-  async getLogByIndex(index: number) {
+  async getLogDetailsAtIndex(index: number) {
     const row = this.logTableRows.nth(index)
-    const time = await row.locator('[data-testid^="time-"]').textContent()
-    const traceId = await row.locator('[data-testid^="trace-"]').textContent()
-    const step = await row.locator('[data-testid^="step-"]').textContent()
-    const message = await row.locator('[data-testid^="msg-"]').textContent()
+    const time = await row.getByTestId(`time-${index}`).textContent()
+    const traceId = await row.getByTestId(`trace-${index}`).textContent()
+    const step = await row.getByTestId(`step-${index}`).textContent()
+    const message = await row.getByTestId(`msg-${index}`).textContent()
     
     return { time, traceId, step, message }
   }
 
-  async getLogByTestId(index: number) {
-    const row = this.logTableRows.nth(index)
-    const time = await row.locator(`[data-testid="time-${index}"]`).textContent()
-    const traceId = await row.locator(`[data-testid="trace-${index}"]`).textContent()
-    const step = await row.locator(`[data-testid="step-${index}"]`).textContent()
-    const message = await row.locator(`[data-testid="msg-${index}"]`).textContent()
-    
-    return { time, traceId, step, message }
-  }
-
-  async getAllLogs() {
+  async getAllLogDetails() {
     const count = await this.getLogCount()
     const logs = []
     
     for (let i = 0; i < count; i++) {
-      const log = await this.getLogByTestId(i)
+      const log = await this.getLogDetailsAtIndex(i)
       logs.push(log)
     }
     
@@ -89,12 +91,12 @@ export class LogsPage extends MotiaApplicationPage {
     return await this.logTableRows.count()
   }
 
-  async getLogTexts() {
+  async getAllLogMessages() {
     const count = await this.getLogCount()
     const logTexts = []
     
     for (let i = 0; i < count; i++) {
-      const messageCell = this.logTableRows.nth(i).locator(`[data-testid="msg-${i}"]`)
+      const messageCell = this.logTableRows.nth(i).getByTestId(`msg-${i}`)
       const logText = await messageCell.textContent()
       if (logText) {
         logTexts.push(logText)
@@ -104,14 +106,14 @@ export class LogsPage extends MotiaApplicationPage {
     return logTexts
   }
 
-  async verifyFlowExecutionLogs(expectedLogs: string[]) {
-    for (const logEntry of expectedLogs) {
-      await this.waitForLogEntry(logEntry)
+  async verifyStepsExecuted(expectedSteps: string[]) {
+    for (const stepName of expectedSteps) {
+      await this.waitForLogFromStep(stepName)
     }
   }
 
   async waitForStepExecution(stepName: string, timeout: number = 30000) {
-    await this.waitForLogEntry(stepName, timeout)
+    await this.waitForLogFromStep(stepName, timeout)
   }
 
   async waitForFlowCompletion(flowName: string, timeout: number = 60000) {

@@ -29,7 +29,7 @@ test.describe('End-to-End Integration Tests', () => {
       
       await workbench.navigateToLogs()
       
-      await logsPage.verifyLogEntry('ApiTrigger')
+      await logsPage.waitForLogFromStep('ApiTrigger')
     })
 
     await test.step('Verify complete flow execution', async () => {
@@ -39,7 +39,7 @@ test.describe('End-to-End Integration Tests', () => {
         'CheckStateChange'
       ]
       
-      await logsPage.verifyMultipleLogEntries(expectedLogs)
+      await logsPage.verifyStepsExecuted(expectedLogs)
     })
   })
 
@@ -64,16 +64,16 @@ test.describe('End-to-End Integration Tests', () => {
     await test.step('Monitor execution in real-time', async () => {
       await workbench.navigateToLogs()
       
-      await logsPage.waitForLogEntry('ApiTrigger', 30000)
+      await logsPage.waitForLogFromStep('ApiTrigger', 30000)
       
-      const logs = await logsPage.getLogTexts()
+      const logs = await logsPage.getAllLogMessages()
       expect(logs.length).toBeGreaterThan(0)
     })
 
     await test.step('Verify flow completion', async () => {
       await logsPage.waitForFlowCompletion('default', 60000)
       
-      const finalLogs = await logsPage.getLogTexts()
+      const finalLogs = await logsPage.getAllLogMessages()
       console.log(`Flow completed with ${finalLogs.length} log entries`)
     })
   })
@@ -96,7 +96,7 @@ test.describe('End-to-End Integration Tests', () => {
         const response = await api.get(endpoint)
         
         // We expect either success or proper error codes, not network failures
-        expect([200, 404, 405, 500]).toContain(response.status())
+        expect([200, 404, 405, 500]).toContain(response.status)
       }
     })
 

@@ -78,8 +78,8 @@ test.describe('CLI Generated Project - Workbench Navigation', () => {
   test('should handle CLI project structure validation', async ({ page }) => {
     await workbench.goto('/')
     
-    const healthEndpoint = workbench.page.locator('text=/health|status/')
-    const stepsSection = workbench.page.locator('text=/steps|workflows/')
+    const healthEndpoint = workbench.page.getByText(/health|status/)
+    const stepsSection = workbench.page.getByText(/steps|workflows/)
     
     const hasHealthInfo = await healthEndpoint.first().isVisible({ timeout: 3000 })
     const hasStepsInfo = await stepsSection.first().isVisible({ timeout: 3000 })
@@ -94,16 +94,16 @@ test.describe('CLI Generated Project - Workbench Navigation', () => {
       await workbench.executeFlowAndNavigateToLogs('default')
     })
 
-    const expectedLogs = ['ApiTrigger', 'SetStateChange', 'CheckStateChange']
+    const stepsExecuted = ['ApiTrigger', 'SetStateChange', 'CheckStateChange']
     
     await test.step('Verify all expected logs are present', async () => {
-      await logsPage.verifyMultipleLogEntries(expectedLogs)
+      await logsPage.verifyStepsExecuted(stepsExecuted)
       console.log('✓ Found all expected logs')
     })
 
     await test.step('Verify state validation message is present', async () => {
       const stateValidationMessage = 'The provided value matches the state value 🏁'
-      await logsPage.verifyLogEntry(stateValidationMessage)
+      await logsPage.verifyLogContainingText(stateValidationMessage)
       console.log(`✓ Found state validation message: ${stateValidationMessage}`)
     })
     

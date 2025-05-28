@@ -14,15 +14,15 @@ export class WorkbenchPage extends MotiaApplicationPage {
 
   constructor(page: Page) {
     super(page)
-    this.sidebarContainer = page.locator('[data-testid="sidebar"], nav, .sidebar')
-    this.motiaTitle = page.locator('[data-testid="motia-title"]')
-    this.flowsTitle = page.locator('[data-testid="flows-title"]')
-    this.logsLink = page.locator('[data-testid="logs-link"]')
-    this.statesLink = page.locator('[data-testid="states-link"]')
-    this.endpointsLink = page.locator('[data-testid="endpoints-link"]')
-    this.flowLinks = page.locator('[data-testid^="flow-"][data-testid$="-link"]')
-    this.startFlowButton = page.locator('[data-testid="start-flow-button"]')
-    this.flowContainer = page.locator('[data-testid="flow-container"], .flow-container')
+    this.sidebarContainer = page.getByTestId('sidebar')
+    this.motiaTitle = page.getByTestId('motia-title')
+    this.flowsTitle = page.getByTestId('flows-title')
+    this.logsLink = page.getByTestId('logs-link')
+    this.statesLink = page.getByTestId('states-link')
+    this.endpointsLink = page.getByTestId('endpoints-link')
+    this.flowLinks = page.getByTestId(/flow-.*-link/)
+    this.startFlowButton = page.getByTestId('start-flow-button')
+    this.flowContainer = page.getByTestId('flow-container')
   }
 
   async gotoWorkbench() {
@@ -57,7 +57,7 @@ export class WorkbenchPage extends MotiaApplicationPage {
   }
 
   async navigateToFlow(flowName: string) {
-    const flowLink = this.page.locator(`[data-testid="flow-${flowName}-link"]`)
+    const flowLink = this.page.getByTestId(`flow-${flowName}-link`)
     await flowLink.click()
     await this.waitForApplication()
   }
@@ -81,7 +81,7 @@ export class WorkbenchPage extends MotiaApplicationPage {
 
   async verifyStepsInWorkbench(stepNames: string[]) {
     for (const stepName of stepNames) {
-      const stepElement = this.page.locator(`text=${stepName}`).first()
+      const stepElement = this.page.getByText(stepName).first()
       const isVisible = await stepElement.isVisible({ timeout: 5000 })
       if (isVisible) {
         await expect(stepElement).toBeVisible()
@@ -91,8 +91,8 @@ export class WorkbenchPage extends MotiaApplicationPage {
 
   async hasWorkbenchFeatures() {
     const workbenchIndicators = [
-      this.page.locator('text=/workbench/i'),
-      this.page.locator('text=/motia/i'),
+      this.page.getByText(/workbench/i),
+      this.page.getByText(/motia/i),
       this.navigation,
       this.mainContent
     ]

@@ -5,12 +5,12 @@
   "description": "End-to-end tests for Motia using Playwright",
   "type": "module",
   "scripts": {
-    "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
     "test:e2e": "playwright test",
+    "test:e2e:trace": "playwright test --trace=on",
     "test:cli": "playwright test tests/cli",
     "test:workbench": "playwright test tests/workbench",
     "test:smoke": "playwright test tests/smoke.spec.ts",

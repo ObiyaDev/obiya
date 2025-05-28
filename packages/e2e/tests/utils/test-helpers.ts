@@ -83,19 +83,19 @@ export class TestHelpers {
 
   async executeFlowAndWaitForCompletion(flowName: string = 'default') {
     // Navigate to flow
-    const flowLink = this.page.locator(`[data-testid="flow-${flowName}-link"]`)
+    const flowLink = this.page.getByTestId(`flow-${flowName}-link`)
     await flowLink.click()
     await this.page.waitForLoadState('networkidle')
     
     // Click start flow button
-    const startButton = this.page.locator('[data-testid="start-flow-button"]')
+    const startButton = this.page.getByTestId('start-flow-button')
     await startButton.click()
     
     // Wait for execution
     await this.page.waitForTimeout(3000)
     
     // Navigate to logs
-    const logsLink = this.page.locator('[data-testid="logs-link"]')
+    const logsLink = this.page.getByTestId('logs-link')
     await logsLink.click()
     await this.page.waitForLoadState('networkidle')
   }

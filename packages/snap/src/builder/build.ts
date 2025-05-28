@@ -10,7 +10,7 @@ import { collectFlows } from '../generate-locked-data'
 import { BuildPrinter } from './build-printer'
 import { spawn } from 'child_process'
 import archiver from 'archiver'
-import { activatePythonVenv } from '@/utils/activatePythonEnv'
+import { activatePythonVenv } from '../utils/activatePythonEnv'
 
 type StepType = 'node' | 'python'
 

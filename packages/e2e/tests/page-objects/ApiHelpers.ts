@@ -1,57 +1,58 @@
-import { expect, type Page, type APIResponse } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 
 export class ApiHelpers {
   constructor(private page: Page) {}
 
-  async createRequest(endpoint: string, method: string = 'GET', body?: any): Promise<APIResponse> {
-    const options: any = {
+  async createRequest(endpoint: string, method: string = 'GET', body?: any): Promise<Response> {
+    const options: RequestInit = {
       method,
       headers: {
         'Content-Type': 'application/json',
       },
     }
 
+    const fullUrl = `${process.env.MOTIA_API_URL}${endpoint}`
+
     if (body && method !== 'GET') {
       options.body = JSON.stringify(body)
     }
 
-    return await this.page.request.fetch(endpoint, options)
+    return await fetch(fullUrl, options)
   }
 
-  async get(endpoint: string): Promise<APIResponse> {
+  async get(endpoint: string): Promise<Response> {
     return await this.createRequest(endpoint, 'GET')
   }
 
-  async post(endpoint: string, body?: any): Promise<APIResponse> {
+  async post(endpoint: string, body?: any): Promise<Response> {
     return await this.createRequest(endpoint, 'POST', body)
   }
 
-  async put(endpoint: string, body?: any): Promise<APIResponse> {
+  async put(endpoint: string, body?: any): Promise<Response> {
     return await this.createRequest(endpoint, 'PUT', body)
   }
 
-  async delete(endpoint: string): Promise<APIResponse> {
+  async delete(endpoint: string): Promise<Response> {
     return await this.createRequest(endpoint, 'DELETE')
   }
 
-  async verifyResponseStatus(response: APIResponse, expectedStatus: number) {
-    expect(response.status()).toBe(expectedStatus)
+  async verifyResponseStatus(response: Response, expectedStatus: number) {
+    expect(response.status).toBe(expectedStatus)
   }
 
-  async verifyResponseNotError(response: APIResponse) {
-    expect(response.status()).toBeLessThan(500)
+  async verifyResponseNotError(response: Response) {
+    expect(response.status).toBeLessThan(500)
   }
 
-  async verifyResponseHeaders(response: APIResponse) {
-    const headers = response.headers()
+  async verifyResponseHeaders(response: Response) {
+    const headers = response.headers
     expect(headers).toBeDefined()
-    expect(Object.keys(headers).length).toBeGreaterThan(0)
   }
 
   async verifyEndpointExists(endpoint: string): Promise<boolean> {
     try {
       const response = await this.get(endpoint)
-      return [200, 404].includes(response.status())
+      return [200, 404].includes(response.status)
     } catch (error) {
       return false
     }
@@ -67,7 +68,7 @@ export class ApiHelpers {
     return false
   }
 
-  async getResponseJson(response: APIResponse) {
+  async getResponseJson(response: Response) {
     try {
       return await response.json()
     } catch (error) {
@@ -75,11 +76,11 @@ export class ApiHelpers {
     }
   }
 
-  async getResponseText(response: APIResponse) {
+  async getResponseText(response: Response) {
     return await response.text()
   }
 
-  async verifyJsonResponse(response: APIResponse, expectedProperties: string[]) {
+  async verifyJsonResponse(response: Response, expectedProperties: string[]) {
     const json = await this.getResponseJson(response)
     expect(json).toBeDefined()
     
@@ -88,13 +89,13 @@ export class ApiHelpers {
     }
   }
 
-  async testHealthEndpoint(): Promise<APIResponse> {
+    async testHealthEndpoint(): Promise<Response> {
     const healthEndpoints = ['/health', '/status', '/api/health']
     
     for (const endpoint of healthEndpoints) {
       try {
         const response = await this.get(endpoint)
-        if (response.status() === 200) {
+        if (response.status === 200) {
           return response
         }
       } catch (error) {

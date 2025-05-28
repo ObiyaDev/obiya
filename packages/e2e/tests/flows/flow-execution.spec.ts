@@ -26,13 +26,13 @@ test.describe('Flow Execution Tests', () => {
     await test.step('Verify flow execution in logs', async () => {
       await workbench.navigateToLogs()
       
-      const expectedLogs = [
+      const expectedSteps = [
         'ApiTrigger',
         'SetStateChange', 
         'CheckStateChange'
       ]
       
-      await logsPage.verifyFlowExecutionLogs(expectedLogs)
+      await logsPage.verifyStepsExecuted(expectedSteps)
     })
 
     await test.step('Verify flow completion', async () => {
@@ -41,6 +41,11 @@ test.describe('Flow Execution Tests', () => {
   })
 
   test('should handle flow execution with API trigger', async ({ page }) => {
+    await test.step('Navigate to workbench', async () => {
+      await workbench.gotoWorkbench()
+      await workbench.verifyWorkbenchInterface()
+    })
+
     await test.step('Trigger flow via API', async () => {
       const response = await api.post('/default', {
         message: 'Test API trigger'
@@ -50,10 +55,10 @@ test.describe('Flow Execution Tests', () => {
     })
 
     await test.step('Verify API triggered flow in workbench', async () => {
-      await workbench.gotoWorkbench()
       await workbench.navigateToLogs()
       
-      await logsPage.waitForLogEntry('Test API trigger')
+     ;(await logsPage.waitForLogFromStep('ApiTrigger')).click()
+      await page.getByLabel('Test API trigger')
     })
   })
 
@@ -65,7 +70,7 @@ test.describe('Flow Execution Tests', () => {
         await workbench.gotoWorkbench()
         
         const flowExists = await workbench.flowLinks
-          .locator(`[data-testid="flow-${flowName}-link"]`)
+          .getByTestId(`flow-${flowName}-link`)
           .isVisible({ timeout: 3000 })
         
         if (flowExists) {
@@ -88,17 +93,17 @@ test.describe('Flow Execution Tests', () => {
       const stateMessages = [
         'SetStateChange',
         'CheckStateChange',
-        'The provided value matches the state value 🏁'
       ]
       
-      await logsPage.verifyMultipleLogEntries(stateMessages)
+      await logsPage.verifyStepsExecuted(stateMessages)
+      await logsPage.verifyLogContainingText('The provided value matches the state value 🏁')
     })
 
     await test.step('Verify state persistence', async () => {
       await workbench.navigateToStates()
       
       // Verify state values are displayed (implementation depends on UI)
-      const stateContainer = workbench.page.locator('[data-testid="states-container"]')
+      const stateContainer = workbench.page.getByTestId('states-container')
       if (await stateContainer.isVisible({ timeout: 3000 })) {
         await expect(stateContainer).toBeVisible()
       }
@@ -113,7 +118,7 @@ test.describe('Flow Execution Tests', () => {
       })
       
       // We expect this to handle gracefully, not necessarily succeed
-      expect([200, 400, 404, 500]).toContain(response.status())
+      expect([200, 400, 404, 500]).toContain(response.status)
     })
 
     await test.step('Verify error handling in logs', async () => {
@@ -122,7 +127,7 @@ test.describe('Flow Execution Tests', () => {
       
       // Look for error handling messages
       const errorPatterns = ['error', 'failed', 'exception']
-      const logs = await logsPage.getLogTexts()
+      const logs = await logsPage.getAllLogMessages()
       
       const hasErrorHandling = logs.some(log => 
         errorPatterns.some(pattern => 

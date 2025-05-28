@@ -1,5 +1,11 @@
 name: E2E Tests
 
+# This workflow runs end-to-end tests across multiple operating systems:
+# - Ubuntu (Linux)
+# - Windows 
+# - macOS
+# Ensures cross-platform compatibility of the Motia framework
+
 permissions:
   contents: read
   actions: write
@@ -19,10 +25,12 @@ on:
 
 jobs:
   e2e-tests:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
-    outputs:
-      result: ${{ steps.test_result.outputs.result }}
     env:
       CI: true
       NODE_ENV: test
@@ -34,8 +42,6 @@ jobs:
 
       - name: Install pre-release packages globally
         run: |
-          npm install -g @motiadev/core@${{ github.event.inputs.version }} --tag pre-release
-          npm install -g @motiadev/test@${{ github.event.inputs.version }} --tag pre-release
           npm install -g motia@${{ github.event.inputs.version }} --tag pre-release
 
       - name: Install E2E dependencies and browsers
@@ -50,23 +56,42 @@ jobs:
           cd packages/e2e
           pnpm clean
           
-      - name: Kill any existing processes
+      - name: Kill any existing processes (Unix)
+        if: runner.os != 'Windows'
         run: |
           pkill -f "motia" || true
           pkill -f "npm run dev" || true
           pkill -f "node.*3000" || true
 
-      - name: Verify Motia CLI installation
+      - name: Kill any existing processes (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          taskkill /F /IM node.exe /T 2>nul || echo "No node processes to kill"
+          Get-Process | Where-Object {$_.ProcessName -like "*motia*"} | Stop-Process -Force -ErrorAction SilentlyContinue
+        shell: powershell
+
+      - name: Verify Motia CLI installation (Unix)
+        if: runner.os != 'Windows'
         run: |
           which motia || echo "Motia CLI not found in PATH"
           npx motia --version || echo "Motia CLI version check failed"
           node --version
           npm --version
+
+      - name: Verify Motia CLI installation (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          where motia 2>nul || echo "Motia CLI not found in PATH"
+          npx motia --version || echo "Motia CLI version check failed"
+          node --version
+          npm --version
+        shell: cmd
           
       - name: Run E2E tests
         id: run_tests
         env:
           MOTIA_VERSION: ${{ github.event.inputs.version }}
+          MOTIA_API_URL: http://localhost:3000
         run: |
           cd packages/e2e
           echo "Starting E2E tests with Motia version: $MOTIA_VERSION"
@@ -91,14 +116,39 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2e-test-results-${{ github.event.inputs.version }}
+          name: e2e-test-results-${{ github.event.inputs.version }}-${{ matrix.os }}
           path: |
             packages/e2e/playwright-report/
             packages/e2e/test-results/
           retention-days: 30
 
-  trigger-next-step:
+  check-results:
     needs: e2e-tests
+    runs-on: ubuntu-latest
+    if: always()
+    outputs:
+      result: ${{ steps.final_result.outputs.result }}
+    steps:
+      - name: Check all matrix results
+        id: final_result
+        run: |
+          echo "Checking results from all OS matrix jobs..."
+          
+          # Get the results from the matrix jobs
+          RESULTS='${{ toJSON(needs.e2e-tests.result) }}'
+          echo "Matrix job result: $RESULTS"
+          
+          if [ "$RESULTS" == "success" ]; then
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "✅ All E2E tests passed successfully across all platforms"
+          else
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "❌ E2E tests failed on one or more platforms"
+            exit 1
+          fi
+
+  trigger-next-step:
+    needs: check-results
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -110,7 +160,7 @@ jobs:
           private-key: ${{ secrets.MOTIA_CI_APP_PRIVATE_KEY }}
 
       - name: Trigger finalize release (on success)
-        if: needs.e2e-tests.outputs.result == 'success'
+        if: needs.check-results.outputs.result == 'success'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.generate_token.outputs.token }}
@@ -128,7 +178,7 @@ jobs:
             });
 
       - name: Trigger rollback (on failure)
-        if: needs.e2e-tests.outputs.result == 'failure'
+        if: needs.check-results.outputs.result == 'failure'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.generate_token.outputs.token }}
