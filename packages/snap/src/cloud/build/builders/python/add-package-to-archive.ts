@@ -4,40 +4,43 @@ import path from 'path'
 import colors from 'colors'
 
 const shouldIgnore = (filePath: string): boolean => {
-  const ignorePatterns = [
-    /\.pyc$/,
-    /\.egg$/,
-    /__pycache__/,
-    /\.dist-info$/
-  ]
-  return ignorePatterns.some(pattern => pattern.test(filePath))
+  const ignorePatterns = [/\.pyc$/, /\.egg$/, /__pycache__/, /\.dist-info$/]
+  return ignorePatterns.some((pattern) => pattern.test(filePath))
 }
 
 const addDirectoryToArchive = async (archive: archiver.Archiver, baseDir: string, dirPath: string): Promise<void> => {
   const files = fs.readdirSync(dirPath)
-  
-  await Promise.all(files.map(async (file) => {
-    const fullPath = path.join(dirPath, file)
-    const relativePath = path.relative(baseDir, fullPath)
-    
-    if (shouldIgnore(relativePath)) {
-      return
-    }
 
-    const stat = fs.statSync(fullPath)
-    
-    if (stat.isDirectory()) {
-      await addDirectoryToArchive(archive, baseDir, fullPath)
-    } else {
-      archive.append(fs.createReadStream(fullPath), { name: relativePath })
-    }
-  }).filter(Boolean))
+  await Promise.all(
+    files
+      .map(async (file) => {
+        const fullPath = path.join(dirPath, file)
+        const relativePath = path.relative(baseDir, fullPath)
+
+        if (shouldIgnore(relativePath)) {
+          return
+        }
+
+        const stat = fs.statSync(fullPath)
+
+        if (stat.isDirectory()) {
+          await addDirectoryToArchive(archive, baseDir, fullPath)
+        } else {
+          archive.append(fs.createReadStream(fullPath), { name: relativePath })
+        }
+      })
+      .filter(Boolean),
+  )
 }
 
-export const addPackageToArchive = async (archive: archiver.Archiver, sitePackagesDir: string, packageName: string): Promise<void> => {
+export const addPackageToArchive = async (
+  archive: archiver.Archiver,
+  sitePackagesDir: string,
+  packageName: string,
+): Promise<void> => {
   // First try the package name as is
   let fullPath = path.join(sitePackagesDir, packageName)
-  
+
   // If not found, try with .py extension
   if (!fs.existsSync(fullPath)) {
     const pyPath = path.join(sitePackagesDir, `${packageName}.py`)

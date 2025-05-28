@@ -9,7 +9,7 @@ export const validateStepsConfig = (builder: Builder) => {
   const endpoints = new Map<string, string>()
   const stepNames = new Set<string>()
 
-  for (const [_, step] of Object.entries(builder.stepsConfig)) {
+  for (const step of Object.values(builder.stepsConfig)) {
     if (stepNames.has(step.config.name)) {
       errors.push({
         message: [`Duplicate step names: ${colors.red(step.config.name)}`].join('\n'),
@@ -20,7 +20,7 @@ export const validateStepsConfig = (builder: Builder) => {
     }
   }
 
-  for (const [_, step] of Object.entries(builder.stepsConfig)) {
+  for (const step of Object.values(builder.stepsConfig)) {
     // TODO: check bundle size
 
     if (step.config.type === 'cron') {

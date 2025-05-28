@@ -38,9 +38,7 @@ export const pollEnvironmentStatus: CliHandler = async (options, context): Promi
 
       return
     } else if (environment.status === 'failed') {
-      context.log('create-environment-failed', (message) =>
-        message.tag('failed').append('Environment creation failed'),
-      )
+      context.log('create-environment-failed', (message) => message.tag('failed').append('Environment creation failed'))
       throw context.exitWithError('Environment creation failed', new Error(environment.status))
     }
 

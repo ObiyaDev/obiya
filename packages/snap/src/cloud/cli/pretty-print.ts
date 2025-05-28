@@ -59,9 +59,7 @@ const prettyPrintObject = (obj: Record<string, any>, depth = 0, parentIsLast = f
     .join('\n')
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const prettyPrint = (json: LogRecord, excludeDetails = false): void => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { step, version, traceId } = json.meta
   const { level, msg, timestamp: time, values } = json
   const levelTag = levelTags[level]
