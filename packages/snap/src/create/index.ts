@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
 import { templates } from './templates'
-import figlet from 'figlet'
 import { executeCommand } from '../utils/executeCommand'
 import { pythonInstall } from '../install'
 import { generateTypes } from '../generate-types'
@@ -45,8 +44,7 @@ const installRequiredDependencies = async (packageManager: string, rootDir: stri
     pnpm: 'pnpm add',
   }[packageManager]
 
-  //TODO: remove @next once the release is out
-  const dependencies = ['motia@next', 'zod@^3.24.4'].join(' ')
+  const dependencies = ['motia', 'zod@^3.24.4'].join(' ')
   const devDependencies = ['ts-node@^10.9.2', 'typescript@^5.7.3', '@types/react@^18.3.18'].join(' ')
 
   try {
@@ -94,13 +92,15 @@ type Args = {
 export const create = async ({ projectName, template, cursorEnabled }: Args): Promise<void> => {
   console.log(
     '\n\n' +
-      figlet.textSync('MOTIA', {
-        font: 'Larry 3D',
-        horizontalLayout: 'default',
-        verticalLayout: 'default',
-        width: 80,
-        whitespaceBreak: true,
-      }) +
+      `
+         _____   ______  ______   ______     
+ /'\\_/\`\\/\\  __\`\\/\\__  _\\/\\__  _\\ /\\  _  \\    
+/\\      \\ \\ \\/\\ \\/_/\\ \\/\\/_/\\ \\/ \\ \\ \\L\\ \\   
+\\ \\ \\__\\ \\ \\ \\ \\ \\ \\ \\ \\   \\ \\ \\  \\ \\  __ \\  
+ \\ \\ \\_/\\ \\ \\ \\_\\ \\ \\ \\ \\   \\_\\ \\__\\ \\ \\/\\ \\ 
+  \\ \\_\\\\ \\_\\ \\_____\\ \\ \\_\\  /\\_____\\\\ \\_\\ \\_\\
+   \\/_/ \\/_/\\/_____/  \\/_/  \\/_____/ \\/_/\\/_/
+      ` +
       '\n\n',
   )
 
