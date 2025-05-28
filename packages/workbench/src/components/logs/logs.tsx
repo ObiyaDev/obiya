@@ -38,7 +38,11 @@ export const Logs = () => {
               >
                 {log.traceId}
               </TableCell>
-              <TableCell data-testid={`step-${index}`} aria-label={log.step} className="whitespace-nowrap text-md font-mono">
+              <TableCell
+                data-testid={`step-${index}`}
+                aria-label={log.step}
+                className="whitespace-nowrap text-md font-mono"
+              >
                 {log.step}
               </TableCell>
               <TableCell
