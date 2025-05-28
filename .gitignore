@@ -23,7 +23,6 @@ bs.sh
 # Builds and outputs
 **/dist
 dist/
-build/
 out/
 .next/
 .nuxt/
@@ -90,3 +89,5 @@ agents/**/components/
 **/tsconfig.app.tsbuildinfo
 .motia/
 .mermaid/
+
+playground/motia-workbench.json
