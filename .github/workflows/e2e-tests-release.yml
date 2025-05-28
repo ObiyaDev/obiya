@@ -44,6 +44,22 @@ jobs:
         run: |
           npm install -g motia@${{ github.event.inputs.version }} --tag pre-release
 
+      - name: Get Playwright version
+        id: playwright-version
+        run: |
+          cd packages/e2e
+          echo "version=$(pnpm list @playwright/test --depth=0 --json | jq -r '.[] | .dependencies["@playwright/test"].version')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/AppData/Local/ms-playwright
+            ~/Library/Caches/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
       - name: Install E2E dependencies and browsers
         run: |
           cd packages/e2e
@@ -93,7 +109,6 @@ jobs:
           MOTIA_VERSION: ${{ github.event.inputs.version }}
           MOTIA_API_URL: http://localhost:3000
         run: |
-          cd packages/e2e
           echo "Starting Release E2E tests with Motia version: $MOTIA_VERSION"
           pnpm test:release --reporter=line,html,github
         continue-on-error: true

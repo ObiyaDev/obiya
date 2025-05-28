@@ -24,6 +24,19 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Get Playwright version
+        id: playwright-version
+        run: |
+          cd packages/e2e
+          echo "version=$(pnpm list @playwright/test --depth=0 --json | jq -r '.[] | .dependencies["@playwright/test"].version')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
       - name: Install E2E dependencies and browsers
         run: |
           cd packages/e2e
@@ -35,12 +48,6 @@ jobs:
           cd packages/e2e
           pnpm clean
           
-      - name: Kill any existing processes
-        run: |
-          pkill -f "motia" || true
-          pkill -f "npm run dev" || true
-          pkill -f "node.*3000" || true
-
       - name: Start playground
         run: |
           cd playground
