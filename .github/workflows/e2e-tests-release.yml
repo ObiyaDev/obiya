@@ -1,4 +1,4 @@
-name: E2E Tests
+name: E2E Tests (Release)
 
 # This workflow runs end-to-end tests across multiple operating systems:
 # - Ubuntu (Linux)
@@ -87,15 +87,15 @@ jobs:
           npm --version
         shell: cmd
           
-      - name: Run E2E tests
+      - name: Run Release E2E tests
         id: run_tests
         env:
           MOTIA_VERSION: ${{ github.event.inputs.version }}
           MOTIA_API_URL: http://localhost:3000
         run: |
           cd packages/e2e
-          echo "Starting E2E tests with Motia version: $MOTIA_VERSION"
-          pnpm test:e2e --reporter=line,html,github
+          echo "Starting Release E2E tests with Motia version: $MOTIA_VERSION"
+          pnpm test:release --reporter=line,html,github
         continue-on-error: true
 
       - name: Set test result

@@ -1,53 +1,55 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test'
 
-export default defineConfig({
-  testDir: './tests',
-  timeout: 60 * 1000,
-  expect: {
-    timeout: 10000,
-  },
-  globalSetup: './scripts/global-setup.ts',
-  globalTeardown: './scripts/global-teardown.ts',
-  fullyParallel: false,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 4,
-  reporter: process.env.CI 
-    ? [
-        ['html'], 
-        ['list'], 
-        ['github'],
-        ['junit', { outputFile: 'test-results/junit.xml' }]
-      ]
-    : [
-        ['html'], 
-        ['list'], 
-        ['dot']
-      ],
-  use: {
-    baseURL: 'http://localhost:3000',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    actionTimeout: 15000,
-    navigationTimeout: 30000,
-    testIdAttribute: 'data-testid'
-  },
-
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+export const config: PlaywrightTestConfig = {
+    testDir: './tests',
+    timeout: 60 * 1000,
+    expect: {
+      timeout: 10000,
     },
-    ...(process.env.CI ? [] : [
+    fullyParallel: false,
+    forbidOnly: !!process.env.CI,
+    retries: process.env.CI ? 2 : 0,
+    workers: process.env.CI ? 1 : 4,
+    reporter: process.env.CI 
+      ? [
+          ['html'], 
+          ['list'], 
+          ['github'],
+          ['junit', { outputFile: 'test-results/junit.xml' }]
+        ]
+      : [
+          ['html'], 
+          ['list'], 
+          ['dot']
+        ],
+    use: {
+      baseURL: 'http://localhost:3000',
+      trace: 'on-first-retry',
+      screenshot: 'only-on-failure',
+      video: 'retain-on-failure',
+      actionTimeout: 15000,
+      navigationTimeout: 30000,
+      testIdAttribute: 'data-testid'
+    },
+
+    testIgnore: '**/release/**',
+  
+    projects: [
       {
-        name: 'firefox',
-        use: { ...devices['Desktop Firefox'] },
+        name: 'chromium',
+        use: { ...devices['Desktop Chrome'] },
       },
-      {
-        name: 'webkit',
-        use: { ...devices['Desktop Safari'] },
-      },
-    ]),
-  ],
-}) 
+      ...(process.env.CI ? [] : [
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+      ]),
+    ],
+  }
+
+export default defineConfig(config); 
