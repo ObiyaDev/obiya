@@ -7,7 +7,7 @@ export const config: EventConfig = {
   description: 'check state change',
 
   /**
-   * This step subscribes to the event `check-state-change` to 
+   * This step subscribes to the event `check-state-change` to
    * be processed asynchronously.
    */
   subscribes: ['check-state-change'],
@@ -21,7 +21,7 @@ export const config: EventConfig = {
    * Definition of the expected input
    */
   input: z.object({ key: z.string(), expected: z.string() }),
-  
+
   /**
    * The flows this step belongs to, will be available in Workbench
    */
@@ -29,7 +29,7 @@ export const config: EventConfig = {
 }
 
 export const handler: Handlers['CheckStateChange'] = async (input, { traceId, logger, state }) => {
-  /** 
+  /**
    * Avoid usage of console.log, use logger instead
    */
   logger.info('Step 03 – Executing CheckStateChange step', { input })
@@ -40,10 +40,10 @@ export const handler: Handlers['CheckStateChange'] = async (input, { traceId, lo
   const value = await state.get<string>(traceId, input.key)
 
   if (value !== input.expected) {
-    logger.error('The provided value for the state key does not match', { 
+    logger.error('The provided value for the state key does not match', {
       key: input.key,
       value,
-      expected: input.expected
+      expected: input.expected,
     })
   } else {
     logger.info('The provided value matches the state value 🏁', {

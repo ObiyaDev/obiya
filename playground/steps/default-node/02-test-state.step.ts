@@ -7,7 +7,7 @@ export const config: EventConfig = {
   description: 'set a state change for evaluation',
 
   /**
-   * This step subscribes to the event `test-state` to 
+   * This step subscribes to the event `test-state` to
    * be processed asynchronously.
    */
   subscribes: ['test-state'],
@@ -29,7 +29,7 @@ export const config: EventConfig = {
 }
 
 export const handler: Handlers['SetStateChange'] = async (input, { traceId, logger, state, emit }) => {
-  /** 
+  /**
    * Avoid usage of console.log, use logger instead
    */
   logger.info('Step 02 – Pushing message content to state', { input })
@@ -48,6 +48,6 @@ export const handler: Handlers['SetStateChange'] = async (input, { traceId, logg
    */
   await emit({
     topic: 'check-state-change',
-    data: { key: 'test', expected: message }
+    data: { key: 'test', expected: message },
   })
 }

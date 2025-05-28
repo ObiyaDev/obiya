@@ -1,7 +1,7 @@
 import { NoopConfig } from 'motia'
 
 /**
- * NOOP Steps don't hold any logic in code, it's a 
+ * NOOP Steps don't hold any logic in code, it's a
  * way to connect nodes in workflow to make it comprehensive
  * like representing a man in the loop or a manual operation that can
  * happen between one step and another.

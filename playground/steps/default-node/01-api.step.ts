@@ -14,19 +14,19 @@ export const config: ApiRouteConfig = {
    */
   emits: ['test-state'],
 
-  /** 
+  /**
    * Expected request body for type checking and documentation
    */
   bodySchema: z.object({ message: z.string() }),
 
-  /** 
+  /**
    * Expected response body for type checking and documentation
    */
   responseSchema: {
-    200: z.object({ message: z.string() })
+    200: z.object({ message: z.string() }),
   },
 
-  /** 
+  /**
    * We're using virtual subscribes to virtually connect noop step
    * to this step.
    *
@@ -41,7 +41,7 @@ export const config: ApiRouteConfig = {
 }
 
 export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit }) => {
-  /** 
+  /**
    * Avoid usage of console.log, use logger instead
    */
   logger.info('Step 01 – Processing API Step', { body: req.body })
