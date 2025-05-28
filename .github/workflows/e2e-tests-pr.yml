@@ -27,7 +27,6 @@ jobs:
       - name: Install E2E dependencies and browsers
         run: |
           cd packages/e2e
-          pnpm install
           pnpm exec playwright install chromium
           pnpm exec playwright install-deps
 
@@ -44,7 +43,7 @@ jobs:
 
       - name: Start playground
         run: |
-          cd ../packages/playground
+          cd playground
           pnpm run dev
 
       - name: Run PR E2E tests
