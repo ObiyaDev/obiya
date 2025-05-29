@@ -39,7 +39,7 @@ jobs:
       - name: Generate version with build number
         id: version
         run: |
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          CURRENT_VERSION=$(node -p "require('./packages/snap/package.json').version")
           echo "Current version: ${CURRENT_VERSION}"
           
           NEW_VERSION=$(node -e "
