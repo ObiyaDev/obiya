@@ -64,7 +64,7 @@ export default function ManifestoPage() {
               <span className={textBlue}> steps </span> from people to backend systems. While the vast majority 
               <span className={`${gradientText} !bg-linear-to-r`}>(80% to 90%)</span> of steps
               in an organization,
-              <span className={`${gradientText} !bg-linear-to-r`}>are still handled by humans,</span> AI's
+              <span className={`${gradientText} !bg-linear-to-r`}> are still handled by humans,</span> AI's
               reasoning and data manipulation capabilities are changing this. This creates a{' '}
               <span className={`${gradientText} !bg-linear-to-r from-[#5AC5FF] !to-20%`}>
                 {' '}
@@ -137,8 +137,8 @@ export default function ManifestoPage() {
 
           <section className={normalText}>
             <p>
-            <span className={gradientTextBlue}>Motia is designed to fill that missing piece</span>, providing a <span className="font-medium text-white">software</span>{' '}
-              <span className={gradientTextBlue}> engineering framework specifically for this problem. </span> We looked
+            <span className={gradientTextBlue}>Motia is designed to fill that missing piece</span>, providing a 
+              <span className={gradientTextBlue}> software engineering framework specifically for this problem. </span> We looked
               at the lessons learned from past paradigm shifts, particularly React's success with its simple core
               primitive.
             </p>
@@ -209,8 +209,7 @@ export default function ManifestoPage() {
             <p>
               <span className={gradientTextBlue}>Motia is built as a highly scalable enterprise solution</span>, solving
               key problems that other systems miss. It tackles the hidden, but important, challenges that appear
-              when growing large codebases and system issues that are hard to truly understand without seeing them
-              yourself.
+              when growing large codebases and system issues that are hard to truly understand without seeing them yourself.
             </p>
           </section>
 
