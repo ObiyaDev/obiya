@@ -14,7 +14,7 @@ export class FileStateAdapter implements StateAdapter {
     this.filePath = path.join(config.filePath, 'motia.state.json')
   }
 
-  async init() {
+  init() {
     const dir = this.filePath.replace('motia.state.json', '')
     try {
       fs.realpathSync(dir)
@@ -30,7 +30,7 @@ export class FileStateAdapter implements StateAdapter {
   }
 
   async getGroup<T>(groupId: string): Promise<T[]> {
-    const data = await this._readFile()
+    const data = this._readFile()
 
     return Object.entries(data)
       .filter(([key]) => key.startsWith(groupId))
@@ -38,38 +38,38 @@ export class FileStateAdapter implements StateAdapter {
   }
 
   async get<T>(traceId: string, key: string): Promise<T | null> {
-    const data = await this._readFile()
+    const data = this._readFile()
     const fullKey = this._makeKey(traceId, key)
 
     return data[fullKey] ? (JSON.parse(data[fullKey]) as T) : null
   }
 
   async set<T>(traceId: string, key: string, value: T) {
-    const data = await this._readFile()
+    const data = this._readFile()
     const fullKey = this._makeKey(traceId, key)
 
     data[fullKey] = JSON.stringify(value)
 
-    await this._writeFile(data)
+    this._writeFile(data)
 
     return value
   }
 
   async delete<T>(traceId: string, key: string): Promise<T | null> {
-    const data = await this._readFile()
+    const data = this._readFile()
     const fullKey = this._makeKey(traceId, key)
     const value = await this.get<T>(traceId, key)
 
     if (value) {
       delete data[fullKey]
-      await this._writeFile(data)
+      this._writeFile(data)
     }
 
     return value
   }
 
   async clear(traceId: string) {
-    const data = await this._readFile()
+    const data = this._readFile()
     const pattern = this._makeKey(traceId, '')
 
     for (const key in data) {
@@ -78,18 +78,18 @@ export class FileStateAdapter implements StateAdapter {
       }
     }
 
-    await this._writeFile(data)
+    this._writeFile(data)
   }
 
   async keys(traceId: string) {
-    const data = await this._readFile()
+    const data = this._readFile()
     return Object.keys(data)
       .filter((key) => key.startsWith(this._makeKey(traceId, '')))
       .map((key) => key.replace(this._makeKey(traceId, ''), ''))
   }
 
   async traceIds() {
-    const data = await this._readFile()
+    const data = this._readFile()
     const traceIds = new Set<string>()
 
     Object.keys(data).forEach((key) => traceIds.add(key.split(':')[0]))
@@ -105,21 +105,21 @@ export class FileStateAdapter implements StateAdapter {
     return `${traceId}:${key}`
   }
 
-  private async _readFile(): Promise<Record<string, string>> {
+  private _readFile(): Record<string, string> {
     try {
       const content = fs.readFileSync(this.filePath, 'utf-8')
       return JSON.parse(content)
     } catch (error) {
-      await this.init()
+      this.init()
       return {}
     }
   }
 
-  private async _writeFile(data: unknown) {
+  private _writeFile(data: unknown) {
     try {
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8')
     } catch (error) {
-      await this.init()
+      this.init()
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8')
     }
   }
