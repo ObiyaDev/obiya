@@ -51,6 +51,7 @@ export class WorkbenchPage extends MotiaApplicationPage {
   }
 
   async getFlowCount() {
+    await this.flowsLink.click()
     return await this.flowLinks.count()
   }
 
@@ -62,6 +63,7 @@ export class WorkbenchPage extends MotiaApplicationPage {
   }
 
   async navigateToFlowByIndex(index: number) {
+    await this.flowsLink.hover()
     const flowLink = this.flowLinks.nth(index)
     await flowLink.click()
     await this.waitForApplication()
@@ -93,9 +95,9 @@ export class WorkbenchPage extends MotiaApplicationPage {
       this.page.getByText(/workbench/i),
       this.page.getByText(/motia/i),
       this.navigation,
-      this.mainContent
+      this.mainContent,
     ]
-    
+
     for (const indicator of workbenchIndicators) {
       const isVisible = await indicator.first().isVisible({ timeout: 3000 })
       if (isVisible) {
@@ -107,7 +109,7 @@ export class WorkbenchPage extends MotiaApplicationPage {
 
   async verifyProjectInformation() {
     const projectIndicators = [this.logsLink, this.statesLink, this.endpointsLink]
-    
+
     for (const indicator of projectIndicators) {
       const isVisible = await indicator.first().isVisible({ timeout: 5000 })
       if (isVisible) {
@@ -116,4 +118,4 @@ export class WorkbenchPage extends MotiaApplicationPage {
     }
     return false
   }
-} 
+}
