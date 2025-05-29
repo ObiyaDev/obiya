@@ -26,7 +26,7 @@ export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
       )}
     >
       <div className="flex items-center justify-end gap-2 absolute top-3 right-1">
-        <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
+        <Button variant="ghost" size="icon" data-testid="sidebar-toggle" onClick={() => setIsCollapsed(!isCollapsed)}>
           {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
         </Button>
       </div>

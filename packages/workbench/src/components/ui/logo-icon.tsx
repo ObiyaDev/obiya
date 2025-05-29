@@ -7,6 +7,7 @@ interface LogoIconProps {
 export const LogoIcon = memo(({ className }: LogoIconProps) => {
   return (
     <svg
+      data-testid="logo-icon"
       className={className}
       width="295"
       height="127"
