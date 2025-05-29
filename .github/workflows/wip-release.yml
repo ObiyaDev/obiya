@@ -43,7 +43,7 @@ jobs:
           echo "Current version: ${CURRENT_VERSION}"
           
           NEW_VERSION=$(node -e "
-            const version = require('./package.json').version;
+            const version = require('./packages/snap/package.json').version;
             const parts = version.split('-');
             const baseVersion = parts[0];
             
