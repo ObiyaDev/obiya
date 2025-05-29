@@ -54,7 +54,9 @@ export const Header: React.FC = () => {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={'cursor-pointer'} data-testid="header-flows-link">Flows</NavigationMenuTrigger>
+            <NavigationMenuTrigger className={'cursor-pointer'} data-testid="header-flows-link">
+              Flows
+            </NavigationMenuTrigger>
             <NavigationMenuContent>
               <NavigationMenuSub>
                 <NavigationMenuList className="flex flex-col min-w-[200px]">
