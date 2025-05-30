@@ -29,7 +29,7 @@ export const identifyUser = () => {
     identifyObj.postInsert('project_id', getProjectIdentifier(process.cwd()))
     identifyObj.postInsert('motia_version', process.env.npm_package_dependencies_motia || 'unknown')
     identifyObj.postInsert('project_version', process.env.npm_package_version || 'unknown')
-    const t = identify(identifyObj, {
+    identify(identifyObj, {
       user_id: getUserIdentifier(),
     })
   } catch (error) {
