@@ -7,7 +7,7 @@ import {
   createStepHandlers,
   getProjectIdentifier,
   globalLogger,
-  trackEvent
+  trackEvent,
 } from '@motiadev/core'
 import path from 'path'
 import { generateLockedData, getStepFiles } from './generate-locked-data'
