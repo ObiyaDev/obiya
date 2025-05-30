@@ -53,6 +53,7 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@amplitude/analytics-types": "^2.9.2",
     "@types/archiver": "^6.0.3",
     "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.14",

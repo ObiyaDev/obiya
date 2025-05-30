@@ -50,7 +50,7 @@ jobs:
             if (parts.length > 1 && parts[1].startsWith('beta.')) {
               const betaNumber = parseInt(parts[1].split('.')[1]);
               const newBetaNumber = betaNumber + 1;
-              const timestamp = new Date().getTime().toString().slice(-4);
+              const timestamp = new Date().getTime().toString().slice(-6);
               console.log(\`\${baseVersion}-beta.\${newBetaNumber}-\${timestamp}\`);
             } else if (parts.length > 1 && parts[1].startsWith('alpha.')) {
               const alphaNumber = parseInt(parts[1].split('.')[1]);

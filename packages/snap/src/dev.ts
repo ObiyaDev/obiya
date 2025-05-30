@@ -5,7 +5,9 @@ import {
   createServer,
   createStateAdapter,
   createStepHandlers,
+  getProjectIdentifier,
   globalLogger,
+  trackEvent
 } from '@motiadev/core'
 import path from 'path'
 import { generateLockedData, getStepFiles } from './generate-locked-data'
@@ -13,7 +15,8 @@ import { FileStateAdapter } from '@motiadev/core/dist/src/state/adapters/default
 import { createDevWatchers } from './dev-watchers'
 import { stateEndpoints } from './dev/state-endpoints'
 import { activatePythonVenv } from './utils/activate-python-env'
-import { getProjectIdentifier, trackEvent, identifyUser, getUserIdentifier } from './utils/analytics'
+import { identifyUser } from './utils/analytics'
+import { flush } from '@amplitude/analytics-node'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -28,14 +31,14 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
 
   const stepFiles = getStepFiles(baseDir)
   const hasPythonFiles = stepFiles.some((file) => file.endsWith('.py'))
-  
+
   trackEvent('dev_server_started', {
     port,
     verbose_mode: isVerbose,
     mermaid_enabled: enableMermaid,
     has_python_files: hasPythonFiles,
     total_step_files: stepFiles.length,
-    project_name: getProjectIdentifier(baseDir)
+    project_name: getProjectIdentifier(baseDir),
   })
 
   if (hasPythonFiles) {
@@ -68,25 +71,16 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
   watcher.init()
 
   stateEndpoints(motiaServer, state)
-  
-  // Add analytics endpoint for frontend
-  motiaServer.app.get('/motia/analytics/user', (req, res) => {
-    res.json({
-      userId: getUserIdentifier(),
-      projectId: getProjectIdentifier(baseDir),
-      motiaVersion: process.env.npm_package_dependencies_motia || 'unknown',
-      
-    })
-  })
 
   motiaServer.server.listen(port)
   console.log('🚀 Server ready and listening on port', port)
   console.log(`🔗 Open http://localhost:${port}/ to open workbench 🛠️`)
-  
+
   trackEvent('dev_server_ready', {
     port,
     flows_count: lockedData.flows?.length || 0,
-    steps_count: lockedData.activeSteps?.length || 0
+    steps_count: lockedData.activeSteps?.length || 0,
+    environment: process.env.NODE_ENV || 'development',
   })
 
   const { applyMiddleware } = process.env.__MOTIA_DEV_MODE__
@@ -102,6 +96,7 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
     trackEvent('dev_server_shutdown', { reason: 'SIGTERM' })
     motiaServer.server.close()
     await watcher.stop()
+    await flush().promise
     process.exit(0)
   })
 
@@ -110,6 +105,7 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
     trackEvent('dev_server_shutdown', { reason: 'SIGINT' })
     motiaServer.server.close()
     await watcher.stop()
+    await flush().promise
     process.exit(0)
   })
 }

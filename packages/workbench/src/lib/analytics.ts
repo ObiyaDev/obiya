@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 interface AmplitudeInstance {
+  setOptOut(optOut: boolean): void
   track(eventName: string, eventProperties?: Record<string, any>): void
   identify(userId: string, userProperties?: Record<string, any>): void
   setUserId(userId: string): void
@@ -17,6 +18,7 @@ interface AnalyticsUserData {
   userId: string
   projectId: string
   motiaVersion: string
+  analyticsEnabled: boolean
 }
 
 class WorkbenchAnalytics {
@@ -45,7 +47,8 @@ class WorkbenchAnalytics {
         this.userIdCache = data.userId
         this.projectIdCache = data.projectId
         this.motiaVersion = data.motiaVersion
-        
+
+        window.amplitude.setOptOut(!data.analyticsEnabled);
         // Set the user ID in Amplitude to match backend
         if (window.amplitude && data.userId) {
           window.amplitude.setUserId(data.userId)
