@@ -2,7 +2,7 @@ import { LockedData } from '@motiadev/core'
 import fs from 'fs'
 import path from 'path'
 import { collectFlows } from '../../generate-locked-data'
-import { Builder } from './builder'
+import { Builder, StepsConfigFile } from './builder'
 import { NodeBuilder } from './builders/node'
 import { PythonBuilder } from './builders/python'
 import { CliContext } from '../config-utils'
@@ -11,7 +11,6 @@ export const build = async (context: CliContext): Promise<Builder> => {
   const projectDir = process.cwd()
   const builder = new Builder(projectDir)
   const stepsConfigPath = path.join(projectDir, 'dist', 'motia.steps.json')
-  const streamsConfigPath = path.join(projectDir, 'dist', 'motia.streams.json')
 
   // Register language-specific builders
   builder.registerBuilder('node', new NodeBuilder(builder))
@@ -49,8 +48,8 @@ export const build = async (context: CliContext): Promise<Builder> => {
     }
   }
 
-  fs.writeFileSync(stepsConfigPath, JSON.stringify(builder.stepsConfig, null, 2))
-  fs.writeFileSync(streamsConfigPath, JSON.stringify(builder.streamsConfig, null, 2))
+  const stepsFile: StepsConfigFile = { steps: builder.stepsConfig, streams: builder.streamsConfig }
+  fs.writeFileSync(stepsConfigPath, JSON.stringify(stepsFile, null, 2))
 
   return builder
 }

@@ -19,6 +19,7 @@ export type BuildStreamConfig = {
 
 export type BuildStepsConfig = Record<string, BuildStepConfig>
 export type BuildStreamsConfig = Record<string, BuildStreamConfig>
+export type StepsConfigFile = { steps: BuildStepsConfig; streams: BuildStreamsConfig }
 
 export interface StepBuilder {
   build(step: Step): Promise<void>
