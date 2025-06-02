@@ -26,7 +26,6 @@ export class VersionManager {
 
     const distDir = path.join(projectDir, 'dist')
     const stepsConfigPath = path.join(distDir, 'motia.steps.json')
-    const streamsConfigPath = path.join(distDir, 'motia.streams.json')
     const environmentsClient = context.apiFactory.getEnvironmentsClient()
     const environment = await environmentsClient
       .getEnvironment(projectId, environmentId)
