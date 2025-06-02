@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import { StepsConfigFile } from '../build/builder'
 import { CliContext } from '../config-utils'
 import { VersionResult } from './types'
 import { parseEnvFile } from './utils/env-parser'
-import { BuildStepsConfig, BuildStreamsConfig } from '../build/builder'
 
 export class VersionManager {
   async deploy(
@@ -42,8 +42,7 @@ export class VersionManager {
       context.exit(1)
     }
 
-    const stepsConfig: BuildStepsConfig = JSON.parse(fs.readFileSync(stepsConfigPath, 'utf-8'))
-    const streamsConfig: BuildStreamsConfig = JSON.parse(fs.readFileSync(streamsConfigPath, 'utf-8'))
+    const configFile: StepsConfigFile = JSON.parse(fs.readFileSync(stepsConfigPath, 'utf-8'))
 
     context.log('deploy', (message) =>
       message
@@ -57,8 +56,8 @@ export class VersionManager {
     const versionId = await context.versionService.uploadConfiguration(
       environment.id,
       versionName,
-      stepsConfig,
-      streamsConfig,
+      configFile.steps,
+      configFile.streams,
     )
     const uploadResult = await context.versionService.uploadZipFile(versionId, distDir)
 
@@ -93,8 +92,8 @@ export class VersionManager {
       versionId: result.success ? versionId : undefined,
       stepType: result.stepType,
       stepName: result.stepName,
-      stepPath: stepsConfig[result.bundlePath]?.entrypointPath,
-      flowName: stepsConfig[result.bundlePath]?.config?.flows?.[0] || 'unknown',
+      stepPath: configFile.steps[result.bundlePath]?.entrypointPath,
+      flowName: configFile.steps[result.bundlePath]?.config?.flows?.[0] || 'unknown',
       environment: environment.name,
       version: versionName,
       error: result.error,
