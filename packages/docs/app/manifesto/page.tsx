@@ -76,7 +76,7 @@ export default function ManifestoPage() {
             <p>
               If history has taught us one thing, it is that
               <span className={gradientText}> complexity begets abstraction. </span> We saw it with the
-              transition from chaotic PHP spaghetti code era to structured MVC frameworks like Rails, and again with the rise of front-end
+              transition from chaotic PHP spaghetti code era to structured MVC frameworks, and again with the rise of front-end
               frameworks like React, which were purpose-built to handle increasing complexity of user interfaces.
             </p>
           </section>
