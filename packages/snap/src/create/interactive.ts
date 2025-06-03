@@ -14,7 +14,7 @@ const choices: Record<string, string> = {
   python: 'Base (Python)',
 }
 
-export const createInteractive = async (): Promise<void> => {
+export const createInteractive = async ({ skipConfirmation }: { skipConfirmation?: boolean }): Promise<void> => {
   console.log('\n🚀 ', colors.bold('Welcome to Motia Project Creator!\n'))
 
   const answers: InteractiveAnswers = await inquirer.prompt([
@@ -62,20 +62,21 @@ export const createInteractive = async (): Promise<void> => {
   console.log(`Location: ${colors.cyan(answers.useCurrentFolder ? 'Current folder' : answers.folderName || 'current')}`)
   console.log(`Cursor Rules: ${colors.cyan(answers.addCursorRules ? 'Yes' : 'No')}`)
 
-  const confirm = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'proceed',
-      message: 'Proceed with project creation?',
-      default: true,
-    },
-  ])
+  if (!skipConfirmation) {
+    const confirm = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'proceed',
+        message: 'Proceed with project creation?',
+        default: true,
+      },
+    ])
 
-  if (!confirm.proceed) {
-    console.log('\n❌ Project creation cancelled.')
-    return
+    if (!confirm.proceed) {
+      console.log('\n❌ Project creation cancelled.')
+      return
+    }
   }
-
   console.log('\n🛠️ Creating your Motia project...\n')
 
   await create({

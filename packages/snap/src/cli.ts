@@ -35,6 +35,7 @@ program
   .option('-t, --template <template name>', 'The motia template name to use for your project')
   .option('-c, --cursor', 'Copy .cursor folder from template')
   .option('-i, --interactive', 'Use interactive prompts to create project')
+  .option('-y, --skip-confirmation', 'Skip confirmation prompt')
   .action(async (arg) => {
     if (arg.name || arg.template || arg.cursor) {
       const { create } = require('./create')
@@ -45,7 +46,9 @@ program
       })
     } else {
       const { createInteractive } = require('./create/interactive')
-      await createInteractive()
+      await createInteractive({
+        skipConfirmation: arg.skipConfirmation,
+      })
     }
     process.exit(0)
   })
