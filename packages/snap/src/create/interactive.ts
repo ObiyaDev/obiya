@@ -14,7 +14,11 @@ const choices: Record<string, string> = {
   python: 'Base (Python)',
 }
 
-export const createInteractive = async ({ skipConfirmation }: { skipConfirmation?: boolean }): Promise<void> => {
+interface CreateInteractiveArgs {
+  skipConfirmation?: boolean
+}
+
+export const createInteractive = async ({ skipConfirmation }: CreateInteractiveArgs): Promise<void> => {
   console.log('\n🚀 ', colors.bold('Welcome to Motia Project Creator!\n'))
 
   const answers: InteractiveAnswers = await inquirer.prompt([
