@@ -1,114 +1,119 @@
 ---
-description: What are Motia Event Steps and examples using Typescript, Python and Ruby
+description: 
 globs: 
 alwaysApply: false
 ---
+
 # Event Steps Guide
 
-Event Steps handle asynchronous message processing and event emission.
-This is where you should put most of the business logic.
-Calling generative LLMs, accessing files, python or ruby logic.
+Event Steps handle asynchronous events and are the core building blocks of Motia workflows.
 
-## Examples
+## Basic Event Step Pattern
 ```typescript
 import { EventConfig, Handlers } from 'motia'
 import { z } from 'zod'
- 
+
 export const config: EventConfig = {
   type: 'event',
-  name: 'stepA',
-  description: 'Hello from Step A',
-  subscribes: ['pms.start'],
-  emits: ['pms.stepA.done'],
-  input: z.object({ message: z.string() }),
-  flows: ['parallel-merge'],
+  name: 'process-user',
+  description: 'Process new user registration',
+  subscribes: ['user.created'],
+  emits: ['user.processed'],
+  input: z.object({
+    name: z.string(),
+    email: z.string(),
+    id: z.string()
+  }),
+  flows: ['user-management']
 }
- 
-export const handler: Handlers['stepA'] = async (input, { emit, logger }) => {
-  logger.info('Processing message:', input.message)
- 
-  await emit({
-    topic: 'pms.stepA.done',
-    data: {
-      result: `Processed: ${input.message}`
-    }
-  })
-}
-```
 
-```python
-config = {
-    "type": "event",
-    "name": "Call OpenAI",
-    "subscribes": ["call-openai"], 
-    "emits": ["openai-response"],
-    "input": None,  # No schema validation in Python version
-    "flows": ["openai"]
-}
- 
-async def handler(input, context):
-    context.logger.info('Processing input:', input)
- 
-    await context.emit({
-        "topic": "openai-response",
-        "data": {
-            "result": f"Processed: {input.get('message', '')}"
-        }
-    })
-
-```
-
-```ruby
-class Config
-  attr_reader :type, :name, :subscribes, :emits, :input, :flows
- 
-  def initialize
-    @type = "event"
-    @name = "Call OpenAI"
-    @subscribes = ["call-openai"]
-    @emits = ["openai-response"]
-    @input = nil # No schema validation
-    @flows = ["openai"]
-  end
-end
- 
-config = Config.new
- 
-def handler(input, context)
-  context.logger.info("Processing input: #{input}")
- 
-  context.emit({
-    topic: "openai-response",
-    data: {
-      result: "Processed: #{input[:message]}"
-    }
-  })
-end
-```
-
-## Event Patterns
-
-### Sequential Processing
-```typescript
-export const handler: Handlers['{{StepName}}'] = async (input, { emit }: FlowContext) => {
-  // Process input
-  const result = await processData(input);
+export const handler: Handlers['process-user'] = async (input, { emit, logger, state }) => {
+  const { name, email, id } = input
+  
+  logger.info('Processing user', { id, name })
+  
+  // Your business logic here
+  const processedUser = {
+    ...input,
+    status: 'active',
+    createdAt: new Date().toISOString()
+  }
+  
+  // Store in state if needed
+  await state.set('user', processedUser)
   
   // Emit to next step
   await emit({
-    topic: 'processing.complete',
-    data: result
-  });
-};
+    topic: 'user.processed',
+    data: processedUser
+  })
+}
 ```
 
-### Parallel Processing
+## Common Event Patterns
+
+### Sequential Processing
 ```typescript
-export const handler: Handlers['{{StepName}}'] = async (input, { emit }) => {
-  // Emit multiple events
-  await Promise.all([
-    emit({ topic: 'branch1', data: input }),
-    emit({ topic: 'branch2', data: input })
-  ]);
-};
+export const config: EventConfig = {
+  type: 'event',
+  name: 'send-welcome-email',
+  subscribes: ['user.processed'],
+  emits: ['email.sent'],
+  input: z.object({
+    name: z.string(),
+    email: z.string()
+  }),
+  flows: ['user-management']
+}
+
+export const handler: Handlers['send-welcome-email'] = async (input, { emit, logger }) => {
+  const { name, email } = input
+  
+  // Send email logic here
+  logger.info('Sending welcome email', { email })
+  
+  await emit({
+    topic: 'email.sent',
+    data: { email, type: 'welcome' }
+  })
+}
+```
+
+### Data Transformation
+```typescript
+export const handler: Handlers['transform-data'] = async (input, { emit }) => {
+  // Transform your data
+  const transformed = {
+    ...input,
+    processedAt: new Date().toISOString(),
+    status: 'completed'
+  }
+  
+  await emit({
+    topic: 'data.transformed',
+    data: transformed
+  })
+}
+```
+
+### Error Handling
+```typescript
+export const handler: Handlers['safe-processor'] = async (input, { emit, logger }) => {
+  try {
+    // Your processing logic
+    const result = await processData(input)
+    
+    await emit({
+      topic: 'processing.success',
+      data: result
+    })
+  } catch (error) {
+    logger.error('Processing failed', { error: error.message })
+    
+    await emit({
+      topic: 'processing.failed',
+      data: { error: error.message, input }
+    })
+  }
+}
 ```

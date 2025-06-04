@@ -1,63 +1,97 @@
 ---
-description: What are Motia API Steps and a Typescript example
+description: 
 globs: 
 alwaysApply: false
 ---
+
 # API Steps Guide
 
-API Steps expose HTTP endpoints for external interaction with workflows.
+API Steps expose HTTP endpoints that can trigger workflows and emit events.
 
-## Basic Configuration
+## Basic API Step Pattern
 ```typescript
-import { ApiMiddleware, ApiRouteConfig, ApiRequest, FlowContext, Handlers } from 'motia'
- 
-// Logging middleware
-const loggingMiddleware: ApiMiddleware = async (req, ctx, next) => {
-  ctx.logger.info('Request received', { path: req.pathParams })
-  const start = Date.now()
-  
-  // Call the next middleware and get its response
-  const response = await next()
-  
-  const duration = Date.now() - start
-  ctx.logger.info('Request completed', { duration, status: response.status })
-  
-  return response
-}
- 
-// Authentication middleware
-const authMiddleware: ApiMiddleware = async (req, ctx, next) => {
-  const authHeader = req.headers.authorization
-  
-  if (!authHeader) {
-    // Return early without calling next()
-    return {
-      status: 401,
-      body: { error: 'Unauthorized' }
-    }
-  }
-  
-  // Continue to the next middleware
-  return next()
-}
- 
-export const config = {
+import { ApiRouteConfig, Handlers } from 'motia'
+import { z } from 'zod'
+
+export const config: ApiRouteConfig = {
   type: 'api',
-  name: 'protected-endpoint',
-  path: '/api/protected',
+  name: 'create-user',
+  path: '/users',
   method: 'POST',
-  emits: ['USER_ACTION'],
-  middleware: [
-    loggingMiddleware,
-    authMiddleware
-  ]
+  emits: ['user.created'],
+  flows: ['user-management'],
+  bodySchema: z.object({
+    name: z.string(),
+    email: z.string().email()
+  })
 }
- 
-export const handler: Handlers['protected-endpoint'] = async (req: ApiRouteConfig, ctx: FlowContext) => {
-  // This handler will only be called if all middleware pass
+
+export const handler: Handlers['create-user'] = async (req, { emit, logger }) => {
+  const { name, email } = req.body
+  
+  logger.info('Creating user', { name, email })
+  
+  // Emit event to trigger next steps
+  await emit({
+    topic: 'user.created',
+    data: { name, email, id: Date.now().toString() }
+  })
+  
+  return {
+    status: 201,
+    body: { message: 'User created successfully' }
+  }
+}
+```
+
+## Common API Patterns
+
+### GET Endpoint
+```typescript
+export const config: ApiRouteConfig = {
+  type: 'api',
+  name: 'get-users',
+  path: '/users',
+  method: 'GET',
+  emits: ['users.fetched'],
+  flows: ['user-management']
+}
+
+export const handler: Handlers['get-users'] = async (req, { emit }) => {
+  const users = [{ id: '1', name: 'John' }] // Your data logic here
+  
+  await emit({
+    topic: 'users.fetched',
+    data: { users }
+  })
+  
   return {
     status: 200,
-    body: { message: 'Protected data accessed successfully' }
+    body: { users }
+  }
+}
+```
+
+### API with Path Parameters
+```typescript
+export const config: ApiRouteConfig = {
+  type: 'api',
+  name: 'get-user-by-id',
+  path: '/users/:id',
+  method: 'GET',
+  emits: ['user.retrieved'],
+  flows: ['user-management']
+}
+
+export const handler: Handlers['get-user-by-id'] = async (req, { emit }) => {
+  const userId = req.pathParams.id
+  
+  // Your logic to find user by ID
+  const user = { id: userId, name: 'John Doe' }
+  
+  return {
+    status: 200,
+    body: { user }
   }
 }
 ```

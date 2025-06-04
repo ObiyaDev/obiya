@@ -1,66 +1,98 @@
----
-description: What are motia steps and core concepts
-globs: 
-alwaysApply: false
----
+ ---
+ description: Basic concepts for creating Motia steps
+ globs: 
+ alwaysApply: false
+ ---
 # Motia Steps Reference
 
-Steps are self-contained units of business logic that process events and emit results.
+Steps are the building blocks of Motia workflows. Each step handles specific business logic.
+
+## Step Types
+- **API Steps**: HTTP endpoints that trigger workflows
+- **Event Steps**: Process events and emit new ones
+- **Cron Steps**: Run on schedules
+- **NOOP Steps**: Testing and workflow connections
+- **UI Steps**: Custom visual components
+
+## Basic Step Structure
+Every step needs:
+1. **config**: Defines step properties
+2. **handler**: Contains your business logic
+
+```typescript
+// config defines what the step does
+export const config = {
+  type: 'event',
+  name: 'my-step',
+  subscribes: ['input-topic'],
+  emits: ['output-topic'],
+  flows: ['my-flow']
+}
+
+// handler contains your logic
+export const handler = async (input, context) => {
+  // Your code here
+  await context.emit({
+    topic: 'output-topic',
+    data: { result: 'processed' }
+  })
+}
+```
+
+## Step Naming
+- Use descriptive names: `process-payment`, `send-notification`
+- Use kebab-case: `my-step.step.ts`
+- Include `.step` in filename: `process-user.step.ts`
+
+## Context Object
+Every handler receives a context with:
+```typescript
+const { emit, logger, state, traceId } = context
+
+// Emit events to other steps
+await emit({ topic: 'next-step', data: result })
+
+// Log information
+logger.info('Processing started', { userId })
+
+// Store/retrieve data
+await state.set('key', value)
+const data = await state.get('key')
+```
 
 ## Best Practices
-1. Keep steps atomic and focused
+1. Keep steps focused on one task
 2. Use meaningful topic names
-3. Handle errors gracefully
+3. Always handle errors gracefully
 4. Log important operations
-5. Maintain state carefully
-6. Only small data should be emitted
+5. Validate input data with Zod schemas
 
-
-
-## Common Patterns
+## Quick Start Template
 ```typescript
-// Input validation
-import { z } from 'zod';
+import { EventConfig, Handlers } from 'motia'
+import { z } from 'zod'
 
 export const config: EventConfig = {
   type: 'event',
-  name: 'Minimal Step',
-  input: z.object({ message: z.string() }),
-  subscribes: ['start'],
-  emits: ['done'],
-};
-
-// State management
-export const handler: Handlers['Minimal Step'] = async (input, { state }: FlowContext) => {
-  const currentCount = await state.get('counter') || 0;
-  await state.set('counter', currentCount + 1);
-};
-```
-
-```python
-config = {
-    'type': 'event',
-    'name': 'Minimal Step',
-    'subscribes': ['start'],
-    'emits': ['done'],
+  name: 'my-new-step',
+  subscribes: ['trigger-topic'],
+  emits: ['result-topic'],
+  input: z.object({
+    message: z.string()
+  }),
+  flows: ['my-flow']
 }
- 
-async def handler(args, ctx):
-  await ctx.emit({'topic': 'done', 'data': {}})
-```
 
-```ruby
-def config
-  {
-    type: 'event',
-    name: 'Minimal Step',
-    subscribes: ['start'],
-    emits: ['done'],
-  }
-end
- 
-def handler(args, ctx)
-  ctx.emit({topic: 'done', data: {}})
-end
+export const handler: Handlers['my-new-step'] = async (input, { emit, logger }) => {
+  logger.info('Step started', { input })
+  
+  // Your logic here
+  const result = `Processed: ${input.message}`
+  
+  await emit({
+    topic: 'result-topic',
+    data: { result }
+  })
+}
 ```
 

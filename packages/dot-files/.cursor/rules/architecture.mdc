@@ -3,75 +3,99 @@ description:
 globs: 
 alwaysApply: true
 ---
-# Motia Framework Architecture
+---
+description: Basic Motia workflow patterns and project structure
+globs: 
+alwaysApply: true
+---
+# Motia Framework Basics
 
-Motia is a code-first framework for building event-driven workflows with zero infrastructure setup. The framework supports multiple languages (TypeScript, JavaScript, Python, Ruby) and provides built-in observability.
+Motia helps you build event-driven workflows using simple steps that communicate through topics.
 
-## Core Components
+## Core Concepts
 
-1. Steps: Fundamental building blocks that contain isolated business logic
-   - Event Steps: React to and emit events
-   - API Steps: HTTP endpoints as workflow entry points
-   - Cron Steps: Time-based workflow triggers
-   - UI Steps: Visual components in the Workbench
-   - NOOP Steps: Testing and development placeholders
+**Steps**: Building blocks that contain your business logic
+- API Steps: HTTP endpoints
+- Event Steps: Process events
+- Cron Steps: Scheduled tasks
+- NOOP Steps: Workflow connections
 
-2. Flows: Logical groupings of related steps
-3. Events: Messages passed between steps
-4. Topics: Named channels for event routing
+**Topics**: Named channels for communication between steps
+**Flows**: Groups of related steps that work together
+
+## Basic Workflow Pattern
+```
+API Step → Event Step → Event Step → Final Step
+    ↓         ↓           ↓          ↓
+  [topic1] [topic2]   [topic3]   [done]
+```
 
 ## Project Structure
-```typescript
+```
 my-motia-project/
 ├── steps/
-│   ├── event-steps/
-│   ├── api-steps/
-│   └── cron-steps/
-├── services/
-├── middlewares/
-├── utils/
+│   ├── 01-api-trigger.step.ts     # API endpoint
+│   ├── 02-process-data.step.ts    # Business logic
+│   └── 03-send-result.step.ts     # Final action
+├── package.json
+└── tsconfig.json
 ```
 
 ## Step Creation Guidelines
 
-1. Each step requires:
-   - config object: Defines step properties
-   - handler function: Contains business logic
-
-2. Basic step configuration:
+### 1. Start with API Step
 ```typescript
-export const config = {
-  type: 'event|api|cron',
-  name: 'unique-step-name',
-  subscribes: ['topic1', 'topic2'],
-  emits: ['output-topic'],
-  flows: ['flow-name']
-}
-
-export const handler: Handlers['unique-step-name'] = async (input, context: FlowContext) => {
-  // Business logic here
+// 01-api-trigger.step.ts
+export const config: ApiRouteConfig = {
+  type: 'api',
+  name: 'start-workflow',
+  path: '/start',
+  method: 'POST',
+  emits: ['workflow.started'],
+  flows: ['main-flow']
 }
 ```
 
-## General Guidelines
-- Always follow functional programming best practices
-- Avoid using `any`, use proper Typescript and prioritize using types from `@motiadev/core/dist/src/types.d.ts`
-- Make sure all steps belong to the same flow
-- Make sure the first step is an API step to only trigger the flow, all time-consuming tasks should belong to Event Steps to be processed in the background
-- Steps need to have a `.step` suffix, for instance, for TS would be `my-step.step.ts`
-- Make sure all step configurations have a `subscribe` and `emits` configurations so that they are all tied properly to a flow
-- Always add tests to test steps in isolation, also add a flow test that tests the whole workflow
-- Prioritize encapsulating business logic on services
-- Try to put a single service per file, for instance, the file `getUsers.ts` exports a function `getUsers`
-- Always check your code, make sure it builds (`npx motia build`) and runs properly (`npx motia dev`)
+### 2. Add Event Steps for Logic
+```typescript
+// 02-process-data.step.ts
+export const config: EventConfig = {
+  type: 'event',
+  name: 'process-data',
+  subscribes: ['workflow.started'],
+  emits: ['data.processed'],
+  flows: ['main-flow']
+}
+```
 
+### 3. Connect Steps with Topics
+- Each step subscribes to topics from previous steps
+- Each step emits topics for next steps
+- Use descriptive topic names: `user.created`, `email.sent`
 
-## Related Documentation Files
-- types.mdc: Motia Types
-- steps.mdc: Detailed step types and configuration
-- api_steps.mdc: API endpoint creation and middleware
-- event_steps.mdc: Event handling and emission
-- cron_steps.mdc: Scheduled task configuration
-- ui_steps.mdc: Workbench visualization components
-- state-management.mdc: State management
-- testing.mdc: Unit Tests
+## Best Practices
+- Keep steps small and focused
+- Use clear, descriptive names
+- Always include steps in a flow
+- Start workflows with API steps
+- Put heavy logic in Event steps (background processing)
+- Use consistent topic naming: `entity.action`
+
+## Quick Development Workflow
+1. Create API step to trigger workflow
+2. Add Event steps for business logic
+3. Connect steps with topics
+4. Test with `curl` or Workbench
+5. View workflow in browser at `http://localhost:3000`
+
+## Testing Your Workflow
+```bash
+# Start development server
+pnpm run dev
+
+# Trigger API endpoint
+curl -X POST http://localhost:3000/start -d '{}'
+
+# Or emit event directly
+npx motia emit --topic workflow.started --message '{}'
+```
