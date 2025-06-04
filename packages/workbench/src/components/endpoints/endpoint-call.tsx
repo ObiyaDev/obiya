@@ -43,16 +43,19 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
     setQueryParamsValues((prev) => ({ ...prev, [param]: value }))
   }
 
-  const handleBodyChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-    setBody(value)
-    try {
-      JSON.parse(value)
-      setIsJsonValid(true)
-    } catch () {
-      setIsJsonValid(false)
-    }
-  }, [setBody])
+  const handleBodyChange = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value
+      setBody(value)
+      try {
+        JSON.parse(value)
+        setIsJsonValid(true)
+      } catch {
+        setIsJsonValid(false)
+      }
+    },
+    [setBody],
+  )
 
   const handleRequest = async () => {
     setIsRequestLoading(true)
