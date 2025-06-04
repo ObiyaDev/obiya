@@ -14,18 +14,26 @@ async function globalSetup() {
       rmSync(TEST_PROJECT_PATH, { recursive: true, force: true })
     }
 
-    console.log('📦 Creating test project with Motia CLI...')
-    const motiaVersion = process.env.MOTIA_VERSION || 'next'
-    execSync(`npx motia@${motiaVersion} create -n ${TEST_PROJECT_NAME}`, {
+    const motiaVersion = process.env.MOTIA_VERSION || 'pre-release'
+    const template = process.env.TEST_TEMPLATE || 'nodejs'
+
+    console.log(`📦 Creating test project with Motia CLI ${motiaVersion} and template ${template}...`)
+    let createCommand = `npx motia@${motiaVersion} create -n ${TEST_PROJECT_NAME}`
+    if (template === 'python') {
+      createCommand += ' -t python'
+    }
+    
+    execSync(createCommand, {
       stdio: 'pipe',
       cwd: process.cwd()
     })
     execSync(`npm install --save motia@${motiaVersion}`, { cwd: TEST_PROJECT_PATH })
 
-    console.log('🏗️  Building test project...')
-
     console.log('🌟 Starting test project server...')
-    const serverProcess = exec('npm run dev', { cwd: TEST_PROJECT_PATH })
+    const serverProcess = exec('npm run dev', { cwd: TEST_PROJECT_PATH, env: {
+        MOTIA_ANALYTICS_DISABLED: 'true',
+        ...process.env
+    } })
 
     console.log('⏳ Waiting for server to be ready...')
     await waitForServer('http://localhost:3000', 60000)
@@ -34,6 +42,8 @@ async function globalSetup() {
 
     process.env.TEST_PROJECT_PATH = TEST_PROJECT_PATH
     process.env.TEST_PROJECT_NAME = TEST_PROJECT_NAME
+    process.env.TEST_TEMPLATE = template
+    process.env.MOTIA_TEST_PID = serverProcess.pid?.toString() || ''
 
   } catch (error) {
     console.error('❌ Failed to setup E2E test environment:', error)

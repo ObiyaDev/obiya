@@ -26,6 +26,8 @@ import { apiEndpoints } from './streams/api-endpoints'
 import { createSocketServer } from './socket-server'
 import { Log, LogsStream } from './streams/logs-stream'
 import { BaseStreamItem, IStateStream, StateStreamEventChannel, StateStreamEvent } from './types-stream'
+import { analyticsEndpoint } from './analytics-endpoint'
+import { trackEvent } from './analytics/utils'
 
 export type MotiaServer = {
   app: Express
@@ -79,9 +81,9 @@ export const createServer = async (
     return (): IStateStream<BaseStreamItem> => {
       const suuper = stream()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const wrapObject = (id: string, object: any) => ({
+      const wrapObject = (groupId: string, id: string, object: any) => ({
         ...object,
-        __motia: { type: 'state-stream', streamName, id },
+        __motia: { type: 'state-stream', streamName, groupId, id },
       })
 
       const wrapper: IStateStream<BaseStreamItem> = {
@@ -93,7 +95,7 @@ export const createServer = async (
 
         async get(groupId: string, id: string) {
           const result = await suuper.get.apply(wrapper, [groupId, id])
-          return wrapObject(id, result)
+          return wrapObject(groupId, id, result)
         },
 
         async set(groupId: string, id: string, data: BaseStreamItem) {
@@ -104,7 +106,7 @@ export const createServer = async (
           const exists = await suuper.get(groupId, id)
           const updated = await suuper.set.apply(wrapper, [groupId, id, data])
           const result = updated ?? data
-          const wrappedResult = wrapObject(id, result)
+          const wrappedResult = wrapObject(groupId, id, result)
 
           const type = exists ? 'update' : 'create'
           pushEvent({ streamName, groupId, id, event: { type, data: result } })
@@ -117,12 +119,12 @@ export const createServer = async (
 
           pushEvent({ streamName, groupId, id, event: { type: 'delete', data: result } })
 
-          return wrapObject(id, result)
+          return wrapObject(groupId, id, result)
         },
 
         async getGroup(groupId: string) {
           const list = await suuper.getGroup.apply(wrapper, [groupId])
-          return list.map((object: BaseStreamItem) => wrapObject(object.id, object))
+          return list.map((object: BaseStreamItem) => wrapObject(groupId, object.id, object))
         },
       }
 
@@ -185,6 +187,11 @@ export const createServer = async (
         res.status(result.status)
         res.json(result.body)
       } catch (error) {
+        trackEvent('api_call_error', {
+          stepName,
+          traceId,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        })
         logger.error('[API] Internal server error', { error })
         console.log(error)
         res.status(500).json({ error: 'Internal server error' })
@@ -243,6 +250,7 @@ export const createServer = async (
   apiEndpoints(lockedData)
   flowsEndpoint(lockedData, app)
   flowsConfigEndpoint(app, process.cwd())
+  analyticsEndpoint(app, process.cwd())
 
   server.on('error', (error) => {
     console.error('Server error:', error)

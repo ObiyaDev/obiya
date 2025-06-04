@@ -1,6 +1,6 @@
 {
   "name": "@motiadev/e2e",
-  "version": "0.2.1-beta.64",
+  "version": "0.2.1-beta.74",
   "private": true,
   "description": "End-to-end tests for Motia using Playwright",
   "type": "module",
@@ -11,7 +11,8 @@
     "test:report": "playwright show-report",
     "test:e2e": "playwright test",
     "test:e2e:trace": "playwright test --trace=on",
-    "test:release": "playwright test --config=playwright.config.release.ts",
+    "test:release": "cross-env MOTIA_ANALYTICS_DISABLED=true playwright test --config=playwright.config.release.ts",
+    "test:release:python": "cross-env TEST_TEMPLATE=python MOTIA_ANALYTICS_DISABLED=true playwright test --config=playwright.config.release.ts",
     "test:release:headed": "playwright test --config=playwright.config.release.ts --headed",
     "test:cli": "playwright test tests/release/cli",
     "test:workbench": "playwright test tests/workbench",
@@ -24,6 +25,7 @@
     "@playwright/test": "^1.48.2"
   },
   "devDependencies": {
-    "@types/node": "^22.15.18"
+    "@types/node": "^22.15.18",
+    "cross-env": "^7.0.3"
   }
 }
