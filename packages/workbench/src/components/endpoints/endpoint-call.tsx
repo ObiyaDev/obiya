@@ -49,10 +49,10 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
     try {
       JSON.parse(value)
       setIsJsonValid(true)
-    } catch (error) {
+    } catch () {
       setIsJsonValid(false)
     }
-  }, [])
+  }, [setBody])
 
   const handleRequest = async () => {
     setIsRequestLoading(true)
