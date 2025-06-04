@@ -48,17 +48,10 @@ export default function ManifestoPage() {
         </div>
         <div className="my-[72px] h-[1px] w-full bg-white/20"></div>
         <div className="mx-auto flex w-full max-w-[760px] flex-col gap-[40px]">
-          <section className={normalText}>
-            <p>
-              For years, we've been witnessing the undeniable truth:
-              <span className={gradientText}> every company is becoming a software company.</span> The unprecedented digital
-              transformation over the last few decades has reshaped entire industries, turning even brick-and-mortar businesses into modern software-driven enterprises.
-            </p>
-          </section>
 
           <section className={normalText}>
             <p>
-              And now, we're entering a new era. One that's driven by AI and LLMs. These technologies are automating tasks
+              We're at the tipping point of a new chapter in software engineering. One that's driven by AI and LLMs. These technologies are automating tasks
               previously handled by humans, enabling a transformational transfer of responsibilities from individuals to backend automation systems. While the vast majority
               <span className={`${gradientText} !bg-linear-to-r`}> (80% to 90%) of steps </span>
               in an organization,
@@ -95,7 +88,7 @@ export default function ManifestoPage() {
             <p>
               Just as past complexity demanded new frameworks, this AI-driven influx requires a new solution. We've seen
               the emergence of AI agent frameworks, but they are not designed for software
-              engineering teams. The current landscape is rather broken, and offers disparate, ill-suited tools:
+              engineering teams. The current landscape is increasingly complex, and offers disparate, ill-suited tools:
             </p>
           </section>
           <section className={normalText}>
@@ -127,9 +120,9 @@ export default function ManifestoPage() {
                 no software engineering framework built specifically to handle the influx of AI-driven complexity{' '}
               </span>{' '}
               in backend systems. Furthermore, attempting to integrate existing AI agent frameworks with traditional API
-              servers and background/queuing systems shows cracks in an already broken setup needing{' '}
-              <span className={gradientText}>three different ways to fix linked problems</span>, forcing teams to
-              split up or making engineers learn too many things at once.
+              servers and background/queuing systems feels like adding complexity to an already disconnected setup needing{' '}
+              <span className={gradientText}>three different ways to fix linked problems</span> and, forcing teams to
+              either split up or make engineers learn too many things at once.
             </p>
           </section>
 
@@ -176,7 +169,7 @@ export default function ManifestoPage() {
               </ul>
 
               <p className="mb-[10px]">
-                With just these four concepts, software engineers can build anything they need in Motia, particularly <span className={gradientTextBlue}>with Steps being language-agnostic.</span>
+                With just these four concepts, software engineers can build anything they need in Motia, particularly <span className={gradientTextBlue}>with Steps being language and runtime agnostic.</span>
               </p>
 
               <p className="mb-[18px]">
@@ -189,7 +182,7 @@ export default function ManifestoPage() {
             <p>
               Setting up powerful, resilient event-based microservice systems is incredibly difficult to do correctly.{' '}
               <span className={gradientTextBlue}>Motia builds this foundation for you</span>, providing the
-              necessary resiliency without requiring engineers to worry about the underlying complexity. They can rather focus on building workflows, and implementing business logic.
+              necessary resiliency without requiring engineers to worry about the underlying complexity. They can instead focus on building workflows, and implementing business logic.
             </p>
           </section>
 
