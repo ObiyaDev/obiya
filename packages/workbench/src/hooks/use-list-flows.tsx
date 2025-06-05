@@ -1,6 +1,6 @@
 import { useStreamGroup } from '@motiadev/stream-client-react'
 
-type Flow = {
+export type Flow = {
   id: string
   name: string
 }
