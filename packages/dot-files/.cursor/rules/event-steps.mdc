@@ -40,7 +40,7 @@ export const handler: Handlers['process-user'] = async (input, { emit, logger, s
   }
   
   // Store in state if needed
-  await state.set('user', processedUser)
+  await state.set(traceId, 'user', processedUser)
   
   // Emit to next step
   await emit({
