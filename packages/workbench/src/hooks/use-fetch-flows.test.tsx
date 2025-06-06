@@ -1,9 +1,13 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { useFetchFlows } from './use-fetch-flows'
 import { Flow, useListFlows } from './use-list-flows'
+import { useWatchFlow } from './use-watch-flow'
 
 jest.mock('./use-list-flows')
+jest.mock('./use-watch-flow')
+
 const mockUseListFlows = useListFlows as jest.Mock as jest.Mock<{ flows: Flow[] | undefined }>
+const mockUseWatchFlow = useWatchFlow as jest.Mock
 
 const createMockResponse = (data: any) =>
   ({
@@ -24,6 +28,7 @@ describe('useFetchFlows', () => {
     // Before each test, reset mock implementations and calls
     mockFetch.mockReset()
     mockUseListFlows.mockReturnValue({ flows: [{ id: mockFlowId, name: 'Test Flow' }] })
+    mockUseWatchFlow.mockReturnValue({ data: null })
   })
 
   it('should initialize with null values', () => {
@@ -140,7 +145,7 @@ describe('useFetchFlows', () => {
     })
   })
 
-  it('should refetch when flows dependency changes', async () => {
+  it('should update flow when useWatchFlow provides new data, without re-fetching', async () => {
     mockFetch.mockImplementation((url) => {
       if (url.toString().endsWith('/config')) {
         return Promise.resolve(createMockResponse(mockFlowConfigResponse))
@@ -155,12 +160,16 @@ describe('useFetchFlows', () => {
     })
     expect(mockFetch).toHaveBeenCalledTimes(2)
 
-    const newFlows = [{ id: mockFlowId, name: 'A New Flow Name2' }]
-    mockUseListFlows.mockReturnValue({ flows: newFlows })
+    const updatedFlowFromWatcher = { ...mockFlowResponse, name: 'Updated via Watcher' }
+    mockUseWatchFlow.mockReturnValue({ data: updatedFlowFromWatcher })
+
     rerender()
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledTimes(4)
+      expect(result.current.flow).toEqual(updatedFlowFromWatcher)
     })
+
+    // fetch should not be called again
+    expect(mockFetch).toHaveBeenCalledTimes(2)
   })
 })

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useListFlows } from '@/hooks/use-list-flows'
 import { FlowConfigResponse, FlowResponse } from '@/views/flow/hooks/use-get-flow-state'
+import { useWatchFlow } from '@/hooks/use-watch-flow'
 
 export const useFetchFlows = (flowId: string) => {
-  const { flows } = useListFlows()
+  const newFlow = useWatchFlow(flowId)
   const [flow, setFlow] = useState<FlowResponse | null>(null)
   const [flowConfig, setFlowConfig] = useState<FlowConfigResponse | null>(null)
 
@@ -19,13 +19,19 @@ export const useFetchFlows = (flowId: string) => {
         setFlow(null)
         setFlowConfig(null)
       })
-  }, [flowId, flows])
+  }, [flowId])
 
   useEffect(() => {
     if (flowId) {
       fetchFlow()
     }
   }, [fetchFlow, flowId])
+
+  useEffect(() => {
+    if (newFlow?.data) {
+      setFlow(newFlow.data)
+    }
+  }, [newFlow])
 
   return {
     flow,
