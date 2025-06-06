@@ -5,8 +5,8 @@ import { LockedData } from '../locked-data'
 import { Printer } from '../printer'
 import { createServer } from '../server'
 import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
-import { ApiMiddleware, ApiRouteConfig, InternalStateManager, Step } from '../types'
 import { MemoryStreamAdapter } from '../streams/adapters/memory-stream-adapter'
+import { ApiMiddleware, ApiRouteConfig, Step } from '../types'
 
 // Mock callStepFile to prevent actual file execution
 jest.mock('../call-step-file', () => ({

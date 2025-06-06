@@ -1,12 +1,23 @@
-import { CronManager, setupCronHandlers } from './cron-handler'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 import express, { Express, Request, Response } from 'express'
 import http from 'http'
 import { Server as WsServer } from 'ws'
-import cors from 'cors'
+import { analyticsEndpoint } from './analytics-endpoint'
+import { trackEvent } from './analytics/utils'
+import { callStepFile } from './call-step-file'
+import { CronManager, setupCronHandlers } from './cron-handler'
+import { flowsConfigEndpoint } from './flows-config-endpoint'
 import { flowsEndpoint } from './flows-endpoint'
+import { generateTraceId } from './generate-trace-id'
 import { isApiStep } from './guards'
+import { LockedData } from './locked-data'
 import { globalLogger } from './logger'
+import { LoggerFactory } from './logger-factory'
+import { createSocketServer } from './socket-server'
+import { systemSteps } from './steps'
+import { apiEndpoints } from './streams/api-endpoints'
+import { Log, LogsStream } from './streams/logs-stream'
 import {
   ApiRequest,
   ApiResponse,
@@ -16,18 +27,7 @@ import {
   InternalStateManager,
   Step,
 } from './types'
-import { systemSteps } from './steps'
-import { LockedData } from './locked-data'
-import { callStepFile } from './call-step-file'
-import { LoggerFactory } from './logger-factory'
-import { generateTraceId } from './generate-trace-id'
-import { flowsConfigEndpoint } from './flows-config-endpoint'
-import { apiEndpoints } from './streams/api-endpoints'
-import { createSocketServer } from './socket-server'
-import { Log, LogsStream } from './streams/logs-stream'
-import { BaseStreamItem, MotiaStream, StateStreamEventChannel, StateStreamEvent } from './types-stream'
-import { analyticsEndpoint } from './analytics-endpoint'
-import { trackEvent } from './analytics/utils'
+import { BaseStreamItem, MotiaStream, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 
 export type MotiaServer = {
   app: Express
@@ -96,6 +96,10 @@ export const createServer = async (
       const mainGet = main.get
       const mainSet = main.set
       const mainDelete = main.delete
+
+      main.send = async <T>(channel: StateStreamEventChannel, event: StateStreamEvent<T>) => {
+        pushEvent({ streamName, ...channel, event: { type: 'event', event } })
+      }
 
       main.getGroup = async (groupId: string) => {
         const result = await mainGetGroup.apply(main, [groupId])
