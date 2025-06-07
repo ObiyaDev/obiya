@@ -15,7 +15,7 @@
 
 **Build modern, AI-native backends — one Step at a time.**
 
-Motia is a tool for building **modular, event-driven, AI-enhanced backends** using a new primitive: the **Step**. Think of Steps like React Components — but for backend logic.
+Motia is a tool for building **unified, event-driven, AI-native backends** using a new primitive: the **Step**. Think of Steps like React Components — but for backend logic.
 
 - 🧱 Each Step performs one task.  
 - 🔀 Steps connect via Workflows.  
@@ -26,7 +26,7 @@ Motia is a tool for building **modular, event-driven, AI-enhanced backends** usi
 
 ## ✨ Why Motia?
 
-Modern backend systems are **fragmented**. You're juggling APIs, queues, cron jobs, AI tools, and business logic — all scattered across different layers.
+Modern backend systems are **complex**. You're juggling APIs, queues, cron jobs, AI tools, and business logic — all scattered across different layers.
 
 Motia solves this by letting you build your backend as a **graph of Steps**. Steps are:
 
