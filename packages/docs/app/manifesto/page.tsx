@@ -51,12 +51,12 @@ export default function ManifestoPage() {
 
           <section className={normalText}>
             <p>
-              We're at the tipping point of a new chapter in software engineering. One that's driven by AI and LLMs. These technologies are automating tasks
+              We're standing at the edge of a new chapter in software engineering. One that's driven by AI and LLMs. These technologies are automating workflows
               previously handled by humans, enabling a transformational transfer of responsibilities from individuals to backend automation systems. While the vast majority
               <span className={`${gradientText} !bg-linear-to-r`}> (80% to 90%) of steps </span>
               in an organization,
               <span className={`${gradientText} !bg-linear-to-r`}> are still handled by humans,</span> AI's
-              reasoning and data manipulation capabilities are rapidly changing this. This is creating a{' '}
+              reasoning and data manipulation capabilities are changing this. This is creating a{' '}
               <span className={`${gradientText} !bg-linear-to-r from-[#5AC5FF] !to-20%`}>
                 {' '}
                 massive influx of complexity{' '}
@@ -68,8 +68,8 @@ export default function ManifestoPage() {
           <section className={normalText}>
             <p>
               If history has taught us one thing, it is that
-              <span className={gradientText}> complexity begets abstraction. </span> We saw it with the
-              transition from chaotic PHP spaghetti code era to structured MVC frameworks, and again with the rise of front-end
+              <span className={gradientText}> complexity is followed by abstraction. </span> We saw it with the
+              transition from PHP spaghetti code era to structured MVC frameworks, and again with the rise of front-end
               frameworks like React, which were purpose-built to handle increasing complexity of user interfaces.
             </p>
           </section>
@@ -77,10 +77,10 @@ export default function ManifestoPage() {
           <section className={normalText}>
             <p>
               Currently, we are at the cusp of another, perhaps larger than ever before, paradigm shift. Large Language Models/LLMs
-              and AI tools are becoming more and more capable of performing tasks previously reserved for humans, like reasoning about data, manipulating it, and moving it through complex workflows.{' '}
+              and AI tools are becoming more and more capable of performing workflows previously handled by humans, like reasoning about data, transforming it, and moving it through complex workflows.{' '}
               <span className={gradientText}>
                 {' '}
-                This means a significant shift is occurring, where tasks once handled by humans are now being offloaded to intelligent backend systems.{' '}
+                This means a significant shift is occurring, where workflow steps will move from human operators to backend systems.{' '}
               </span>
             </p>
           </section>
@@ -88,7 +88,7 @@ export default function ManifestoPage() {
             <p>
               Just as past complexity demanded new frameworks, this AI-driven influx requires a new solution. We've seen
               the emergence of AI agent frameworks, but they are not designed for software
-              engineering teams. The current landscape is increasingly complex, and offers disparate, ill-suited tools:
+              engineering teams, are disparate, and ill-suited:
             </p>
           </section>
           <section className={normalText}>
@@ -96,14 +96,14 @@ export default function ManifestoPage() {
               <li>
                 <span className={gradientTextBlue}>No/Low Code Solutions</span> (like Zapier, Make, n8n, Gumloop, and
                 Lindy) are great for back-office, non-technical users to build integrations, but{' '}
-                <span className={gradientText}>they often fall short,</span> as Software engineers want
-                coding solutions that they can write, extend and control.
+                <span className={gradientText}>they are not for software engineers.</span> Software engineers want
+                coding solutions.
               </li>
               <li>
                 <span className={gradientTextBlue}>AI/ML Frameworks</span> (like LangGraph, Langchain, Llama Index, and
                 DSPY) are built primarily for data scientists and ML engineers who understand model training and
                 evaluation metrics.{' '}
-                <span className={gradientText}>They are not backend software engineering frameworks,</span> and aren't designed for developers.
+                <span className={gradientText}>They are not backend software engineering frameworks.</span>
               </li>
               <li>
                 <span className={gradientTextBlue}>Existing AI Agentic Frameworks</span> use prompts as their primary
@@ -182,7 +182,7 @@ export default function ManifestoPage() {
             <p>
               Setting up powerful, resilient event-based microservice systems is incredibly difficult to do correctly.{' '}
               <span className={gradientTextBlue}>Motia builds this foundation for you</span>, providing the
-              necessary resiliency without requiring engineers to worry about the underlying complexity. They can instead focus on building workflows, and implementing business logic.
+              necessary resiliency without requiring engineers to worry about the underlying complexity. They can instead focus on building workflows, and writing business logic.
             </p>
           </section>
 
@@ -203,7 +203,7 @@ export default function ManifestoPage() {
 
           <section className={normalText}>
             <p>
-              To navigage the AI-first world, developers need an event-driven system built with them in mind. A system that unifies AI, backend logic, and automation into a single, cohesive model{' '}
+              A developer-focused event-driven system is needed and will become a tool of choice. Whether Motia becomes the main choice or not, a solution that brings these concerns together and gives a clear, developer-focused approach is the natural next step in how software engineering will change with AI. {' '}
               <span className={gradientTextBlue}>Motia is that system.</span>
             </p>
           </section>
