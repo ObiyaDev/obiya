@@ -74,23 +74,25 @@ cd my-motia-app
 2. **Write your first step**
 
 open up your favourite code editor there, and let's write our first step. Open up the `01-api.step.ts` file and paste the following into it:
+
 ```bash
-exports.config = {
-type: 'api', // "event", "api", "noop" or "cron"
-path: '/hello-world',
-method: 'GET',
-name: 'HelloWorld',
-emits: ['test-state'],
-flows: ['default'],
+  exports.config = {
+  type: 'api', // "event", "api", "noop" or "cron"
+  path: '/hello-world',
+  method: 'GET',
+  name: 'HelloWorld',
+  emits: ['test-state'],
+  flows: ['default'],
 }
  
 exports.handler = async () => {
-return {
-  status: 200,
-  body: { message: 'Hello World' },
-}
+  return {
+    status: 200,
+    body: { message: 'Hello World' },
+  }
 }
 ```
+
 Here are the details about this step:
 
 - `type`: `api` - This is an API step that we can trigger this via HTTP request. Steps can be of four types - API, Event, NOOP, and Cron.
@@ -111,16 +113,21 @@ From the Workbench, you can navigate to:
 - Flows: To visually inspect how your steps are connected and triggered, what each step does, which language it was written in, what events does it subscribe/emit to and more.
 
 ---
+
 - Optionally, you can also use `curl` to test your APIs:
+
 ```bash
 curl -X POST http://localhost:3000/default \
--H "Content-Type: application/json" \
--d '{}'
+  -H "Content-Type: application/json" \
+  -d '{}'
 ```
+
 - Alternatively, use the Motia CLI to emit an event (for event-based steps in the template):
+
 ```bash
 npx motia emit --topic test-state --message '{}'
 ```
+
 Check the Workbench logs – you should see logs indicating the step execution and event flow!
 
 That's it! This is how simple it is to have a fully functional Motia app - with an API step, automatic routing, a visual debugger, and zero setup hassle.
