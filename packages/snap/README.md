@@ -13,7 +13,9 @@
   <a href="https://github.com/MotiaDev/motia/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
 </p>
 
-**Build modern, AI-native backends — one Step at a time.**
+**Unify APIs and agents with built-in observability and seamless deployment**
+
+Motia is a modern backend framework that unifies APIs, background jobs, event systems, and AI agents into one event-driven system that works the way developers think. Stop context-switching between multiple runtimes, build your entire backend with event-driven steps, mixing JavaScript, TypeScript, and Python freely, while keeping shared state, tracing, state of the art observability and deployment simplicity.
 
 Motia is a tool for building **unified, event-driven, AI-native backends** using a new primitive: the **Step**. Think of Steps like React Components — but for backend logic.
 
@@ -24,32 +26,47 @@ Motia is a tool for building **unified, event-driven, AI-native backends** using
 
 ---
 
-## ✨ Why Motia?
+## 🚧 Why Motia
 
-Modern backend systems are **complex**. You're juggling APIs, queues, cron jobs, AI tools, and business logic — all scattered across different layers.
+Backend engineering teams often juggle multiple fragmented runtimes:
 
-Motia solves this by letting you build your backend as a **graph of Steps**. Steps are:
+| Runtime Layer           | Common Tools                                                        |
+| ----------------------- | ------------------------------------------------------------------- |
+| 🖥️ **API Servers**       | Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask, Nest |
+| 📬 **Job Queues/Events** | Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams  |
+| 🤖 **AI & Agents**       | LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agno, AgentGPT       |
 
-- 🧠 **Composable**: Chain Steps like functions
-- 🔄 **Declarative Workflows**: Define complex processes with a simple, readable syntax
-- 🛠️ **Type-Safe**: Built with strong typing support for all supported languages
-- 🚀 **Event-driven**: Steps react to events and emit new ones
-- 🌐 **Language/runtime agnostic**: Write in JS, TS, Python (with support for more languages coming out soon)
-- 🔍 **Visualizable**: Inspect and debug your workflows with Motia Workbench
-- 👀 **Debuggable**: Visualize everything in the built-in Workbench
+**Common issues caused by fragmentation:**
+
+- **Deployment Complexity:** Multiple scaling models and deployment targets
+- **Debugging Difficulty:** Fragmented observability, incomplete traces
+- **Developer Constraints:** Language lock-in, limited flexibility
+- **Cognitive Overhead:** Context-switching across frameworks
+- **Redundant Boilerplate:** Duplicated logic and complex code-sharing
 
 ---
 
-## Installation
+## ✅ The Unified Runtime: One System for All Backend Concerns
 
-### JavaScript/TypeScript
-```sh
-npm install motia
-# or
-yarn add motia
-# or
-pnpm add motia
-```
+Motia solves this fragmentation by unifying your backend into a single system. It brings everything—APIs, background jobs, queues, and AI agents into a single coherent model with shared state, logging, observability, and deployment.
+
+Motia is not another queue or AI wrapper. It's a unified backend system where APIs, background jobs, scheduled tasks, and AI agents all live together as Steps in a single runtime:
+
+| Runtime Layer           | Motia's Approach                                               |
+| ----------------------- | -------------------------------------------------------------- |
+| 🖥️ **API Servers**       | ✅ Expose workflow steps instantly as APIs/webhooks             |
+| 📬 **Job Queues/Events** | ✅ Unified runtime with built-in queuing, retries, and state    |
+| 🤖 **AI & Agents**       | ✅ Seamlessly combine deterministic logic & AI-driven workflows |
+
+**Benefits of Unifying with Motia:**
+
+- 🎯 **Unified Deployment:** Single consistent scaling model
+- 🔍 **Enhanced Observability:** Simplified end-to-end tracing
+- ⚙️ **Full Language Flexibility:** JavaScript, TypeScript, Python
+- 🧠 **Lower Cognitive Load:** Single intuitive backend model
+- ♻️ **Simplified Error Handling:** Automatic retries & error management
+- 🛡️ **Resilient Architecture:** Fault-tolerant event-based system
+
 ---
 
 ## 🔧 Supported Step Types
@@ -142,30 +159,14 @@ From here, you can:
 
 ## CLI Commands
 
-Motia comes with a powerful CLI to help you manage your projects:
+Motia comes with a range of [powerful CLI commands](https://www.motia.dev/docs/concepts/cli) to help you manage your projects, in addition to the ones listed below:
 
-### `motia init`
-
-Initializes a new Motia project in the current directory.
-
-```sh
-motia init
-```
-
-### `motia install`
+### `npx motia install`
 
 Sets up your project's dependencies and environment. For Python projects, this will create and configure a virtual environment.
 
 ```sh
 motia install
-```
-
-### `motia build`
-
-Builds a lock file based on your current project setup which is then used by the Motia ecosystem.
-
-```sh
-motia build
 ```
 
 ### `motia dev`
