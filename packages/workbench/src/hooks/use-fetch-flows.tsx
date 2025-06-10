@@ -1,37 +1,30 @@
 import { useCallback, useEffect, useState } from 'react'
 import { FlowConfigResponse, FlowResponse } from '@/views/flow/hooks/use-get-flow-state'
-import { useWatchFlow } from '@/hooks/use-watch-flow'
+import { useStreamItem } from '@motiadev/stream-client-react'
 
 export const useFetchFlows = (flowId: string) => {
-  const newFlow = useWatchFlow(flowId)
-  const [flow, setFlow] = useState<FlowResponse | null>(null)
+  const { data: flow } = useStreamItem<FlowResponse>({
+    streamName: '__motia.flows',
+    groupId: 'default',
+    id: flowId,
+  })
   const [flowConfig, setFlowConfig] = useState<FlowConfigResponse | null>(null)
 
-  const fetchFlow = useCallback(() => {
-    Promise.all([fetch(`/flows/${flowId}`), fetch(`/flows/${flowId}/config`)])
-      .then(([flowRes, configRes]) => Promise.all([flowRes.json(), configRes.json()]))
-      .then(([flowData, configData]) => {
-        setFlow(flowData)
-        setFlowConfig(configData)
-      })
-      .catch((error) => {
-        console.error('Failed to fetch flow:', error)
-        setFlow(null)
-        setFlowConfig(null)
-      })
+  const fetchConfigFlow = useCallback(async () => {
+    try {
+      const response = await fetch(`/flows/${flowId}/config`)
+      setFlowConfig(await response.json())
+    } catch (error) {
+      console.error('Failed to fetch flow:', error)
+      setFlowConfig(null)
+    }
   }, [flowId])
 
   useEffect(() => {
     if (flowId) {
-      fetchFlow()
+      fetchConfigFlow()
     }
-  }, [fetchFlow, flowId])
-
-  useEffect(() => {
-    if (newFlow?.data) {
-      setFlow(newFlow.data)
-    }
-  }, [newFlow])
+  }, [fetchConfigFlow, flowId])
 
   return {
     flow,
