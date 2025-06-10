@@ -11,13 +11,15 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/motia"><img src="https://img.shields.io/npm/v/motia.svg" alt="npm version"></a>
   <a href="https://github.com/MotiaDev/motia/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
+  <a href="https://twitter.com/motiadev" target="_blank"><img src="https://img.shields.io/twitter/follow/motiadev.svg?style=social&label=Follow"></a>
+  <a href="https://discord.gg/7rXsekMK" target="_blank"><img src="https://img.shields.io/discord/1322278831184281721"></a>
 </p>
 
 **Unify APIs and agents with built-in observability and one-click deployment**
 
-Motia is a modern backend system that unifies APIs, background jobs, events, and AI agents. Eliminate runtime complexity and build unified backends where JavaScript, TypeScript, and Python work together in event-driven workflows, with built-in state management, observability, and one-click deployments.
+Motia is a modern backend framework that unifies APIs, background jobs, events, and AI agents. Eliminate runtime complexity and build unified backends where JavaScript, TypeScript, and Python work together in event-driven workflows, with built-in state management, observability, and one-click deployments.
 
-Motia brings cohesion in the fragmented backend world with its primitive: the **Step**. Think of Steps like React Components — but for backends.
+Motia brings cohesion to the fragmented backend world with our primitive: the **Step**. Think of Steps like React Components, but for backends.
 
 - 🧱 Each Step performs one task.  
 - 📚 Each Step can be in a different language, while being part of the same flow.
@@ -27,48 +29,32 @@ Motia brings cohesion in the fragmented backend world with its primitive: the **
 
 ---
 
-## 🚧 Why Motia
 
-Backend engineering teams often juggle multiple fragmented runtimes:
 
-| Runtime Layer           | Traditional Stack                                                   |
-| ----------------------- | ------------------------------------------------------------------- |
-| 🖥️ **API Servers**       | Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask, Nest |
-| 📬 **Job Queues/Events** | Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams  |
-| 🤖 **AI & Agents**       | LangGraph, CrewAI, Mastra, LangChain, AutoGPT, Agno, AgentGPT       |
+## 🚧 The Problem
 
-**Common issues caused by fragmentation:**
+Backend teams juggle fragmented runtimes across APIs, background queues, and AI agents. This creates deployment complexity, debugging gaps, and cognitive overhead from context-switching between frameworks.
 
-- **Deployment Complexity:** Multiple scaling models and deployment targets
-- **Debugging Difficulty:** Fragmented observability, incomplete traces
-- **Developer Constraints:** Language lock-in, limited flexibility
-- **Cognitive Overhead:** Context-switching across frameworks
-- **Redundant Boilerplate:** Duplicated logic and complex code-sharing
-
-_This siloed landscape demands a unified system._
+*This fragmentation demands a unified system.*
 
 ---
 
 ## ✅ The Unified System
 
-Motia's unified approach solves this fragmentation by putting together your entire backend into a single system. It combines APIs, background jobs, queues, and AI agents in a single model with shared state and integrated observability.
+Motia unifies your entire backend into a unified state. APIs, background jobs, and AI agents become interconnected Steps with shared state and integrated observability.
 
-Unlike traditional services, Motia creates a unified runtime where APIs, background jobs, scheduled tasks, and AI agents all exist as interconnected multi-lingual Steps within one cohesive framework.
 
-| Runtime Layer           | Motia's Approach                                               |
-| ----------------------- | -------------------------------------------------------------- |
-| 🖥️ **API Servers**       | ✅ Expose workflow steps instantly as APIs/webhooks             |
-| 📬 **Job Queues/Events** | ✅ Unified runtime with built-in queuing, retries, and state    |
-| 🤖 **AI & Agents**       | ✅ Seamlessly combine deterministic logic & AI-driven workflows |
+| **Before**                  | **After (Motia)**                   |
+| --------------------------- | ----------------------------------- |
+| Multiple deployment targets | Single unified deployment           |
+| Fragmented observability    | End-to-end tracing                  |
+| Language lock-in            | JavaScript, TypeScript, Python      |
+| Context-switching overhead  | Single intuitive model              |
+| Complex error handling      | Automatic retries & fault tolerance |
 
-**Benefits of Unifying with Motia:**
 
-- 🎯 **Unified Deployment:** Single consistent scaling model
-- 🔍 **Enhanced Observability:** Simplified end-to-end tracing
-- ⚙️ **Full Language Flexibility:** JavaScript, TypeScript, Python
-- 🧠 **Lower Cognitive Load:** Single intuitive backend model
-- ♻️ **Simplified Error Handling:** Automatic retries & error management
-- 🛡️ **Resilient Architecture:** Fault-tolerant event-based system
+![Motia combines APIs, background queues, and AI agents into one system](../../assets/2.gif)
+
 
 ---
 
@@ -219,10 +205,14 @@ For more information on a specific command, you can use the `--help` flag:
 ```sh
 motia <command> --help
 ```
+![alt text](../../assets/1.png)
 
 ## Documentation
 
-For full documentation, visit [https://motia.dev/docs](https://motia.dev/docs)
+For full documentation, visit [our docs.](https://motia.dev/docs)
+
+## Help
+For questions and support please use the [official Discord channel](https://discord.gg/7rXsekMK). The issue list of our Github repo is exclusively for bug reports and feature requests.
 
 ## Contributing
 
