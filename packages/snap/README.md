@@ -164,26 +164,42 @@ From here, you can:
 
 Motia comes with a range of [powerful CLI commands](https://www.motia.dev/docs/concepts/cli) to help you manage your projects, in addition to the ones listed below:
 
-### `npx motia install`
-
-Sets up your project's dependencies and environment. For Python projects, this will create and configure a virtual environment.
-
+### `npx motia create [options]`
+Create a new Motia project in a fresh directory or the current one.
 ```sh
-motia install
+npx motia create [options]
+
+# options
+  # -n, --name <project name>: Project name; use . or ./ to use current directory
+  # -t, --template <template name>: Template to use; run npx motia templates to view available ones
+  # -c, --cursor: Adds .cursor config for Cursor IDE
 ```
 
-### `motia dev`
+### `npx motia dev`
 
 Initiates a dev environment for your project allowing you to use Motia Workbench (visualization tool for your flows). For Python projects, this will automatically use the configured virtual environment.
 
 ```sh
-motia dev [options]
+npm run dev [options]
+# or
+yarn dev [options]
+# or
+pnpm dev [options]
+# or
+bun run dev  [options]
 
-Options:
-  -p, --port <port>     The port to run the server on (default: 3000)
-  -v, --verbose         Enable verbose logging
-  -d, --debug          Enable debug logging
-  -m, --mermaid        Enable mermaid diagram generation
+# options:
+  # -p, --port <port>     The port to run the server on (default: 3000)
+  # -v, --verbose         Enable verbose logging
+  # -d, --debug          Enable debug logging
+  # -m, --mermaid        Enable mermaid diagram generation
+```
+
+### `npx motia build`
+Compiles all your steps (Node.js, Python and more) and builds a lock file based on your current project setup which is then used by the Motia ecosystem.
+
+``` bash
+motia build
 ```
 
 ## Language Support
