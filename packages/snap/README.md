@@ -13,13 +13,14 @@
   <a href="https://github.com/MotiaDev/motia/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
 </p>
 
-**Unify APIs and agents with built-in observability and seamless deployment**
+**Unify APIs and agents with built-in observability and one-click deployment**
 
-Motia is a modern backend framework that unifies APIs, background jobs, event systems, and AI agents into one event-driven system that works the way developers think. Stop context-switching between multiple runtimes, build your entire backend with event-driven steps, mixing JavaScript, TypeScript, and Python freely, while keeping shared state, tracing, state of the art observability and deployment simplicity.
+Motia is a modern backend system that unifies APIs, background jobs, events, and AI agents. Eliminate runtime complexity and build unified backends where JavaScript, TypeScript, and Python work together in event-driven workflows, with built-in state management, observability, and one-click deployments.
 
-Motia is a tool for building **unified, event-driven, AI-native backends** using a new primitive: the **Step**. Think of Steps like React Components — but for backend logic.
+Motia brings cohesion in the fragmented backend world with its primitive: the **Step**. Think of Steps like React Components — but for backends.
 
 - 🧱 Each Step performs one task.  
+- 📚 Each Step can be in a different language, while being part of the same flow.
 - 🔀 Steps connect via Workflows.  
 - 🤖 Steps can trigger APIs, background jobs, or even LLMs.  
 - 🧰 Everything is observable via the built-in Workbench.
@@ -30,7 +31,7 @@ Motia is a tool for building **unified, event-driven, AI-native backends** using
 
 Backend engineering teams often juggle multiple fragmented runtimes:
 
-| Runtime Layer           | Common Tools                                                        |
+| Runtime Layer           | Traditional Stack                                                   |
 | ----------------------- | ------------------------------------------------------------------- |
 | 🖥️ **API Servers**       | Express, FastAPI, Rails, Django, Laravel, Spring, .NET, Flask, Nest |
 | 📬 **Job Queues/Events** | Sidekiq, Temporal, BullMQ, Kafka, RabbitMQ, AWS SQS, Redis Streams  |
@@ -44,13 +45,15 @@ Backend engineering teams often juggle multiple fragmented runtimes:
 - **Cognitive Overhead:** Context-switching across frameworks
 - **Redundant Boilerplate:** Duplicated logic and complex code-sharing
 
+_This siloed landscape demands a unified system._
+
 ---
 
-## ✅ The Unified Runtime: One System for All Backend Concerns
+## ✅ The Unified System
 
-Motia solves this fragmentation by unifying your backend into a single system. It brings everything—APIs, background jobs, queues, and AI agents into a single coherent model with shared state, logging, observability, and deployment.
+Motia's unified approach solves this fragmentation by putting together your entire backend into a single system. It combines APIs, background jobs, queues, and AI agents in a single model with shared state and integrated observability.
 
-Motia is not another queue or AI wrapper. It's a unified backend system where APIs, background jobs, scheduled tasks, and AI agents all live together as Steps in a single runtime:
+Unlike traditional services, Motia creates a unified runtime where APIs, background jobs, scheduled tasks, and AI agents all exist as interconnected multi-lingual Steps within one cohesive framework.
 
 | Runtime Layer           | Motia's Approach                                               |
 | ----------------------- | -------------------------------------------------------------- |
