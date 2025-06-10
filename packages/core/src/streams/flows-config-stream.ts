@@ -32,6 +32,7 @@ export class FlowsConfigStream extends StreamAdapter<FlowConfig> {
     return allFlowsConfig.find((flow) => flow.id === id) || null
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async delete(_: string): Promise<null> {
     return null
   }

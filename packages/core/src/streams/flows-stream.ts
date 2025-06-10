@@ -18,6 +18,7 @@ export class FlowsStream extends StreamAdapter<FlowResponse> {
     return generateFlow(id, flow.steps)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async delete(_: string): Promise<FlowResponse | null> {
     return null
   }
