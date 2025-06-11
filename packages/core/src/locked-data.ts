@@ -148,10 +148,10 @@ export class LockedData {
     }
 
     const savedStep = this.stepsMap[newStep.filePath]
-    savedStep.config = newStep.config
     const addedFlows = newStep.config.flows?.filter((flowName) => !oldStep.config.flows?.includes(flowName)) ?? []
     const removedFlows = oldStep.config.flows?.filter((flowName) => !newStep.config.flows?.includes(flowName)) ?? []
     const untouchedFlows = oldStep.config.flows?.filter((flowName) => newStep.config.flows?.includes(flowName)) ?? []
+    savedStep.config = newStep.config
 
     untouchedFlows.forEach((flowName) => this.onFlowUpdated(flowName))
 
