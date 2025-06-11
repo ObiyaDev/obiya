@@ -13,7 +13,7 @@ export class ObservabilityLogger {
   }
 
   async logStepStart(stepName: string, correlationId?: string): Promise<void> {
-    this.traceBuilder.handleStepStart({
+    await this.traceBuilder.handleStepStart({
       eventType: 'step_start',
       traceId: this.traceId,
       correlationId,

@@ -1,5 +1,8 @@
 import { Trace } from './types'
-import { MemoryStreamAdapter } from '../streams/adapters/memory-stream-adapter'
+import { FileStreamAdapter } from '../streams/adapters/file-stream-adapter'
 
-export class ObservabilityStream extends MemoryStreamAdapter<Trace> {
+export class ObservabilityStream extends FileStreamAdapter<Trace> {
+  constructor() {
+    super(process.cwd(), 'observability-stream')
+  }
 }
