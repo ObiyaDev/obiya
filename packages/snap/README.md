@@ -53,8 +53,7 @@ Motia unifies your entire backend into a unified state. APIs, background jobs, a
 | Complex error handling      | Automatic retries & fault tolerance |
 
 
-![Motia combines APIs, background queues, and AI agents into one system](../../assets/2.gif)
-
+![Motia combines APIs, background queues, and AI agents into one system](https://github.com/MotiaDev/motia/blob/main/assets/2.gif?raw=true)
 
 ---
 
@@ -205,7 +204,7 @@ For more information on a specific command, you can use the `--help` flag:
 ```sh
 motia <command> --help
 ```
-![alt text](../../assets/1.png)
+![alt text](https://github.com/MotiaDev/motia/blob/main/assets/1.png?raw=true)
 
 ## Documentation
 
