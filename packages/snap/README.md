@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>A modern, declarative workflow framework for multiple programming languages</strong>
+  <strong>A Modern Unified Backend Framework for APIs, Events and Agents</strong>
 </p>
 
 <p align="center">
