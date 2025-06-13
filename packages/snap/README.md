@@ -219,4 +219,4 @@ We welcome contributions! Please see our [Contributing Guide](https://github.com
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License.](https://github.com/MotiaDev/motia?tab=MIT-1-ov-file)
