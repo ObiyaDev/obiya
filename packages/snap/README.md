@@ -203,7 +203,8 @@ For more information on a specific command, you can use the `--help` flag:
 ```sh
 motia <command> --help
 ```
-![alt text](1.png)
+
+![alt text](https://raw.githubusercontent.com/MotiaDev/motia/refs/heads/main/assets/1.png)
 
 ## Documentation
 
