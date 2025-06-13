@@ -158,7 +158,7 @@ Write steps in your preferred language:
 | **JavaScript** | ✅ Stable      | `handler.step.js` |
 | **TypeScript** | ✅ Stable      | `handler.step.ts` |
 | **Python**     | ✅ Stable      | `handler.step.py` |
-| **Ruby**       | ✅ Stable      | `handler.step.rb` |
+| **Ruby**       | 🔄 Coming Soon | `handler.step.rb` |
 | **Go**         | 🔄 Coming Soon | `handler.step.go` |
 | **Rust**       | 🔄 Coming Soon | `handler.step.rs` |
 
