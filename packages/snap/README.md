@@ -214,6 +214,10 @@ For questions and support please use the [official Discord channel](https://disc
 
 ## Contributing
 
+#### 🚀 Roadmap
+
+We're building Motia in the open, and we'd love for you to be a part of the journey. [View our public Roadmap](https://github.com/orgs/MotiaDev/projects/2/views/2)
+
 We welcome contributions! Please see our [Contributing Guide](https://github.com/MotiaDev/motia/blob/main/CONTRIBUTING.md) for details.
 
 ## License
