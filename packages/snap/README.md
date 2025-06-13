@@ -191,7 +191,6 @@ motia build
 Motia currently supports:
 - JavaScript
 - TypeScript
-- Ruby
 - Python
 
 With more languages coming soon!
