@@ -171,6 +171,14 @@ Write steps in your preferred language:
 
 ### 🤝 **Contributing**
 
+## 🚀 Roadmap
+
+We're building Motia in the open, and we'd love for you to be a part of the journey.
+
+Check out our public roadmap to see what’s planned, what’s in progress, and what’s recently shipped:
+
+👉 [View our public Roadmap](https://github.com/orgs/MotiaDev/projects/2/views/2)
+
 We welcome contributions! Whether it's:
 - 🐛 Bug fixes and improvements
 - ✨ New features and step types
