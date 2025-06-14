@@ -108,6 +108,35 @@ export async function generateMetadata(
         'max-snippet': -1,
       },
     },
+    // Additional metadata
+    other: {
+      // Instagram
+      'instagram:card': 'summary_large_image',
+      'instagram:title': metaTitle,
+      'instagram:description': metaDescription,
+      'instagram:image': ogImage,
+
+      // Reddit
+      'reddit:title': metaTitle,
+      'reddit:description': metaDescription,
+      'reddit:image': ogImage,
+
+      // LinkedIn
+      'linkedin:card': 'summary_large_image',
+      'linkedin:title': metaTitle,
+      'linkedin:description': metaDescription,
+      'linkedin:image': ogImage,
+
+      // PWA related
+      'theme-color': '#18181b',
+      'application-name': 'motia',
+      'apple-mobile-web-app-title': 'motia',
+      'apple-mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-status-bar-style': 'black-translucent',
+      'mobile-web-app-capable': 'yes',
+      'msapplication-TileColor': '#18181b',
+      canonical: base,
+    },
   };
 }
 
