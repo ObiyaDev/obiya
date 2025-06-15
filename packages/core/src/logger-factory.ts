@@ -25,7 +25,6 @@ export class BaseLoggerFactory implements LoggerFactory {
 
       this.logStream.set('default', id, {
         id,
-        step: stepName,
         ...(args ?? {}),
         level,
         time: Date.now(),
