@@ -26,7 +26,7 @@
     "lint": "eslint --config ../../eslint.config.js",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "test": "test-storybook"
+    "storybook:test": "test-storybook"
   },
   "peerDependencies": {
     "react": "^19.1.0",
