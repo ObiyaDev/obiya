@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ObservabilityStats as StatsType, TraceGroup } from '@/types/observability'
 import { Activity, CheckCircle, Hash, XCircle } from 'lucide-react'
@@ -25,7 +25,7 @@ const Stat: React.FC<{ title: string; value: string; icon: React.ReactNode }> = 
   )
 }
 
-export const ObservabilityStats = ({ groups }: { groups: TraceGroup[] }) => {
+export const ObservabilityStats = memo(({ groups }: { groups: TraceGroup[] }) => {
   const stats = calculateStats(groups)
 
   return (
@@ -52,4 +52,4 @@ export const ObservabilityStats = ({ groups }: { groups: TraceGroup[] }) => {
       />
     </div>
   )
-}
+})

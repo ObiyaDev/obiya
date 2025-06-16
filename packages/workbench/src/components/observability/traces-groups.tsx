@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { TraceGroup } from '@/types/observability'
 import { formatDistanceToNow } from 'date-fns'
@@ -10,7 +10,7 @@ interface Props {
   onGroupSelect: (group: TraceGroup) => void
 }
 
-export const TracesGroups: React.FC<Props> = ({ groups, selectedGroupId, onGroupSelect }) => {
+export const TracesGroups: React.FC<Props> = memo(({ groups, selectedGroupId, onGroupSelect }) => {
   const formatDuration = (duration?: number) => {
     if (!duration) return 'N/A'
     if (duration < 1000) return `${duration}ms`
@@ -59,4 +59,4 @@ export const TracesGroups: React.FC<Props> = ({ groups, selectedGroupId, onGroup
       )}
     </div>
   )
-}
+})

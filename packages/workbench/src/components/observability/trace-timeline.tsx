@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Trace, TraceGroup } from '@/types/observability'
 import { useStreamGroup, useStreamItem } from '@motiadev/stream-client-react'
 import { TraceItem } from './trace-item/trace-item'
@@ -8,7 +8,7 @@ type Props = {
   groupId: string
 }
 
-export const TraceTimeline: React.FC<Props> = ({ groupId }) => {
+export const TraceTimeline: React.FC<Props> = memo(({ groupId }) => {
   const { data: group } = useStreamItem<TraceGroup>({
     streamName: 'motia-trace-group',
     groupId: 'default',
@@ -45,4 +45,4 @@ export const TraceTimeline: React.FC<Props> = ({ groupId }) => {
       </div>
     </div>
   )
-}
+})
