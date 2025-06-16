@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { isApiStep, isCronStep, isEventStep } from './guards'
-import { NoPrinter, Printer } from './printer'
+import { Printer } from './printer'
 import { validateStep } from './step-validator'
 import { FileStreamAdapter } from './streams/adapters/file-stream-adapter'
 import { MemoryStreamAdapter } from './streams/adapters/memory-stream-adapter'
