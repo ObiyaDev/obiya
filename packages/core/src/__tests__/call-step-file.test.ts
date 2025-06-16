@@ -5,10 +5,10 @@ import { createEventManager } from '../event-manager'
 import { LockedData } from '../locked-data'
 import { Logger } from '../logger'
 import { Motia } from '../motia'
-import { NoTracer } from '../observability/tracer'
-import { Printer } from '../printer'
+import { NoPrinter, Printer } from '../printer'
 import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
 import { createCronStep } from './fixtures/step-fixtures'
+import { NoTracer } from '../observability/no-tracer'
 
 describe('callStepFile', () => {
   beforeAll(() => {
@@ -20,7 +20,7 @@ describe('callStepFile', () => {
     const eventManager = createEventManager()
     const state = new MemoryStateAdapter()
     const step = createCronStep({ emits: ['TEST_EVENT'], cron: '* * * * *' }, path.join(baseDir, 'cron-step.ts'))
-    const printer = new Printer(baseDir)
+    const printer = new NoPrinter()
     const traceId = randomUUID()
     const logger = new Logger()
     const tracer = new NoTracer()
@@ -28,7 +28,7 @@ describe('callStepFile', () => {
       eventManager,
       state,
       printer,
-      lockedData: new LockedData(baseDir),
+      lockedData: new LockedData(baseDir, 'memory', printer),
       loggerFactory: { create: () => logger },
       tracerFactory: { createTracer: () => tracer },
     }

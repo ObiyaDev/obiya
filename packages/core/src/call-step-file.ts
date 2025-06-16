@@ -6,7 +6,8 @@ import { Event, Step } from './types'
 import { BaseStreamItem } from './types-stream'
 import { isAllowedToEmit } from './utils'
 import { Logger } from './logger'
-import { Tracer } from './observability/tracer'
+import { Tracer } from './observability'
+import { TraceError } from './observability/types'
 
 type StateGetInput = { traceId: string; key: string }
 type StateSetInput = { traceId: string; key: string; value: unknown }
@@ -79,7 +80,27 @@ export const callStepFile = <TData>(options: CallStepFileOptions, motia: Motia):
     processManager
       .spawn()
       .then(() => {
-        processManager.handler<StateGetInput>('close', async () => processManager.kill())
+        processManager.handler<TraceError | undefined>('close', async (err) => {
+          processManager.kill()
+
+          if (err) {
+            trackEvent('step_execution_error', {
+              stepName: step.config.name,
+              traceId,
+              message: err.message,
+            })
+          }
+
+          if (err) {
+            tracer.end({
+              message: err.message,
+              code: err.code,
+              stack: err.stack?.replace(new RegExp(`${motia.lockedData.baseDir}/`), ''),
+            })
+          } else {
+            tracer.end()
+          }
+        })
         processManager.handler<unknown>('log', async (input: unknown) => logger.log(input))
 
         processManager.handler<StateGetInput, unknown>('state.get', async (input) => {
@@ -174,7 +195,11 @@ export const callStepFile = <TData>(options: CallStepFileOptions, motia: Motia):
 
         processManager.onProcessError((error) => {
           processManager.close()
-          tracer.end(error)
+          tracer.end({
+            message: error.message,
+            code: error.code,
+            stack: error.stack,
+          })
 
           if (error.code === 'ENOENT') {
             trackEvent('step_execution_error', {
@@ -190,7 +215,11 @@ export const callStepFile = <TData>(options: CallStepFileOptions, motia: Motia):
         })
       })
       .catch((error) => {
-        tracer.end(error)
+        tracer.end({
+          message: error.message,
+          code: error.code,
+          stack: error.stack,
+        })
 
         trackEvent('step_execution_error', {
           stepName: step.config.name,

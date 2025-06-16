@@ -1,5 +1,5 @@
 import { Logger } from '../../logger'
-import { NoTracer } from '../../observability/tracer'
+import { NoTracer } from '../../observability/no-tracer'
 import { Event } from '../../types'
 
 const logger = new Logger()

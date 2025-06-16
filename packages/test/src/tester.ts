@@ -1,9 +1,5 @@
-import { createServer, createStateAdapter, createStepHandlers, Event, Logger } from '@motiadev/core'
-import { Motia } from '@motiadev/core/dist/src/motia'
-import { NoTracer } from '@motiadev/core/src/observability/tracer'
-import { NoPrinter } from '@motiadev/core/src/printer'
+import { createServer, createStateAdapter, Event, Logger } from '@motiadev/core'
 import { generateLockedData } from 'motia'
-import path from 'path'
 import request from 'supertest'
 import { createEventManager } from './event-manager'
 import { CapturedEvent, MotiaTester } from './types'
@@ -13,24 +9,11 @@ export const createMotiaTester = (): MotiaTester => {
   const logger = new Logger()
 
   const promise = (async () => {
-    const lockedData = await generateLockedData(path.join(process.cwd()), 'memory')
+    const lockedData = await generateLockedData(process.cwd(), 'memory', 'disabled')
     const state = createStateAdapter({ adapter: 'memory' })
-    const { server, socketServer, close } = await createServer(lockedData, eventManager, state, {
-      isVerbose: true,
-    })
-    const tracer = new NoTracer()
-    const motia: Motia = {
-      eventManager,
-      lockedData,
-      state,
-      printer: new NoPrinter('') as never,
-      loggerFactory: { create: () => logger },
-      tracerFactory: { createTracer: () => tracer },
-    }
+    const { server, close } = createServer(lockedData, eventManager, state, { isVerbose: false })
 
-    createStepHandlers(motia)
-
-    return { server, socketServer, eventManager, state, close }
+    return { server, eventManager, state, close }
   })()
 
   return {
@@ -59,7 +42,7 @@ export const createMotiaTester = (): MotiaTester => {
         handlerName: '$watcher',
         handler: async (event: Event<TData>) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { logger, ...rest } = event
+          const { logger, tracer, ...rest } = event
           events.push(rest)
         },
       })
@@ -70,12 +53,7 @@ export const createMotiaTester = (): MotiaTester => {
         getCapturedEvent: (index) => events[index],
       }
     },
-    sleep: async (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    },
-    close: async () => {
-      const { close } = await promise
-      await close()
-    },
+    sleep: async (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    close: async () => promise.then(({ close }) => close()),
   }
 }

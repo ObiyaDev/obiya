@@ -15,6 +15,12 @@ export interface TraceGroup {
   }
 }
 
+export type TraceError = {
+  message: string
+  code?: string | number
+  stack?: string
+}
+
 export interface Trace {
   id: string
   name: string
@@ -23,6 +29,7 @@ export interface Trace {
   status: 'running' | 'completed' | 'failed'
   startTime: number
   endTime?: number
+  error?: TraceError
   entryPoint: { type: StepConfig['type']; stepName: string }
   events: TraceEvent[]
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { Trace, TraceGroup } from '@/types/observability'
 import { useStreamGroup, useStreamItem } from '@motiadev/stream-client-react'
 import { TraceItem } from './trace-item/trace-item'
+import { useGetEndTime } from './hooks/use-get-endtime'
 
 type Props = {
   groupId: string
@@ -14,10 +15,9 @@ export const TraceTimeline: React.FC<Props> = ({ groupId }) => {
     id: groupId,
   })
   const { data } = useStreamGroup<Trace>({ streamName: 'motia-trace', groupId })
+  const endTime = useGetEndTime(group)
 
   if (!group) return null
-
-  const endTime = group.endTime || Date.now()
 
   return (
     <div className="flex flex-col p-2">
@@ -41,7 +41,7 @@ export const TraceTimeline: React.FC<Props> = ({ groupId }) => {
         </div>
       </div>
       <div className="h-full overflow-auto p-2 space-y-2">
-        {data?.map((trace) => <TraceItem key={trace.id} trace={trace} group={group} />)}
+        {data?.map((trace) => <TraceItem key={trace.id} trace={trace} group={group} groupEndTime={endTime} />)}
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { z, ZodObject } from 'zod'
 import { Logger } from './logger'
-import { Tracer } from './observability/tracer'
+import { Tracer } from './observability'
 
 export type InternalStateManager = {
   get<T>(groupId: string, key: string): Promise<T | null>

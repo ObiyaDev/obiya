@@ -1,5 +1,5 @@
 import { Printer } from './printer'
-import { TracerFactory } from './observability/tracer'
+import { TracerFactory } from './observability'
 import { EventManager, InternalStateManager } from './types'
 import { LockedData } from './locked-data'
 import { LoggerFactory } from './logger-factory'

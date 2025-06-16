@@ -23,6 +23,13 @@ export interface Trace {
   endTime?: number
   entryPoint: { type: 'api' | 'event' | 'cron'; stepName: string }
   events: TraceEvent[]
+  error?: TraceError
+}
+
+export type TraceError = {
+  message: string
+  code?: string | number
+  stack?: string
 }
 
 export type TraceEvent = StateEvent | EmitEvent | StreamEvent | LogEntry

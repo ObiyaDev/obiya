@@ -31,6 +31,7 @@ import {
 } from './types'
 import { BaseStreamItem, MotiaStream, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 import { globalLogger } from './logger'
+import { Printer } from './printer'
 
 export type MotiaServer = {
   app: Express
@@ -45,6 +46,7 @@ export type MotiaServer = {
 
 type MotiaServerConfig = {
   isVerbose: boolean
+  printer?: Printer
 }
 
 export const createServer = (
@@ -53,7 +55,7 @@ export const createServer = (
   state: InternalStateManager,
   config: MotiaServerConfig,
 ): MotiaServer => {
-  const printer = lockedData.printer
+  const printer = config.printer ?? new Printer(process.cwd())
   const app = express()
   const server = http.createServer(app)
 
