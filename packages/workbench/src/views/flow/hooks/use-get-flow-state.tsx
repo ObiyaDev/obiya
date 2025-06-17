@@ -1,5 +1,5 @@
 import { Edge, Node, useEdgesState, useNodesState } from '@xyflow/react'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import type { EdgeData, NodeData } from '../nodes/nodes.types'
 import { ApiFlowNode } from '../nodes/api-flow-node'
 import { NoopFlowNode } from '../nodes/noop-flow-node'
@@ -52,46 +52,62 @@ type Position = {
   y: number
 }
 
-const getNodePosition = (flowConfig: FlowConfigResponse, stepName: string): Position => {
-  const position = flowConfig?.config[stepName]
-  return position || { x: 0, y: 0 }
+const DEFAULT_POSITION: Position = { x: 0, y: 0 }
+
+const getNodePosition = (flowConfig: FlowConfigResponse | null, stepName: string): Position => {
+  return flowConfig?.config[stepName] || DEFAULT_POSITION
 }
 
 type FlowState = {
   nodes: Node<NodeData>[]
   edges: Edge<EdgeData>[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nodeTypes: Record<string, React.ComponentType<any>>
 }
 
-async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse): Promise<FlowState> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const nodeTypes: Record<string, React.ComponentType<any>> = {
-    event: EventFlowNode,
-    api: ApiFlowNode,
-    noop: NoopFlowNode,
-    cron: CronNode,
-  }
+const nodeComponentCache = new Map<string, React.ComponentType<any>>()
 
-  // Load custom node components if they exist
-  for (const step of flow.steps) {
-    if (step.nodeComponentPath) {
-      const module = await import(/* @vite-ignore */ `/@fs/${step.nodeComponentPath}`)
-      nodeTypes[step.nodeComponentPath] = module.Node ?? module.default
-    }
-  }
+const BASE_NODE_TYPES: Record<string, React.ComponentType<any>> = {
+  event: EventFlowNode,
+  api: ApiFlowNode,
+  noop: NoopFlowNode,
+  cron: CronNode,
+}
 
-  // Create nodes from steps
+async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse | null): Promise<FlowState> {
+  const nodeTypes: Record<string, React.ComponentType<any>> = { ...BASE_NODE_TYPES }
+
+  const customNodePromises = flow.steps
+    .filter((step) => step.nodeComponentPath)
+    .map(async (step) => {
+      const path = step.nodeComponentPath!
+
+      // Check cache first
+      if (nodeComponentCache.has(path)) {
+        nodeTypes[path] = nodeComponentCache.get(path)!
+        return
+      }
+
+      try {
+        const module = await import(/* @vite-ignore */ `/@fs/${path}`)
+        const component = module.Node ?? module.default
+        nodeComponentCache.set(path, component)
+        nodeTypes[path] = component
+      } catch (error) {
+        console.error(`Failed to load custom node component: ${path}`, error)
+      }
+    })
+
+  await Promise.all(customNodePromises)
+
   const nodes: Node<NodeData>[] = flow.steps.map((step) => ({
     id: step.id,
-    type: step.nodeComponentPath ? step.nodeComponentPath : step.type,
+    type: step.nodeComponentPath || step.type,
     filePath: step.filePath,
-    position: step.filePath ? getNodePosition(flowConfig, step.filePath) : { x: 0, y: 0 },
+    position: step.filePath ? getNodePosition(flowConfig, step.filePath) : DEFAULT_POSITION,
     data: step,
     language: step.language,
   }))
 
-  // Use the edges provided by the API, adding required ReactFlow properties
   const edges: Edge<EdgeData>[] = flow.edges.map((edge) => ({
     ...edge,
     type: 'base',
@@ -101,65 +117,86 @@ async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse): P
 }
 
 export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigResponse) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [nodeTypes, setNodeTypes] = useState<Record<string, React.ComponentType<any>>>()
+  const [nodeTypes, setNodeTypes] = useState<Record<string, React.ComponentType<any>>>(BASE_NODE_TYPES)
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge<EdgeData>>([])
+
   const saveConfig = useSaveWorkflowConfig()
+
   const flowIdRef = useRef<string>('')
-  const timeoutRef = useRef<any>(null)
-  const importFlowTimeoutRef = useRef<any>(null)
-  const flowConfigRef = useRef<any>(null)
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
+  const lastSavedConfigRef = useRef<FlowConfigResponse['config']>(null)
+
+  const memoizedFlowConfig = useMemo(() => flowConfig, [flowConfig?.id, flowConfig?.config])
+
   useEffect(() => {
-    clearTimeout(importFlowTimeoutRef.current)
-    if (!flow || flow.error || isEqual(flowConfigRef.current?.config, flowConfig.config)) return
-    flowConfigRef.current = flowConfig
+    if (!flow || flow.error) return
+
+    if (isEqual(lastSavedConfigRef.current, memoizedFlowConfig?.config)) return
+
+    lastSavedConfigRef.current = memoizedFlowConfig?.config
     flowIdRef.current = flow.id
 
-    console.log({ flowConfig })
+    const importFlowAsync = async () => {
+      try {
+        const { nodes, edges, nodeTypes } = await importFlow(flow, flowConfig)
+        setNodes(nodes)
+        setEdges(edges)
+        setNodeTypes(nodeTypes)
+      } catch (error) {
+        console.error('Failed to import flow:', error)
+      }
+    }
 
-    console.log('importing flow')
-    importFlow(flow, flowConfig).then(({ nodes, edges, nodeTypes }) => {
-      setNodes(nodes)
-      setEdges(edges)
-      setNodeTypes(nodeTypes)
-    })
-
-    return () => clearTimeout(importFlowTimeoutRef.current)
-  }, [flow, flowConfig, setNodes, setEdges, setNodeTypes])
+    importFlowAsync()
+  }, [flow, memoizedFlowConfig, setNodes, setEdges])
 
   const saveFlowConfig = useCallback(
-    (nodes: Node<NodeData>[]) => {
-      const steps = nodes.reduce(
-        (acc, node) => {
+    (nodesToSave: Node<NodeData>[]) => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
+      }
+
+      saveTimeoutRef.current = setTimeout(async () => {
+        const steps = nodesToSave.reduce<FlowConfigResponse['config']>((acc, node) => {
           if (node.data.filePath) {
-            acc[node.data.filePath] = node.position
+            acc[node.data.filePath] = {
+              x: Math.round(node.position.x),
+              y: Math.round(node.position.y),
+            }
           }
           return acc
-        },
-        {} as FlowConfigResponse['config'],
-      )
-      const newConfig = { id: flowIdRef.current, config: steps }
+        }, {})
 
-      if (!isEqual(newConfig.config, flowConfig.config)) {
-        flowConfigRef.current = newConfig
-        return saveConfig(newConfig)
-      }
+        if (!isEqual(steps, lastSavedConfigRef.current)) {
+          lastSavedConfigRef.current = steps
+          const newConfig = { id: flowIdRef.current, config: steps }
+
+          try {
+            await saveConfig(newConfig)
+          } catch (error) {
+            console.error('Failed to save flow config:', error)
+          }
+        }
+      }, 300)
     },
-    [flowConfig],
+    [saveConfig],
   )
 
   useEffect(() => {
-    clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(async () => {
-      console.log('Saving nodes')
-      await saveFlowConfig(nodes)
-    }, 100)
+    if (nodes.length > 0) {
+      saveFlowConfig(nodes)
+    }
 
     return () => {
-      clearTimeout(timeoutRef.current)
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
+      }
     }
-  }, [nodes])
+  }, [nodes, saveFlowConfig])
 
-  return { nodes, edges, onNodesChange, onEdgesChange, nodeTypes }
+  return useMemo(
+    () => ({ nodes, edges, onNodesChange, onEdgesChange, nodeTypes }),
+    [nodes, edges, onNodesChange, onEdgesChange, nodeTypes],
+  )
 }
