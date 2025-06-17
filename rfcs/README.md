@@ -4,16 +4,15 @@
 The RFC (Request for Comments) process provides a consistent and collaborative path for proposing substantial changes to Motia. This ensures that major decisions are well-documented, thoroughly reviewed, and benefit from community input.
 
 ## When to Write an RFC
-You should write an RFC for:
 - New features that create public API surface area
 - Breaking changes to existing functionality
 - Significant architectural decisions
 - New conventions, patterns, or development practices
 - Changes that affect multiple teams or components
 
-## Process
+## Process Workflow
 1. **Fork** this repository and create a new branch
-2. **Copy** the template: `cp YYYY-MM-DD-template.md text/YYYY-MM-DD-my-feature.md`
+2. **Copy** the template: `cp 0000-00-00-template.md text/YYYY-MM-DD-my-feature.md`
 3. **Fill in** the RFC template with your proposal details
 4. **Submit** a pull request with your RFC
 5. **Iterate** based on community feedback and discussion
