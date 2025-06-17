@@ -5,10 +5,11 @@
     "types-of-step",
     "steps-advanced",
     "flows-and-workbench",
+    "logging",
     "state-mgt",
     "streams",
     "deployment",
-    "observability-and-logging",
+    "testing-and-debugging",
     "cli",
     "happy-practices"
   ]
