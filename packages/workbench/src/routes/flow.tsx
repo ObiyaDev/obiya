@@ -4,7 +4,6 @@ import { useFetchFlows } from '@/hooks/use-fetch-flows'
 
 export const Flow = () => {
   const { id } = useParams()
-
   const { flow, flowConfig } = useFetchFlows(id!)
 
   if (!flow || flow.error)

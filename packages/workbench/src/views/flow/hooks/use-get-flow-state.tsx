@@ -61,11 +61,13 @@ const getNodePosition = (flowConfig: FlowConfigResponse | null, stepName: string
 type FlowState = {
   nodes: Node<NodeData>[]
   edges: Edge<EdgeData>[]
-  nodeTypes: Record<string, React.ComponentType<any>>
+  nodeTypes: Record<string, React.ComponentType<any>> // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const nodeComponentCache = new Map<string, React.ComponentType<any>>()
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BASE_NODE_TYPES: Record<string, React.ComponentType<any>> = {
   event: EventFlowNode,
   api: ApiFlowNode,
@@ -74,6 +76,7 @@ const BASE_NODE_TYPES: Record<string, React.ComponentType<any>> = {
 }
 
 async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse | null): Promise<FlowState> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nodeTypes: Record<string, React.ComponentType<any>> = { ...BASE_NODE_TYPES }
 
   const customNodePromises = flow.steps
@@ -117,6 +120,7 @@ async function importFlow(flow: FlowResponse, flowConfig: FlowConfigResponse | n
 }
 
 export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigResponse) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [nodeTypes, setNodeTypes] = useState<Record<string, React.ComponentType<any>>>(BASE_NODE_TYPES)
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge<EdgeData>>([])
@@ -127,6 +131,7 @@ export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigRespon
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const lastSavedConfigRef = useRef<FlowConfigResponse['config']>(null)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedFlowConfig = useMemo(() => flowConfig, [flowConfig?.id, flowConfig?.config])
 
   useEffect(() => {
@@ -149,7 +154,7 @@ export const useGetFlowState = (flow: FlowResponse, flowConfig: FlowConfigRespon
     }
 
     importFlowAsync()
-  }, [flow, memoizedFlowConfig, setNodes, setEdges])
+  }, [flow, memoizedFlowConfig, setNodes, setEdges, flowConfig])
 
   const saveFlowConfig = useCallback(
     (nodesToSave: Node<NodeData>[]) => {
