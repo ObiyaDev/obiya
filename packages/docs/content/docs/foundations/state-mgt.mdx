@@ -1,6 +1,6 @@
 ---
 title: "State Management"
-description: "Learn how to manage state within your Motia.dev workflows for persistent data and cross-step communication."
+description: "Learn how to manage state within your workflows for persistent data and cross-step communication."
 ---
 
 Motia gives you a simple but powerful system for handling state across your flows. Whether you're passing data between steps or persisting temporary results, the built-in state manager helps you do it cleanly and effectively.
@@ -120,7 +120,7 @@ While `traceId` from `ctx.traceId` is the recommended scope for flow isolation, 
 | `set`     | `scope: string, key: string, value: T` | `Promise<void>`      | Stores a `value` associated with the given `key` and `scope` in the state store. The type `T` can be any serializable JavaScript/JSON value.                                                  |
 | `delete`  | `scope: string, key: string`           | `Promise<void>`      | Removes the key-value pair associated with the given `key` and `scope` from the state store.                                                                                                  |
 | `clear`   | `scope: string`                        | `Promise<void>`      | Removes **all** state data associated with the provided `scope`. This is useful for cleaning up state for a specific scope.                                                                   |
-| `cleanup` | _(None)_                               | `Promise<void>`      | Performs periodic maintenance tasks, such as removing expired state data (TTL cleanup). The actual implementation depends on the configured state adapter.                                    |
+| `cleanup` | _(None)_                               | `Promise<void>`      | Performs periodic maintenance tasks, such as removing expired state data (TTL cleanup).  |
 
 
 <Callout title="State Scope Required" type="info">
@@ -135,128 +135,17 @@ While `traceId` from `ctx.traceId` is the recommended scope for flow isolation, 
 </Callout>
 
 
-## Inspecting State
 
-<Tabs items={['Memory', 'File', 'Redis']}>
-  <Tab label="Memory">
     > State is only available during runtime in the Node.js process memory. You cannot inspect memory state directly outside of a running step execution. Use logging within your steps to output state values for debugging purposes.
-  </Tab>
-  <Tab label="File">
-    To inspect state stored in the **File Adapter**, you can directly view the contents of the state file using the Motia CLI:
-
-    ```bash
-    # View state file contents
-    motia state list
-    ```
-
-    This command will output the entire state file (motia.state.json) content in JSON format to your console, allowing you to examine the stored state data.
-
-  </Tab>
-  <Tab label="Redis">
-    To inspect state stored in **Redis Adapter**, you can use the `redis-cli` command-line tool to interact with your Redis server:
-
-    ```bash
-    # List all state keys (under the motia:state prefix)
-    redis-cli KEYS "motia:state:*"
-
-    # Get specific state for a given traceId and key
-    redis-cli GET "motia:state:{traceId}:booking"
-    ```
-    **Note:** Replace `{traceId}` in the `redis-cli GET` command with the actual `traceId` of the flow execution you are debugging. Replace `booking` with the specific `key` you want to inspect.
-
-  </Tab>
-</Tabs>
+  
 <Callout type="warn" title="State Manager best practices">
 Don't forget to checkout the [best practices](/docs/foundations/happy-practices#best-practices-of-using-state-manager) of using State Manger when writing Motia apps.
 </Callout>
 
-## Storage Adapters
-In Motia, storage adapters define how and where your workflow’s state is stored. Motia support three storage adapters:
-1. File (Default): Persists state to a JSON file in your project (`.motia/motia.state.json`). No configuration needed for basic use.
-2. Memory: Stores state in-memory. Fastest option, but state is not persistent across server restarts. Useful for development and non-critical data.
-3. Redis: Leverages Redis for persistent and scalable state storage. Ideal for production environments and flows requiring high availability and data durability.
-
-<Tabs items={['File Adapter', 'Memory Adapter', 'Redis Adapter']}>
-
-  <Tab label="File Adapter">
-    **File Adapter (Default)**
-
-    Default adapter with no configuration required.  
-    State is persisted to `.motia/motia.state.json` in your project root.
-
-    > Ideal for local development or simple persistent use cases.
-  </Tab>
-
-  <Tab label="Memory Adapter">
-    ```yaml title="config.yml"
-    state:
-      adapter: memory
-    ```
-
-    > State is stored in-memory and will be **lost** when the dev server restarts.  
-    > Best suited for development and testing where persistence is not required.
-  </Tab>
-
-  <Tab label="Redis Adapter">
-    ```yaml title="config.yml"
-    state:
-      adapter: redis
-      host: localhost  # Redis server host (e.g., 'localhost' or IP address)
-      port: 6379        # Redis server port (default: 6379)
-      password: optional # Redis password (if required)
-      ttl: 3600         # Optional: Time-To-Live in seconds (e.g., 3600 = 1 hour)
-    ```
-
-    > Recommended for production environments. Requires a running Redis server. The `ttl` option allows **automatic expiration** of state entries, helping manage Redis storage effectively.
-  </Tab>
-
-</Tabs>
-
-## Custom State Adapters
-If none of the built-in adapters (`in-memory`, `file-based`, or `Redis`) meet your needs then you can write your own adapter. For example, if you want to:
-	-	Store state in a database (like MongoDB or Postgres),
-	-	Use a custom encryption mechanism,
-	-	Send state to an external API,
-  
-then, you'll have to write your own adapter. 
-
-Motia exposes a `StateAdapter` base class. You extend this class and implement its required methods.
-To configure a different state adapter, modify the `config.yml` file in your project root:
-```bash
-my-project/
-├── config.yml
-└── steps/
-    ├── step-1.ts
-    └── step-2.ts
-```
-```typescript title="Custom State Adapter Example"
-import { StateAdapter } from 'motia'
-
-class CustomStateAdapter extends StateAdapter {
-  async get<T>(traceId: string, key: string): Promise<T | null> {
-    // Implementation
-    return null
-  }
-
-  async set<T>(traceId: string, key: string, value: T): Promise<void> {
-    // Implementation
-  }
-
-  async delete(traceId: string, key: string): Promise<void> {
-    // Implementation
-  }
-
-  async clear(traceId: string): Promise<void> {
-    // Implementation
-  }
-
-  async cleanup(): Promise<void> {
-    // Implementation
-  }
-}
-```
-
 ## Next Steps
+Now that we’ve seen how to use the state manager to store and retrieve data across steps, it’s time to take our workflows further.
+
+Whether you’re preparing your flows for production or just want to improve how you test and debug your stateful logic, these resources will help:
 <Cards>
   <Card
     title="🚀 Deployments"
