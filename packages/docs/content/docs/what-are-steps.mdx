@@ -44,10 +44,10 @@ Trying to manage all this with traditional patterns leads to fragmented systems.
 A Step is a language-agnostic, modular and reusable unit of logic that listens to a trigger (an API call, a queue event, a cron job etc) and processes an input using your logic. Optionally, Steps can emit follow up events or pass on data or processed result to continue the workflow.
 
 Steps are:
-- Isolated – each step can run independently
-- Composable – steps can be connected into flows
-- Multilingual – write steps in TypeScript, Python, or more
-- Reusable – just like components, you can use the same step in multiple workflows
+- **Isolated**: each step can run independently
+- **Composable**: steps can be connected into flows
+- **Multilingual**: write steps in TypeScript, Python, or more
+- **Reusable**: just like components, you can use the same step in multiple workflows
 
 Two key behaviours of a Step are - Subscription and Emission. Each step can subscribe to one/many event(s) and emit one/many event(s).
 
