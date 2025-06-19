@@ -1,16 +1,20 @@
 import React from 'react'
-import { cn } from '../../lib/utils'
+import { cn } from '@/lib/utils'
 
 type Props = {
   label: string
-  value: string | React.ReactNode
+  value: unknown
   className?: string
 }
 
 const Value: React.FC<{ value: unknown }> = ({ value }) => {
   const displayValue = typeof value === 'string' ? value : JSON.stringify(value)
 
-  return <div className="dark:text-gray-400 text-md">{displayValue}</div>
+  return (
+    <div className="dark:text-gray-400 text-md" aria-label={displayValue}>
+      {displayValue}
+    </div>
+  )
 }
 
 const LogValue: React.FC<{ value: unknown }> = ({ value }) => {
@@ -18,7 +22,7 @@ const LogValue: React.FC<{ value: unknown }> = ({ value }) => {
     return value
   }
 
-  if (typeof value === 'object') {
+  if (value && typeof value === 'object') {
     const valueObject = value as object
 
     return (

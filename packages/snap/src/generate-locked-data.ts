@@ -1,4 +1,5 @@
-import { LockedData, getStepConfig, getStreamConfig } from '@motiadev/core'
+import { LockedData, Step, getStepConfig, getStreamConfig } from '@motiadev/core'
+import { NoPrinter, Printer } from '@motiadev/core/dist/src/printer'
 import { randomUUID } from 'crypto'
 import { globSync } from 'glob'
 import path from 'path'
@@ -11,9 +12,10 @@ export const getStepFiles = (projectDir: string): string[] => {
 }
 
 // Helper function to recursively collect flow data
-export const collectFlows = async (projectDir: string, lockedData: LockedData): Promise<void> => {
+export const collectFlows = async (projectDir: string, lockedData: LockedData): Promise<Step[]> => {
+  const invalidSteps: Step[] = []
   const stepFiles = getStepFiles(projectDir)
-  const streamFiles = globSync(path.join(projectDir, '{steps,streams}/**/*.stream.{ts,js}'))
+  const streamFiles = globSync(path.join(projectDir, '{steps,streams}/**/*.stream.{ts,js,py}'))
 
   for (const filePath of stepFiles) {
     const config = await getStepConfig(filePath)
@@ -23,7 +25,11 @@ export const collectFlows = async (projectDir: string, lockedData: LockedData): 
       continue
     }
 
-    lockedData.createStep({ filePath, version, config }, { disableTypeCreation: true })
+    const result = lockedData.createStep({ filePath, version, config }, { disableTypeCreation: true })
+
+    if (!result) {
+      invalidSteps.push({ filePath, version, config })
+    }
   }
 
   for (const filePath of streamFiles) {
@@ -36,15 +42,22 @@ export const collectFlows = async (projectDir: string, lockedData: LockedData): 
 
     lockedData.createStream({ filePath, config }, { disableTypeCreation: true })
   }
+
+  return invalidSteps
 }
 
-export const generateLockedData = async (projectDir: string): Promise<LockedData> => {
+export const generateLockedData = async (
+  projectDir: string,
+  streamAdapter: 'file' | 'memory' = 'file',
+  printerType: 'disabled' | 'default' = 'default',
+): Promise<LockedData> => {
   try {
+    const printer = printerType === 'disabled' ? new NoPrinter() : new Printer(projectDir)
     /*
      * NOTE: right now for performance and simplicity let's enforce a folder,
      * but we might want to remove this and scan the entire current directory
      */
-    const lockedData = new LockedData(projectDir)
+    const lockedData = new LockedData(projectDir, streamAdapter, printer)
 
     await collectFlows(projectDir, lockedData)
     lockedData.saveTypes()

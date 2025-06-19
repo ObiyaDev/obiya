@@ -8,13 +8,14 @@ export type FileAdapterConfig = {
 }
 
 export class FileStateAdapter implements StateAdapter {
-  private filePath: string
+  private readonly filePath: string
 
   constructor(config: FileAdapterConfig) {
     this.filePath = path.join(config.filePath, 'motia.state.json')
+    this.init()
   }
 
-  async init() {
+  init() {
     const dir = this.filePath.replace('motia.state.json', '')
     try {
       fs.realpathSync(dir)
@@ -106,11 +107,21 @@ export class FileStateAdapter implements StateAdapter {
   }
 
   private _readFile(): Record<string, string> {
-    const content = fs.readFileSync(this.filePath, 'utf-8')
-    return JSON.parse(content)
+    try {
+      const content = fs.readFileSync(this.filePath, 'utf-8')
+      return JSON.parse(content)
+    } catch (error) {
+      this.init()
+      return {}
+    }
   }
 
   private _writeFile(data: unknown) {
-    fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8')
+    try {
+      fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8')
+    } catch (error) {
+      this.init()
+      fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8')
+    }
   }
 }

@@ -4,6 +4,7 @@ import { VersionStartResponse } from '../../api/models/responses/version-respons
 import { CliContext } from '../../config-utils'
 import { FileManager } from '../file-manager'
 import { UploadResult } from '../types'
+import { BuildStepsConfig, BuildStreamsConfig } from '../../build/builder'
 
 export class VersionService {
   private readonly versionClient: VersionsClient
@@ -15,12 +16,13 @@ export class VersionService {
   }
 
   async uploadConfiguration(
-    stepsConfig: { [key: string]: unknown },
     environmentId: string,
     version: string,
+    stepsConfig: BuildStepsConfig,
+    streamsConfig: BuildStreamsConfig,
   ): Promise<string> {
     this.context.log('upload-config', (message) => message.tag('progress').append('Uploading configuration...'))
-    const versionId = await this.versionClient.uploadStepsConfig(stepsConfig, environmentId, version)
+    const versionId = await this.versionClient.uploadStepsConfig(environmentId, version, stepsConfig, streamsConfig)
     this.context.log('upload-config', (message) => message.tag('success').append('Configuration uploaded successfully'))
     this.context.log('deploy', (message) => message.tag('success').append(`Version started with ID: ${versionId}`))
 
@@ -64,8 +66,8 @@ export class VersionService {
     return await this.versionClient.getVersionStatus(versionId)
   }
 
-  async promoteVersion(args: { environmentId: string; version: string; projectId: string }): Promise<void> {
-    const { environmentId, version, projectId } = args
+  async promoteVersion(args: { environmentId: string; versionName: string; projectId: string }): Promise<void> {
+    const { environmentId, versionName, projectId } = args
     const environmentsClient = this.context.apiFactory.getEnvironmentsClient()
     const environment = await environmentsClient.getEnvironment(projectId, environmentId)
 
@@ -73,17 +75,17 @@ export class VersionService {
       message
         .tag('progress')
         .append('Promoting version')
-        .append(version, 'dark')
+        .append(versionName, 'dark')
         .append('to')
         .append(environment.name, 'dark'),
     )
-    await this.versionClient.promoteVersion(environmentId, version)
+    await this.versionClient.promoteVersion(environmentId, versionName)
 
     this.context.log('promote-version', (message) =>
       message
         .tag('success')
         .append('Version')
-        .append(version, 'dark')
+        .append(versionName, 'dark')
         .append('promoted successfully to')
         .append(environment.name, 'dark'),
     )

@@ -5,7 +5,7 @@ runs:
   steps:
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.11.10'
+        python-version: '3.13'
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.3.6'
@@ -18,7 +18,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install && pnpm -r --filter @motiadev/core exec pnpm python-setup
+      run: pnpm --filter=!playground install
 
     - name: Build packages
       shell: bash
@@ -27,4 +27,4 @@ runs:
     # We need to run install again to set bin (from build)
     - name: Install dependencies
       shell: bash
-      run: pnpm install 
+      run: pnpm install

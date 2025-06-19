@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { StreamGroupSubscription } from './stream-group'
 import { StreamItemSubscription } from './stream-item'
 import { StreamSubscription } from './stream-subscription'
-import { BaseMessage } from './stream.types'
+import { BaseMessage, ItemEventMessage } from './stream.types'
 
 export class Stream {
   private ws: WebSocket
@@ -48,10 +48,14 @@ export class Stream {
    * @argument streamName - The name of the stream to subscribe to.
    * @argument groupId - The id of the group to subscribe to.
    */
-  subscribeGroup<TData extends { id: string }>(streamName: string, groupId: string): StreamGroupSubscription<TData> {
+  subscribeGroup<TData extends { id: string }>(
+    streamName: string,
+    groupId: string,
+    sortKey?: keyof TData,
+  ): StreamGroupSubscription<TData> {
     const subscriptionId = uuidv4()
     const sub = { streamName, groupId, subscriptionId }
-    const subscription = new StreamGroupSubscription<TData>(sub)
+    const subscription = new StreamGroupSubscription<TData>(sub, sortKey)
 
     this.subscribe(subscription)
 
@@ -78,12 +82,13 @@ export class Stream {
   }
 
   messageListener(event: MessageEvent<string>): void {
-    const message: BaseMessage = JSON.parse(event.data)
+    const message: ItemEventMessage<never> = JSON.parse(event.data)
     const room = this.roomName(message)
 
     this.listeners[room]?.forEach((listener) => listener.listener(message))
 
-    if (message.id) {
+    // we need to discard sync to group subs when it's an item event
+    if (message.id && message.event.type !== 'sync') {
       const groupRoom = this.roomName({
         streamName: message.streamName,
         groupId: message.groupId,
@@ -105,7 +110,7 @@ export class Stream {
     this.join(subscription)
 
     subscription.onClose(() => {
-      this.listeners[room].delete(subscription)
+      this.listeners[room]?.delete(subscription)
       this.leave(subscription)
     })
   }
@@ -122,7 +127,7 @@ export class Stream {
     }
   }
 
-  private roomName(message: BaseMessage): string {
+  private roomName(message: Omit<BaseMessage, 'timestamp'>): string {
     return message.id
       ? `${message.streamName}:group:${message.groupId}:item:${message.id}`
       : `${message.streamName}:group:${message.groupId}`

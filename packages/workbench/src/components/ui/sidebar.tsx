@@ -1,35 +1,51 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { Button } from './button'
-import { ThemeToggle } from './theme-toggle'
+import { Button } from '@motiadev/ui'
+
+const SIDEBAR_COLLAPSED_KEY = 'sidebar-collapsed'
 
 export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(SIDEBAR_COLLAPSED_KEY)
+      return saved ? JSON.parse(saved) : true
+    }
+    return true
+  })
+
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_COLLAPSED_KEY, JSON.stringify(isCollapsed))
+  }, [isCollapsed])
 
   return (
     <div
       className={cn(
-        'max-h-screen overflow-y-auto transition-[width] duration-300 border-r border-sidebar-border bg-sidebar text-sidebar-foreground border-solid overflow-hidden',
+        'max-h-screen overflow-y-auto transition-[width] duration-300 border-r border-sidebar-border bg-sidebar text-sidebar-foreground border-solid overflow-hidden relative',
         isCollapsed ? 'w-[50px]' : 'w-[250px]',
       )}
     >
-      <div className="flex items-center justify-between gap-2 px-4 py-3">
-        {!isCollapsed && <ThemeToggle />}
-        <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
+      <div className="flex items-center justify-end gap-2 absolute top-3 right-1">
+        <Button variant="ghost" size="icon" data-testid="sidebar-toggle" onClick={() => setIsCollapsed(!isCollapsed)}>
           {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
         </Button>
       </div>
 
-      {!isCollapsed && <div className="overflow-y-auto w-[250px]">{children}</div>}
+      {!isCollapsed && <div className="overflow-y-auto w-[250px] mt-4">{children}</div>}
     </div>
   )
 }
 
-export const SidebarGroup: React.FC<PropsWithChildren<{ title: string }>> = ({ children, title }) => {
+export const SidebarGroup: React.FC<PropsWithChildren<{ title: string; testId?: string }>> = ({
+  children,
+  title,
+  testId,
+}) => {
   return (
     <div className="flex flex-col">
-      <h2 className="text-xs font-bold text-muted-foreground px-4 py-2 uppercase">{title}</h2>
+      <h2 className="text-xs font-bold text-muted-foreground px-4 py-2 uppercase" data-testid={testId}>
+        {title}
+      </h2>
       {children}
     </div>
   )

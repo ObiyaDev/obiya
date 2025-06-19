@@ -4,9 +4,9 @@ import { createEventManager } from '../event-manager'
 import { LockedData } from '../locked-data'
 import { Printer } from '../printer'
 import { createServer } from '../server'
-import { InternalStateStream } from '../state-stream'
 import { MemoryStateAdapter } from '../state/adapters/memory-state-adapter'
-import { ApiMiddleware, ApiRouteConfig, InternalStateManager, Step } from '../types'
+import { MemoryStreamAdapter } from '../streams/adapters/memory-stream-adapter'
+import { ApiMiddleware, ApiRouteConfig, Step } from '../types'
 
 // Mock callStepFile to prevent actual file execution
 jest.mock('../call-step-file', () => ({
@@ -17,7 +17,7 @@ jest.mock('../call-step-file', () => ({
 }))
 
 describe('Middleware Management', () => {
-  let server: ReturnType<typeof createServer> extends Promise<infer T> ? T : never
+  let server: ReturnType<typeof createServer>
 
   const testMiddleware: ApiMiddleware<{ middlewareApplied: boolean }, unknown, unknown> = async (req, _, next) => {
     req.body.middlewareApplied = true
@@ -44,14 +44,14 @@ describe('Middleware Management', () => {
       cronSteps: () => [],
       onStep: () => {},
       applyStreamWrapper: () => {},
-      createStream: () => (state: InternalStateManager) => new InternalStateStream(state),
+      createStream: () => () => new MemoryStreamAdapter(),
       on: () => {},
     } as unknown as LockedData
 
     const eventManager = createEventManager()
     const state = new MemoryStateAdapter()
 
-    server = await createServer(lockedData, eventManager, state, { isVerbose: false })
+    server = createServer(lockedData, eventManager, state, { isVerbose: false })
   })
 
   afterEach(async () => {

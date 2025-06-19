@@ -119,11 +119,37 @@
   },
   "open-ai": {
     "steps/open-ai/02-prompt.step.ts": {
-      "x": 0,
-      "y": 237.5
+      "x": -185.5,
+      "y": 201.5
     },
     "steps/open-ai/01-prompt-api.step.ts": {
-      "x": 2,
+      "x": -184,
+      "y": -8.5
+    },
+    "steps/open-ai-python/02-prompt.step.py": {
+      "x": -6.5,
+      "y": 199.5
+    },
+    "steps/open-ai-python/01-prompt-api.step.py": {
+      "x": -7.5,
+      "y": -8.5
+    }
+  },
+  "default": {
+    "steps/default-node/03-check-state-change.step.ts": {
+      "x": 19.5,
+      "y": 636
+    },
+    "steps/default-node/02-test-state.step.ts": {
+      "x": 0,
+      "y": 426
+    },
+    "steps/default-node/01-api.step.ts": {
+      "x": 17,
+      "y": 188
+    },
+    "steps/default-node/00-noop.step.ts": {
+      "x": 55.5,
       "y": 0
     }
   }
