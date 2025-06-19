@@ -35,7 +35,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         <MDXContent
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
-             
+
             pre: ({ ref: _ref, ...props }) => (
               <CodeBlock {...props}>
                 <Pre>{props.children}</Pre>
@@ -64,7 +64,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
             a: createRelativeLink(source, page),
           })}
         />
-        <Banner>
+        <Banner className="mt-8 mb-8">
           Need help? Join the Motia&nbsp;
           <Link aria-label="Visit Community" href="/docs/community/first-steps">
             Community
