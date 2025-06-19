@@ -1,6 +1,6 @@
 ---
 title: "Logging & Debugging"
-description: "Master Motia's comprehensive logging system for debugging workflows and monitoring production applications."
+description: "Master Motia's logging system for debugging workflows and monitoring production applications."
 ---
 
 Motia provides a comprehensive logging system designed for both development debugging and production monitoring. With real-time log streaming, structured data support, and multiple output targets, you can effectively troubleshoot issues and monitor workflow performance.
@@ -30,7 +30,7 @@ Motia supports four standard log levels:
 
 ## Writing logs using the `logger` object
 
-1. Simple Logging: For basic logs, you can simply use any of the four methods to log data.
+1. **Simple Logging**: For basic logs, you can simply use any of the four methods to log data.
 
 <Tabs items={['TypeScript', 'JavaScript', 'Python']}>
 <Tab value="TypeScript">
@@ -96,7 +96,7 @@ async def handler(input, ctx):
 </Tab>
 </Tabs>
 
-2. Structured Logging:
+2. **Structured Logging**:
 
 The real power of Motia's logging system comes when you use structured data that makes logs searchable:
 
@@ -221,7 +221,7 @@ async def handler(input, ctx):
 </Tab>
 </Tabs>
 
-3. When writing logs, follow consistent patterns for log messages:
+3. **Consistent Patterns**: When writing logs, follow consistent patterns for log messages:
 
 <Tabs items={['Good Practices', 'Anti-Patterns']}>
 <Tab value="Good Practices">
@@ -436,9 +436,9 @@ export const handler: Handlers['StepName'] = async (input, { logger }) => {
 </Callout>
 
 ## Next Steps
-Motia's logging system transforms debugging from reactive firefighting into proactive system understanding. 
+Motia's logging system gives you visibility into your application's flow, making issues easier to track and resolve.
 
-When issues arise in production _(and we all know they will)_, well-structured logs become your primary tool for rapid diagnosis and resolution.
+When issues arise in production _(and we all know they will)_, well-structured logs become your primary tool to diagnose and resolve them faster.
 
 Invest time in thoughtful logging patterns now, and you'll save countless hours of debugging later. 
 

@@ -29,27 +29,26 @@ Each Step has two parts:
 2. Handler: Contains the logic that gets executed (`exports.handler`)
 
 > Steps can be written in multiple languages (JS, TS, Python and more), even within the same workflow!
-```ts
-// exports.config defines the Step configuration
+```js
+// Step config for an Event-based step
 exports.config = {
-  type: 'api',            // Type of step. This one is an API step. They expose an HTTP endpoint
-  path: '/hello',         // The HTTP route that triggers this step
-  method: 'GET',          // HTTP method to accept (GET, POST, etc.)
-  name: 'HelloStep',      // Name of this step
-  emits: [],              // List of events this step emits (this is used to chain steps together)
-  flows: ['default'],     // Tag this step as part of the 'default' flow
+  type: 'event',              // This step is triggered by an event
+  name: 'Minimal Step',       // Name of the step
+  subscribes: ['start'],      // This step subscribes (or listens) to the 'start' step
+  emits: ['done'],            // It emits a 'done' event after execution
 }
 
-// exports.handler contains the logic that gets executed when the step runs
-exports.handler = async ({ query }) => {
-  // Read query parameter from the incoming request
-  const name = query.name
+// Step handler logic
+exports.handler = async (input, { emit, traceId, state, streams, logger }) => {
+  // input: the data from the triggering event (e.g., { userId: '123' })
+  // emit: allows you to trigger new events
+  // traceId: unique ID for this workflow execution (used for state isolation)
+  // state: allows sharing data across steps in the same workflow
+  // streams: real-time updates to send or updates to frontend
+  // logger: use for structured logging
 
-  // Return a JSON response with a greeting
-  return {
-    status: 200,
-    body: { message: `Hello ${name}` },
-  }
+  // Emit the next event in the workflow
+  await emit({ topic: 'done', data: {} })
 }
 ```
 
@@ -94,7 +93,7 @@ Here's an example of how to define a handler in a few languages:
       emits: ['done'],
     }
 
-    export const handler: Handlers['MinimalStep'] = async (input, { emit, traceId, state, logger }) => {
+    export const handler: Handlers['MinimalStep'] = async (input, { emit, traceId, state, streams, logger }) => {
       await emit({ topic: 'done', data: {} })
     }
     ```

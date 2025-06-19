@@ -56,13 +56,13 @@ Motia Cloud allows you to have many environment types for a project. You can tes
 7. If you don't have an API key, you can create the same from your Motia Cloud dashboard:
   ![old way is to juggle a bunch of different things together while the new way is simply using steps](../img/cloud-api-key.png)
 <Callout type="warn" title="Motia Cloud API Key">
-Once you creat your API key on Motia Cloud, make sure to store it safely. For security reasons, API keys are only revealed once, when you actually create them!
+Once you create your API key on Motia Cloud, make sure to store it safely. For security reasons, API keys are only revealed once, when you actually create them!
 </Callout>
 Now, let's take a look the the `deploy` command in detail!
 ## CLI Reference
 
 ```bash
-motia deploy [options]
+motia cloud deploy [options]
 ```
 
 ### Command Options
@@ -70,7 +70,7 @@ motia deploy [options]
 | Option | Alias | Description | Default |
 |--------|-------|-------------|---------|
 | `--environment` | `-e` | Target environment for deployment | `development` |
-| `--version` | `-v` | Version tag for the deployment | Current timestamp |
+| `--version-name` | `-v` | Version tag for the deployment | Current timestamp |
 | `--api-key` | `-k` | API key for authentication | None (required) |
 
 As an example, following are the CLI commands you can use to deploy a Motia app to `Production` and `Staging` environments respectively:
@@ -80,7 +80,7 @@ As an example, following are the CLI commands you can use to deploy a Motia app 
 Deploy to production with semantic versioning:
 
 ```bash
-motia deploy --environment production --version 1.2.3 --api-key your-api-key-here
+motia cloud deploy --environment production --version-name 1.2.3 --api-key your-api-key-here
 ```
 
 Use semantic versioning for production deployments to maintain clear release history.
@@ -90,7 +90,7 @@ Use semantic versioning for production deployments to maintain clear release his
 Deploy to staging for pre-production testing:
 
 ```bash
-motia deploy --environment staging --version 1.2.3-rc.1 --api-key your-api-key-here
+motia cloud deploy --environment staging --version-name 1.2.3-rc.1 --api-key your-api-key-here
 ```
 
 Staging deployments help validate changes before production release.
