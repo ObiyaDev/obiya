@@ -33,30 +33,30 @@ npx motia@latest create -n <your-project-name>
   Now, `cd` into the directory, open up your favourite code editor there, and let's write our first step. Open up the `01-api.step.ts` file and paste the following into it:
   ```ts
   exports.config = {
-  type: 'api', // "event", "api", "noop" or "cron"
-  path: '/hello-world',
-  method: 'GET',
-  name: 'HelloWorld',
-  emits: ['test-state'],
-  flows: ['default'],
+    type: 'api', // "event", "api", "noop" or "cron"
+    path: '/hello-world',
+    method: 'GET',
+    name: 'HelloWorld',
+    emits: ['test-state'],
+    flows: ['default'],
 }
 
 exports.handler = async () => {
-  return {
-    status: 200,
-    body: { message: 'Hello World' },
-  }
+    return {
+      status: 200,
+      body: { message: 'Hello World' },
+    }
 }
   ```
   Here are the details about this step:
   - `type: 'api'` - This is an API step that we can trigger this via HTTP request. Steps can be of four types - `API`, `Event`, `NOOP`, and `Cron`.
-  - `path: '/hello-world'` - The URL path to access this step. This is the API Endpoint.
+  - `path: '/hello-world'` - The URL path to trigger this step. This is the API Endpoint.
   - `method: 'GET'` -  HTTP request method.
   - `name: 'HelloWorld'` -  Name for this step
   - `emits: []` -  Add follow-up event(s).
   - `flows: ['default']` -  Flow to which this step belongs. By default, all steps belong to the _default_ flow.
 <Callout title="Steps" type="info">
-  Steps are to a Motia app what Components are to a React app. Steps are the fundamental, building blocks of a Motia app. They are reusable units of code, each of which can recieve an input data, perform logic and output data or trigger another event. Read more about them in our [introductory blog](https://dev.to/motiadev/introducing-motia-3oja-temp-slug-3967652?preview=c67eba085f74a7cf7b2c509a1548676bce436734e51ef49f52b1927b110de0fa2e214aa713e90c7a3301332e5d0eb658a6d1bdacb9a4777d93f37b52).
+  Steps are the fundamental, building blocks of a Motia app. They are reusable units of code, each of which can recieve an input data, perform logic and output data or trigger another event. Read more about them in our [introductory blog](https://dev.to/motiadev/introducing-motia-3oja-temp-slug-3967652?preview=c67eba085f74a7cf7b2c509a1548676bce436734e51ef49f52b1927b110de0fa2e214aa713e90c7a3301332e5d0eb658a6d1bdacb9a4777d93f37b52).
 </Callout>
 > Everything is a Step. Steps are like React Components - reusable, isolated units of logic that handle specific tasks. Combine individual steps and you get a workflow. Learn how to [think in Steps](/docs/what-are-steps).
 </Step>
