@@ -3,7 +3,7 @@ title: "What are Steps"
 description: "Steps are the core units of logic in Motia, each handling a specific part of your flow"
 ---
 
-A Step is a language and runtime agnostic, modular, self-contained unit of backend logic. It’s the core abstraction in Motia—similar to what Components are in React. Just as Components manage UI, Steps manage backend logic and workflows.
+A Step is a language and runtime agnostic, modular, self-contained unit of backend logic. It’s the core abstraction in Motia, similar to what Components are in React. Just as Components manage UI, Steps manage backend logic and workflows.
 
 > In a Motia app, everything is a Step.
 
@@ -165,7 +165,7 @@ A step's configuration is defined through a `config` object that must be exporte
 </Callout>
 
 ## The two behaviours of a Step
-Each step has two behaviors - Subscription, and Emission:
+Each step has two behaviors: Subscription, and Emission:
 1. Subscribe: This behavior dictates the events to which a step listens to.  
 Example: `subscribes: ['user.registered', 'payment.success']`
 2. Emit: This behavior dictates to which step is the current one passing the baton to. A step can emit to zero/one/many step(s).  
@@ -184,7 +184,7 @@ Steps are the single-most important part of a Motia apps. Therefore, it makes tr
     title="Types of Steps"
     icon="📦"
   >
-  Adopt a new mental model for AI-native, modern backends - one Step at a time.
+  Adopt a new mental model for AI-native, modern backends, one Step at a time.
   </Card>
 
   <Card
