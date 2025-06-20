@@ -178,7 +178,7 @@ export const WithChildren: Story = {
     children: (
       <div className="space-y-6">
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-foreground">Recent Activity</h4>
+          <h3 className="text-sm font-semibold text-foreground">Recent Activity</h3>
           <div className="space-y-2">
             <div className="flex items-center gap-3 p-3 rounded-lg bg-secondary">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -205,7 +205,7 @@ export const WithChildren: Story = {
         </div>
         
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-foreground">Performance Metrics</h4>
+          <h3 className="text-sm font-semibold text-foreground">Performance Metrics</h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 rounded-lg bg-secondary">
               <p className="text-xs text-muted-foreground">Response Time</p>
