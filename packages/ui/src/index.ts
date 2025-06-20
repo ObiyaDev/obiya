@@ -1,4 +1,5 @@
 import './styles/globals.css'
 export { Button, type ButtonProps } from './components/ui/button'
 export { Textarea } from './components/ui/textarea'
+export { Panel, type PanelProps, type PanelDetailItem, type PanelAction } from './components/ui/panel'
 export { cn } from './lib/utils'
