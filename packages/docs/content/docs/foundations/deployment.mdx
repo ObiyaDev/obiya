@@ -5,34 +5,6 @@ description: "Learn how to deploy your Motia flows to production environments us
 
 Deploy your Motia workflows to various environments with a robust, reliable deployment system designed for enterprise-grade applications. Whether you're deploying simple APIs or complex AI-powered flows, Motia's CLI and deployment architecture make the process reliable and observable.
 
-
-## Deployment Architecture
-
-Motia's deployment system uses a carefully designed three-phase approach that ensures reliability and provides excellent error recovery:
-<Steps>
-<Step>
-### Upload Files
-Each workflow step is packaged as a zip file and uploaded individually with complete path information preserved.
-</Step>
-<Step>
-### Upload Configuration
-The `motia.steps.json` configuration file is uploaded separately, containing your workflow definitions and metadata.
-</Step>
-<Step>
-### Start Deployment
-A deployment request is initiated with all uploaded files and configuration, triggering the server-side deployment process.
-</Step>
-</Steps>
-
-## Architecture Benefits
-This multi-phase approach provides several key advantages:
-
-- **Granular Tracking**: Monitor the upload progress of individual files
-- **Clean Separation**: Configuration and files are handled independently
-- **Retry Capability**: Recover from partial failures by retrying specific phases
-- **Efficient Processing**: Optimized server-side handling of deployment artifacts
-- **Validation:** Ensures all components are successfully uploaded before deployment begins 
-
 ## How to deploy
 To deploy a Motia app:
 1. Simply sign in at [Motia Cloud](https://www.motia.cloud/). 
@@ -97,6 +69,33 @@ Staging deployments help validate changes before production release.
 </Tab>
 </Tabs>
 
+## Deployment Architecture
+
+Motia's deployment system uses a carefully designed three-phase approach that ensures reliability and provides excellent error recovery:
+<Steps>
+<Step>
+### Upload Files
+Each workflow step is packaged as a zip file and uploaded individually with complete path information preserved.
+</Step>
+<Step>
+### Upload Configuration
+The `motia.steps.json` configuration file is uploaded separately, containing your workflow definitions and metadata.
+</Step>
+<Step>
+### Start Deployment
+A deployment request is initiated with all uploaded files and configuration, triggering the server-side deployment process.
+</Step>
+</Steps>
+
+## Architecture Benefits
+This multi-phase approach provides several key advantages:
+
+- **Granular Tracking**: Monitor the upload progress of individual files
+- **Clean Separation**: Configuration and files are handled independently
+- **Efficient Processing**: Optimized server-side handling of deployment artifacts
+- **Validation:** Ensures all components are successfully uploaded before deployment begins 
+
+
 ## Deployment Process
 
 When you execute `motia deploy`, the CLI orchestrates a comprehensive deployment workflow:
@@ -140,77 +139,6 @@ Status Reporting
 </Step>
 </Steps>
 
-## Deployment Results
-
-After each deployment, Motia generates two detailed report files in your project directory:
-
-1. `motia.deployments.json`
-
-A comprehensive technical log containing detailed information about every deployment attempt:
-
-```json
-{
-  "deployments": [
-    {
-      "bundlePath": "./steps/process-order.zip",
-      "deploymentId": "dep_abc123xyz",
-      "stepType": "handler",
-      "stepName": "ProcessOrder",
-      "stepPath": "steps/process-order.ts",
-      "flowName": "order-processing",
-      "environment": "production",
-      "version": "1.2.3",
-      "success": true,
-      "timestamp": "2024-01-15T10:30:00Z",
-      "errorMessage": null
-    }
-  ]
-}
-```
-
-**Use this file for:**
-- Technical debugging and troubleshooting
-- Automated deployment monitoring
-- Integration with CI/CD pipelines
-- Detailed audit trails
-
-2. `motia.deployments.summary.json`
-
-A human-readable summary organized by workflows for quick status overview:
-
-```json
-{
-  "deployment": {
-    "timestamp": "2024-01-15T10:30:00Z",
-    "environment": "production",
-    "version": "1.2.3",
-    "totalSteps": 8,
-    "successfulSteps": 8,
-    "failedSteps": 0
-  },
-  "flows": [
-    {
-      "name": "order-processing",
-      "steps": [
-        {
-          "name": "ProcessOrder",
-          "status": "success"
-        },
-        {
-          "name": "ValidatePayment",
-          "status": "success"
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Use this file for:**
-- Quick deployment status checks
-- Team communication and reporting
-- Dashboard integrations
-- Release documentation
 
 ## Troubleshooting
 1. **Check Deployment Reports**: Review `motia.deployments.json` for specific error messages and failed components
