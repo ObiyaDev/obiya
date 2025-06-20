@@ -67,6 +67,7 @@
   --light-100: #ffffff1a;
   --light-50: #ffffff0d;
   --light-30: #ffffff08;
+  --error: #d61355;
   
   /* Figma Semantic Tokens - Light Theme (Inverted from dark theme values) */
   --bg-default: var(--light-1000); /* BG/Default */
@@ -92,13 +93,13 @@
   --fill-inverse-600: var(--light-600); /* Fill/Inverse-600 */
   --fill-inverse-200: var(--light-200); /* Fill/Inverse-200 */
   --fill-accent-1000: var(--accent-1000); /* Fill/Accent-1000 */
-  --fill-error: #d61355; /* Fill/Error */
+  --fill-error: var(--error); /* Fill/Error */
   
   --text-header: var(--dark-1000); /* Text/Header inverted */
   --text-body: var(--dark-600); /* Text/Body inverted */
   --text-placeholder: var(--dark-400); /* Text/Placeholder inverted */
   --text-accent: var(--accent-1000); /* Text/Accent */
-  --text-error: #d61355; /* Text/Error */
+  --text-error: var(--error); /* Text/Error */
   
   --icon-active: var(--dark-1000); /* Icon/Active inverted */
   --icon-light: var(--dark-600); /* Icon/Light inverted */
@@ -131,7 +132,7 @@
   --muted-foreground: var(--fill-default-600);
   --accent: var(--fill-accent-1000);
   --accent-foreground: var(--light-1000);
-  --destructive: var(--fill-error);
+  --destructive: var(--error);
   --destructive-foreground: var(--light-1000);
   --border: var(--br-outline);
   --input: var(--states-fill-hover);
@@ -192,13 +193,13 @@
   --fill-inverse-600: var(--dark-600); /* Fill/Inverse-600 */
   --fill-inverse-200: var(--dark-200); /* Fill/Inverse-200 */
   --fill-accent-1000: var(--accent-1000); /* Fill/Accent-1000 */
-  --fill-error: var(--fill-error); /* Fill/Error */
+  --fill-error: var(--error); /* Fill/Error */
   
   --text-header: var(--light-1000); /* Text/Header */
   --text-body: var(--light-600); /* Text/Body */
   --text-placeholder: var(--light-400); /* Text/Placeholder */
   --text-accent: var(--accent-1000); /* Text/Accent */
-  --text-error: var(--fill-error); /* Text/Error */
+  --text-error: var(--error); /* Text/Error */
   
   --icon-active: var(--light-1000); /* Icon/Active */
   --icon-light: var(--light-600); /* Icon/Light */
@@ -229,7 +230,7 @@
   --muted-foreground: var(--text-body);
   --accent: var(--fill-accent-1000);
   --accent-foreground: var(--light-1000);
-  --destructive: var(--fill-error);
+  --destructive: var(--error);
   --destructive-foreground: var(--light-1000);
   --border: var(--br-outline);
   --input: var(--states-fill-hover);
@@ -341,7 +342,7 @@
   --color-fill-inverse-600: var(--fill-inverse-600);
   --color-fill-inverse-200: var(--fill-inverse-200);
   --color-fill-accent-1000: var(--fill-accent-1000);
-  --color-fill-error: var(--fill-error);
+  --color-fill-error: var(--error);
   
   --color-text-header: var(--text-header);
   --color-text-body: var(--text-body);
