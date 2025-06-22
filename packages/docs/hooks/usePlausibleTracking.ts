@@ -21,7 +21,7 @@ export function usePlausibleTracking() {
     props?: PlausibleEventProps,
     revenue?: PlausibleRevenueData
   ) => {
-    const eventData: any = {}
+    const eventData: { props?: PlausibleEventProps; revenue?: PlausibleRevenueData } = {}
     
     if (props) {
       eventData.props = props
