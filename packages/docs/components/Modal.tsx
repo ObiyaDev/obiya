@@ -139,7 +139,7 @@ const ModalForm: FC<ModalFormProps> = ({ isOpen, onClose, title }) => {
 
                     <div className="flex justify-center space-x-2 pt-[40px]">
                       <ButtonPrimary type="submit" disabled={state.submitting}>
-                        {state.submitting ? 'Submitting...' : <>Join Beta {chevronRightCircle}</>}
+                        {state.submitting ? 'Submitting...' : <>Get early access to Motia Cloud {chevronRightCircle}</>}
                       </ButtonPrimary>
                     </div>
                   </form>
