@@ -5,186 +5,83 @@ description: "The first backend framework built for the AI Native era. Unify you
 
 # What is Motia?
 
-Motia is the first unified backend framework built for the AI-native era. It has been designed to seamlessly handle APIs, events, and AI agents in a single cohesive system.
+Motia is the first unified backend framework built for the AI-native era. It has been designed to seamlessly handle APIs, events, and AI agents in a single cohesive system, using one primitive: _The Step_.
 
-We're witnessing a massive shift: AI and LLMs are automating tasks previously handled by humans, creating an unprecedented influx of workflow complexity into backend systems. While 80-90% of organizational workflows are still human-driven, AI's reasoning and data manipulation capabilities are rapidly changing this balance.
+- Every step can be written in a different language (even within the same workflow) and is defined by a configuration object and its corresponding handler function.
+- Steps can be of three types: API, Event, and CRON, depending on how you want to trigger a step.
+- Steps can emit and subscribe to other steps, enabling you to chain them together to create powerful, even-based workflows.
 
-**The result?** 
+That's it. With these three concepts, you can model anything, from simple API endpoints to complex AI agent orchestrations.
 
-While existing tools work for human-driven workflows, they force you to manually integrate APIs, AI agent frameworks, background queues, and microservices. 
+> Everything in a Motia app is a Step. Steps enable to you build anything: from API to AI!
 
-As AI automation accelerates, this approach becomes increasingly complex and fragile, eventually breaking down under the weight of AI-driven workflow complexity.
+![Conventional way vs the Motia way](./img/idea-of-motia.png)
 
-**Motia changes that:** One framework. One paradigm. Complete control.
+The whole idea of Motia is to break down backend systems into small, focused steps. Each step handling a single unit of logic, whether it’s responding to an API call, reacting to an event, or running on a schedule. 
 
+These steps are then chained together declaratively, using emits and subscribes, to form powerful, traceable workflows.
+
+Instead of managing scattered APIs, background jobs, queues, and AI logic in separate silos, Motia lets you model your entire system as a network of steps: modular, observable, language-agnostic, and easy to test. 
+
+You write just the logic, and let Motia handle orchestration, deployments, reliability, and observability under the hood.
 
 <Cards>
   <Card
     href="https://dev.to/motiadev/introducing-motia-3oja-temp-slug-3967652?preview=c67eba085f74a7cf7b2c509a1548676bce436734e51ef49f52b1927b110de0fa2e214aa713e90c7a3301332e5d0eb658a6d1bdacb9a4777d93f37b52"
     title="Why we exist"
-    icon="📝"
   >
     Read our introductory blog and discover why we built Motia
   </Card>
   <Card
     href="https://www.motia.dev/manifesto"
     title="Our manifesto"
-    icon="📜"
   >
     Go through Motia's manifesto that outlines our vision.
   </Card>
 </Cards>
 
-
-
-## Why Now? Why Motia?
-
-Modern software architecture has fractured into silos: API routes handled in one framework, background jobs in another, queues stitched in with third-party tools, and AI agents running in disconnected runtimes. 
-
-_Motia was created to end this fragmentation._
-
-Motia unifies APIs, automations, background jobs, queues, and AI agents into a single cohesive system. One where every part shares the same developer experience, observability layer, and mental model. 
-
-As AI becomes a part of backend architecture and workflows become increasingly automated, engineers face rising complexity without a coherent way to manage it. 
-
-**Motia offers the abstraction we’ve been missing: a unified, language-agnostic, step-based framework designed for software engineers to build, compose, and operate modern backends, without gluing together half a dozen incompatible systems.**
-
-## The Core Innovation: The Step
-
-Motia is built around one simple, powerful concept: the **Step**.
-
-Every step follows four simple concepts:
-- **Trigger**: How it starts (API call, event, schedule)
-- **Receives**: Input data it processes  
-- **Activates**: Logic it executes (business rules, LLM reasoning)
-- **Emits**: Output data or events to continue workflows
-
-That's it. With these four concepts, you can model anything, from simple API endpoints to complex AI agent orchestrations.
-
-
----
-
-## What Motia Abstracts Away
-
-Motia takes care of the complex infrastructure so you don't have to:
-<Steps>
-<Step>
-**Infrastructure & DevOps**
-- Event-based microservice architecture
-- API gateways and service mesh
-- Queue management and job processing
-- Socket connections and state management
-</Step>
-<Step>
-**Enterprise-Grade Resilience**  
-- Built-in observability and monitoring
-- Error handling and retry logic
-- Auto-scaling and load balancing
-- Production-ready security
-</Step>
-<Step>
-**Workflow Orchestration**
-- Unified workflow management
-- Cross-service communication
-- State management and persistence
-- Event-driven architecture
-</Step>
-</Steps>
-_You focus on workflow logic. Motia handles everything else._
-
----
-
 ## Built for Scale, Built for Engineers
 
-Motia isn't just another tool, it's built on 25 years of knowledge about event-based systems and microservices. We've seen the hidden challenges that emerge in large codebases and enterprise systems.
+Motia isn’t just another tool. It’s a natural evolution in response to the real-world challenges of building and scaling modern backend systems. As workflows grow and codebases evolve, hidden complexity begins to surface, especially when APIs, events, background jobs, and AI agents are all handled in separate silos. 
 
-**Multi-language Support**: Write steps in TypeScript, Javascript, Python, Ruby, and more (additional languages coming soon)
+Motia unifies these into a single system with the simplicity of “steps”, and comes with the following features right out of the box:
 
-**Developer Experience**: Local development with Motia Workbench for workflow visualization and debugging
+- **Code-First Development**: Write agent logic in familiar languages without proprietary syntax or visual constraints.
+- **Multi-language Support**: Write steps in TypeScript, Javascript, Python, and more (additional languages coming soon).
+- **Interactive Workbench**: Local development with Motia Workbench for workflow visualization and debugging.
+- **Event-Driven Architecture**: Built-in observability with real-time logs, traces, and interactive flow visualizations, enabling reactive systems that respond to webhooks, scheduled tasks, and internal events.
+- **Built-in State Management**: Unified state across APIs, background jobs, and events with shared context and data persistence.
+- **Production-Ready Deployment**: Coming soon with Motia Cloud! Zero Config Deployment, Real-Time Monitoring, Instant Rollback.
+- **Hot Reload Development**: Changes reflect instantly, for rapid iteration and testing. Change it. See it. Run it. Deploy it.
+- **Enterprise Ready**: Designed with enterprise-scale resilience in mind, from Day one.
 
-**Enterprise Ready**: Designed from Day 1 to handle the complexity that breaks other systems
+With all these features, Motia is a system that grows with your ambitions: from rapid prototyping to production-scale deployment, without sacrificing the developer experience or forcing architectural compromises. 
 
----
+Motia transforms the complexity of modern backend development into the simplicity of composable steps, letting you focus on what truly matters: _building exceptional products that solve real problems_.
 
-## Where to Go Next
 
-Ready to build with the framework of the future?
+> A system like Motia is needed and will happen. Whether Motia becomes the standard or leads the way, a developer-first framework that unifies AI-driven backend complexity is the natural evolution of software engineering.
+> 
+>Motia is that system.
 
-<Cards>
-  <Card
-    href="/docs/getting-started"
-    title="Quickstart Guide"
-    icon="🚀"
-  >
-    Get up and running with your first Motia flow in just a few minutes.
-  </Card>
-
-  <Card
-    href="/docs/concepts/overview"
-    title="Core Concepts"
-    icon="🧠"
-  >
-    Understand the architecture and design principles behind Motia.
-  </Card>
-
-  <Card
-    href="/docs/concepts/steps"
-    title="What’s a Step?"
-    icon="🔎"
-  >
-    Deep dive into Motia's core primitive and how steps power your workflows.
-  </Card>
-
-  <Card
-    href="/docs/community/first-steps"
-    title="Motia Community"
-    icon="💬"
-  >
-    Explore how to connect, contribute, and grow with the Motia developer community.
-  </Card>
-</Cards>
-
-  
-
----
 
 ## Learn by Building
 
-Master Motia through hands-on tutorials and real-world examples.
-
-### Tutorials
-
-<Cards>
-  <Card
-    href="/docs/tutorials/how-to-do-use-motia-workbench"
-    title="How to use the Motia Workbench"
-    icon="🖥️"
-  >
-    Visualize, debug, and optimize your workflows with powerful local tooling
-  </Card>
-
-  <Card
-    href="/docs/tutorials/ui-steps"
-    title="Build Interactive UI Steps in the Motia Workbench"
-    icon="🎯"
-  >
-    Build interactive visual components to represent steps inside your flows.
-  </Card>
-</Cards>
+Master Motia through hands-on tutorials and real-world examples:
 
 ### Real-World Guides
 
 <Cards>
   <Card
-    href="/docs/guides/how-to-automate-gmail"
-    title="AI-Powered Email Automation"
+    href="https://github.com/MotiaDev/motia-examples/tree/main/examples/gmail-workflow"
+    title="Intelligent Gmail account manager"
     icon="✉️"
   >
     Build a smart email system with auto-labeling, filtering, and LLM-powered replies.
   </Card>
 
   <Card
-    href="/docs/guides/rag-pdf"
+    href="https://github.com/MotiaDev/motia-examples/tree/main/examples/rag-docling-weaviate-agent"
     title="PDF RAG Q&A System"
     icon="📄"
   >
@@ -192,24 +89,10 @@ Master Motia through hands-on tutorials and real-world examples.
   </Card>
 </Cards>
 
----
 
-## The Future is AI-Native
+## Ready to Transform Your Backend?
+The future of backend development is unified, intelligent, and developer-first. 
 
-Every company was already becoming a software company. And now, every software system is becoming AI-Native.
+While the industry continues to struggle with countless tools and frameworks, Motia offers a different path, one where complexity becomes clarity, where scattered systems become cohesive workflows, and where your focus shifts from infrastructure management to innovation.
 
-The complexity is real.
-
-The need for unification is urgent. 
-
-The paradigm shift is happening whether we're ready or not.
-
-**Motia exists because this future demands better tools.** Tools that scale with your ambition. Tools that unify instead of fragment. Tools built for software engineers who need to ship production systems, not just experiments.
-
-And, _Motia is that tool!_
-
----
-
-> A system like Motia is needed and will happen. Whether Motia becomes the standard or leads the way, a developer-first framework that unifies AI-driven backend complexity is the natural evolution of software engineering.
-> 
->Motia is that system.
+Whether you're building your first AI agent, scaling a complex enterprise system, or simply tired of juggling multiple backend frameworks, Motia meets you where you are and grows with where you're going.

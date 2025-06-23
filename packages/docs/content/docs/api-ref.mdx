@@ -26,7 +26,7 @@ export const handler = async (input) => {
 }
 ```
 
-> Steps have two parts: Config and Handler. Read [anatomy of steps](/docs/foundations/steps#anatomy-of-a-step) to know more.
+> Steps have two parts: Config and Handler. Read [anatomy of steps](/docs/steps#anatomy-of-a-step) to know more.
 
 Supported step types:
 
@@ -58,8 +58,8 @@ export const handler = async (input, { emit, traceId, state, streams, logger }) 
 
 Handler receives:
 
-- `input`: parsed and validated input. More on input [here](/docs/foundations/steps#input-data).
-- `{ emit, traceId, state, stream, logger }`: Context Object. More on it [here](/docs/foundations/steps#context-object).
+- `input`: parsed and validated input. More on input [here](/docs/steps#input-data).
+- `{ emit, traceId, state, stream, logger }`: Context Object. More on it [here](/docs/steps#context-object).
 
 | Property | Description |
 |----------|-------------|
@@ -107,7 +107,7 @@ In this example:
 	-	When triggered, it performs some logic and emits the done event.
 	-	Any step that subscribes to done will be invoked next.
 
-> You can read more about Emit and Subscribe in [the two behaviours of a step](/docs/foundations/steps#the-two-behaviours-of-a-step).
+> You can read more about Emit and Subscribe in [the two behaviours of a step](/docs/steps#the-two-behaviours-of-a-step).
 
 ## Step Types
 
