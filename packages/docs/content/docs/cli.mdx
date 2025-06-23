@@ -12,7 +12,7 @@ Motia CLI helps you scaffold, manage, and deploy your projects efficiently, from
 
 | Command | Description | Options |
 |--------|-------------|---------|
-| [`npx motia create [options]`](#npx-motia-create)  | Create a new Motia project in a fresh directory or the current one. | `-n, --name <project name>`: Project name; use `.` or `./` to use current directory<br/>`-i` to create project using the interactive mode<br/>`-t, --template <template name>`: Template to use; run `npx motia templates` to view available ones<br/>`-c, --cursor`: Adds `.cursor` config for Cursor IDE |
+| [`npx motia@latest create [options]`](#npx-motia-create)  | Create a new Motia project in a fresh directory or the current one. | `-n, --name <project name>`: Project name; use `.` or `./` to use current directory<br/>`-i` to create project using the interactive mode<br/>`-t, --template <template name>`: Template to use; run `npx motia templates` to view available ones<br/>`-c, --cursor`: Adds `.cursor` config for Cursor IDE |
 | [`npx motia templates`](#npx-motia-templates) | List available project templates. | _None_ |
 | [`npx motia build`](#npx-motia-build) | Compile all steps and generate deployment-ready output. | _None_<br/><br/>**Performs the following:**<br/>• Compiles Node.js and Python steps<br/>• Bundles each step into a `.zip` file<br/>• Generates `motia.steps.json` in `dist/`<br/>• Organizes build output in `dist/` |
 | [`npx motia deploy [options]`](#npx-motia-deploy) | Deploy the built project to Motia’s deployment service. | `-k, --api-key <key>` (required): API key for authentication<br/>`-e, --env <env>`: Deployment environment (default: `dev`)<br/>`-v, --version <version>`: Version label (default: `latest`)<br/><br/>**Example:**<br/>`npx motia deploy --api-key your-api-key --env production --version 1.0.0`<br/><br/>**This command:**<br/>• Uploads zipped steps with path info<br/>• Uploads `motia.steps.json`<br/>• Starts server-side deployment<br/>• Writes logs to `dist/motia.deployments.json`<br/>• Summarizes results in `dist/motia.deployments.summary.json` |
@@ -22,12 +22,12 @@ Motia CLI helps you scaffold, manage, and deploy your projects efficiently, from
 | [`npx motia generate step [options]`](#npx-motia-generate-step) | Generate a new step using prompts. | `-d, --dir <path>`: Path under `steps/` to create the new step |
 | [`npx motia state list`](#npx-motia-state-list) | List the current local application state. | _None_ |
 
-## npx motia create
+## npx motia@latest create
 
 Create a new Motia project.
 
 ```bash
-npx motia create [options]
+npx motia@latest create [options]
 ```
 
 **Options**:
