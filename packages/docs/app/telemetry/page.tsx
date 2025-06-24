@@ -130,7 +130,7 @@ export default function TelemetryPage() {
               You can disable analytics collection at any time by setting an environment variable:
             </p>
             <div className="bg-[#0A0A0A] mt-[10px] mb-[-30px] border border-white/20 rounded-lg p-[20px] font-mono text-[#5AC5FF] text-[16px]">
-              MOTIA_ANALYTICS_DISABLED=1
+              MOTIA_ANALYTICS_DISABLED=true
             </div>
           </section>
 
