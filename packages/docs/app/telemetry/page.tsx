@@ -31,7 +31,7 @@ export default function TelemetryPage() {
           <section className={normalText}>
             <h2 className={headingText}>Why do we collect usage data?</h2>
             <p>
-              Since launching Motia, we're seeing incredible adoption across diverse development teams and use cases. However, understanding how developers actually use <span className={gradientText}>Motia in real-world scenarios</span> has been challenging to assess through traditional feedback channels alone.
+              Since launching Motia, we&apos;re seeing incredible adoption across diverse development teams and use cases. However, understanding how developers actually use <span className={gradientText}>Motia in real-world scenarios</span> has been challenging to assess through traditional feedback channels alone.
             </p>
           </section>
 
@@ -114,15 +114,16 @@ export default function TelemetryPage() {
           <section className={normalText}>
             <h2 className={headingText}>How is this data used?</h2>
             <p>
-              The analytics data helps us make informed decisions about <span className={gradientText}>Motia's development roadmap</span>. We use this information internally to identify which features are most valuable, detect performance regressions, understand common workflows, and measure the impact of improvements.
+              The analytics data helps us make informed decisions about <span className={gradientText}>Motia&apos;s development roadmap</span>. We use this information internally to identify which features are most valuable, detect performance regressions, understand common workflows, and measure the impact of improvements.
             </p>
           </section>
 
           <section className={normalText}>
             <p>
-              We may share aggregated, non-identifiable insights publicly to demonstrate <span className={gradientTextBlue}>Motia's growth and adoption trends</span>. This helps the broader development community understand how modern development tools are being used.
+              We may share aggregated, non-identifiable insights publicly to demonstrate <span className={gradientTextBlue}>Motia&apos;s growth and adoption trends</span>. This helps the broader development community understand how modern development tools are being used.
             </p>
           </section>
+
         </div>
       </div>
 
