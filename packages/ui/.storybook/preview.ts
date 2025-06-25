@@ -1,7 +1,17 @@
-import type { Preview } from '@storybook/react'
+import { Preview } from '@storybook/react'
 import '../src/styles/globals.css'
+import { withThemeByClassName } from '@storybook/addon-themes'
 
 const preview: Preview = {
+  decorators: [
+    withThemeByClassName({
+      themes: {
+        light: '',
+        dark: 'dark',
+      },
+      defaultTheme: 'dark',
+    }),
+  ],
   parameters: {
     a11y: {
       test: 'error',
@@ -20,4 +30,4 @@ const preview: Preview = {
   tags: ['autodocs'],
 }
 
-export default preview 
+export default preview
