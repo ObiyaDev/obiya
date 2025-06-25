@@ -1,20 +1,20 @@
-import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Button } from './button'
+import { FC } from "react"
 
-interface PanelDetailItem {
+export interface PanelDetailItem {
   label: string
   value: string | React.ReactNode
   highlighted?: boolean
 }
 
-interface PanelAction {
+export interface PanelAction {
   icon: React.ReactNode
   onClick: () => void
   label?: string
 }
 
-interface PanelProps {
+export interface PanelProps {
   title: string
   subtitle?: string
   details: PanelDetailItem[]
@@ -23,7 +23,7 @@ interface PanelProps {
   children?: React.ReactNode
 }
 
-function Panel({ title, subtitle, details, actions, className, children }: PanelProps) {
+export const Panel: FC<PanelProps> = ({ title, subtitle, details, actions, className, children }) => {
   return (
     <div
       className={cn(
@@ -101,6 +101,4 @@ function Panel({ title, subtitle, details, actions, className, children }: Panel
     </div>
   )
 }
-
-export { Panel }
-export type { PanelProps, PanelDetailItem, PanelAction } 
+Panel.displayName = 'Panel'

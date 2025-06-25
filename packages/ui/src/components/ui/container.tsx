@@ -1,8 +1,8 @@
-import * as React from 'react'
+import { forwardRef, HTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const Container = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
+export const Container = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
@@ -29,19 +29,17 @@ const containerHeaderVariants = cva(
   },
 )
 
-const ContainerHeader = React.forwardRef<
+export const ContainerHeader = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof containerHeaderVariants>
+  HTMLAttributes<HTMLDivElement> & VariantProps<typeof containerHeaderVariants>
 >(({ className, variant, ...props }, ref) => (
   <div ref={ref} className={cn(containerHeaderVariants({ variant, className }))} {...props} />
 ))
 ContainerHeader.displayName = 'ContainerHeader'
 
-const ContainerContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const ContainerContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('flex-1 overflow-auto p-5', className)} {...props} />
   ),
 )
 ContainerContent.displayName = 'ContainerContent'
-
-export { Container, ContainerHeader, ContainerContent }
