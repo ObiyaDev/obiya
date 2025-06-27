@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 import { Button } from './button'
-import { FC } from "react"
+import { FC } from 'react'
 
 export interface PanelDetailItem {
   label: string
@@ -27,32 +27,23 @@ export const Panel: FC<PanelProps> = ({ title, subtitle, details, actions, class
   return (
     <div
       className={cn(
-        "relative size-full backdrop-blur-[48px] backdrop-filter",
-        "bg-card",
-        "text-foreground",
-        "border border-border",
-        "rounded-lg overflow-hidden",
-        className
+        'relative size-full backdrop-blur-[48px] backdrop-filter',
+        'bg-card',
+        'text-foreground',
+        'border border-border',
+        'rounded-lg overflow-hidden',
+        className,
       )}
     >
-
       <div className="flex flex-col size-full">
         <div className="relative shrink-0 w-full border-b border-border">
           <div className="flex flex-col gap-1 px-5 py-4">
             <div className="flex items-center justify-between w-full">
-              <h2 className="text-base font-semibold text-foreground tracking-[-0.25px] leading-tight">
-                {title}
-              </h2>
+              <h2 className="text-base font-semibold text-foreground tracking-[-0.25px] leading-tight">{title}</h2>
               {actions && actions.length > 0 && (
                 <div className="flex items-center gap-1">
                   {actions.map((action, index) => (
-                    <Button
-                      key={index}
-                      onClick={action.onClick}
-                      variant="ghost"
-                      size="icon"
-                      aria-label={action.label}
-                    >
+                    <Button key={index} onClick={action.onClick} variant="ghost" size="icon" aria-label={action.label}>
                       {action.icon}
                     </Button>
                   ))}
@@ -60,9 +51,7 @@ export const Panel: FC<PanelProps> = ({ title, subtitle, details, actions, class
               )}
             </div>
             {subtitle && (
-              <p className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">
-                {subtitle}
-              </p>
+              <p className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">{subtitle}</p>
             )}
           </div>
         </div>
@@ -76,14 +65,9 @@ export const Panel: FC<PanelProps> = ({ title, subtitle, details, actions, class
                     {detail.label}
                   </span>
                 </div>
-                <div
-                  className={cn(
-                    "flex-1 rounded-lg px-2 py-1 min-h-6",
-                    detail.highlighted && "bg-secondary"
-                  )}
-                >
+                <div className={cn('flex-1 rounded-lg px-2 py-1 min-h-6', detail.highlighted && 'bg-secondary')}>
                   <div className="flex items-center min-h-6">
-                    {typeof detail.value === "string" ? (
+                    {typeof detail.value === 'string' ? (
                       <span className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">
                         {detail.value}
                       </span>

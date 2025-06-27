@@ -45,11 +45,7 @@ export const BreadcrumbItem: FC<BreadcrumbItemProps> = ({ label, onClick, isLast
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {dropdownItems.map((item) => (
-            <DropdownMenuItem
-              key={item.label as string}
-              className="cursor-pointer gap-2"
-              onClick={item.onClick}
-            >
+            <DropdownMenuItem key={item.label as string} className="cursor-pointer gap-2" onClick={item.onClick}>
               {item.icon}
               {item.label}
             </DropdownMenuItem>

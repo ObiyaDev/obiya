@@ -83,7 +83,7 @@ export const ContainerHeader = forwardRef<
       <Button variant="ghost" size="icon" className="rounded-full mr-2" onClick={onClick}>
         <ChevronDown
           className={cn('w-4 h-4 transition-transform', {
-            'rotate-180': !expanded,
+            '-rotate-90': !expanded,
           })}
         />
       </Button>
