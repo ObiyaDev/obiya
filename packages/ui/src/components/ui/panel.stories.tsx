@@ -4,10 +4,11 @@ import { Button } from './button'
 import { PictureInPicture2, X, Copy } from 'lucide-react'
 
 const meta: Meta<typeof Panel> = {
-  title: 'Components/Panel',
+  title: 'UI/Panel',
   component: Panel,
   parameters: {
     layout: 'centered',
+    actions: { argTypesRegex: '^on.*' },
     docs: {
       description: {
         component:
@@ -15,6 +16,7 @@ const meta: Meta<typeof Panel> = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',
@@ -35,6 +37,10 @@ const meta: Meta<typeof Panel> = {
     className: {
       control: 'text',
       description: 'Additional CSS classes to apply to the panel',
+    },
+    children: {
+      control: 'object',
+      description: 'Custom content to render inside the panel body, overriding `details`.',
     },
   },
 }

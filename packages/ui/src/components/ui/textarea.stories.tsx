@@ -2,12 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Textarea } from './textarea'
 import { useState } from 'react'
 
-const meta = {
+const meta: Meta<typeof Textarea> = {
   title: 'UI/Textarea',
   component: Textarea,
   parameters: {
     layout: 'centered',
     actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A multi-line text input control.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -31,8 +36,12 @@ const meta = {
       control: { type: 'text' },
       description: 'The textarea value',
     },
+    onChange: {
+      action: 'changed',
+      description: 'Event handler for when the textarea value changes.',
+    },
   },
-} satisfies Meta<typeof Textarea>
+}
 
 export default meta
 type Story = StoryObj<typeof meta>

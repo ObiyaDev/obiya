@@ -7,6 +7,12 @@ const meta: Meta<typeof Breadcrumb> = {
   component: Breadcrumb,
   parameters: {
     layout: 'centered',
+    actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A breadcrumb component for displaying navigation paths.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -110,8 +116,14 @@ export const TruncatedLabels: Story = {
   args: {
     items: [
       { label: 'Home', onClick: () => console.log('Home') },
-      { label: 'Very Long Organization Name That Should Truncate', onClick: () => console.log('Very Long Organization Name That Should Truncate') },
-      { label: 'Another Very Long Project Name That Might Overflow', onClick: () => console.log('Another Very Long Project Name That Might Overflow') },
+      {
+        label: 'Very Long Organization Name That Should Truncate',
+        onClick: () => console.log('Very Long Organization Name That Should Truncate'),
+      },
+      {
+        label: 'Another Very Long Project Name That Might Overflow',
+        onClick: () => console.log('Another Very Long Project Name That Might Overflow'),
+      },
       { label: 'Settings', onClick: () => console.log('Settings') },
     ],
   },
@@ -125,9 +137,17 @@ export const MixedTypes: Story = {
         label: 'Organizations',
         onClick: () => console.log('Organizations'),
         dropdownItems: [
-          { label: 'My Organization', icon: <Building2 className="size-4" />, onClick: () => console.log('My Organization') },
+          {
+            label: 'My Organization',
+            icon: <Building2 className="size-4" />,
+            onClick: () => console.log('My Organization'),
+          },
           { label: 'Partner Org', icon: <Building2 className="size-4" />, onClick: () => console.log('Partner Org') },
-          { label: 'All Organizations', icon: <Building2 className="size-4" />, onClick: () => console.log('All Organizations') },
+          {
+            label: 'All Organizations',
+            icon: <Building2 className="size-4" />,
+            onClick: () => console.log('All Organizations'),
+          },
         ],
       },
       { label: 'Projects', onClick: () => console.log('Projects') },
@@ -185,10 +205,18 @@ export const Interactive: Story = {
                 label: 'Documents',
                 icon: <Folder className="size-4" />,
                 dropdownItems: [
-                  { label: 'Personal', icon: <Building2 className="size-4" />, onClick: () => handleItemClick('Personal') },
+                  {
+                    label: 'Personal',
+                    icon: <Building2 className="size-4" />,
+                    onClick: () => handleItemClick('Personal'),
+                  },
                   { label: 'Work', icon: <Building2 className="size-4" />, onClick: () => handleItemClick('Work') },
                   { label: 'Shared', icon: <Folder className="size-4" />, onClick: () => handleItemClick('Shared') },
-                  { label: 'All Documents', icon: <FileText className="size-4" />, onClick: () => handleItemClick('All Documents') },
+                  {
+                    label: 'All Documents',
+                    icon: <FileText className="size-4" />,
+                    onClick: () => handleItemClick('All Documents'),
+                  },
                 ],
               },
               {

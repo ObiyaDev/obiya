@@ -3,12 +3,17 @@ import { Input } from './input'
 import { Search, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 
-const meta = {
+const meta: Meta<typeof Input> = {
   title: 'UI/Input',
   component: Input,
   parameters: {
     layout: 'centered',
     actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A flexible input component for various text and numerical inputs.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -33,8 +38,12 @@ const meta = {
       control: { type: 'text' },
       description: 'The input value',
     },
+    onChange: {
+      action: 'changed',
+      description: 'Event handler for when the input value changes.',
+    },
   },
-} satisfies Meta<typeof Input>
+}
 
 export default meta
 type Story = StoryObj<typeof meta>

@@ -2,31 +2,44 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from './button'
 import { Play, X, Settings, Plus } from 'lucide-react'
 
-const meta = {
+const meta: Meta<typeof Button> = {
   title: 'UI/Button',
   component: Button,
   parameters: {
     layout: 'centered',
     actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A button component that triggers an action or event.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
       options: ['default', 'accent', 'light', 'secondary', 'destructive', 'outline', 'ghost', 'link'],
+      description: 'The visual style of the button.',
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'default', 'md', 'lg', 'icon'],
+      description: 'The size of the button.',
     },
     asChild: {
       control: { type: 'boolean' },
+      description: 'Renders the button as a child of the component.',
     },
     disabled: {
       control: { type: 'boolean' },
+      description: 'Whether the button is disabled.',
+    },
+    children: {
+      control: { type: 'text' },
+      description: 'The content of the button.',
     },
   },
-} satisfies Meta<typeof Button>
+}
 
 export default meta
 type Story = StoryObj<typeof meta>

@@ -1,14 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 
-const meta = {
-  title: 'Components/Tabs',
+const meta: Meta<typeof Tabs> = {
+  title: 'UI/Tabs',
   component: Tabs,
   parameters: {
     layout: 'centered',
+    actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
+      },
+    },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Tabs>
+  argTypes: {
+    defaultValue: {
+      control: { type: 'text' },
+      description: 'The value of the tab that should be active by default.',
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional CSS classes to apply to the tabs container.',
+    },
+  },
+}
 
 export default meta
 type Story = StoryObj<typeof meta>

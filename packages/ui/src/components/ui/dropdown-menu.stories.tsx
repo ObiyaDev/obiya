@@ -32,14 +32,26 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 
-const meta = {
+const meta: Meta<typeof DropdownMenu> = {
   title: 'UI/DropdownMenu',
   component: DropdownMenu,
   parameters: {
     layout: 'centered',
+    actions: { argTypesRegex: '^on.*' },
+    docs: {
+      description: {
+        component: 'A dropdown menu for displaying a list of options or actions.',
+      },
+    },
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof DropdownMenu>
+  argTypes: {
+    children: {
+      control: { type: 'object' },
+      description: 'The content of the dropdown menu, typically a `DropdownMenuTrigger` and `DropdownMenuContent`.',
+    },
+  },
+}
 
 export default meta
 type Story = StoryObj<typeof meta>
