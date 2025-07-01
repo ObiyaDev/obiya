@@ -47,7 +47,7 @@ Motia brings cohesion to the fragmented backend world with our core primitive: t
 ### 🧱 The Step Philosophy
 
 - **🎯 Your Logic, Your Step**: A Step holds your business logic. It can be a simple function, a call to a database, or a complex AI agent. This is where your application's real work gets done.
-- **🌍 Any Language, One Workflow**: Write Steps in TypeScript, Python, etc. all in the same project. Use Python for your AI agents and TypeScript for your API, and Motia makes them work together effortlessly.
+- **🌍 Any Language, One Workflow**: Write Steps in TypeScript, Python, and other languages to come. all in the same project. Use Python for your AI agents and TypeScript for your API, and Motia makes them work together effortlessly.
 - **⚡ Full Power, No Boilerplate**: Inside a Step's `handler`, you have the full power of the Node.js or Python ecosystem. Install any package, call any API, connect to any database. No restrictions, just your code.
 - **👁️ Zero-Config Observability**: Get full end-to-end tracing and logging for every Step execution, automatically. No setup required. See exactly what happened, when, and why.
 - **🌊 Simple & Powerful Workflows**: Connect Steps together by emitting and subscribing to events. Build complex, multi-stage processes with simple, declarative code.
