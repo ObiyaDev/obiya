@@ -127,41 +127,63 @@ Every execution generates a full trace, capturing step timelines, state operatio
 ---
 
 ## 🚀 Quickstart
+Get Motia project up and running in **under 60 seconds**:
+### **Prerequisites**
 
-Get up and running in **under 60 seconds**:
+- **Node.js 18+** (we recommend the latest LTS)
+- **npm** ≥ 8 (or **pnpm** / **yarn** – your choice)
 
-### 1. Create Your Project
+---
+
+### 1. Bootstrap a New Motia Project
 
 ```bash
-npx motia@latest create -i
+npx motia@latest create -i   # runs the interactive terminal
 ```
-- Enter project details like template, project name, etc
+Follow the prompts to pick a template, project name, and language.
 
-### 2. Launch the Workbench
+### 2. Start the Workbench
 
-Start the Motia Workbench:
+Inside your new project folder, launch the dev server:
 
 ```bash
+cd <your-project-name>
 npx motia dev
-# Opens at http://localhost:3000
+# ➜ http://localhost:3000
+```
+This spins up the Motia Workbench – a local UI for building, testing & observing your backend in real-time.
+
+### 3. Hit Your First Endpoint
+
+Open a new terminal tab and run:
+
+```bash
+curl http://localhost:3000/hello-world
+```
+You should see the JSON response:
+
+```json
+{"message":"Hello World from Motia!"}
 ```
 
+### 4. Explore the Workbench UI
 
-🎉 **That's it!** You now have a fully functional Motia app with:
-- ✅ API endpoint at `/hello-world`
-- ✅ Visual debugger and flow inspector
+The Workbench is your command centre:
+
+- **🌊 Flows** – Visualise how your Steps connect.
+- **🔌 Endpoints** – Test APIs with one click and stream results live.
+- **👁️ Traces** – Inspect end-to-end traces of every execution.
+- **📊 Logs** – View structured logs grouped by trace.
+- **🏪 State** – Inspect the key-value store across Steps.
+
+---
+
+🎉 **That's it!** You now have a fully-featured Motia app with:
+
+- ✅ `/hello-world` API endpoint
+- ✅ Visual debugger & flow inspector
 - ✅ Built-in observability
-- ✅ Hot reload for instant feedback
-
-### 4. Explore the Workbench
-
-The Workbench is your command center for developing and monitoring your Motia application.
-
-- **🌊 Flows**: Visually inspect, design, and understand the connections between your steps.
-- **🔌 Endpoints**: Test your API endpoints directly from the UI, with full support for streaming responses.
-- **👁️ Traces**: Dive into detailed, end-to-end traces of your workflows. See exactly how data flows, where time is spent, and what errors occurred.
-- **📊 Logs**: View structured, correlated logs for every step execution.
-- **🏪 States**: Inspect the internal state and data passed between steps for any given workflow execution.
+- ✅ Hot-reload for instant feedback
 
 ---
 
