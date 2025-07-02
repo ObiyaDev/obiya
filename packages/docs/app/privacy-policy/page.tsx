@@ -170,7 +170,7 @@ export default function PrivacyPage() {
               Privacy isn&apos;t just a policy for us, it&apos;s a core value. We believe developers should have <span className={gradientText}>complete control over their data</span> and clear understanding of how it&apos;s used to improve the tools they rely on.
             </p>
             <p className="mt-[20px]">
-              Questions about this privacy policy or your data? Contact us at <span className={gradientTextBlue}>mike@motia.dev</span>
+              Questions about this privacy policy or your data? Contact at <span className={gradientTextBlue}>mike@motia.dev</span>
             </p>
             <p className="mt-[16px] text-[16px] text-white/40">
               Last updated: July 2025
