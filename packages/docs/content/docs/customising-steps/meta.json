@@ -1,4 +1,5 @@
 {
   "title": "Motia Advanced",
-  "pages": ["middlewares", "customising-steps", "NOOP"]
+  "pages": ["middlewares", "customising-steps", "NOOP"],
+  "defaultOpen": true
 }
