@@ -1,7 +1,10 @@
 # Motia
 
 <p align="center">
-  <img src="https://motia.dev/icon.png" alt="Motia Logo" width="200" />
+  <!-- shows in LIGHT mode only -->
+  <img src="assets/logos without TM/PNG/FLAT_BLUE_LOGO_MOTIA_dark.png#gh-dark-mode-only"  width="400" alt="Motia logo" />
+  <!-- shows in DARK mode only -->
+  <img src="assets/logos without TM/PNG/FLAT_BLUE_LOGO_MOTIA_light.png#gh-light-mode-only" width="400" alt="Motia logo (dark)" />
 </p>
 
 <p align="center">
