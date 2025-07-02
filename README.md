@@ -153,6 +153,8 @@ npx motia dev
 ```
 This spins up the Motia Workbench – a local UI for building, testing & observing your backend in real-time.
 
+![motia-terminal](assets/motia-terminal.gif)
+
 ### 3. Hit Your First Endpoint
 
 Open a new terminal tab and run:
