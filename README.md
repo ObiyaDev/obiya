@@ -116,7 +116,7 @@ Steps talk to each other by **emitting** and **subscribing** to topics. This dec
 All steps share a unified key-value state store. Every `get`, `set`, and `delete` is automatically traced so you always know when and where your data changed.
 
 ### 📊 Structured Logging
-Motia provides structured, JSON logs correlated with trace IDs and step names. Search and filter your logs without regex gymnastics.
+Motia provides structured, JSON logs correlated with trace IDs and step names. Search and filter your logs without regex hassle.
 
 ### 📡 Streams: Real-time Messaging
 Push live updates from long-running or asynchronous workflows to clients without polling. Perfect for dashboards, progress indicators, and interactive AI agents.
@@ -127,6 +127,7 @@ Every execution generates a full trace, capturing step timelines, state operatio
 ---
 
 ## 🚀 Quickstart
+
 Get Motia project up and running in **under 60 seconds**:
 ### **Prerequisites**
 
@@ -147,7 +148,6 @@ Follow the prompts to pick a template, project name, and language.
 Inside your new project folder, launch the dev server:
 
 ```bash
-cd <your-project-name>
 npx motia dev
 # ➜ http://localhost:3000
 ```
@@ -178,7 +178,7 @@ The Workbench is your command centre:
 
 ---
 
-🎉 **That's it!** You now have a fully-featured Motia app with:
+🎉 **That's it!** You now have a fully-featured Motia project with:
 
 - ✅ `/hello-world` API endpoint
 - ✅ Visual debugger & flow inspector
