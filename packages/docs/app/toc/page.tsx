@@ -31,7 +31,7 @@ export default function TermsPage() {
           <section className={normalText}>
             <h2 className={headingText}>Acceptance of Terms</h2>
             <p>
-              By accessing or using Motia, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, <span className={gradientText}>please contact us.</span>.
+              By accessing or using Motia, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, <span className={gradientText}>please contact us.</span>
             </p>
           </section>
 
@@ -132,7 +132,7 @@ export default function TermsPage() {
               These terms help us create a safe, productive environment for all developers using Motia. We&apos;re committed to <span className={gradientText}>building tools that empower</span> software engineering teams while respecting your rights and privacy.
             </p>
             <p className="mt-[20px]">
-              Questions about these terms? Contact us at <span className={gradientTextBlue}>mike@motia.dev</span>
+              Questions about these terms? Contact at <span className={gradientTextBlue}>mike@motia.dev</span>
             </p>
             <p className="mt-[16px] text-[16px] text-white/40">
               Last updated: July 2025
