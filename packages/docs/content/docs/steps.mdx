@@ -23,7 +23,17 @@ This leads to brittle systems stitched together with manual glue code.
 Motia introduces Steps as a unifying concept: every backend action, whether it's calling an API, reacting to an event, or invoking an AI (or LLM service), becomes a Step.
 
 ## Anatomy of a Step
-Everything in a Motia app is a Step and each Step has two parts:
+Everything in a Motia app is a Step. You can find all the steps of a project under the **_steps_** directory. Each step ends with a `.step` followed by the language extension. So if there's a typescript step, it'll be `step-name.step.ts`. For a Python step, it'll be `step-name.step.py` and so on.
+```
+my-motia-app/
+├── steps/
+│   ├── fetch-article.step.ts              # Step to fetch latest article
+│   ├── process-article.step.ts          # Step to process article content
+│   ├── generate-tweets.step.ts          # Step to generate tweets using LLM
+│   └── retrieve-tweets.step.ts            # Step to retrieve stored tweets
+```
+
+Each Step has two parts:
 
 1. Configuration: Describes how the step behaves
 2. Handler: Contains the logic that gets executed
