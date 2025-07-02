@@ -158,7 +158,7 @@ This spins up the Motia Workbench – a local UI for building, testing & observi
 Open a new terminal tab and run:
 
 ```bash
-curl http://localhost:3000/hello-world
+curl http://localhost:3000/default
 ```
 You should see the JSON response:
 
@@ -180,7 +180,7 @@ The Workbench is your command centre:
 
 🎉 **That's it!** You now have a fully-featured Motia project with:
 
-- ✅ `/hello-world` API endpoint
+- ✅ `/default` API endpoint
 - ✅ Visual debugger & flow inspector
 - ✅ Built-in observability
 - ✅ Hot-reload for instant feedback
