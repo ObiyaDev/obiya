@@ -13,7 +13,6 @@ export const JsonEditor: FC<JsonEditorProps> = ({ value, schema, onChange, onVal
   const monaco = useMonaco()
   const { theme } = useTheme()
 
-  console.log({ theme })
   useEffect(() => {
     if (!monaco || !schema) return
 
@@ -30,12 +29,6 @@ export const JsonEditor: FC<JsonEditorProps> = ({ value, schema, onChange, onVal
     monaco.editor.setTheme(theme === 'dark' ? 'vs-dark' : 'light')
   }, [monaco, schema, theme])
 
-  useEffect(() => {
-    if (!monaco || !theme) return
-
-    monaco.editor.setTheme(theme === 'dark' ? 'vs-dark' : 'light')
-  }, [monaco, theme])
-
   return (
     <Editor
       height="200px"
@@ -47,7 +40,10 @@ export const JsonEditor: FC<JsonEditorProps> = ({ value, schema, onChange, onVal
       onValidate={(markers) => {
         onValidate(markers.length === 0)
       }}
-      options={{ minimap: { enabled: false } }}
+      options={{
+        lineNumbers: 'off',
+        minimap: { enabled: false },
+      }}
     />
   )
 }

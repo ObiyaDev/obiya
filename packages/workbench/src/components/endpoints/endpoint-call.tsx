@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Loader2, Play, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -9,17 +9,17 @@ import { usePathParams } from './hooks/use-path-params'
 import { useStateStream } from './hooks/use-state-stream'
 import { Sidebar } from '@/components/sidebar/sidebar'
 import { JsonEditor } from './json-editor'
-import ReactJson from 'react18-json-view'
-import { useTheme } from '@/hooks/use-theme'
+import { EndpointResponse } from './endpoint-response'
+import { EndpointResponseSchema } from './endpoint-response-schema'
 
 type Props = { endpoint: ApiEndpoint; onClose: () => void }
 
-export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
+export const EndpointCall: FC<Props> = ({ endpoint, onClose }) => {
   const shouldHaveBody = ['post', 'put', 'patch'].includes(endpoint.method.toLowerCase())
   const [isRequestLoading, setIsRequestLoading] = useState(false)
-  const [responseCode, setResponseCode] = useState<number>()
-  const [responseBody, setResponseBody] = useState<Record<string, unknown>>()
-  const [executionTime, setExecutionTime] = useState<number>()
+  const [responseCode, setResponseCode] = useState<number | undefined>(undefined)
+  const [responseBody, setResponseBody] = useState<Record<string, unknown> | undefined>(undefined)
+  const [executionTime, setExecutionTime] = useState<number | undefined>(undefined)
   const { body, setBody } = useJsonSchemaToJson(endpoint.bodySchema)
   const [isBodyValid, setIsBodyValid] = useState(true)
   const pathParams = usePathParams(endpoint.path)
@@ -29,10 +29,8 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const [queryParamsValues, setQueryParamsValues] = useState<Record<string, string>>(
     endpoint.queryParams?.reduce((acc, param) => ({ ...acc, [param.name]: '' }), {} as Record<string, string>) ?? {},
   )
-  const { theme } = useTheme()
   const { data: responseBodyData, isStreamed } = useStateStream(responseBody)
 
-  console.log({ theme })
   const isPlayEnabled = useMemo(() => {
     if (!pathParams) return true
     if (shouldHaveBody && !isBodyValid) return false
@@ -47,6 +45,15 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const onQueryParamChange = (param: string, value: string) => {
     setQueryParamsValues((prev) => ({ ...prev, [param]: value }))
   }
+
+  useEffect(() => {
+    if (endpoint.id) {
+      setResponseCode(undefined)
+      setResponseBody(undefined)
+      setExecutionTime(undefined)
+      setIsRequestLoading(false)
+    }
+  }, [endpoint.id])
 
   const handleRequest = async () => {
     setIsRequestLoading(true)
@@ -130,8 +137,10 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
         </div>
       )}
       {shouldHaveBody && (
-        <div className="flex flex-col gap-2 rounded-lg bg-card">
-          <span className="text-xs font-bold">Body</span>
+        <div className="flex flex-col rounded-lg mt-6 border">
+          <div className="grid grid-cols-2 items-center px-4 py-2 border-b gap-y-2 bg-card min-h-[40px]">
+            <span className="text-xs font-bold">Body</span>
+          </div>
           <JsonEditor value={body} schema={endpoint.bodySchema} onChange={setBody} onValidate={setIsBodyValid} />
         </div>
       )}
@@ -143,26 +152,22 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
       >
         {isRequestLoading ? <Loader2 className="animate-spin" /> : <Play />} Play
       </Button>
-      {responseCode !== undefined && (
-        <div className="flex flex-col gap-2 rounded-lg bg-card mt-6" data-testid="endpoint-response-container">
-          <span className="text-xs font-bold">
-            <EndpointBadge variant={responseCode >= 400 ? 'DELETE' : 'GET'}>{responseCode}</EndpointBadge> Execution
-            time: <span className="text-muted-foreground">{executionTime}ms</span>
-          </span>
-          {isStreamed && (
-            <span className="flex flex-row items-center font-medium text-muted-foreground text-xs">
-              <span className="ml-1 inline-block w-2 h-2 rounded-full bg-green-500 mr-2 relative">
-                <span className="absolute inset-0 rounded-full bg-green-500 animate-[ping_1.5s_ease-in-out_infinite]" />
-                <span className="absolute inset-0 rounded-full bg-green-500" />
-              </span>
-              Object is being streamed, this is not the actual response from the API Endpoint
-            </span>
-          )}
-          <span className="text-xs font-mono font-bold dark:bg-black/50 bg-white/50 p-2 rounded-lg whitespace-pre-wrap">
-            <ReactJson src={responseBodyData} theme={theme === 'dark' ? 'vscode' : 'default'} enableClipboard={false} />
-          </span>
-        </div>
+
+      {responseCode !== undefined && responseBody !== undefined && (
+        <EndpointResponse
+          responseCode={responseCode}
+          responseBody={responseBodyData}
+          isStreamed={isStreamed}
+          executionTime={executionTime}
+        />
       )}
+
+      <EndpointResponseSchema
+        items={Object.entries(endpoint?.responseSchema ?? {}).map(([status, schema]) => ({
+          responseCode: status,
+          responseBody: schema?.properties,
+        }))}
+      />
     </Sidebar>
   )
 }
