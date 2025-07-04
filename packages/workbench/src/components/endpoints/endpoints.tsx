@@ -61,11 +61,7 @@ export const Endpoints = () => {
           </div>
         ))}
       </div>
-      {selectedEndpoint && (
-        <div className="flex flex-col gap-2 flex-1 m-4 ml-2 p-4 rounded-lg bg-muted">
-          <EndpointCall endpoint={selectedEndpoint} onClose={() => setSelectedEndpoint(null)} />
-        </div>
-      )}
+      {selectedEndpoint && <EndpointCall endpoint={selectedEndpoint} onClose={() => setSelectedEndpoint(null)} />}
     </div>
   )
 }

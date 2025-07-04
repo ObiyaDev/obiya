@@ -15,8 +15,8 @@ export interface PanelAction {
 }
 
 export interface PanelProps {
-  title: string
-  subtitle?: string
+  title: ReactNode
+  subtitle?: ReactNode
   details?: PanelDetailItem[]
   actions?: PanelAction[]
   className?: string

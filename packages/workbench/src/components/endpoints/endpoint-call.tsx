@@ -1,13 +1,16 @@
-import React, { useCallback, useMemo, useState, ChangeEvent } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Loader2, Play, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { Textarea } from '../ui/textarea'
 import { EndpointBadge } from './endpoint-badge'
 import { ApiEndpoint } from './hooks/use-get-endpoints'
 import { useJsonSchemaToJson } from './hooks/use-json-schema-to-json'
 import { usePathParams } from './hooks/use-path-params'
 import { useStateStream } from './hooks/use-state-stream'
+import { Sidebar } from '@/components/sidebar/sidebar'
+import { JsonEditor } from './json-editor'
+import ReactJson from 'react18-json-view'
+import { useTheme } from '@/hooks/use-theme'
 
 type Props = { endpoint: ApiEndpoint; onClose: () => void }
 
@@ -18,7 +21,7 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const [responseBody, setResponseBody] = useState<Record<string, unknown>>()
   const [executionTime, setExecutionTime] = useState<number>()
   const { body, setBody } = useJsonSchemaToJson(endpoint.bodySchema)
-  const [isJsonValid, setIsJsonValid] = useState(true)
+  const [isBodyValid, setIsBodyValid] = useState(true)
   const pathParams = usePathParams(endpoint.path)
   const [pathParamsValues, setPathParamsValues] = useState<Record<string, string>>(
     pathParams?.reduce((acc, param) => ({ ...acc, [param]: '' }), {} as Record<string, string>),
@@ -26,14 +29,16 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const [queryParamsValues, setQueryParamsValues] = useState<Record<string, string>>(
     endpoint.queryParams?.reduce((acc, param) => ({ ...acc, [param.name]: '' }), {} as Record<string, string>) ?? {},
   )
+  const { theme } = useTheme()
   const { data: responseBodyData, isStreamed } = useStateStream(responseBody)
 
+  console.log({ theme })
   const isPlayEnabled = useMemo(() => {
     if (!pathParams) return true
-    if (shouldHaveBody && !isJsonValid) return false
+    if (shouldHaveBody && !isBodyValid) return false
 
     return pathParams?.every((param) => pathParamsValues[param])
-  }, [pathParams, pathParamsValues, shouldHaveBody, isJsonValid])
+  }, [pathParams, pathParamsValues, shouldHaveBody, isBodyValid])
 
   const onPathParamChange = (param: string, value: string) => {
     setPathParamsValues((prev) => ({ ...prev, [param]: value }))
@@ -42,20 +47,6 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   const onQueryParamChange = (param: string, value: string) => {
     setQueryParamsValues((prev) => ({ ...prev, [param]: value }))
   }
-
-  const handleBodyChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value
-      setBody(value)
-      try {
-        JSON.parse(value)
-        setIsJsonValid(true)
-      } catch {
-        setIsJsonValid(false)
-      }
-    },
-    [setBody],
-  )
 
   const handleRequest = async () => {
     setIsRequestLoading(true)
@@ -87,21 +78,25 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto">
-      <div className="text-xs flex flex-row gap-2 items-center justify-between w-full">
-        <span className="font-bold">Request</span>
-        <div className="flex flex-row gap-2 items-center hover:bg-white/10 rounded-md p-1">
-          <X className="cursor-pointer w-4 h-4" onClick={onClose} />
+    <Sidebar
+      initialWidth={600}
+      title={
+        <div className="flex flex-row gap-2 items-center">
+          <EndpointBadge variant={endpoint.method as never}>{endpoint.method.toUpperCase()}</EndpointBadge>
+          <span className="text-md font-bold">{endpoint.path}</span>
         </div>
-      </div>
-      <div className="flex flex-row gap-2 items-center">
-        <EndpointBadge variant={endpoint.method as never}>{endpoint.method.toUpperCase()}</EndpointBadge>
-        <span className="text-md font-bold">{endpoint.path}</span>
-      </div>
-      <span className="text-xs text-muted-foreground">{endpoint.description}</span>
-
+      }
+      subtitle={<span className="text-xs text-muted-foreground">{endpoint.description}</span>}
+      onClose={onClose}
+      actions={[
+        {
+          icon: <X className="cursor-pointer w-4 h-4" onClick={onClose} />,
+          onClick: onClose,
+        },
+      ]}
+    >
       {!!pathParams.length && (
-        <div className="flex flex-col gap-2 p-4 rounded-lg bg-muted">
+        <div className="flex flex-col gap-2 p-4 rounded-lg bg-card">
           <span className="text-xs font-bold">Path Params</span>
           <div className="flex flex-col gap-4">
             {pathParams.map((param) => (
@@ -117,9 +112,8 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
           </div>
         </div>
       )}
-
       {!!endpoint.queryParams?.length && (
-        <div className="flex flex-col gap-2 p-4 rounded-lg bg-muted">
+        <div className="flex flex-col gap-2 p-4 rounded-lg bg-card">
           <span className="text-xs font-bold">Query Params</span>
           <div className="flex flex-col gap-4">
             {endpoint.queryParams.map((param) => (
@@ -135,25 +129,12 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
           </div>
         </div>
       )}
-
       {shouldHaveBody && (
-        <div className="flex flex-col gap-2 rounded-lg bg-muted">
+        <div className="flex flex-col gap-2 rounded-lg bg-card">
           <span className="text-xs font-bold">Body</span>
-          <Textarea
-            data-testid="endpoint-body-textarea"
-            className={`w-full font-mono font-medium min-h-[200px] ${!isJsonValid ? 'border-red-500' : ''}`}
-            value={body}
-            onChange={handleBodyChange}
-          />
-          <span
-            data-testid="endpoint-invalid-json-message"
-            className={`text-xs text-red-500 ${isJsonValid ? 'invisible' : ''}`}
-          >
-            Invalid JSON
-          </span>
+          <JsonEditor value={body} schema={endpoint.bodySchema} onChange={setBody} onValidate={setIsBodyValid} />
         </div>
       )}
-
       <Button
         className="w-fit"
         onClick={handleRequest}
@@ -162,9 +143,8 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
       >
         {isRequestLoading ? <Loader2 className="animate-spin" /> : <Play />} Play
       </Button>
-
       {responseCode !== undefined && (
-        <div className="flex flex-col gap-2 rounded-lg bg-muted" data-testid="endpoint-response-container">
+        <div className="flex flex-col gap-2 rounded-lg bg-card mt-6" data-testid="endpoint-response-container">
           <span className="text-xs font-bold">
             <EndpointBadge variant={responseCode >= 400 ? 'DELETE' : 'GET'}>{responseCode}</EndpointBadge> Execution
             time: <span className="text-muted-foreground">{executionTime}ms</span>
@@ -179,10 +159,10 @@ export const EndpointCall: React.FC<Props> = ({ endpoint, onClose }) => {
             </span>
           )}
           <span className="text-xs font-mono font-bold dark:bg-black/50 bg-white/50 p-2 rounded-lg whitespace-pre-wrap">
-            {JSON.stringify(responseBodyData, null, 2)}
+            <ReactJson src={responseBodyData} theme={theme === 'dark' ? 'vscode' : 'default'} enableClipboard={false} />
           </span>
         </div>
       )}
-    </div>
+    </Sidebar>
   )
 }
