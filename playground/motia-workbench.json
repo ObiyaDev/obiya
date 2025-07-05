@@ -47,23 +47,6 @@
     }
   },
   {
-    "id": "test-state",
-    "config": {
-      "steps/testState/test_state.step.py": {
-        "x": 169,
-        "y": 219
-      },
-      "steps/testState/testStateCheck.step.ts": {
-        "x": 521,
-        "y": 223
-      },
-      "steps/testState/testState.api.step.ts": {
-        "x": -181,
-        "y": 199
-      }
-    }
-  },
-  {
     "id": "open-ai",
     "config": {
       "steps/open-ai-python/02-prompt.step.py": {
@@ -114,6 +97,27 @@
       "steps/parallelMergeState/joinComplete.step.ts": {
         "x": 765,
         "y": 33
+      }
+    }
+  },
+  {
+    "id": "test-state",
+    "config": {
+      "steps/testState/test_state.step.py": {
+        "x": 169,
+        "y": 219,
+        "sourceHandlePosition": "right",
+        "targetHandlePosition": "left"
+      },
+      "steps/testState/testStateCheck.step.ts": {
+        "x": 535,
+        "y": 219,
+        "targetHandlePosition": "left"
+      },
+      "steps/testState/testState.api.step.ts": {
+        "x": -224,
+        "y": 192,
+        "sourceHandlePosition": "right"
       }
     }
   }
