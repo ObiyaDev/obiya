@@ -1,6 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Loader2, Play, X } from 'lucide-react'
-import { Button } from '../ui/button'
 import { EndpointBadge } from './endpoint-badge'
 import { ApiEndpoint } from './hooks/use-get-endpoints'
 import { useJsonSchemaToJson } from './hooks/use-json-schema-to-json'
@@ -9,7 +8,7 @@ import { Sidebar } from '@/components/sidebar/sidebar'
 import { JsonEditor } from './json-editor'
 import { EndpointResponse } from './endpoint-response'
 import { EndpointResponseSchema } from './endpoint-response-schema'
-import { Input, Panel } from '@motiadev/ui'
+import { Input, Panel, Button } from '@motiadev/ui'
 
 type Props = { endpoint: ApiEndpoint; onClose: () => void }
 
@@ -149,6 +148,7 @@ export const EndpointCall: FC<Props> = ({ endpoint, onClose }) => {
       <Button
         className="w-fit"
         onClick={handleRequest}
+        variant="accent"
         data-testid="endpoint-play-button"
         disabled={isRequestLoading || !isPlayEnabled}
       >

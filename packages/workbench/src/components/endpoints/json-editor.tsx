@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
-import { useTheme } from '@/hooks/use-theme'
+import { useThemeStore } from '@/stores/use-theme-store'
 
 type JsonEditorProps = {
   value: string
@@ -11,9 +11,9 @@ type JsonEditorProps = {
 
 export const JsonEditor: FC<JsonEditorProps> = ({ value, schema, onChange, onValidate }) => {
   const monaco = useMonaco()
-  const { theme } = useTheme()
+  const theme = useThemeStore((state) => state.theme)
   const editorTheme = useMemo(() => (theme === 'dark' ? 'vs-dark' : 'light'), [theme])
-
+  
   useEffect(() => {
     if (!monaco || !schema) return
 

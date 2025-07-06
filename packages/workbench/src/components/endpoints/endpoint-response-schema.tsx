@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks/use-theme'
+import { useThemeStore } from '@/stores/use-theme-store'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@motiadev/ui'
 import { FC, useMemo } from 'react'
 import ReactJson from 'react18-json-view'
@@ -14,7 +14,7 @@ type EndpointResponseProps = {
 }
 
 const EndpointResponseSchemaItem: FC<EndpointResponseItem> = ({ responseCode, bodySchema }) => {
-  const { theme } = useTheme()
+  const theme = useThemeStore((store) => store.theme)
 
   const schema = useMemo(() => convertJsonSchemaToJson(bodySchema), [bodySchema])
 
@@ -55,7 +55,7 @@ export const EndpointResponseSchema: FC<EndpointResponseProps> = ({ items }) => 
         </div>
 
         {items.map((props) => (
-          <EndpointResponseSchemaItem {...props} />
+          <EndpointResponseSchemaItem key={props.responseCode} {...props} />
         ))}
       </Tabs>
     </div>

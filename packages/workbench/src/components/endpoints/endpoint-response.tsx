@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks/use-theme'
+import { useThemeStore } from '@/stores/use-theme-store'
 import { Panel } from '@motiadev/ui'
 import { XCircle } from 'lucide-react'
 import { FC, useMemo } from 'react'
@@ -35,7 +35,7 @@ const getStatusMessage = (status: number) => {
 }
 
 export const EndpointResponse: FC<EndpointResponseProps> = ({ responseCode, executionTime, responseBody }) => {
-  const { theme } = useTheme()
+  const theme = useThemeStore((state) => state.theme)
   const { data, isStreamed } = useStateStream(responseBody)
 
   const statusMessage = useMemo(() => getStatusMessage(Number(responseCode)), [responseCode])
