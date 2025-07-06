@@ -3,11 +3,11 @@ import { Panel } from '@motiadev/ui'
 import { XCircle } from 'lucide-react'
 import { FC, useMemo } from 'react'
 import ReactJson from 'react18-json-view'
+import { useStateStream } from '@/components/endpoints/hooks/use-state-stream'
 
 type EndpointResponseProps = {
-  responseCode: number | string
-  responseBody: unknown
-  isStreamed?: boolean
+  responseCode: number | string | undefined
+  responseBody: Record<string, any> | undefined
   executionTime?: number
 }
 
@@ -34,15 +34,16 @@ const getStatusMessage = (status: number) => {
   }
 }
 
-export const EndpointResponse: FC<EndpointResponseProps> = ({
-  responseCode,
-  responseBody,
-  isStreamed,
-  executionTime,
-}) => {
+export const EndpointResponse: FC<EndpointResponseProps> = ({ responseCode, executionTime, responseBody }) => {
   const { theme } = useTheme()
+  const { data, isStreamed } = useStateStream(responseBody)
+
   const statusMessage = useMemo(() => getStatusMessage(Number(responseCode)), [responseCode])
   const isError = Number(responseCode) >= 400
+
+  if (!responseBody || !responseCode) {
+    return null
+  }
 
   return (
     <Panel
@@ -74,7 +75,7 @@ export const EndpointResponse: FC<EndpointResponseProps> = ({
       }
     >
       <ReactJson
-        src={responseBody as object}
+        src={data as object}
         dark={theme === 'dark'}
         enableClipboard={false}
         style={{ backgroundColor: 'transparent' }}
