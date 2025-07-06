@@ -33,7 +33,7 @@ export const useThemeStore = create<ThemeState>()(
       },
     }),
     {
-      name: 'theme-storage',
+      name: 'motia-theme-storage',
       storage: createJSONStorage(() => localStorage),
     },
   ),
@@ -44,11 +44,3 @@ const { theme } = useThemeStore.getState()
 if (theme) {
   updateTheme(theme)
 }
-console.log(theme)
-
-// window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-//   const { theme } = useThemeStore.getState()
-//   if (theme === 'system') {
-//     updateTheme('system')
-//   }
-// })
