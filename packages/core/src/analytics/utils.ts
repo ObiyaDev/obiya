@@ -38,7 +38,6 @@ export const getMotiaVersion = (baseDir: string): string => {
   } catch (error) {
     return 'unknown'
   }
-
 }
 
 export const isAnalyticsEnabled = (): boolean => {
