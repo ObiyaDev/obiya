@@ -2,7 +2,7 @@ import { CollapsiblePanel, CollapsiblePanelGroup, TabsContent, TabsList, TabsTri
 import { ReactFlowProvider } from '@xyflow/react'
 import { analytics } from '@/lib/analytics'
 import { File, GanttChart, Link2, LogsIcon } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import { EndpointsPage } from './components/endpoints/endpoints-page'
 import { FlowPage } from './components/flow/flow-page'
 import { FlowTabMenuItem } from './components/flow/flow-tab-menu-item'
@@ -18,7 +18,7 @@ enum TabLocation {
   BOTTOM = 'bottom',
 }
 
-export const App: React.FC = () => {
+export const App: FC = () => {
   const tab = useTabsStore((state) => state.tab)
   const setTopTab = useTabsStore((state) => state.setTopTab)
   const setBottomTab = useTabsStore((state) => state.setBottomTab)
