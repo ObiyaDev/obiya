@@ -1,18 +1,15 @@
-import { Sidebar } from '@/components/sidebar/sidebar'
 import { ApiEndpoint } from '@/types/endpoint'
 import { Button, Input, Panel } from '@motiadev/ui'
-import { Loader2, Play, X } from 'lucide-react'
+import { Loader2, Play } from 'lucide-react'
 import { FC, useEffect, useMemo, useState } from 'react'
-import { EndpointBadge } from './endpoint-badge'
 import { EndpointResponse } from './endpoint-response'
-import { EndpointResponseSchema } from './endpoint-response-schema'
 import { useJsonSchemaToJson } from './hooks/use-json-schema-to-json'
 import { usePathParams } from './hooks/use-path-params'
 import { JsonEditor } from './json-editor'
 
-type Props = { endpoint: ApiEndpoint; onClose: () => void }
+type Props = { endpoint: ApiEndpoint }
 
-export const EndpointCall: FC<Props> = ({ endpoint, onClose }) => {
+export const EndpointCall: FC<Props> = ({ endpoint }) => {
   const shouldHaveBody = ['post', 'put', 'patch'].includes(endpoint.method.toLowerCase())
   const [isRequestLoading, setIsRequestLoading] = useState(false)
   const [responseCode, setResponseCode] = useState<number | undefined>(undefined)
@@ -82,25 +79,7 @@ export const EndpointCall: FC<Props> = ({ endpoint, onClose }) => {
   }
 
   return (
-    <Sidebar
-      initialWidth={600}
-      title={
-        <div className="flex flex-row gap-2 items-center">
-          <EndpointBadge variant={endpoint.method as never}>{endpoint.method.toUpperCase()}</EndpointBadge>
-          <span className="text-md font-bold">{endpoint.path}</span>
-        </div>
-      }
-      onClose={onClose}
-      actions={[
-        {
-          icon: <X className="cursor-pointer w-4 h-4" onClick={onClose} />,
-          onClick: onClose,
-        },
-      ]}
-    >
-      {endpoint.description && (
-        <div className="rounded-lg border p-4 font-medium text-muted-foreground">{endpoint.description}</div>
-      )}
+    <div className="space-y-3">
       {!!pathParams.length && (
         <Panel title="Path params" size="sm">
           <table>
@@ -156,13 +135,6 @@ export const EndpointCall: FC<Props> = ({ endpoint, onClose }) => {
       </Button>
 
       <EndpointResponse responseCode={responseCode} responseBody={responseBody} executionTime={executionTime} />
-
-      <EndpointResponseSchema
-        items={Object.entries(endpoint?.responseSchema ?? {}).map(([status, schema]) => ({
-          responseCode: status,
-          bodySchema: schema,
-        }))}
-      />
-    </Sidebar>
+    </div>
   )
 }

@@ -26,11 +26,9 @@ export interface PanelProps {
   size?: 'sm' | 'md'
   variant?: 'default' | 'outlined' | 'filled' | 'ghost'
   tabs?: {
-    tabs: {
-      label: string
-      content: ReactNode
-    }[]
-  }
+    label: string
+    content: ReactNode
+  }[]
   contentClassName?: string
 }
 
@@ -53,7 +51,7 @@ export const Panel: FC<PanelProps> = ({
   contentClassName,
   tabs,
 }) => {
-  const hasTabs = tabs && tabs.tabs.length > 0
+  const hasTabs = tabs && tabs.length > 0
 
   const content = useMemo(() => {
     const _view = (
@@ -64,7 +62,7 @@ export const Panel: FC<PanelProps> = ({
               'bg-transparent': variant === 'ghost',
             })}
           >
-            {tabs?.tabs.map((tab) => (
+            {tabs?.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.label}>
                 {tab.label}
               </TabsTrigger>
@@ -94,7 +92,7 @@ export const Panel: FC<PanelProps> = ({
           ))}
 
           {hasTabs &&
-            tabs.tabs.map((tab) => (
+            tabs.map((tab) => (
               <TabsContent key={tab.label} value={tab.label}>
                 {tab.content}
               </TabsContent>
@@ -106,7 +104,7 @@ export const Panel: FC<PanelProps> = ({
     )
 
     if (hasTabs) {
-      return <Tabs defaultValue={tabs?.tabs[0]?.label}>{_view}</Tabs>
+      return <Tabs defaultValue={tabs?.[0]?.label}>{_view}</Tabs>
     }
 
     return _view
