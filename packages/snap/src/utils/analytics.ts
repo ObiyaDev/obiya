@@ -2,6 +2,7 @@ import { add, Identify, identify, init, setOptOut, Types } from '@amplitude/anal
 import { MotiaEnrichmentPlugin } from './amplitude/enrichment-plugin'
 import { isAnalyticsEnabled, getUserIdentifier } from '@motiadev/core'
 import { getProjectName } from '@motiadev/core/dist/src/analytics/utils'
+import { version } from '../version'
 
 init('ab2408031a38aa5cb85587a27ecfc69c', {
   logLevel: Types.LogLevel.None,
@@ -28,7 +29,7 @@ export const identifyUser = () => {
   try {
     const identifyObj = new Identify()
     identifyObj.postInsert('project_id', getProjectName(process.cwd()))
-    identifyObj.postInsert('motia_version', process.env.MOTIA_RUNTIME_VERSION || 'unknown')
+    identifyObj.postInsert('motia_version', version || 'unknown')
     identifyObj.postInsert('project_version', process.env.npm_package_version || 'unknown')
     identify(identifyObj, {
       user_id: getUserIdentifier(),

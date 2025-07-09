@@ -84,7 +84,6 @@ program
   .option('-d, --debug', 'Enable debug logging')
   .option('-m, --mermaid', 'Enable mermaid diagram generation')
   .action(async (arg) => {
-    process.env.MOTIA_RUNTIME_VERSION = version
     if (arg.debug) {
       console.log('🔍 Debug logging enabled')
       process.env.LOG_LEVEL = 'debug'
