@@ -21,12 +21,14 @@ export const EndpointSidePanel: FC<Props> = ({ endpoint, onClose }) => {
       onClose={onClose}
       tabs={[
         {
-          label: 'Description',
+          label: 'Details',
           content: <EndpointDescription endpoint={endpoint} />,
+          'data-testid': 'endpoint-details-tab',
         },
         {
           label: 'Call',
           content: <EndpointCall endpoint={endpoint} />,
+          'data-testid': 'endpoint-call-tab',
         },
       ]}
       actions={[

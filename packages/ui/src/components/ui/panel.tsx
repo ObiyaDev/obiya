@@ -17,6 +17,7 @@ export interface PanelAction {
 }
 
 export interface PanelProps {
+  'data-testid'?: string
   title: ReactNode
   subtitle?: ReactNode
   details?: PanelDetailItem[]
@@ -28,6 +29,7 @@ export interface PanelProps {
   tabs?: {
     label: string
     content: ReactNode
+    'data-testid'?: string
   }[]
   contentClassName?: string
 }
@@ -40,6 +42,7 @@ const panelVariants = {
 }
 
 export const Panel: FC<PanelProps> = ({
+  'data-testid': dataTestId,
   title,
   subtitle,
   details,
@@ -63,7 +66,7 @@ export const Panel: FC<PanelProps> = ({
             })}
           >
             {tabs?.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.label}>
+              <TabsTrigger key={tab.label} value={tab.label} data-testid={tab['data-testid']}>
                 {tab.label}
               </TabsTrigger>
             ))}
@@ -119,6 +122,7 @@ export const Panel: FC<PanelProps> = ({
         panelVariants[variant],
         className,
       )}
+      data-testid={dataTestId}
     >
       <div className="flex flex-col size-full">
         <div
