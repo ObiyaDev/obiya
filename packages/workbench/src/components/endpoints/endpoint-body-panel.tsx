@@ -21,7 +21,6 @@ export const EndpointBodyPanel: FC<Props> = ({ endpoint, onChange, onValidate })
   if (!shouldHaveBody) {
     return null
   }
-  console.log(endpoint.bodySchema)
 
   return (
     <Panel title="Body" size="sm" contentClassName="p-0" data-testid="endpoint-body-panel">
