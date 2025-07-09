@@ -48,6 +48,7 @@ export const EndpointResponse: FC<EndpointResponseProps> = ({ responseCode, exec
 
   return (
     <Panel
+      data-testid={'endpoint-response-container'}
       tabs={
         isStreamed
           ? [
