@@ -10,6 +10,7 @@ import { StreamFactory } from './streams/stream-factory'
 import { ApiRouteConfig, CronConfig, EventConfig, Flow, Step } from './types'
 import { Stream } from './types-stream'
 import { generateTypesFromSteps, generateTypesFromStreams, generateTypesString } from './types/generate-types'
+import { TraceStreamAdapter } from './observability/trace-stream-adapter'
 
 type FlowEvent = 'flow-created' | 'flow-removed' | 'flow-updated'
 type StepEvent = 'step-created' | 'step-removed' | 'step-updated'
@@ -349,10 +350,6 @@ export class LockedData {
   }
 
   private createStreamAdapter<TData>(streamName: string): StreamAdapter<TData> {
-    if (this.streamAdapter === 'file') {
-      return new FileStreamAdapter(this.baseDir, streamName)
-    }
-
-    return new MemoryStreamAdapter<TData>()
+    return new TraceStreamAdapter(this.baseDir, streamName, this.streamAdapter)
   }
 }
