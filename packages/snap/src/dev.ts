@@ -76,6 +76,10 @@ export const dev = async (port: number, disableVerbose: boolean, enableMermaid: 
     port,
     flows_count: lockedData.flows?.length || 0,
     steps_count: lockedData.activeSteps?.length || 0,
+    flows: Object.keys(lockedData.flows || {}),
+    steps: lockedData.activeSteps.map((step) => step.config.name),
+    streams: Object.keys(lockedData.getStreams() || {}),
+    runtime_version: process.env.MOTIA_RUNTIME_VERSION || 'unknown',
     environment: process.env.NODE_ENV || 'development',
   })
 
