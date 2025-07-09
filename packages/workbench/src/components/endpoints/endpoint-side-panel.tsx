@@ -12,6 +12,7 @@ export const EndpointSidePanel: FC<Props> = ({ endpoint, onClose }) => {
   return (
     <Sidebar
       initialWidth={600}
+      subtitle={endpoint.description}
       title={
         <div className="flex flex-row gap-2 items-center">
           <EndpointBadge variant={endpoint.method as never}>{endpoint.method.toUpperCase()}</EndpointBadge>

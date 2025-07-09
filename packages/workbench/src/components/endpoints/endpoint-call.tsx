@@ -1,11 +1,11 @@
 import { ApiEndpoint } from '@/types/endpoint'
-import { Button, Input, Panel } from '@motiadev/ui'
+import { Button } from '@motiadev/ui'
 import { Loader2, Play } from 'lucide-react'
 import { FC, useEffect, useMemo, useState } from 'react'
+import { EndpointBodyPanel } from './endpoint-body-panel'
+import { EndpointPathParamsPanel } from './endpoint-path-params-panel'
+import { EndpointQueryParamsPanel } from './endpoint-query-params-panel'
 import { EndpointResponse } from './endpoint-response'
-import { useJsonSchemaToJson } from './hooks/use-json-schema-to-json'
-import { usePathParams } from './hooks/use-path-params'
-import { JsonEditor } from './json-editor'
 
 type Props = { endpoint: ApiEndpoint }
 
@@ -15,30 +15,19 @@ export const EndpointCall: FC<Props> = ({ endpoint }) => {
   const [responseCode, setResponseCode] = useState<number | undefined>(undefined)
   const [responseBody, setResponseBody] = useState<Record<string, unknown> | undefined>(undefined)
   const [executionTime, setExecutionTime] = useState<number | undefined>(undefined)
-  const { body, setBody } = useJsonSchemaToJson(endpoint.bodySchema)
+  const [body, setBody] = useState<string | undefined>(undefined)
   const [isBodyValid, setIsBodyValid] = useState(true)
-  const pathParams = usePathParams(endpoint.path)
-  const [pathParamsValues, setPathParamsValues] = useState<Record<string, string>>(
-    pathParams?.reduce((acc, param) => ({ ...acc, [param]: '' }), {} as Record<string, string>),
-  )
-  const [queryParamsValues, setQueryParamsValues] = useState<Record<string, string>>(
-    endpoint.queryParams?.reduce((acc, param) => ({ ...acc, [param.name]: '' }), {} as Record<string, string>) ?? {},
-  )
+  const [pathParamsValues, setPathParamsValues] = useState<Record<string, string>>({})
+  const [queryParamsValues, setQueryParamsValues] = useState<Record<string, string>>({})
 
   const isPlayEnabled = useMemo(() => {
-    if (!pathParams) return true
     if (shouldHaveBody && !isBodyValid) return false
 
-    return pathParams?.every((param) => pathParamsValues[param])
-  }, [pathParams, pathParamsValues, shouldHaveBody, isBodyValid])
-
-  const onPathParamChange = (param: string, value: string) => {
-    setPathParamsValues((prev) => ({ ...prev, [param]: value }))
-  }
-
-  const onQueryParamChange = (param: string, value: string) => {
-    setQueryParamsValues((prev) => ({ ...prev, [param]: value }))
-  }
+    return (
+      Object.values(pathParamsValues).every((value) => value) &&
+      Object.values(queryParamsValues).every((value) => value)
+    )
+  }, [pathParamsValues, shouldHaveBody, isBodyValid, queryParamsValues])
 
   useEffect(() => {
     if (endpoint.id) {
@@ -54,8 +43,8 @@ export const EndpointCall: FC<Props> = ({ endpoint }) => {
     const startTime = Date.now()
     const path = new URL(
       window.location.origin +
-        pathParams.reduce((acc, param) => {
-          return acc.replace(`:${param}`, pathParamsValues[param])
+        Object.entries(pathParamsValues).reduce((acc, [param, value]) => {
+          return acc.replace(`:${param}`, value)
         }, endpoint.path),
     )
     for (const [key, value] of Object.entries(queryParamsValues)) {
@@ -80,50 +69,9 @@ export const EndpointCall: FC<Props> = ({ endpoint }) => {
 
   return (
     <div className="space-y-3">
-      {!!pathParams.length && (
-        <Panel title="Path params" size="sm">
-          <table>
-            {pathParams.map((param) => (
-              <tr key={param}>
-                <td className="flex flex-col font-bold leading-[36px]">{param}</td>
-                <td className="w-2/3 pl-4">
-                  <Input
-                    className="w-full"
-                    value={pathParamsValues[param]}
-                    onChange={(e) => onPathParamChange(param, e.target.value)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </table>
-        </Panel>
-      )}
-      {!!endpoint.queryParams?.length && (
-        <Panel title="Query params" size="sm">
-          <table>
-            {endpoint.queryParams.map((param) => (
-              <tr key={param.name}>
-                <td className="flex flex-col justify-start">
-                  <span className="font-bold">{param.name}</span>
-                  <span className="text-md text-muted-foreground">{param.description}</span>
-                </td>
-                <td className="w-2/3 pl-4 align-top">
-                  <Input
-                    className="w-full"
-                    value={queryParamsValues[param.name]}
-                    onChange={(e) => onQueryParamChange(param.name, e.target.value)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </table>
-        </Panel>
-      )}
-      {shouldHaveBody && (
-        <Panel title="Body" size="sm" contentClassName="p-0" data-testid="endpoint-body-panel">
-          <JsonEditor value={body} schema={endpoint.bodySchema} onChange={setBody} onValidate={setIsBodyValid} />
-        </Panel>
-      )}
+      <EndpointPathParamsPanel endpoint={endpoint} onChange={setPathParamsValues} />
+      <EndpointQueryParamsPanel endpoint={endpoint} onChange={setQueryParamsValues} />
+      <EndpointBodyPanel endpoint={endpoint} onChange={setBody} onValidate={setIsBodyValid} />
       <Button
         className="w-fit"
         onClick={handleRequest}
