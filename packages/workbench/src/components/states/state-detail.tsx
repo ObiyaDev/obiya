@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 import React from 'react'
 import JsonView from 'react18-json-view'
 import { StateItem } from './hooks/states-hooks'
-import { StateEditor } from './state-value'
+import { StateEditor } from './state-editor'
 
 type Props = {
   state: StateItem

@@ -18,6 +18,9 @@ export const StateEditor: React.FC<Props> = ({ state }) => {
     setIsRequestLoading(true)
     await fetch('/motia/state', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ key: state.key, groupId: state.groupId, value: JSON.parse(jsonValue) }),
     })
     setIsRequestLoading(false)

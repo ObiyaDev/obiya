@@ -17,8 +17,12 @@ export const stateEndpoints = (server: MotiaServer, stateAdapter: StateAdapter) 
   })
 
   app.post('/motia/state', async (req, res) => {
-    const { key, groupId, value } = req.body
-    await stateAdapter.set(groupId, key, value)
-    res.json({ key, groupId, value })
+    try {
+      const { key, groupId, value } = req.body
+      await stateAdapter.set(groupId, key, value)
+      res.json({ key, groupId, value })
+    } catch (error: any) {
+      res.status(500).json({ error: error.message })
+    }
   })
 }
