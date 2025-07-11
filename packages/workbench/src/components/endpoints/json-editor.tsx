@@ -19,13 +19,15 @@ export const JsonEditor: FC<JsonEditorProps> = ({ value, schema, onChange, onVal
 
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
-      schemas: schema ? [
-        {
-          uri: window.location.href,
-          fileMatch: ['*'],
-          schema,
-        },
-      ] : [],
+      schemas: schema
+        ? [
+            {
+              uri: window.location.href,
+              fileMatch: ['*'],
+              schema,
+            },
+          ]
+        : [],
     })
   }, [monaco, schema])
 
