@@ -1,108 +1,42 @@
-import { cn } from '@/lib/utils'
-import { cva, VariantProps } from 'class-variance-authority'
-import { SquareMinus, SquarePlus } from 'lucide-react'
-import React, { ReactNode, useState } from 'react'
-
-const valueVariants = cva('text-muted-foreground text-sm', {
-  variants: {
-    variant: {
-      boolean: 'text-sky-400 font-mono font-bold',
-      number: 'text-teal-400 font-mono font-bold',
-      undefined: 'text-muted-foreground',
-      string: 'text-muted-foreground font-mono font-medium',
-      object: 'text-gray-800',
-    },
-  },
-  defaultVariants: {
-    variant: 'string',
-  },
-})
-
-const Value: React.FC<{ value: ReactNode; label?: string } & VariantProps<typeof valueVariants>> = ({
-  value,
-  variant,
-  label,
-}) => {
-  const displayValue = typeof value === 'string' ? value : JSON.stringify(value)
-
-  return (
-    <div className="flex flex-col gap-1">
-      {label && <div className="text-md font-bold">{label}</div>}
-      <div className={valueVariants({ variant })}>{displayValue}</div>
-    </div>
-  )
-}
+import { Button } from '@motiadev/ui';
+import { Loader2, Save } from 'lucide-react';
+import React, { useState } from 'react';
+import { JsonEditor } from '../endpoints/json-editor';
+import { StateItem } from './hooks/states-hooks';
 
 type Props = {
-  value: unknown
-  isRoot?: boolean
-  label?: string
+  state: StateItem
 }
 
-export const StateValue: React.FC<Props> = ({ value, label, isRoot = false }) => {
-  const [isOpen, setIsOpen] = useState(true)
-  const toggle = () => setIsOpen(!isOpen)
+export const StateEditor: React.FC<Props> = ({ state }) => {
+  const [isRequestLoading, setIsRequestLoading] = useState(false)
+  const [isValid, setIsValid] = useState(true)
+  const [jsonValue, setJsonValue] = useState(JSON.stringify(state.value, null, 2))
 
-  if (React.isValidElement(value)) {
-    return value
+  const handleSave = async () => {
+    if(isValid) {
+    setIsRequestLoading(true)
+    await fetch('/motia/state', {
+      method: 'POST',
+      body: JSON.stringify({ key: state.key, groupId: state.groupId, value: JSON.parse(jsonValue) }),
+    })
+    setIsRequestLoading(false)
+    }
   }
 
-  if (typeof value === 'boolean') {
-    return <Value label={label} variant="boolean" value={value ? 'true' : 'false'} />
-  }
+  return (
+    <div className="flex flex-col gap-3">
+      <JsonEditor value={jsonValue} onChange={(value) => {setJsonValue(value)}} onValidate={setIsValid} />
+      <Button
+        className="w-fit"
+        onClick={handleSave}
+        variant="accent"
+        data-testid="endpoint-play-button"
+        disabled={isRequestLoading || !isValid}
+      >
+        {isRequestLoading ? <Loader2 className="animate-spin" /> : <Save />} Save
+      </Button>
 
-  if (typeof value === 'number') {
-    return <Value label={label} variant="number" value={value} />
-  }
-
-  if (typeof value === 'undefined') {
-    return <Value label={label} variant="undefined" value={value} />
-  }
-
-  if (typeof value === 'string') {
-    return <Value label={label} variant="string" value={value} />
-  }
-
-  const isArray = Array.isArray(value)
-  const [openBracket, closeBracket] = isRoot ? [] : isArray ? ['[', ']'] : ['{', '}']
-
-  if (typeof value === 'object' && !!value) {
-    const valueObject = value as object
-
-    return (
-      <div className="flex flex-col gap-2">
-        {(label || openBracket) && (
-          <div
-            className="flex gap-1 items-center text-md font-bold hover:bg-muted-foreground/10 rounded-md py-2 cursor-pointer"
-            onClick={toggle}
-          >
-            {isOpen ? (
-              <SquareMinus className="w-4 h-4 text-muted-foreground" />
-            ) : (
-              <SquarePlus className="w-4 h-4 text-muted-foreground" />
-            )}
-            {label}{' '}
-            {!isRoot && (
-              <span className="text-muted-foreground text-sm">
-                {openBracket}
-                {!isOpen && ` ... ${closeBracket}`}
-              </span>
-            )}
-          </div>
-        )}
-        {isOpen &&
-          !!valueObject &&
-          Object.keys(valueObject).map((key) => (
-            <div className={cn('flex flex-col gap-2', !isRoot && 'ml-4')} key={key}>
-              <span className="text-md">
-                <StateValue label={isArray ? undefined : key} value={valueObject[key as keyof typeof valueObject]} />
-              </span>
-            </div>
-          ))}
-        {!isRoot && isOpen && <span className="text-muted-foreground text-sm">{closeBracket}</span>}
-      </div>
-    )
-  }
-
-  return <Value value={undefined} variant="object" />
+    </div>
+  )
 }

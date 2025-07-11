@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 import React from 'react'
 import JsonView from 'react18-json-view'
 import { StateItem } from './hooks/states-hooks'
-import { StateValue } from './state-value'
+import { StateEditor } from './state-value'
 
 type Props = {
   state: StateItem
@@ -19,11 +19,11 @@ export const StateDetail: React.FC<Props> = ({ state, onClose }) => {
       tabs={[
         {
           label: 'Details',
-          content: <StateValue value={state.value} isRoot />,
+          content: <JsonView src={state.value} />,
         },
         {
-          label: 'JSON',
-          content: <JsonView src={state.value} />,
+          label: 'Editor',
+          content: <StateEditor state={state} />,
         },
       ]}
       actions={[
