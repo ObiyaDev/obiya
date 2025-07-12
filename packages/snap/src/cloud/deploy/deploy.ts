@@ -58,7 +58,7 @@ export class VersionManager {
       configFile.steps,
       configFile.streams,
     )
-    const uploadResult = await context.versionService.uploadZipFile(versionId, distDir)
+    const uploadResult = await context.versionService.uploadProjectFolder(versionId, distDir)
 
     if (!uploadResult.success) {
       context.log('deploy-failed', (message) =>
@@ -89,8 +89,6 @@ export class VersionManager {
     const versionResults: VersionResult[] = [uploadResult].map((result) => ({
       bundlePath: result.bundlePath,
       versionId: result.success ? versionId : undefined,
-      stepType: result.stepType,
-      stepName: result.stepName,
       stepPath: configFile.steps[result.bundlePath]?.entrypointPath,
       flowName: configFile.steps[result.bundlePath]?.config?.flows?.[0] || 'unknown',
       environment: environment.name,
