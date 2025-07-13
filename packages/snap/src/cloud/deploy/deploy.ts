@@ -58,7 +58,7 @@ export class VersionManager {
       configFile.steps,
       configFile.streams,
     )
-    const uploadResult = await context.versionService.uploadProjectFolder(versionId, distDir)
+    const uploadResult = await context.versionService.uploadProject(versionId, distDir, configFile.steps)
 
     if (!uploadResult.success) {
       context.log('deploy-failed', (message) =>

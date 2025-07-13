@@ -42,12 +42,11 @@ export class VersionsClient extends AxiosClient {
     }
   }
 
-  async uploadZipFile(zipPath: string, versionId: string): Promise<string> {
+  async uploadZipFile(zipPath: string, versionId: string, fileName: string): Promise<string> {
     if (!fs.existsSync(zipPath)) {
       throw new FileUploadError(new Error('File not found'), zipPath)
     }
 
-    const fileName = path.basename(zipPath)
     const fileStats = fs.statSync(zipPath)
 
     try {

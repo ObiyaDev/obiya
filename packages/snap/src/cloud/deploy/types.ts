@@ -62,7 +62,6 @@ export interface VersionSummary {
 
 export interface UploadResult {
   bundlePath: string
-  uploadId?: string
   error?: string
   success: boolean
 }

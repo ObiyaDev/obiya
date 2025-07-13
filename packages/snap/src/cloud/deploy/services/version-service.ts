@@ -26,17 +26,18 @@ export class VersionService {
     return versionId
   }
 
-  async uploadProjectFolder(versionId: string, distDir: string): Promise<UploadResult> {
-
+  async uploadProject(versionId: string, distDir: string, steps: BuildStepsConfig): Promise<UploadResult> {
     try {
       this.context.log('upload-zip', (message) => message.tag('progress').append('Uploading bundle...'))
 
-      const uploadId = await this.versionClient.uploadFolder(distDir, versionId)
+      await Promise.all(Object.keys(steps).map(stepPath => {
+        const stepZipPath = path.join(distDir, stepPath)
+        return this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath);
+      }))
 
       this.context.log('upload-zip', (message) => message.tag('success').append('Uploaded bundle successfully'))
 
       return {
-        uploadId,
         success: true,
         bundlePath: distDir,
       }
