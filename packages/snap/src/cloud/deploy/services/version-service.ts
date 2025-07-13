@@ -14,12 +14,13 @@ export class VersionService {
 
   async uploadConfiguration(
     environmentId: string,
+    motiaVersion: string,
     version: string,
     stepsConfig: BuildStepsConfig,
     streamsConfig: BuildStreamsConfig,
   ): Promise<string> {
     this.context.log('upload-config', (message) => message.tag('progress').append('Uploading configuration...'))
-    const versionId = await this.versionClient.uploadStepsConfig(environmentId, version, stepsConfig, streamsConfig)
+    const versionId = await this.versionClient.uploadStepsConfig(environmentId, motiaVersion, version, stepsConfig, streamsConfig)
     this.context.log('upload-config', (message) => message.tag('success').append('Configuration uploaded successfully'))
     this.context.log('deploy', (message) => message.tag('success').append(`Version started with ID: ${versionId}`))
 

@@ -4,6 +4,7 @@ import { StepsConfigFile } from '../build/builder'
 import { CliContext } from '../config-utils'
 import { VersionResult } from './types'
 import { parseEnvFile } from './utils/env-parser'
+import { version as motiaVersion } from '../../version'
 
 export class VersionManager {
   async deploy(
@@ -54,6 +55,7 @@ export class VersionManager {
 
     const versionId = await context.versionService.uploadConfiguration(
       environment.id,
+      motiaVersion,
       versionName,
       configFile.steps,
       configFile.streams,
