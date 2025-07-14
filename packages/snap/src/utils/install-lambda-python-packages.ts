@@ -1,33 +1,45 @@
-import path from 'path'
-import fs from 'fs'
-import { execSync } from 'child_process'
+import { spawn } from 'child_process';
+import * as path from 'path';
 
-interface VenvConfig {
-  baseDir: string
-  isVerbose?: boolean
+export interface VenvConfig {
+  baseDir: string;
+  isVerbose?: boolean;
 }
 
-export const installLambdaPythonPackages = ({ baseDir, isVerbose = false }: VenvConfig): void => {
-  const sitePackagesPath = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
+export async function installLambdaPythonPackages({
+  baseDir,
+  isVerbose = false
+}: VenvConfig): Promise<void> {
+  return new Promise((resolve, reject) => {
+    // Validate and sanitize baseDir
+    const sanitizedBaseDir = path.resolve(baseDir);
+    
+    // Use spawn instead of exec to prevent command injection
+    const args = ['install', '-r', 'requirements.txt'];
+    
+    const child = spawn('pip', args, {
+      cwd: sanitizedBaseDir,
+      stdio: isVerbose ? 'inherit' : 'pipe'
+    });
 
-  // Check if requirements.txt exists
-  const requirementsPath = path.join(baseDir, 'requirements.txt')
-  if (!fs.existsSync(requirementsPath)) {
-    console.warn('❌ requirements.txt not found')
-    return
-  }
-
-  try {
-    // Install packages to lambda site-packages with platform specification
-    const command = `pip install -r "${requirementsPath}" --target "${sitePackagesPath}" --platform manylinux2014_x86_64 --only-binary=:all: --upgrade --upgrade-strategy only-if-needed`
-    if (isVerbose) {
-      console.log('📦 Installing Python packages with platform specification...')
-      console.log('📦 Command:', command)
+    let stderr = '';
+    
+    if (!isVerbose) {
+      child.stderr?.on('data', (data) => {
+        stderr += data.toString();
+      });
     }
-    execSync(command, { stdio: 'inherit' })
-    console.log('✅ Python packages for lambda installed successfully')
-  } catch (error) {
-    console.error('❌ Failed to install Python packages for lambda:', error)
-    throw error
-  }
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`pip install failed with code ${code}${stderr ? ': ' + stderr : ''}`));
+      }
+    });
+
+    child.on('error', (error) => {
+      reject(new Error(`Failed to start pip install: ${error.message}`));
+    });
+  });
 }
