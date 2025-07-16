@@ -61,14 +61,10 @@ export class DeployPrinter {
   }
 
   printConfigurationUploading(): void {
-    this.output.log('upload-config', (message) => 
-      message.tag('progress').append(`${uploading} Configuration`)
-    )
+    this.output.log('upload-config', (message) => message.tag('progress').append(`${uploading} Configuration`))
   }
 
   printConfigurationUploaded(): void {
-    this.output.log('upload-config', (message) => 
-      message.tag('success').append(`${uploaded} Configuration`)
-    )
+    this.output.log('upload-config', (message) => message.tag('success').append(`${uploaded} Configuration`))
   }
-} 
+}

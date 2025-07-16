@@ -45,7 +45,7 @@ export class VersionService {
           const stepZipPath = path.join(distDir, stepPath)
           await this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath)
           this.printer.printStepUploaded(stepConfig)
-        })
+        }),
       )
 
       return {
