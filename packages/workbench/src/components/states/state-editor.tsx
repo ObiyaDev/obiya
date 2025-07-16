@@ -19,14 +19,11 @@ export const StateEditor: React.FC<Props> = ({ state }) => {
     setJsonValue(JSON.stringify(state.value, null, 2))
   }, [state.value])
 
-  const handleJsonChange = useCallback(
-    (value: string) => {
-      setHasChanges(value !== lastSavedValue.current)
-      setJsonValue(value)
-      setSaveStatus('idle')
-    },
-    [],
-  )
+  const handleJsonChange = useCallback((value: string) => {
+    setHasChanges(value !== lastSavedValue.current)
+    setJsonValue(value)
+    setSaveStatus('idle')
+  }, [])
 
   const handleSave = async () => {
     if (!isValid || !hasChanges) return
