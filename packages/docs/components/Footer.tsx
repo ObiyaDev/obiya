@@ -34,7 +34,7 @@ const SocialLinks: React.FC = () => {
         </Link>
 
         {/**
-         * GitHub Link
+         * Github Link
          *
          **/}
         <Link
