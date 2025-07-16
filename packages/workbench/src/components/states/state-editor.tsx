@@ -1,6 +1,6 @@
 import { Button, Panel } from '@motiadev/ui'
 import { AlertCircle, Check, Database, Loader2, Save } from 'lucide-react'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { JsonEditor } from '../endpoints/json-editor'
 import { StateItem } from './hooks/states-hooks'
 
@@ -14,18 +14,18 @@ export const StateEditor: React.FC<Props> = ({ state }) => {
   const [jsonValue, setJsonValue] = useState(JSON.stringify(state.value, null, 2))
   const [hasChanges, setHasChanges] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
-
+  const lastSavedValue = useRef(JSON.stringify(state.value, null, 2))
   useEffect(() => {
     setJsonValue(JSON.stringify(state.value, null, 2))
   }, [state.value])
 
   const handleJsonChange = useCallback(
     (value: string) => {
+      setHasChanges(value !== lastSavedValue.current)
       setJsonValue(value)
-      setHasChanges(value !== JSON.stringify(state.value, null, 2))
       setSaveStatus('idle')
     },
-    [state.value],
+    [],
   )
 
   const handleSave = async () => {
@@ -51,6 +51,7 @@ export const StateEditor: React.FC<Props> = ({ state }) => {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
+      lastSavedValue.current = jsonValue
       setSaveStatus('success')
       setHasChanges(false)
 
