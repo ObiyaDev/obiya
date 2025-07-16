@@ -29,7 +29,7 @@ export const TextAppearBlur: React.FC<TextAppearBlurProps> = ({ children, delay 
       y: 0,
       filter: 'blur(0px)',
       transition: {
-        type: 'spring' as const,
+        type: 'spring',
         mass: 0.5,
         damping: 30,
         stiffness: 300,
