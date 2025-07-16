@@ -20,7 +20,13 @@ export class VersionService {
     streamsConfig: BuildStreamsConfig,
   ): Promise<string> {
     this.context.log('upload-config', (message) => message.tag('progress').append('Uploading configuration...'))
-    const versionId = await this.versionClient.uploadStepsConfig(environmentId, motiaVersion, version, stepsConfig, streamsConfig)
+    const versionId = await this.versionClient.uploadStepsConfig(
+      environmentId,
+      motiaVersion,
+      version,
+      stepsConfig,
+      streamsConfig,
+    )
     this.context.log('upload-config', (message) => message.tag('success').append('Configuration uploaded successfully'))
     this.context.log('deploy', (message) => message.tag('success').append(`Version started with ID: ${versionId}`))
 
@@ -31,10 +37,12 @@ export class VersionService {
     try {
       this.context.log('upload-zip', (message) => message.tag('progress').append('Uploading bundle...'))
 
-      await Promise.all(Object.keys(steps).map(stepPath => {
-        const stepZipPath = path.join(distDir, stepPath)
-        return this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath);
-      }))
+      await Promise.all(
+        Object.keys(steps).map((stepPath) => {
+          const stepZipPath = path.join(distDir, stepPath)
+          return this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath)
+        }),
+      )
 
       this.context.log('upload-zip', (message) => message.tag('success').append('Uploaded bundle successfully'))
 
