@@ -4,9 +4,11 @@ import { VersionStartResponse } from '../../api/models/responses/version-respons
 import { CliContext } from '../../config-utils'
 import { UploadResult } from '../types'
 import { BuildStepsConfig, BuildStreamsConfig } from '../../build/builder'
+import { DeployPrinter } from '../printer'
 
 export class VersionService {
   private readonly versionClient: VersionsClient
+  private readonly printer = new DeployPrinter()
 
   constructor(private readonly context: CliContext) {
     this.versionClient = context.apiFactory.getVersionsClient()
@@ -19,7 +21,7 @@ export class VersionService {
     stepsConfig: BuildStepsConfig,
     streamsConfig: BuildStreamsConfig,
   ): Promise<string> {
-    this.context.log('upload-config', (message) => message.tag('progress').append('Uploading configuration...'))
+    this.printer.printConfigurationUploading()
     const versionId = await this.versionClient.uploadStepsConfig(
       environmentId,
       motiaVersion,
@@ -27,7 +29,7 @@ export class VersionService {
       stepsConfig,
       streamsConfig,
     )
-    this.context.log('upload-config', (message) => message.tag('success').append('Configuration uploaded successfully'))
+    this.printer.printConfigurationUploaded()
     this.context.log('deploy', (message) => message.tag('success').append(`Version started with ID: ${versionId}`))
 
     return versionId
@@ -35,16 +37,16 @@ export class VersionService {
 
   async uploadProject(versionId: string, distDir: string, steps: BuildStepsConfig): Promise<UploadResult> {
     try {
-      this.context.log('upload-zip', (message) => message.tag('progress').append('Uploading bundle...'))
+      const stepEntries = Object.entries(steps)
 
       await Promise.all(
-        Object.keys(steps).map((stepPath) => {
+        stepEntries.map(async ([stepPath, stepConfig]) => {
+          this.printer.printStepUploading(stepConfig)
           const stepZipPath = path.join(distDir, stepPath)
-          return this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath)
-        }),
+          await this.versionClient.uploadZipFile(stepZipPath, versionId, stepPath)
+          this.printer.printStepUploaded(stepConfig)
+        })
       )
-
-      this.context.log('upload-zip', (message) => message.tag('success').append('Uploaded bundle successfully'))
 
       return {
         success: true,
