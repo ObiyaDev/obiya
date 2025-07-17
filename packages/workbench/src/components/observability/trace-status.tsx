@@ -9,21 +9,17 @@ type Props = {
 
 export const TraceStatusBadge: React.FC<Props> = ({ status, duration }) => {
   const variant = useMemo(() => {
-    if(status === 'running') {
+    if (status === 'running') {
       return 'info'
     }
-    if(status === 'completed') {
+    if (status === 'completed') {
       return 'success'
     }
-    if(status === 'failed') {
+    if (status === 'failed') {
       return 'error'
     }
     return 'default'
   }, [status]) as BadgeProps['variant']
 
-  return (
-    <Badge variant={variant}>
-      {duration && status !== 'failed' ? duration : status}
-    </Badge>
-  )
+  return <Badge variant={variant}>{duration && status !== 'failed' ? duration : status}</Badge>
 }
