@@ -11,6 +11,8 @@ const badgeVariants = cva(
         success: 'bg-accent-1000 text-white',
         error: 'bg-destructive/10 text-destructive capitalize',
         default: 'dark:bg-gray-800/30 dark:text-gray-500 bg-gray-100 text-gray-800',
+        outline: 'border border-gray-200 dark:border-gray-700',
+        warning: 'border-transparent bg-amber-300 text-amber-950 hover:bg-amber/80',
       },
     },
     defaultVariants: {
