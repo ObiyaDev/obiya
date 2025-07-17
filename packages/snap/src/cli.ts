@@ -1,21 +1,17 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { program } from 'commander'
-import path from 'path'
-import fs from 'fs'
 import './cloud'
+import { version } from './version'
 
 const defaultPort = 3000
+const defaultHost = 'localhost'
 
 require('dotenv/config')
 require('ts-node').register({
   transpileOnly: true,
   compilerOptions: { module: 'commonjs' },
 })
-
-const packageJsonPath = path.resolve(__dirname, '..', '..', 'package.json')
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
-const version = `${packageJson.version}`
 
 program
   .command('version')
@@ -45,10 +41,10 @@ program
         cursorEnabled: arg.cursor,
       })
     } else {
+      const skipConfirmation = arg.skipConfirmation ?? false
       const { createInteractive } = require('./create/interactive')
-      await createInteractive({
-        skipConfirmation: arg.skipConfirmation,
-      })
+
+      await createInteractive({ skipConfirmation })
     }
     process.exit(0)
   })
@@ -83,7 +79,8 @@ program
   .command('dev')
   .description('Start the development server')
   .option('-p, --port <port>', 'The port to run the server on', `${defaultPort}`)
-  .option('-v, --verbose', 'Enable verbose logging')
+  .option('-H, --host [host]', 'The host address for the server', `${defaultHost}`)
+  .option('-v, --disable-verbose', 'Disable verbose logging')
   .option('-d, --debug', 'Enable debug logging')
   .option('-m, --mermaid', 'Enable mermaid diagram generation')
   .action(async (arg) => {
@@ -93,26 +90,9 @@ program
     }
 
     const port = arg.port ? parseInt(arg.port) : defaultPort
+    const host = arg.host ? arg.host : defaultHost
     const { dev } = require('./dev')
-    await dev(port, arg.verbose, arg.mermaid)
-  })
-
-program
-  .command('get-config')
-  .description('Get the generated config for your project')
-  .option('-o, --output <port>', 'Path to write the generated config')
-  .action(async (arg) => {
-    const { generateLockedData } = require('./src/generate/locked-data')
-    const lockedData = await generateLockedData(path.join(process.cwd()))
-
-    if (arg.output) {
-      const fs = require('fs')
-      fs.writeFileSync(path.join(arg.output, '.motia.generated.json'), JSON.stringify(lockedData, null, 2))
-      console.log(`📄 Wrote locked data to ${arg.output}`)
-
-      return
-    }
-    console.log(JSON.stringify(lockedData, null, 2))
+    await dev(port, host, arg.disableVerbose, arg.mermaid)
   })
 
 program
@@ -160,28 +140,5 @@ generate
     })
   })
 
-const state = program.command('state').description('Manage application state')
-
-state
-  .command('list')
-  .description('List the current file state')
-  .action(async () => {
-    try {
-      const statePath = path.join(process.cwd(), '.motia', 'motia.state.json')
-
-      if (!fs.existsSync(statePath)) {
-        console.error('Error: State file not found at', statePath)
-        process.exit(1)
-      }
-
-      const state = require(statePath)
-      console.log(JSON.stringify(state, null, 2))
-    } catch (error) {
-      console.error('Error:', error instanceof Error ? error.message : 'Unknown error')
-      process.exit(1)
-    }
-  })
-
 program.version(version, '-V, --version', 'Output the current version')
-
 program.parse(process.argv)

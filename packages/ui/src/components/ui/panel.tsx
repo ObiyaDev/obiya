@@ -1,48 +1,152 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
+import { FC, ReactNode, useMemo } from 'react'
 import { Button } from './button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
 
-interface PanelDetailItem {
+export interface PanelDetailItem {
   label: string
-  value: string | React.ReactNode
+  value: string | ReactNode
   highlighted?: boolean
 }
 
-interface PanelAction {
-  icon: React.ReactNode
+export interface PanelAction {
+  active?: boolean
+  icon: ReactNode
   onClick: () => void
   label?: string
 }
 
-interface PanelProps {
-  title: string
-  subtitle?: string
-  details: PanelDetailItem[]
+export interface PanelProps {
+  'data-testid'?: string
+  title: ReactNode
+  subtitle?: ReactNode
+  details?: PanelDetailItem[]
   actions?: PanelAction[]
   className?: string
-  children?: React.ReactNode
+  children?: ReactNode
+  size?: 'sm' | 'md'
+  variant?: 'default' | 'outlined' | 'filled' | 'ghost'
+  tabs?: {
+    label: string
+    content: ReactNode
+    'data-testid'?: string
+  }[]
+  contentClassName?: string
 }
 
-function Panel({ title, subtitle, details, actions, className, children }: PanelProps) {
+const panelVariants = {
+  default: 'bg-transparent border border-border',
+  outlined: 'bg-transparent border-2 border-border',
+  filled: 'bg-muted border border-transparent',
+  ghost: 'bg-transparent border-transparent shadow-none',
+}
+
+export const Panel: FC<PanelProps> = ({
+  'data-testid': dataTestId,
+  title,
+  subtitle,
+  details,
+  actions,
+  className,
+  children,
+  size,
+  variant = 'default',
+  contentClassName,
+  tabs,
+}) => {
+  const hasTabs = tabs && tabs.length > 0
+
+  const content = useMemo(() => {
+    const _view = (
+      <>
+        {hasTabs && (
+          <TabsList
+            className={cn('bg-card border-b border-border px-1 pt-5', {
+              'bg-transparent': variant === 'ghost',
+            })}
+          >
+            {tabs?.map((tab) => (
+              <TabsTrigger key={tab.label} value={tab.label} data-testid={tab['data-testid']}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        )}
+        <div className={cn('flex flex-col gap-2 p-4', contentClassName)}>
+          {details?.map((detail, index) => (
+            <div key={index} className="flex gap-4 items-start">
+              <div className="flex items-center h-8 shrink-0">
+                <span className="text-sm font-medium text-foreground tracking-[-0.25px] w-24 truncate">
+                  {detail.label}
+                </span>
+              </div>
+              <div className={cn('flex-1 rounded-lg px-2 py-1 min-h-6', detail.highlighted && 'bg-secondary')}>
+                <div className="flex items-center min-h-6">
+                  {typeof detail.value === 'string' ? (
+                    <span className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">
+                      {detail.value}
+                    </span>
+                  ) : (
+                    detail.value
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {hasTabs &&
+            tabs.map((tab) => (
+              <TabsContent key={tab.label} value={tab.label}>
+                {tab.content}
+              </TabsContent>
+            ))}
+
+          {children}
+        </div>
+      </>
+    )
+
+    if (hasTabs) {
+      return <Tabs defaultValue={tabs?.[0]?.label}>{_view}</Tabs>
+    }
+
+    return _view
+  }, [tabs, variant, size, title, subtitle, details, actions, contentClassName, children, hasTabs])
+
   return (
     <div
       className={cn(
-        "relative size-full backdrop-blur-[48px] backdrop-filter",
-        "bg-card",
-        "text-foreground",
-        "border border-border",
-        "rounded-lg overflow-hidden",
-        className
+        'relative size-full backdrop-blur-[48px] backdrop-filter',
+        'text-foreground',
+        'rounded-lg overflow-hidden',
+        panelVariants[variant],
+        className,
       )}
+      data-testid={dataTestId}
     >
-
       <div className="flex flex-col size-full">
-        <div className="relative shrink-0 w-full border-b border-border">
-          <div className="flex flex-col gap-1 px-5 py-4">
-            <div className="flex items-center justify-between w-full">
-              <h2 className="text-base font-semibold text-foreground tracking-[-0.25px] leading-tight">
+        <div
+          className={cn('relative shrink-0 w-full border-b border-border bg-card', {
+            'bg-transparent': variant === 'ghost',
+            'border-b-0': hasTabs,
+          })}
+        >
+          <div
+            className={cn('flex flex-col gap-1 px-5 py-4', {
+              'px-4 py-3': size === 'sm',
+              'px-5 py-4': size === 'md',
+              'pb-0': hasTabs,
+            })}
+          >
+            <div className="flex items-center w-full">
+              <div
+                className={cn(
+                  'font-semibold text-foreground tracking-[-0.25px] leading-tight flex-1',
+                  size === 'sm' ? 'text-xs' : 'text-base',
+                )}
+              >
                 {title}
-              </h2>
+              </div>
               {actions && actions.length > 0 && (
                 <div className="flex items-center gap-1">
                   {actions.map((action, index) => (
@@ -50,6 +154,7 @@ function Panel({ title, subtitle, details, actions, className, children }: Panel
                       key={index}
                       onClick={action.onClick}
                       variant="ghost"
+                      className={cn(action.active && 'bg-muted-foreground/20 hover:bg-muted-foreground/30')}
                       size="icon"
                       aria-label={action.label}
                     >
@@ -60,47 +165,15 @@ function Panel({ title, subtitle, details, actions, className, children }: Panel
               )}
             </div>
             {subtitle && (
-              <p className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">
-                {subtitle}
-              </p>
+              <p className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">{subtitle}</p>
             )}
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto">
-          <div className="flex flex-col gap-2 px-5 py-4">
-            {details.map((detail, index) => (
-              <div key={index} className="flex gap-4 items-start">
-                <div className="flex items-center h-8 shrink-0">
-                  <span className="text-sm font-medium text-foreground tracking-[-0.25px] w-24 truncate">
-                    {detail.label}
-                  </span>
-                </div>
-                <div
-                  className={cn(
-                    "flex-1 rounded-lg px-2 py-1 min-h-6",
-                    detail.highlighted && "bg-secondary"
-                  )}
-                >
-                  <div className="flex items-center min-h-6">
-                    {typeof detail.value === "string" ? (
-                      <span className="text-sm font-medium text-muted-foreground tracking-[-0.25px] leading-tight">
-                        {detail.value}
-                      </span>
-                    ) : (
-                      detail.value
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {children}
-          </div>
-        </div>
+        <div className="flex-1 overflow-auto">{content}</div>
       </div>
     </div>
   )
 }
 
-export { Panel }
-export type { PanelProps, PanelDetailItem, PanelAction } 
+Panel.displayName = 'Panel'

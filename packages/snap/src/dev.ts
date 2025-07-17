@@ -8,12 +8,13 @@ import {
   trackEvent,
 } from '@motiadev/core'
 import path from 'path'
+import { flush } from '@amplitude/analytics-node'
 import { generateLockedData, getStepFiles } from './generate-locked-data'
 import { createDevWatchers } from './dev-watchers'
 import { stateEndpoints } from './dev/state-endpoints'
 import { activatePythonVenv } from './utils/activate-python-env'
 import { identifyUser } from './utils/analytics'
-import { flush } from '@amplitude/analytics-node'
+import { version } from './version'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -21,8 +22,14 @@ require('ts-node').register({
   compilerOptions: { module: 'commonjs' },
 })
 
-export const dev = async (port: number, isVerbose: boolean, enableMermaid: boolean): Promise<void> => {
+export const dev = async (
+  port: number,
+  hostname: string,
+  disableVerbose: boolean,
+  enableMermaid: boolean,
+): Promise<void> => {
   const baseDir = process.cwd()
+  const isVerbose = !disableVerbose
 
   identifyUser()
 
@@ -39,7 +46,6 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
   })
 
   if (hasPythonFiles) {
-    console.log('⚙️ Activating Python environment...')
     activatePythonVenv({ baseDir, isVerbose })
     trackEvent('python_environment_activated')
   }
@@ -67,14 +73,18 @@ export const dev = async (port: number, isVerbose: boolean, enableMermaid: boole
 
   stateEndpoints(motiaServer, state)
 
-  motiaServer.server.listen(port)
+  motiaServer.server.listen(port, hostname)
   console.log('🚀 Server ready and listening on port', port)
-  console.log(`🔗 Open http://localhost:${port}/ to open workbench 🛠️`)
+  console.log(`🔗 Open http://${hostname}:${port}/ to open workbench 🛠️`)
 
   trackEvent('dev_server_ready', {
     port,
     flows_count: lockedData.flows?.length || 0,
     steps_count: lockedData.activeSteps?.length || 0,
+    flows: Object.keys(lockedData.flows || {}),
+    steps: lockedData.activeSteps.map((step) => step.config.name),
+    streams: Object.keys(lockedData.getStreams() || {}),
+    runtime_version: version,
     environment: process.env.NODE_ENV || 'development',
   })
 

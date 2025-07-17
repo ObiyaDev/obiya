@@ -3,34 +3,24 @@ import { MotiaServer, StateAdapter } from '@motiadev/core'
 export const stateEndpoints = (server: MotiaServer, stateAdapter: StateAdapter) => {
   const { app } = server
 
-  app.get('/motia/state', async (_, res) => {
+  app.get('/motia/state', async (req, res) => {
     try {
-      const traceIds = await stateAdapter.traceIds()
-      res.json(traceIds)
+      const groupId = req.query.groupId as string | undefined
+      const filter = req.query.filter ? JSON.parse(req.query.filter as string) : undefined
+      const items = await stateAdapter.items({ groupId, filter })
+
+      res.json(items)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message })
     }
   })
 
-  app.get('/motia/state/:traceId', async (req, res) => {
-    const { traceId } = req.params
-
+  app.post('/motia/state', async (req, res) => {
     try {
-      const keys = await stateAdapter.keys(traceId)
-      res.json(keys)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      res.status(500).json({ error: error.message })
-    }
-  })
-
-  app.get('/motia/state/:traceId/:key', async (req, res) => {
-    const { traceId, key } = req.params
-
-    try {
-      const value = await stateAdapter.get(traceId, key)
-      res.json(value)
+      const { key, groupId, value } = req.body
+      await stateAdapter.set(groupId, key, value)
+      res.json({ key, groupId, value })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message })

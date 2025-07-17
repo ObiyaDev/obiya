@@ -4,12 +4,12 @@ import bgFooter from '@/public/images/landing/bgFooter.svg'
 import footerBlueGlow from '@/public/images/landing/footerBlueGlow.svg'
 import footerWordmark from '@/public/images/landing/footerWordmark.svg'
 import footerWordmarkGlow from '@/public/images/landing/footerWordmarkGlow.svg'
-import { discordIcon, githubIcon, starIcon } from './Icons'
+import { discordIcon, githubIcon, starIcon, twitterIcon } from './Icons'
 import React from 'react'
 import Link from 'next/link'
 
 import SectionAppearAnimation from './SectionAppearAnimation'
-import { GITHUB_LINK, DISCORD_HANDLE } from '@/utils/constants'
+import { GITHUB_LINK, DISCORD_HANDLE, TWITTER_HANDLE, LINKEDIN_HANDLE, YOUTUBE_HANDLE } from '@/utils/constants'
 import { useGithubStars } from '@/hooks/useGithubStars'
 import ModalCTA, { ModalCTAVariants } from './ModalCTA'
 import { usePathname, useRouter } from 'next/navigation'
@@ -34,7 +34,7 @@ const SocialLinks: React.FC = () => {
         </Link>
 
         {/**
-         * Github Link
+         * GitHub Link
          *
          **/}
         <Link
@@ -46,6 +46,18 @@ const SocialLinks: React.FC = () => {
           <div className="flex items-center gap-[6px] text-white max-sm:hidden">
             {starIcon} <p>{stars}</p>
           </div>
+        </Link>
+
+        {/**
+         * Twitter Link
+         *
+         **/}
+        <Link
+          href={TWITTER_HANDLE}
+          target="_blank"
+          className="flex cursor-pointer items-center gap-[16px] py-[8px] text-[16px] text-white/60 transition-colors ease-in-out hover:text-white"
+        >
+          {twitterIcon} <p>Follow us on Twitter</p>
         </Link>
       </div>
     </div>
@@ -78,6 +90,9 @@ const HomePageLinks: React.FC = () => {
         <Link href="/telemetry" className="text-[16px] text-white/60 transition-colors ease-in-out hover:text-white">
           Telemetry
         </Link>
+        <Link href="/toc" className="text-[16px] text-white/60 transition-colors ease-in-out hover:text-white">
+          Terms and conditions
+        </Link>
       </div>
       <div className="flex w-fit flex-col items-end gap-[24px] max-lg:w-fit max-lg:items-start">
         <Link href="/manifesto" className="text-[16px] text-white/60 transition-colors ease-in-out hover:text-white">
@@ -87,6 +102,9 @@ const HomePageLinks: React.FC = () => {
           Documentation
         </Link>
         <ModalCTA variant={ModalCTAVariants.CLOUD_COMING_SOON} />
+        <Link href="/privacy-policy" className="text-[16px] text-white/60 transition-colors ease-in-out hover:text-white">
+          Privacy Policy
+        </Link>
       </div>
     </div>
   )
