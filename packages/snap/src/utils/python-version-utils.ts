@@ -33,7 +33,7 @@ export async function getPythonCommand(requestedVersion: string, baseDir: string
   throw new Error('No compatible Python 3 installation found. Please install Python 3.')
 }
 
-export function findPythonSitePackagesDir(venvLibPath: string, pythonVersion: string, isVerbose = false): string {
+export function findPythonSitePackagesDir(venvLibPath: string, pythonVersion: string): string {
   let pythonVersionPath = `python${pythonVersion}`
 
   if (!venvLibPath || !pythonVersion) {

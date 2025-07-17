@@ -18,7 +18,7 @@ export const activatePythonVenv = ({ baseDir, isVerbose = false, pythonVersion =
   const libPath = path.join(venvPath, 'lib')
 
   // Find the Python version directory using the utility function
-  const actualPythonVersionPath = findPythonSitePackagesDir(libPath, pythonVersion, isVerbose)
+  const actualPythonVersionPath = findPythonSitePackagesDir(libPath, pythonVersion)
   const sitePackagesPath = path.join(venvPath, 'lib', actualPythonVersionPath, 'site-packages')
 
   // Verify that the virtual environment exists
