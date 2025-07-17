@@ -17,7 +17,7 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'secondary', 'info', 'error', 'warning', 'destructive', 'red-rounded', 'red-dot', 'outline'],
+      options: ['default', 'info', 'success', 'error'],
       description: 'The visual style of the badge.',
     },
     className: {
@@ -40,17 +40,17 @@ export const Default: Story = {
   },
 }
 
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-    children: 'Secondary',
-  },
-}
-
 export const Info: Story = {
   args: {
     variant: 'info',
     children: 'Info',
+  },
+}
+
+export const Success: Story = {
+  args: {
+    variant: 'success',
+    children: 'Success',
   },
 }
 
@@ -61,47 +61,12 @@ export const Error: Story = {
   },
 }
 
-export const Warning: Story = {
-  args: {
-    variant: 'warning',
-    children: 'Warning',
-  },
-}
-
-export const Destructive: Story = {
-  args: {
-    variant: 'destructive',
-    children: 'Destructive',
-  },
-}
-
-export const RedRounded: Story = {
-  args: {
-    variant: 'red-rounded',
-    children: 'Red Rounded',
-  },
-}
-
-export const RedDot: Story = {
-  args: {
-    variant: 'red-dot',
-    'aria-label': 'Status indicator',
-  },
-}
-
-export const Outline: Story = {
-  args: {
-    variant: 'outline',
-    children: 'Outline',
-  },
-}
-
 export const WithCounts: Story = {
   render: () => (
     <div className="flex gap-2 items-center">
       <Badge variant="default">5</Badge>
-      <Badge variant="secondary">12</Badge>
-      <Badge variant="info">99+</Badge>
+      <Badge variant="info">12</Badge>
+      <Badge variant="success">99+</Badge>
       <Badge variant="error">3</Badge>
     </div>
   ),
@@ -111,15 +76,15 @@ export const StatusIndicators: Story = {
   render: () => (
     <div className="flex gap-2 items-center">
       <div className="flex items-center gap-1">
-        <Badge variant="red-dot" />
+        <Badge variant="error">●</Badge>
         <span className="text-sm">Offline</span>
       </div>
       <div className="flex items-center gap-1">
-        <Badge variant="info">●</Badge>
+        <Badge variant="success">●</Badge>
         <span className="text-sm">Online</span>
       </div>
       <div className="flex items-center gap-1">
-        <Badge variant="warning">●</Badge>
+        <Badge variant="info">●</Badge>
         <span className="text-sm">Pending</span>
       </div>
     </div>
@@ -130,23 +95,12 @@ export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div>
-        <h3 className="text-sm font-semibold mb-3">Text Badges</h3>
+        <h3 className="text-sm font-semibold mb-3">All Badge Variants</h3>
         <div className="flex gap-2 items-center flex-wrap">
           <Badge variant="default">Default</Badge>
-          <Badge variant="secondary">Secondary</Badge>
           <Badge variant="info">Info</Badge>
+          <Badge variant="success">Success</Badge>
           <Badge variant="error">Error</Badge>
-          <Badge variant="warning">Warning</Badge>
-          <Badge variant="destructive">Destructive</Badge>
-          <Badge variant="outline">Outline</Badge>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-semibold mb-3">Special Variants</h3>
-        <div className="flex gap-2 items-center flex-wrap">
-          <Badge variant="red-rounded">Red Rounded</Badge>
-          <Badge variant="red-dot" aria-label="Status indicator" />
         </div>
       </div>
 
@@ -154,11 +108,19 @@ export const AllVariants: Story = {
         <h3 className="text-sm font-semibold mb-3">With Numbers</h3>
         <div className="flex gap-2 items-center flex-wrap">
           <Badge variant="default">1</Badge>
-          <Badge variant="secondary">5</Badge>
           <Badge variant="info">12</Badge>
+          <Badge variant="success">5</Badge>
           <Badge variant="error">99+</Badge>
-          <Badge variant="warning">3</Badge>
-          <Badge variant="destructive">7</Badge>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Capitalized Text (Info & Error)</h3>
+        <div className="flex gap-2 items-center flex-wrap">
+          <Badge variant="info">processing</Badge>
+          <Badge variant="error">failed</Badge>
+          <Badge variant="success">completed</Badge>
+          <Badge variant="default">pending</Badge>
         </div>
       </div>
     </div>
@@ -183,6 +145,10 @@ export const UseCases: Story = {
             <span>Updates</span>
             <Badge variant="info">5</Badge>
           </div>
+          <div className="flex items-center justify-between">
+            <span>Completed</span>
+            <Badge variant="success">2</Badge>
+          </div>
         </div>
       </div>
 
@@ -190,31 +156,31 @@ export const UseCases: Story = {
         <h3 className="text-sm font-semibold mb-3">Status Labels</h3>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Badge variant="info">Active</Badge>
+            <Badge variant="success">Active</Badge>
             <span>Service is running</span>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="warning">Pending</Badge>
-            <span>Awaiting approval</span>
+            <Badge variant="info">processing</Badge>
+            <span>Task in progress</span>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="error">Failed</Badge>
+            <Badge variant="error">failed</Badge>
             <span>Operation failed</span>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">Draft</Badge>
+            <Badge variant="default">Draft</Badge>
             <span>Not published</span>
           </div>
         </div>
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold mb-3">Tags</h3>
-        <div className="flex gap-1 flex-wrap">
-          <Badge variant="outline">React</Badge>
-          <Badge variant="outline">TypeScript</Badge>
-          <Badge variant="outline">Storybook</Badge>
-          <Badge variant="outline">UI</Badge>
+        <h3 className="text-sm font-semibold mb-3">Priority Levels</h3>
+        <div className="flex gap-2 flex-wrap">
+          <Badge variant="error">High</Badge>
+          <Badge variant="info">Medium</Badge>
+          <Badge variant="success">Low</Badge>
+          <Badge variant="default">None</Badge>
         </div>
       </div>
     </div>
@@ -228,18 +194,37 @@ export const AccessibilityExample: Story = {
         <h3 className="text-sm font-semibold mb-3">Accessible Status Indicators</h3>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Badge variant="red-dot" aria-label="Offline status" />
+            <Badge variant="error" aria-label="Error status">●</Badge>
             <span>Server Status</span>
-            <span className="sr-only">Offline</span>
+            <span className="sr-only">Error</span>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="info" aria-label="5 unread notifications">5</Badge>
             <span>Notifications</span>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="error" aria-label="Critical error">!</Badge>
-            <span>System Alert</span>
+            <Badge variant="success" aria-label="System healthy">✓</Badge>
+            <span>System Health</span>
           </div>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+export const DarkModeExample: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Dark Mode Styling</h3>
+        <p className="text-sm text-gray-600 mb-3">
+          The badges automatically adapt to dark mode with appropriate colors.
+        </p>
+        <div className="flex gap-2 flex-wrap">
+          <Badge variant="default">Default</Badge>
+          <Badge variant="info">Info (with accent colors)</Badge>
+          <Badge variant="success">Success</Badge>
+          <Badge variant="error">Error</Badge>
         </div>
       </div>
     </div>
