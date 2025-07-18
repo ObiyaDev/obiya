@@ -66,6 +66,7 @@ export const start = async (port: number, disableVerbose: boolean): Promise<void
   })
 
   if (!process.env.MOTIA_DOCKER_DISABLE_WORKBENCH) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { applyMiddleware } = require('@motiadev/workbench/dist/middleware')
     await applyMiddleware(motiaServer.app)
   }
