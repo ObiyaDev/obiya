@@ -1,16 +1,8 @@
 // packages/snap/src/dev.ts
-import {
-  createEventManager,
-  createMermaidGenerator,
-  createServer,
-  createStateAdapter,
-  getProjectIdentifier,
-  trackEvent,
-} from '@motiadev/core'
+import { createEventManager, createServer, createStateAdapter, getProjectIdentifier, trackEvent } from '@motiadev/core'
 import path from 'path'
 import { flush } from '@amplitude/analytics-node'
 import { generateLockedData, getStepFiles } from './generate-locked-data'
-import { createDevWatchers } from './dev-watchers'
 import { stateEndpoints } from './dev/state-endpoints'
 import { activatePythonVenv } from './utils/activate-python-env'
 import { identifyUser } from './utils/analytics'
@@ -55,7 +47,6 @@ export const start = async (port: number, disableVerbose: boolean): Promise<void
 
   const config = { isVerbose }
   const motiaServer = createServer(lockedData, eventManager, state, config)
-  // const watcher = createDevWatchers(lockedData, motiaServer, motiaServer.motiaEventManager, motiaServer.cronManager)
 
   stateEndpoints(motiaServer, state)
 
