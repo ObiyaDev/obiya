@@ -17,8 +17,8 @@ export default function CodeFirst() {
           />
         </div>
         <CardText
-          title="Code-first agents, APIs & automations"
-          subtitle="Fully-featured, event driven backend framework"
+          title="Visualize workflows of your code"
+          subtitle="Easily visualize dependencies between steps, and how they are triggered by events."
         />
       </BentoCard>
     </div>
