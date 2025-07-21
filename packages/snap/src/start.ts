@@ -33,13 +33,12 @@ export const start = async (port: number, disableVerbose: boolean): Promise<void
   const config = { isVerbose }
   const motiaServer = createServer(lockedData, eventManager, state, config)
 
-  stateEndpoints(motiaServer, state)
-
   motiaServer.server.listen(port)
   console.log('🚀 Server ready and listening on port', port)
   console.log(`🔗 Open http://localhost:${port}/ to open workbench 🛠️`)
 
   if (!process.env.MOTIA_DOCKER_DISABLE_WORKBENCH) {
+    stateEndpoints(motiaServer, state)
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { applyMiddleware } = require('@motiadev/workbench/dist/middleware')
     await applyMiddleware(motiaServer.app)
