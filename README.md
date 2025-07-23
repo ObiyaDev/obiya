@@ -278,27 +278,27 @@ We have a public roadmap for Motia, you can view it [here](https://github.com/or
 
 Feel free to add comments to the issues, or create a new issue if you have a feature request.
 
-| Feature                                    | Status  | Link | Description                            |
-| ------------------------------------------ | ------- | ---- | -------------------------------------- |
-| Python Types #485                          | Planned | #485 | Add support for Python types           |
-| Streams: RBAC #495                         | Planned | #495 | Add support for RBAC                   |
-| Streams: Workbench UI #497                 | Planned | #497 | Add support for Workbench UI           |
-| Queue Strategies #476                      | Planned | #476 | Add support for Queue Strategies       |
-| Reactive Steps #477                        | Planned | #477 | Add support for Reactive Steps         |
-| Allow cloud configuration #478             | Planned | #478 | Add support for cloud configuration    |
-| BYOC: Bring your own Cloud: AWS #479       | Planned | #479 | Add support for AWS                    |
-| Point in time triggers #480                | Planned | #480 | Add support for Point in time triggers |
-| Workbench plugins #481                     | Planned | #481 | Add support for Workbench plugins      |
-| Rewrite our Core in either Go or Rust #482 | Planned | #482 | Rewrite our Core in either Go or Rust  |
-| Decrease deployment time #483              | Planned | #483 | Decrease deployment time               |
-| Built-in database support #484             | Planned | #484 | Add support for built-in database      |
-| BYOC: Google Cloud Platform #486           | Planned | #486 | Add support for Google Cloud Platform  |
-| BYOC: Microsoft Azure #487                 | Planned | #487 | Add support for Microsoft Azure        |
-| BYOC: Vercel #488                          | Planned | #488 | Add support for Vercel                 |
-| BYOC: Cloudflare #489                      | Planned | #489 | Add support for Cloudflare             |
-| New languages: Go #490                     | Planned | #490 | Add support for Go                     |
-| New languages: Rust #491                   | Planned | #491 | Add support for Rust                   |
-| New languages: Java #492                   | Planned | #492 | Add support for Java                   |
-| New languages: Ruby #493                   | Planned | #493 | Add support for Ruby                   |
-| New languages: C# #494                     | Planned | #494 | Add support for C#                     |
-| BYOC: Kubernetes #496                      | Planned | #496 | Add support for Kubernetes             |
+| Feature                                    | Status  | Link                                                 | Description                            |
+| ------------------------------------------ | ------- | ---------------------------------------------------- | -------------------------------------- |
+| Python Types #485                          | Planned | [#485](https://github.com/MotiaDev/motia/issues/485) | Add support for Python types           |
+| Streams: RBAC #495                         | Planned | [#495](https://github.com/MotiaDev/motia/issues/495) | Add support for RBAC                   |
+| Streams: Workbench UI #497                 | Planned | [#497](https://github.com/MotiaDev/motia/issues/497) | Add support for Workbench UI           |
+| Queue Strategies #476                      | Planned | [#476](https://github.com/MotiaDev/motia/issues/476) | Add support for Queue Strategies       |
+| Reactive Steps #477                        | Planned | [#477](https://github.com/MotiaDev/motia/issues/477) | Add support for Reactive Steps         |
+| Allow cloud configuration #478             | Planned | [#478](https://github.com/MotiaDev/motia/issues/478) | Add support for cloud configuration    |
+| BYOC: Bring your own Cloud: AWS #479       | Planned | [#479](https://github.com/MotiaDev/motia/issues/479) | Add support for AWS                    |
+| Point in time triggers #480                | Planned | [#480](https://github.com/MotiaDev/motia/issues/480) | Add support for Point in time triggers |
+| Workbench plugins #481                     | Planned | [#481](https://github.com/MotiaDev/motia/issues/481) | Add support for Workbench plugins      |
+| Rewrite our Core in either Go or Rust #482 | Planned | [#482](https://github.com/MotiaDev/motia/issues/482) | Rewrite our Core in either Go or Rust  |
+| Decrease deployment time #483              | Planned | [#483](https://github.com/MotiaDev/motia/issues/483) | Decrease deployment time               |
+| Built-in database support #484             | Planned | [#484](https://github.com/MotiaDev/motia/issues/484) | Add support for built-in database      |
+| BYOC: Google Cloud Platform #486           | Planned | [#486](https://github.com/MotiaDev/motia/issues/486) | Add support for Google Cloud Platform  |
+| BYOC: Microsoft Azure #487                 | Planned | [#487](https://github.com/MotiaDev/motia/issues/487) | Add support for Microsoft Azure        |
+| BYOC: Vercel #488                          | Planned | [#488](https://github.com/MotiaDev/motia/issues/488) | Add support for Vercel                 |
+| BYOC: Cloudflare #489                      | Planned | [#489](https://github.com/MotiaDev/motia/issues/489) | Add support for Cloudflare             |
+| New languages: Go #490                     | Planned | [#490](https://github.com/MotiaDev/motia/issues/490) | Add support for Go                     |
+| New languages: Rust #491                   | Planned | [#491](https://github.com/MotiaDev/motia/issues/491) | Add support for Rust                   |
+| New languages: Java #492                   | Planned | [#492](https://github.com/MotiaDev/motia/issues/492) | Add support for Java                   |
+| New languages: Ruby #493                   | Planned | [#493](https://github.com/MotiaDev/motia/issues/493) | Add support for Ruby                   |
+| New languages: C# #494                     | Planned | [#494](https://github.com/MotiaDev/motia/issues/494) | Add support for C#                     |
+| BYOC: Kubernetes #496                      | Planned | [#496](https://github.com/MotiaDev/motia/issues/496) | Add support for Kubernetes             |
