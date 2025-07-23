@@ -32,6 +32,7 @@ import {
 import { BaseStreamItem, MotiaStream, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 import { globalLogger } from './logger'
 import { Printer } from './printer'
+import { stepEndpoint } from './step-endpoint'
 
 export type MotiaServer = {
   app: Express
@@ -259,6 +260,7 @@ export const createServer = (
   flowsEndpoint(lockedData)
   flowsConfigEndpoint(app, process.cwd(), lockedData)
   analyticsEndpoint(app, process.cwd())
+  stepEndpoint(app, lockedData)
 
   server.on('error', (error) => {
     console.error('Server error:', error)
