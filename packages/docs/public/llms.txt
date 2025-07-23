@@ -5701,7 +5701,7 @@ pnpm dev
 </Callout>{' '}
 
 
--   [tldr-motia-in-3-minutes](/llm-docs/tldr-motia-in-3-minutes.md): Documentation for tldr-motia-in-3-minutes.
+-   [build-your-first-app](/llm-docs/getting-started/build-your-first-app.mdx.md): Documentation for build-your-first-app.
 ---
 title: TLDR - Motia in 3 Minutes
 description: A 3-minute overview of Motia’s core concepts with a business-ready GenAI use case
