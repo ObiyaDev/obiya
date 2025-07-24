@@ -1,73 +1,67 @@
 ---
 title: Welcome to Motia
-description: Get started with Motia, a powerful framework for building event-driven workflows
+description: Motia is the single backend runtime for API endpoints, background jobs and scheduled tasks.
 ---
 
-# Unified Backend Framework for APIs, Events and AI Agents
+## Why use Motia
 
-Motia is a **code-first framework** designed to empower developers to build robust, scalable, and observable event-driven workflows with unparalleled ease. We handle the infrastructure complexities, so you can focus on your business logic.
+Motia was created to simplify common backend engineering challenges. Today, backend engineers and software architects face several recurring problems, including
 
-## Why Choose Motia?
+1. Fault tolerance
+2. Scalability
+3. Observability
+4. Multiple languages
+5. Building and shipping
+6. Rollbacks and deployments strategies
 
-Motia is built with the developer in mind, offering a unique blend of simplicity and power. Here's why Motia stands out:
+![Motia](./img/what-is-motia/motia.gif)
 
-- 🚀 **Zero Infrastructure Setup:** Say goodbye to the complexities of message queues and event brokers! Motia handles the underlying infrastructure, allowing you to focus solely on building your workflows.
-- 🔌 **Plug-and-Play Steps in Your Language:** Develop your workflow logic using the languages you love: JavaScript, TypeScript, and Python. Mix and match languages within the same flow for ultimate flexibility.
-- 📊 **Built-in Observability:** Gain deep insights into your workflows with real-time logs, traces, and interactive flow visualizations right in the Motia Workbench. Debugging and monitoring have never been easier.
-- ⚡ **Out-of-the-Box API & Scheduling:** Instantly expose your workflows as HTTP endpoints and schedule tasks with cron expressions – no extra configuration needed.
-- ✨ **Flexible and Extensible Architecture:** Motia is designed to be easily extended and customized. Create custom steps, UI components, and adapt the framework to your specific needs.
-- 🧑‍💻 **Developer-First Experience:** From intuitive APIs and a powerful CLI to comprehensive documentation and a visual workbench, Motia prioritizes developer productivity and a smooth, enjoyable development experience.
+## Fault tolerance
 
-## Motia Workbench: Your Development Control Center
+With the rise of AI, many backend tasks have become less deterministic and more error-prone. These scenarios require robust error handling and retry mechanisms. In traditional systems, developers often need to set up and maintain queue infrastructures to ensure resilience, especially when dealing with unreliable responses from LLMs.
 
-Motia Workbench is a built-in, browser-based development platform that acts as your central hub for building, testing, and debugging Motia flows. Key features include:
+Motia provides fault tolerance out of the box, eliminating the need to manually configure queues and retries.
 
-- **Interactive Flow Visualization:** See your workflows come to life as dynamic diagrams, making it easy to understand complex event flows and step interactions.
+## Scalability
 
-- **Real-time Flow Testing:** Trigger API endpoints and monitor event propagation through your steps, all within the Workbench UI. Inspect data at each stage to ensure your flows are behaving as expected.
+One of the biggest dilemmas in backend development is choosing between scalability and development velocity. In startup environments, speed often takes priority, resulting in systems that don't scale well and become problematic under increased load.
 
-- **Live Log Streaming:** Access detailed, real-time logs directly in the Workbench. Filter and search logs to quickly pinpoint issues and monitor workflow execution.
+Motia addresses scalability by introducing a simple core primitive: **Steps**. Each step represents a distinct entry point—triggered by an API call, an event, or a CRON job. Whereas each step can scale independently avoiding the bottlenecks common in monolithic architectures.
 
-- **Step-Level Customization:** Create custom UI components for your steps to enhance visualization and provide context-specific information directly within the flow diagram.
+![Scalable](./img/what-is-motia/scalable.png)
 
-<div className="my-8">![Motia Workbench Interface](./img/workbench-presentation.png)</div>
+## Observability
 
-## Unlock Powerful Use Cases
+Observability in traditional backends often demands significant engineering effort to implement logging, alerting, and tracing. Typically, these tools are only configured for cloud environments, local development is generally neglected—leading to low productivity and poor dev experience.
 
-Motia empowers you to build a wide range of sophisticated applications, including:
+Motia offers a complete observability toolkit available in both cloud and local environments, ensuring consistent monitoring across all stages of development.
 
-- 🌐 **API Integrations & Microservices:** Effortlessly connect disparate systems, create event-driven microservices, and build real-time API-powered applications.
+![Motia Workbench](./img/new-workbench.png)
 
-- 🤖 **Intelligent & Agentic Workflows:** Design complex, AI-driven workflows, orchestrate intricate business processes, and build advanced data pipelines.
+## Working with multiple Languages
 
-- 📊 **Data Transformation & Processing:** Build scalable ETL/ELT pipelines, implement real-time data streaming, and transform data with ease.
+The rapid advancement of AI has reshaped the software industry—many cutting-edge AI tools are available only in specific programming languages, this forces companies to decide if they either change their team's skillset to a different language or not leveraging these technologies at all.
 
-- 🚀 **Rapid Prototyping & Iteration:** Quickly bring your ideas to life, test new workflows, and iterate rapidly with Motia's visual design and development tools.
+Motia removes this limitation by allowing each step to be written in any language, while still sharing a common state.
 
-### Real-World Industry Applications
+![Multi-language](./img/what-is-motia/multi-language.png)
 
-Motia is versatile and can be applied across various industries and use cases, such as:
+## Building and Shipping
 
-- **E-commerce:** Order processing, inventory synchronization, fraud detection, customer communication automation.
-- **Finance:** Trade settlement, risk analysis, compliance monitoring, automated reporting.
-- **Healthcare:** Clinical trial management, claims processing, patient monitoring, appointment scheduling.
-- **Marketing:** Lead scoring, personalized campaign orchestration, sentiment analysis, social media automation.
-- **And much more!**
+Building and deploying backends is inherently complex—especially in polyglot environments. Shipping production systems requires tight collaboration between developers and operations, and automation often takes weeks to get right.
 
-## Ready to Get Started?
+Beyond that, cloud provider lock-in, complicated deployment strategies (e.g., rollbacks, blue/green deployments), and a lack of deployment tooling increase the risk of failure.
 
-Embark on your Motia journey and start building powerful workflows today:
+Motia abstracts these concerns by providing:
 
-1.  **Quick Start Guide:** Follow our [Quick Start](/docs/getting-started/quick-start) to set up your first Motia project and create a minimal workflow.
-2.  **Explore Examples:** Dive into practical [Examples](/docs/examples) to understand common patterns and real-world use cases.
-3.  **Dive into Concepts:** Delve deeper into Motia's [Core Concepts](/docs/getting-started/core-concepts) to gain a solid understanding of the framework's architecture and principles.
+1. True cloud-provider agnosticism
+2. Atomic blue/green deployments and one-click rollbacks via Motia Cloud (canary support coming soon)
+3. First-class polyglot backend support (currently Node.js and Python, with more on the way)
 
-## Join the Motia Community
+![Deployments](./img/what-is-motia/deployments.png)
 
-Become part of a growing community of developers and automation enthusiasts!
+## Atomic deployments
 
-- 💬 **Join our Discord:** Connect with the Motia team and fellow developers, ask questions, share ideas, and get real-time help: [Discord Community](https://discord.gg/nJFfsH5d6v)
-- 🐙 **Star us on GitHub:** Show your support, contribute to the project, and report issues on our [GitHub Repository](https://github.com/motiadev/motia).
-- 🐦 **Follow us on Twitter:** Stay up-to-date with the latest news, announcements, and community updates: [Twitter (@motiadev)](https://twitter.com/motiadev)
+Deploying cloud-native, fault-tolerant applications often involves modifying queue systems and other infrastructure components. These changes can introduce incompatibilities and lead to runtime failures
 
-We're excited to see what you'll build with Motia!
+Motia Cloud solves this with **Atomic Deployments**. Each deployment spins up a new isolated service that shares the same data layer. This architecture ensures safe, rollback-capable deployments without risking service downtime.
