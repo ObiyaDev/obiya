@@ -84,29 +84,6 @@
     }
   },
   {
-    "id": "default",
-    "config": {
-      "steps/default-node/03-check-state-change.step.ts": {
-        "x": 5,
-        "y": 663
-      },
-      "steps/default-node/02-test-state.step.ts": {
-        "x": 0,
-        "y": 471
-      },
-      "steps/default-node/01-api.step.ts": {
-        "x": -22,
-        "y": 239,
-        "sourceHandlePosition": "right",
-        "targetHandlePosition": "left"
-      },
-      "steps/default-node/00-noop.step.ts": {
-        "x": 30,
-        "y": 0
-      }
-    }
-  },
-  {
     "id": "test-state",
     "config": {
       "steps/testState/test_state.step.py": {
@@ -123,6 +100,31 @@
       "steps/testState/testState.api.step.ts": {
         "x": -114,
         "y": 158,
+        "sourceHandlePosition": "right"
+      }
+    }
+  },
+  {
+    "id": "default",
+    "config": {
+      "steps/default-node/03-check-state-change.step.ts": {
+        "x": 20,
+        "y": 414
+      },
+      "steps/default-node/02-test-state.step.ts": {
+        "x": 258,
+        "y": 152,
+        "targetHandlePosition": "left"
+      },
+      "steps/default-node/01-api.step.ts": {
+        "x": -15,
+        "y": 118,
+        "sourceHandlePosition": "right",
+        "targetHandlePosition": "left"
+      },
+      "steps/default-node/00-noop.step.ts": {
+        "x": -196,
+        "y": 295,
         "sourceHandlePosition": "right"
       }
     }
