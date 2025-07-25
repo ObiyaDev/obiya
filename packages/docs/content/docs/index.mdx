@@ -1,32 +1,52 @@
 ---
 title: Welcome to Motia
-description: Motia is the single backend runtime for API endpoints, background jobs and scheduled tasks.
+description: Motia is the only backend framework for building API endpoints, background jobs and scheduled tasks in a unified runtime.
 ---
 
 ## Why use Motia
 
 Motia was created to simplify common backend engineering challenges. Today, backend engineers and software architects face several recurring problems, including
 
-1. Fault tolerance
-2. Scalability
-3. Observability
-4. Multiple languages
-5. Building and shipping
-6. Rollbacks and deployments strategies
+- Unified vs. Fragmented backend
+  - Working with multiple Languages
+- Scalability
+- Observability
+- Fault tolerance
+- Building and shipping
+  - Rollbacks and deployment strategies
 
 ![Motia](./img/what-is-motia/motia.gif)
 
-## Fault tolerance
+## Unified vs. Fragmented backend
 
-With the rise of AI, many backend tasks have become less deterministic and more error-prone. These scenarios require robust error handling and retry mechanisms. In traditional systems, developers often need to set up and maintain queue infrastructures to ensure resilience, especially when dealing with unreliable responses from LLMs.
+Modern software engineering is splintered. APIs live in one framework, background jobs in another, queues have their own tooling, and AI agents are springing up in yet more isolated runtimes. Motia exists to unify all of these concerns API endpoints, automations & workflows, background tasks, queues, and AI agents into a single, coherent system with shared observability and developer experience.
 
-Motia provides fault tolerance out of the box, eliminating the need to manually configure queues and retries.
+To read more about this, check out our [manifesto](/manifesto).
+
+### Working with multiple Languages
+
+The rapid advancement of AI has reshaped the software industry—many cutting-edge AI tools are available only in specific programming languages, this forces companies to decide if they either change their team's skillset to a different language or not leveraging these technologies at all.
+
+Motia removes this limitation by allowing each Step to be written in any language, while still sharing a common state.
+
+![Multi-language](./img/what-is-motia/multi-language.png)
+
+_Each rectangle in the diagram above represents a Step, some of them are in TypeScript and others in Python._
 
 ## Scalability
 
 One of the biggest dilemmas in backend development is choosing between scalability and development velocity. In startup environments, speed often takes priority, resulting in systems that don't scale well and become problematic under increased load.
 
-Motia addresses scalability by introducing a simple core primitive: **Steps**. Each step represents a distinct entry point—triggered by an API call, an event, or a CRON job. Whereas each step can scale independently avoiding the bottlenecks common in monolithic architectures.
+Motia addresses scalability by introducing a simple core primitive: **Steps**:
+
+- Steps represent a distinct entry point
+- Steps can have different triggers
+  - API Call _(Triggered by an HTTP request)_
+  - Event _(Triggered by an event from another Step)_
+  - CRON Job _(Triggered by a cron schedule)_
+  - More will come soon (Check the [Roadmap](https://github.com/orgs/MotiaDev/projects/2?pane=issue&itemId=121129696&issue=MotiaDev%7Cmotia%7C477))
+- Each step can scale independently avoiding the bottlenecks common in monolithic architectures.
+- Steps can be written in any language
 
 ![Scalable](./img/what-is-motia/scalable.png)
 
@@ -34,17 +54,26 @@ Motia addresses scalability by introducing a simple core primitive: **Steps**. E
 
 Observability in traditional backends often demands significant engineering effort to implement logging, alerting, and tracing. Typically, these tools are only configured for cloud environments, local development is generally neglected—leading to low productivity and poor dev experience.
 
-Motia offers a complete observability toolkit available in both cloud and local environments, ensuring consistent monitoring across all stages of development.
+Motia offers a complete observability toolkit available in both cloud and local environments, including:
+
+- Logs visualization
+- Tracing tool to quickly visualize the flow of requests through the system
+- State visualization
+- Diagram representation of dependencies between steps and how they are connected
+
+_The image below shows the Workbench interface available when you run `motia dev`. On the top panel you can see a workflow diagram with multiple steps connected.
+On the bottom panel you can see the trace view of a single request and what happened in each step._
 
 ![Motia Workbench](./img/new-workbench.png)
 
-## Working with multiple Languages
+## Fault tolerance
 
-The rapid advancement of AI has reshaped the software industry—many cutting-edge AI tools are available only in specific programming languages, this forces companies to decide if they either change their team's skillset to a different language or not leveraging these technologies at all.
+With the rise of AI, many backend tasks have become less deterministic and more error-prone. These scenarios require robust error handling and retry mechanisms. In traditional systems, developers often need to set up and maintain queue infrastructures to ensure resilience, especially when dealing with unreliable responses from LLMs.
 
-Motia removes this limitation by allowing each step to be written in any language, while still sharing a common state.
+Motia provides fault tolerance out of the box, eliminating the need to manually spin up queue infrastructure.
 
-![Multi-language](./img/what-is-motia/multi-language.png)
+- Using Event Steps, you get retry mechanisms out of the box
+- Configuration of queue infrastructure is abstracted away
 
 ## Building and Shipping
 
@@ -54,14 +83,19 @@ Beyond that, cloud provider lock-in, complicated deployment strategies (e.g., ro
 
 Motia abstracts these concerns by providing:
 
-1. True cloud-provider agnosticism
-2. Atomic blue/green deployments and one-click rollbacks via Motia Cloud (canary support coming soon)
-3. First-class polyglot backend support (currently Node.js and Python, with more on the way)
+- True cloud-provider agnosticism
+- Atomic blue/green deployments and one-click rollbacks via Motia Cloud (canary support coming soon)
+- First-class polyglot backend support (currently Node.js and Python, with more on the way)
 
 ![Deployments](./img/what-is-motia/deployments.png)
 
-## Atomic deployments
+### Rollbacks and deployment strategies
 
-Deploying cloud-native, fault-tolerant applications often involves modifying queue systems and other infrastructure components. These changes can introduce incompatibilities and lead to runtime failures
+Deploying cloud-native, fault-tolerant applications often involves modifying queue systems and other infrastructure components. 
+These changes can introduce incompatibilities and lead to runtime failures.
 
-Motia Cloud solves this with **Atomic Deployments**. Each deployment spins up a new isolated service that shares the same data layer. This architecture ensures safe, rollback-capable deployments without risking service downtime.
+Motia Cloud solves this with **Atomic Deployments**, which:
+
+- Each deployment spins up a new isolated service that shares the same data layer
+- Ensures safe, rollback-capable deployments without risking service downtime
+- Instant rollbacks with one click since each deployment is isolated
