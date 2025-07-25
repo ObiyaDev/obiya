@@ -1,6 +1,6 @@
 ---
 title: Welcome to Motia
-description: Motia is the only backend framework for building API endpoints, background jobs and scheduled tasks in a unified runtime.
+description: Motia is an all-in-one framework for modern backend systems. Out of the box support for API endpoints, background jobs, scheduled tasks and agentic workflow orchestration through a unified runtime. Thanks to its event driven architecture you can run tasks in parallel, stream data to clients, or allow for seamless orchestration of flows. What used to take 5 frameworks to build now comes out of the box with Motia.
 ---
 
 ## Why use Motia
@@ -14,6 +14,19 @@ Motia was created to simplify common backend engineering challenges. Today, back
 - Fault tolerance
 - Building and shipping
   - Rollbacks and deployment strategies
+- Real-time data streaming
+
+## How Motia simplifies all of this?
+
+Similar to how React simplified frontend development where everything is a component, Motia simplifies backend development where everything is a Step.
+
+- Steps represent a distinct entry point
+- Steps can have different triggers
+  - API Call _(Triggered by an HTTP request)_
+  - Event _(Triggered by an event from another Step)_
+  - CRON Job _(Triggered by a cron schedule)_
+  - More will come soon (Check the [Roadmap](https://github.com/orgs/MotiaDev/projects/2?pane=issue&itemId=121129696&issue=MotiaDev%7Cmotia%7C477))
+
 
 ![Motia](./img/what-is-motia/motia.gif)
 
@@ -37,16 +50,7 @@ _Each rectangle in the diagram above represents a Step, some of them are in Type
 
 One of the biggest dilemmas in backend development is choosing between scalability and development velocity. In startup environments, speed often takes priority, resulting in systems that don't scale well and become problematic under increased load.
 
-Motia addresses scalability by introducing a simple core primitive: **Steps**:
-
-- Steps represent a distinct entry point
-- Steps can have different triggers
-  - API Call _(Triggered by an HTTP request)_
-  - Event _(Triggered by an event from another Step)_
-  - CRON Job _(Triggered by a cron schedule)_
-  - More will come soon (Check the [Roadmap](https://github.com/orgs/MotiaDev/projects/2?pane=issue&itemId=121129696&issue=MotiaDev%7Cmotia%7C477))
-- Each step can scale independently avoiding the bottlenecks common in monolithic architectures.
-- Steps can be written in any language
+Motia addresses scalability by leveraging the core primitive of **Steps**: Each step can scale independently avoiding the bottlenecks common in monolithic architectures.
 
 ![Scalable](./img/what-is-motia/scalable.png)
 
@@ -89,6 +93,9 @@ Motia abstracts these concerns by providing:
 
 ![Deployments](./img/what-is-motia/deployments.png)
 
+_The image above shows several Steps being build to a single Motia deployable that are ultimately deployed to a cloud provider of your choice. 
+Currently we're supporting AWS and Kubernetes, more Cloud providers coming soon. Check our [roadmap](https://github.com/orgs/MotiaDev/projects/2/views/4?filterQuery=title%3A+BYOC) for more details._
+
 ### Rollbacks and deployment strategies
 
 Deploying cloud-native, fault-tolerant applications often involves modifying queue systems and other infrastructure components. 
@@ -99,3 +106,14 @@ Motia Cloud solves this with **Atomic Deployments**, which:
 - Each deployment spins up a new isolated service that shares the same data layer
 - Ensures safe, rollback-capable deployments without risking service downtime
 - Instant rollbacks with one click since each deployment is isolated
+
+## Real-time data streaming
+
+Handling real-time data is one of the most common—and complex—challenges in backend development. It's necessary when building event-driven applications, 
+and it typically requires setting up and maintaining a significant amount of infrastructure.
+
+Motia provides what we call _Streams_: Developers define the structure of the data—any changes to these objects are streamed to all subscribed clients in real-time.
+
+![Real-time data streaming](./img/what-is-motia/streams.png)
+
+_The image above shows a Stream definition, a Node.js Step mutating the data and a client subscribing to the stream receiving real-time updates._
