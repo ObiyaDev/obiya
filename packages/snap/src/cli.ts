@@ -5,7 +5,7 @@ import './cloud'
 import { version } from './version'
 
 const defaultPort = 3000
-const defaultHost = 'localhost'
+const defaultHost = '0.0.0.0'
 
 require('dotenv/config')
 require('ts-node').register({
@@ -99,6 +99,7 @@ program
   .command('start')
   .description('Start a server to run your Motia project')
   .option('-p, --port <port>', 'The port to run the server on', `${defaultPort}`)
+  .option('-H, --host [host]', 'The host address for the server', `${defaultHost}`)
   .option('-v, --disable-verbose', 'Disable verbose logging')
   .option('-d, --debug', 'Enable debug logging')
   .action(async (arg) => {
@@ -108,8 +109,9 @@ program
     }
 
     const port = arg.port ? parseInt(arg.port) : defaultPort
+    const host = arg.host ? arg.host : defaultHost
     const { start } = require('./start')
-    await start(port, arg.disableVerbose)
+    await start(port, host, arg.disableVerbose)
   })
 
 program

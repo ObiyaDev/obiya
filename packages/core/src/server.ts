@@ -32,6 +32,7 @@ import {
 import { BaseStreamItem, MotiaStream, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 import { globalLogger } from './logger'
 import { Printer } from './printer'
+import { stepEndpoint } from './step-endpoint'
 
 export type MotiaServer = {
   app: Express
@@ -182,6 +183,8 @@ export const createServer = (
       try {
         const result = await callStepFile<ApiResponse>({ data, step, logger, tracer, traceId }, motia)
 
+        trackEvent('api_call_success', { stepName })
+
         if (!result) {
           console.log('no result')
           res.status(500).json({ error: 'Internal server error' })
@@ -259,6 +262,7 @@ export const createServer = (
   flowsEndpoint(lockedData)
   flowsConfigEndpoint(app, process.cwd(), lockedData)
   analyticsEndpoint(app, process.cwd())
+  stepEndpoint(app, lockedData)
 
   server.on('error', (error) => {
     console.error('Server error:', error)
