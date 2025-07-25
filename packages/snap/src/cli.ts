@@ -165,8 +165,30 @@ docker
   .command('setup')
   .description('Setup a motia-docker for your project')
   .action(async () => {
-    const { setupDocker } = require('./docker')
-    await setupDocker()
+    const { setup } = require('./docker/setup')
+    await setup()
+    process.exit(0)
+  })
+
+docker
+  .command('run')
+  .description('Build and run your project in a docker container')
+  .option('-p, --port <port>', 'The port to run the server on', `${defaultPort}`)
+  .option('-n, --project-name <project name>', 'The name for your project')
+  .option('-s, --skip-build', 'Skip docker build')
+  .action(async (arg) => {
+    const { run } = require('./docker/run')
+    await run(arg.port, arg.projectName, arg.skipBuild)
+    process.exit(0)
+  })
+
+docker
+  .command('build')
+  .description('Build your project in a docker container')
+  .option('-n, --project-name <project name>', 'The name for your project')
+  .action(async (arg) => {
+    const { build } = require('./docker/build')
+    await build(arg.projectName)
     process.exit(0)
   })
 

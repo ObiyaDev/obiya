@@ -1,38 +1,27 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as readline from 'readline'
+import { printMotiaDockerIntro } from './utils/print-intro'
 
-export const setupDocker = async (): Promise<void> => {
-  console.log(
-    '\n\n' +
-      `
-    ___      ___     ______  ___________  __          __           
-    |"  \    /"  |   /    " \("     _   ")|" \        /""\          
-     \   \  //   |  // ____  \)__/  \\__/ ||  |      /    \         
-     /\\  \/.    | /  /    ) :)  \\_ /    |:  |     /' /\  \        
-    |: \.        |(: (____/ //   |.  |    |.  |    //  __'  \       
-    |.  \    /:  | \        /    \:  |    /\  |\  /   /  \\  \      
-    |___|\__/|___|  \"_____/      \__|   (__\_|_)(___/    \___)     
-                                                                    
-     ________      ______    ______   __   ___  _______   _______   
-    |"      "\    /    " \  /" _  "\ |/"| /  ")/"     "| /"      \  
-    (.  ___  :)  // ____  \(: ( \___)(: |/   /(: ______)|:        | 
-    |: \   ) || /  /    ) :)\/ \     |    __/  \/    |  |_____/   ) 
-    (| (___\ ||(: (____/ // //  \ _  (// _  \  // ___)_  //      /  
-    |:       :) \        / (:   _) \ |: | \  \(:      "||:  __   \  
-    (________/   \"_____/   \_______)(__|  \__)\_______)|__|  \___) 
+const updatePackageJson = (): void => {
+  const packageJsonPath = path.join(process.cwd(), 'package.json')
+  if (fs.existsSync(packageJsonPath)) {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
+    if (!packageJson.scripts) {
+      packageJson.scripts = {}
+    }
+    packageJson.scripts.start = 'motia start'
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+    console.log('Updated package.json with start script')
+  }
+}
 
-    ` +
-      '\n\n',
-  )
-
-  // Check if Dockerfile already exists in current directory
+const createDockerfile = async () => {
   const dockerfilePath = path.join(process.cwd(), 'Dockerfile')
 
   if (fs.existsSync(dockerfilePath)) {
     console.log('Dockerfile already exists')
 
-    // Create readline interface for user input
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -51,7 +40,6 @@ export const setupDocker = async (): Promise<void> => {
     }
   }
 
-  // Dockerfile content as specified
   const dockerfileContent = `# Specify platform to match your target architecture
 FROM --platform=linux/arm64 motiadev/motia-docker:latest
 
@@ -73,7 +61,6 @@ EXPOSE 3000
 CMD ["npm", "run", "start"]
 `
 
-  // Write the Dockerfile
   try {
     fs.writeFileSync(dockerfilePath, dockerfileContent)
     console.log('Dockerfile generated successfully!')
@@ -81,54 +68,52 @@ CMD ["npm", "run", "start"]
     console.error('Error generating Dockerfile:', (error as Error).message)
     throw error
   }
+}
 
-  // Write .dockerignore
+const createDockerignore = async () => {
   const dockerignoreContent = `# Git
-.git
-.gitignore
+  .git
+  .gitignore
+  
+  # Python
+  __pycache__/
+  *.py[cod]
+  *$py.class
+  *.so
+  .Python
+  env/
+  venv/
+  ENV/
+  
+  # Node
+  node_modules/
+  npm-debug.log
+  yarn-debug.log
+  yarn-error.log
+  
+  # IDE
+  .vscode/
+  .idea/
+  *.swp
+  *.swo
+  
+  # Local development
+  .env
+  
+  # OS generated files
+  .DS_Store
+  .DS_Store?
+  ._*
+  .Spotlight-V100
+  .Trashes
+  ehthumbs.db
+  Thumbs.db
+  `
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
-
-# Node
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Local development
-.env
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-`
-
-  // Check if Dockerfile already exists in current directory
   const dockerignorePath = path.join(process.cwd(), '.dockerignore')
 
   if (fs.existsSync(dockerignorePath)) {
     console.log('.dockerignore already exists')
-
-    // Create readline interface for user input
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -147,7 +132,6 @@ Thumbs.db
     }
   }
 
-  // Write the .dockerignore
   try {
     fs.writeFileSync(dockerignorePath, dockerignoreContent)
     console.log('.dockerignore generated successfully!')
@@ -155,4 +139,12 @@ Thumbs.db
     console.error('Error generating .dockerignore:', (error as Error).message)
     throw error
   }
+}
+
+export const setup = async (): Promise<void> => {
+  printMotiaDockerIntro()
+
+  await createDockerfile()
+  await createDockerignore()
+  updatePackageJson()
 }
