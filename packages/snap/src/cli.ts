@@ -159,5 +159,16 @@ generate
     })
   })
 
+const docker = program.command('docker').description('Motia docker commands')
+
+docker
+  .command('setup')
+  .description('Setup a motia-docker for your project')
+  .action(async () => {
+    const { setupDocker } = require('./docker')
+    await setupDocker()
+    process.exit(0)
+  })
+
 program.version(version, '-V, --version', 'Output the current version')
 program.parse(process.argv)
