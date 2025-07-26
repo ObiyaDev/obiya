@@ -14,7 +14,7 @@ on:
 
 env:
   DOCKER_MOTIA_ORG: motiadev
-  DOCKER_IMAGE_NAME: motia-docker
+  DOCKER_IMAGE_NAME: motia
 
 jobs:
   deploy:
