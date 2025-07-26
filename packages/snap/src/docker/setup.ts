@@ -71,44 +71,11 @@ CMD ["npm", "run", "start"]
 }
 
 const createDockerignore = async () => {
-  const dockerignoreContent = `# Git
-  .git
-  .gitignore
-  
-  # Python
-  __pycache__/
-  *.py[cod]
-  *$py.class
-  *.so
-  .Python
-  env/
-  venv/
-  ENV/
-  
-  # Node
-  node_modules/
-  npm-debug.log
-  yarn-debug.log
-  yarn-error.log
-  
-  # IDE
-  .vscode/
-  .idea/
-  *.swp
-  *.swo
-  
-  # Local development
-  .env
-  
-  # OS generated files
-  .DS_Store
-  .DS_Store?
-  ._*
-  .Spotlight-V100
-  .Trashes
-  ehthumbs.db
-  Thumbs.db
-  `
+  // Extract the file contents from
+  const dockerignoreContent = fs.readFileSync(
+    path.join(__dirname, '../../../../docker', 'templates', '.dockerignore.sample'),
+    'utf-8',
+  )
 
   const dockerignorePath = path.join(process.cwd(), '.dockerignore')
 
