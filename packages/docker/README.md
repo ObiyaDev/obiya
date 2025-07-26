@@ -12,7 +12,7 @@ You will need to implement your own Dockerfile where you will use this image as 
 
 ```dockerfile
 # Specify platform to match your target architecture
-FROM --platform=linux/amd64 motiadev/motia-docker:latest
+FROM --platform=linux/amd64 motiadev/motia:latest
 
 # Install Dependencies
 COPY package*.json ./
