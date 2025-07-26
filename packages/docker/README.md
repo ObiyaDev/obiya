@@ -22,7 +22,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Enable the following lines if you are using python steps!!!
-# # Setup python steps dependencies
+# Setup python steps dependencies
 # RUN npx motia@latest install
 
 # Expose outside access to the motia project
