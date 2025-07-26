@@ -69,18 +69,18 @@ docker login
 To build the base image, run the following command:
 
 ```bash
-docker build -t motiadev/motia-docker:<version, use the last commit sha> .
+docker build -t motiadev/motia:<version, use the last commit sha> .
 ```
 
 ### Push the image to Docker Hub:
 
 ```bash
-docker push motiadev/motia-docker:<version, use the last commit sha>
+docker push motiadev/motia:<version, use the last commit sha>
 ```
 
 ### Point to latest tag
 
 ```bash
-docker tag motiadev/motia-docker:<version, use the last commit sha> motiadev/motia-docker:latest
-docker push motiadev/motia-docker:latest
+docker tag motiadev/motia:<version, use the last commit sha> motiadev/motia:latest
+docker push motiadev/motia:latest
 ```
