@@ -34,7 +34,7 @@ CMD ["npm", "run", "start"]
 
 ## Create a .dockerignore file
 
-You can use the .dockerignore.sample file as a template for your .dockerignore file.
+You can use the `templates/.dockerignore.sample` file as a template for your `.dockerignore` file.
 
 ## Build the image
 
