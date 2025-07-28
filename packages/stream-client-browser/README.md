@@ -27,9 +27,7 @@ npm install @motiadev/stream-client-browser
 ```typescript
 import { Stream } from '@motiadev/stream-client-browser'
 
-const stream = new Stream('wss://your-stream-server', () => {
-  console.log('WebSocket connection established!')
-})
+const stream = new Stream('wss://your-stream-server')
 ```
 
 ### 2. Subscribing to an Item Stream
@@ -163,18 +161,17 @@ All types are exported from `stream.types.ts` for advanced usage and type safety
 ```typescript
 import { Stream } from '@motiadev/stream-client-browser'
 
-const stream = new Stream('wss://example.com', () => {
-  const userSub = stream.subscribeItem<{ id: string; name: string }>('users', 'user-1')
+const stream = new Stream('wss://example.com')
+const userSub = stream.subscribeItem<{ id: string; name: string }>('users', 'user-1')
 
-  userSub.addChangeListener((user) => {
-    // React to user changes
-  })
+userSub.addChangeListener((user) => {
+  // React to user changes
+})
 
-  const groupSub = stream.subscribeGroup<{ id: string; name: string }>('users', 'group-1')
+const groupSub = stream.subscribeGroup<{ id: string; name: string }>('users', 'group-1')
 
-  groupSub.addChangeListener((users) => {
-    // React to group changes
-  })
+groupSub.addChangeListener((users) => {
+  // React to group changes
 })
 ```
 
