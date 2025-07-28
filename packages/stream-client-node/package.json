@@ -1,5 +1,5 @@
 {
-  "name": "@motiadev/stream-client-browser",
+  "name": "@motiadev/stream-client-node",
   "description": "Motia Stream Client Package – Responsible for managing streams of data.",
   "version": "0.5.2-beta.103",
   "license": "MIT",
@@ -10,8 +10,9 @@
     "lint": "eslint --config ../../eslint.config.js"
   },
   "dependencies": {
+    "@motiadev/stream-client": "workspace:*",
     "uuid": "^11.1.0",
-    "@motiadev/stream-client": "workspace:*"
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
