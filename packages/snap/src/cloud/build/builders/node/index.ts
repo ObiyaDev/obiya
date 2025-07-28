@@ -35,7 +35,7 @@ export class NodeBuilder implements StepBuilder {
     }
 
     const file = fs
-      .readFileSync(path.join(__dirname, 'router-template.ts'), 'utf-8')
+      .readFileSync(path.join(__dirname, 'router-template.js'), 'utf-8')
       .replace(
         '// {{imports}}',
         steps.map((step, index) => `import * as route${index} from '${getStepPath(step)}'`).join('\n'),
