@@ -3,10 +3,23 @@
   "description": "Motia Stream Client Package – Responsible for managing streams of data.",
   "version": "0.5.2-beta.103",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./workbench": {
+      "require": "./dist/cjs/workbench.js",
+      "import": "./dist/esm/workbench.js",
+      "types": "./dist/types/workbench.d.ts"
+    }
+  },
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "sh scripts/build.sh",
     "lint": "eslint --config ../../eslint.config.js",
     "test": "jest"
   },

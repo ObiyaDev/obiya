@@ -3,3 +3,4 @@ tsconfig.json
 __tests__/
 jest.config.ts
 reports/
+index.ts

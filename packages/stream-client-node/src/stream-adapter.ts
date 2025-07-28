@@ -1,4 +1,4 @@
-import { WebSocket } from 'ws'
+import { WebSocket, MessageEvent } from 'ws'
 import type { SocketAdapter } from '@motiadev/stream-client'
 
 export class StreamSocketAdapter implements SocketAdapter {
@@ -15,7 +15,7 @@ export class StreamSocketAdapter implements SocketAdapter {
   }
 
   onMessage(callback: (message: string) => void): void {
-    const listener = (message: WebSocket.MessageEvent) => callback(message.data.toString())
+    const listener = (message: MessageEvent) => callback(message.data.toString())
 
     this.ws.addEventListener('message', listener)
   }
