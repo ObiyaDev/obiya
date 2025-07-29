@@ -207,7 +207,7 @@ async def handler(input_data, context):
         # Emit with topic and data in dictionary format
         await context.emit({"topic": "python.done", "data": python_result})
 
-        context.logger.info(f"🐍 Event emitted successfully for ID: {python_result['id']}")
+        context.logger.info("🐍 Event emitted successfully", { "id": python_result['id'] })
 
         # Return the payload so Motia passes it along automatically
         return python_result
