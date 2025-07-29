@@ -131,7 +131,7 @@ export class VersionManager {
       message
         .tag('info')
         .append('To use the new version you must promote it using ')
-        .append('motiacloud environment update --version <versionId>', 'dark')
+        .append('motia cloud environment update --version-name <versionName>', 'dark')
         .append(' or access the https://motia.cloud to promote it'),
     )
   }
