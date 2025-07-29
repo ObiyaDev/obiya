@@ -188,9 +188,11 @@ async def handler(input_data, context):
             if field not in input_data:
                 raise ValueError(f"Missing required field: {field}")
         
-        context.logger.info(f"🐍 Processing data for ID: {input_data['original_id']}")
-        context.logger.info(f"🐍 Confidence level: {input_data.get('confidence', 'N/A')}")
-        context.logger.info(f"🐍 Model version: {input_data.get('model_version', 'unknown')}")
+        context.logger.info("🐍 Processing data", {
+            "id": input_data['original_id'],
+            "confidence_level": input_data.get('confidence', 'N/A'),
+            "model_version": input_data.get('model_version', 'unknown'),
+        })
 
         # Process the data (simulate complex Python processing)
         python_result = {
