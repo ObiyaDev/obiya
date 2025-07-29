@@ -66,7 +66,7 @@ export default function ManifestoPage() {
           <section className={normalText}>
             <ul className="list-disc space-y-[28px]">
               <li>
-                <span className={gradientTextBlue}>From Express.js/Fastify:</span> API endpoints with routing and middleware, but{' '}
+                <span className={gradientTextBlue}>From Express.js/Flask:</span> API endpoints with routing and middleware, but{' '}
                 <span className={gradientText}>no built-in background job processing or scheduling.</span> You need separate tools for anything beyond HTTP requests.
               </li>
               <li>
