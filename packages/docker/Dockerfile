@@ -1,57 +1,40 @@
 # syntax=docker/dockerfile:1
-FROM python:3.13-slim-bullseye
 
-# Environment variables
-ENV NODE_VERSION=22.17.1\
-    MOTIA_DOCKER=true\
-    NVM_DIR=/usr/local/nvm
+# Use Node.js 22.17.1 slim image (supports linux/amd64 and linux/arm64)
+FROM node:22.17.1-slim
 
-# System packages
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    zlib1g-dev \
-    libncurses5-dev \
-    libgdbm-dev \
-    libnss3-dev \
-    libssl-dev \
-    libreadline-dev \
-    libffi-dev \
-    libsqlite3-dev \
-    libbz2-dev \
-    git \
-    wget \
-    curl \
-    ca-certificates \
-    xz-utils \
+# Define environment variables
+ENV MOTIA_DOCKER=true
+ENV PYTHON_VERSION=3.13
+
+# Install Python, Ruby, and system build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.13 \
+    python3.13-dev \
+    python3-pip \
     ruby-full \
     build-essential \
+    curl \
+    ca-certificates \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libffi-dev \
+    xz-utils \
+    git \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Setup Ruby bundler
 RUN gem install bundler
 
-# Download and install nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+# Verify toolchain
+RUN node -v && npm -v && python3.13 --version && ruby --version
 
-# Install Node.js using nvm
-RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install --lts --latest-npm 
-    
-    # && \
-    # nvm use --lts && \
-    # nvm alias default --lts
-
-# Add nvm and node to PATH for subsequent RUN commands
-# ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
-
-# Verify installations
-# RUN . "$NVM_DIR/nvm.sh" && \
-RUN node -v && \
-    nvm current && \
-    npm -v
-
-# Working directory
+# Set working directory
 WORKDIR /app
 
-# ## Default command which will be overwritten in the Dockerfile implementing this image
-CMD ["echo", "Please implement a Dockerfile using this image as a base"]
+# Default command (should be overridden in application Dockerfile)
+CMD ["echo", "Base image ready. Override CMD in your application Dockerfile."]
