@@ -51,5 +51,5 @@ RUN . "$NVM_DIR/nvm.sh" && \
 # Working directory
 WORKDIR /app
 
-## Default command which will be overwritten in the Dockerfile implementing this image
-CMD ["echo", "Please implement a Dockerfile using this image as a base"]
+# ## Default command which will be overwritten in the Dockerfile implementing this image
+# CMD ["echo", "Please implement a Dockerfile using this image as a base"]
