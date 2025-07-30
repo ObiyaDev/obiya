@@ -2,7 +2,7 @@
 FROM python:3.13-slim-bullseye
 
 # Environment variables
-ENV NODE_VERSION=22\
+ENV NODE_VERSION=22.17.1\
     MOTIA_DOCKER=true\
     NVM_DIR=/root/.nvm
 
@@ -35,12 +35,12 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | b
 
 # Install Node.js using nvm
 RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install 22 && \
-    nvm use 22 && \
-    nvm alias default 22
+    nvm install $NODE_VERSION && \
+    nvm use $NODE_VERSION && \
+    nvm alias default $NODE_VERSION
 
 # Add nvm and node to PATH for subsequent RUN commands
-ENV PATH="$NVM_DIR/versions/node/v22.17.1/bin:$PATH"
+ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
 
 # Verify installations
 RUN . "$NVM_DIR/nvm.sh" && \
