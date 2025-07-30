@@ -4,7 +4,7 @@ FROM python:3.13-slim-bullseye
 # Environment variables
 ENV NODE_VERSION=22.17.1\
     MOTIA_DOCKER=true\
-    NVM_DIR=/root/.nvm
+    NVM_DIR=/usr/local/nvm
 
 # System packages
 RUN apt-get update && \
@@ -31,20 +31,22 @@ RUN apt-get update && \
 RUN gem install bundler
 
 # Download and install nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 
 # Install Node.js using nvm
 RUN . "$NVM_DIR/nvm.sh" && \
-    nvm install $NODE_VERSION && \
-    nvm use $NODE_VERSION && \
-    nvm alias default $NODE_VERSION
+    nvm install --lts --latest-npm 
+    
+    # && \
+    # nvm use --lts && \
+    # nvm alias default --lts
 
 # Add nvm and node to PATH for subsequent RUN commands
-ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
+# ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
 
 # Verify installations
-RUN . "$NVM_DIR/nvm.sh" && \
-    node -v && \
+# RUN . "$NVM_DIR/nvm.sh" && \
+RUN node -v && \
     nvm current && \
     npm -v
 
