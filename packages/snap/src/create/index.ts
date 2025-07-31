@@ -77,7 +77,7 @@ const preparePackageManager = async (rootDir: string, context: CliContext) => {
   return packageManager
 }
 
-const wrapUpSetup = async (rootDir: string, context: CliContext) => {
+const installNodeDependencies = async (rootDir: string, context: CliContext) => {
   const packageManager = await preparePackageManager(rootDir, context)
 
   await installRequiredDependencies(packageManager, rootDir, context).catch((error: unknown) => {
@@ -87,6 +87,10 @@ const wrapUpSetup = async (rootDir: string, context: CliContext) => {
     console.error(error)
   })
 
+  return packageManager
+}
+
+const wrapUp = async (context: CliContext, packageManager: string) => {
   context.log('project-setup-completed', (message) =>
     message.tag('success').append('Project setup completed, happy coding!'),
   )
@@ -242,12 +246,7 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
     )
   }
 
-  if (!template) {
-    await wrapUpSetup(rootDir, context)
-    return
-  }
-
-  if (template && !(template in templates)) {
+  if (!template || !(template in templates)) {
     context.log('template-not-found', (message) =>
       message.tag('failed').append(`Template ${template} not found, please use one of the following:`),
     )
@@ -255,13 +254,12 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
       message.tag('info').append(`Available templates: \n\n ${Object.keys(templates).join('\n')}`),
     )
 
-    await wrapUpSetup(rootDir, context)
     return
   }
 
   await templates[template](rootDir, context)
 
-  await wrapUpSetup(rootDir, context)
+  const packageManager = await installNodeDependencies(rootDir, context)
 
   if (template === 'python') {
     if (!checkIfFileExists(rootDir, 'requirements.txt')) {
@@ -280,6 +278,7 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
   }
 
   await generateTypes(rootDir)
+  await wrapUp(context, packageManager)
 
   return
 }
