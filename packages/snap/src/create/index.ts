@@ -37,8 +37,8 @@ const getPackageManager = (dir: string): string => {
   }
 }
 
-const installRequiredDependencies = async (packageManager: string, rootDir: string) => {
-  console.log('📦 Installing dependencies...')
+const installRequiredDependencies = async (packageManager: string, rootDir: string, context: CliContext) => {
+  context.log('installing-dependencies', (message) => message.tag('info').append('Installing dependencies...'))
 
   const installCommand = {
     npm: 'npm install --save',
@@ -46,43 +46,53 @@ const installRequiredDependencies = async (packageManager: string, rootDir: stri
     pnpm: 'pnpm add',
   }[packageManager]
 
-  const dependencies = [`motia@^${version}`, 'zod@^3.24.4'].join(' ')
-  const devDependencies = ['ts-node@^10.9.2', 'typescript@^5.7.3', '@types/react@^18.3.18'].join(' ')
+  const dependencies = [`motia@${version}`, 'zod@3.24.4'].join(' ')
+  const devDependencies = ['ts-node@10.9.2', 'typescript@5.7.3', '@types/react@18.3.18'].join(' ')
 
   try {
     await executeCommand(`${installCommand} ${dependencies}`, rootDir)
     await executeCommand(`${installCommand} -D ${devDependencies}`, rootDir)
-    console.log('✅ Dependencies installed')
+
+    context.log('dependencies-installed', (message) => message.tag('success').append('Dependencies installed'))
   } catch (error) {
     console.error('❌ Failed to install dependencies:', error)
   }
 }
 
-const preparePackageManager = async (rootDir: string) => {
+const preparePackageManager = async (rootDir: string, context: CliContext) => {
   let packageManager = 'npm'
   const detectedPackageManager = getPackageManager(rootDir)
 
   if (detectedPackageManager !== 'unknown') {
-    console.log(`📦 Detected package manager: ${packageManager}`)
+    context.log('package-manager-detected', (message) =>
+      message.tag('info').append('Detected package manager').append(detectedPackageManager, 'gray'),
+    )
     packageManager = detectedPackageManager
   } else {
-    console.log(`📦 Using default package manager: ${packageManager}`)
+    context.log('package-manager-using-default', (message) =>
+      message.tag('info').append('Using default package manager').append(packageManager, 'gray'),
+    )
   }
 
   return packageManager
 }
 
-const wrapUpSetup = async (rootDir: string) => {
-  const packageManager = await preparePackageManager(rootDir)
+const wrapUpSetup = async (rootDir: string, context: CliContext) => {
+  const packageManager = await preparePackageManager(rootDir, context)
 
-  await installRequiredDependencies(packageManager, rootDir).catch((error: unknown) => {
-    console.log('❌ Failed to install dependencies')
+  await installRequiredDependencies(packageManager, rootDir, context).catch((error: unknown) => {
+    context.log('failed-to-install-dependencies', (message) =>
+      message.tag('failed').append('Failed to install dependencies'),
+    )
     console.error(error)
   })
 
-  console.log(`\n\nTo start the development server, run:\n\n${packageManager} run dev\n\n`)
-
-  console.log('🚀 Project setup completed, happy coding!')
+  context.log('project-setup-completed', (message) =>
+    message.tag('success').append('Project setup completed, happy coding!'),
+  )
+  context.log('package-manager-used', (message) =>
+    message.tag('info').append('To start the development server, run').append(`${packageManager} run dev`, 'gray'),
+  )
 }
 
 type Args = {
@@ -233,7 +243,7 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
   }
 
   if (!template) {
-    await wrapUpSetup(rootDir)
+    await wrapUpSetup(rootDir, context)
     return
   }
 
@@ -245,13 +255,13 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
       message.tag('info').append(`Available templates: \n\n ${Object.keys(templates).join('\n')}`),
     )
 
-    await wrapUpSetup(rootDir)
+    await wrapUpSetup(rootDir, context)
     return
   }
 
   await templates[template](rootDir, context)
 
-  await wrapUpSetup(rootDir)
+  await wrapUpSetup(rootDir, context)
 
   if (template === 'python') {
     if (!checkIfFileExists(rootDir, 'requirements.txt')) {
