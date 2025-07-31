@@ -17,13 +17,14 @@ export interface CollapsiblePanelProps extends PropsWithChildren {
 }
 
 interface PanelControlProps {
+  id: string
   header: ReactNode
   isCollapsed: boolean
   onToggle?: () => void
   variant?: ContainerHeaderProps['variant']
 }
 
-const PanelControls: React.FC<PanelControlProps> = ({ header, isCollapsed, onToggle, variant = 'default' }) => {
+const PanelControls: React.FC<PanelControlProps> = ({ id, header, isCollapsed, onToggle, variant = 'default' }) => {
   return (
     <ContainerHeader variant={variant}>
       {header}
@@ -34,6 +35,7 @@ const PanelControls: React.FC<PanelControlProps> = ({ header, isCollapsed, onTog
           onClick={onToggle}
           aria-label={isCollapsed ? 'Expand panel' : 'Collapse panel'}
           className={cn('h-8 px-3 [&_svg]:size-5', { 'mr-5': variant === 'tabs' })}
+          data-testid={`toggle-panel-button-${id}`}
         >
           <ChevronDown className={cn('transition-transform', { '-rotate-180': !isCollapsed })} />
         </Button>
@@ -90,7 +92,7 @@ export const CollapsiblePanel: React.FC<CollapsiblePanelProps> = ({
   const view = useMemo(() => {
     const container = (
       <Container className="h-full">
-        <PanelControls header={header} isCollapsed={isCollapsed} variant={variant} onToggle={onToggle} />
+        <PanelControls id={id} header={header} isCollapsed={isCollapsed} variant={variant} onToggle={onToggle} />
         <ContainerContent>{children}</ContainerContent>
       </Container>
     )

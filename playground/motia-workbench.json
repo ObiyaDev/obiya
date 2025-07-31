@@ -9,6 +9,27 @@
     }
   },
   {
+    "id": "test-state",
+    "config": {
+      "steps/testState/test_state.step.py": {
+        "x": 169,
+        "y": 219,
+        "sourceHandlePosition": "right",
+        "targetHandlePosition": "left"
+      },
+      "steps/testState/testStateCheck.step.ts": {
+        "x": 535,
+        "y": 219,
+        "targetHandlePosition": "left"
+      },
+      "steps/testState/testState.api.step.ts": {
+        "x": -224,
+        "y": 192,
+        "sourceHandlePosition": "right"
+      }
+    }
+  },
+  {
     "id": "open-ai",
     "config": {
       "steps/open-ai-python/02-prompt.step.py": {
@@ -128,6 +149,23 @@
         "x": -322,
         "y": 291,
         "sourceHandlePosition": "right"
+      }
+    }
+  },
+  {
+    "id": "simple-python",
+    "config": {
+      "steps/simplePython/testedEvent.step.py": {
+        "x": 18,
+        "y": 425
+      },
+      "steps/simplePython/testEvent.step.py": {
+        "x": 28,
+        "y": 263
+      },
+      "steps/simplePython/apiEndpoint.step.py": {
+        "x": 0,
+        "y": 0
       }
     }
   }
