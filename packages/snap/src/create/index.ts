@@ -5,6 +5,7 @@ import { executeCommand } from '../utils/execute-command'
 import { pythonInstall } from '../install'
 import { generateTypes } from '../generate-types'
 import { version } from '../version'
+import { CliContext } from '../cloud/config-utils'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -88,9 +89,10 @@ type Args = {
   projectName: string
   template?: string
   cursorEnabled?: boolean
+  context: CliContext
 }
 
-export const create = async ({ projectName, template, cursorEnabled }: Args): Promise<void> => {
+export const create = async ({ projectName, template, cursorEnabled, context }: Args): Promise<void> => {
   console.log(
     '\n\n' +
       `
@@ -107,13 +109,14 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
 
   const isCurrentDir = projectName === '.' || projectName === './' || projectName === '.\\'
   const rootDir = isCurrentDir ? process.cwd() : path.join(process.cwd(), projectName)
-  console.log(`🛠️ Welcome to motia! Let's get you setup.`)
 
   if (!isCurrentDir && !checkIfDirectoryExists(rootDir)) {
     fs.mkdirSync(path.join(rootDir))
-    console.log(`✅ ${projectName} directory created`)
+    context.log('directory-created', (message) =>
+      message.tag('success').append('Directory created ').append(projectName, 'gray'),
+    )
   } else {
-    console.log(`📁 Using current directory`)
+    context.log('directory-using', (message) => message.tag('info').append('Using current directory'))
   }
 
   if (!checkIfFileExists(rootDir, 'package.json')) {
@@ -133,7 +136,10 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
     }
 
     fs.writeFileSync(path.join(rootDir, 'package.json'), JSON.stringify(packageJsonContent, null, 2))
-    console.log('✅ package.json created')
+
+    context.log('package-json-created', (message) =>
+      message.tag('success').append('File').append('package.json', 'cyan').append('has been created.'),
+    )
   } else {
     const packageJsonPath = path.join(rootDir, 'package.json')
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
@@ -147,11 +153,20 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
     } else {
       packageJson.scripts.olddev = packageJson.scripts.dev
       packageJson.scripts.dev = 'motia dev'
-      console.log('📁 dev command already exists in package.json')
+      context.log('dev-command-already-exists', (message) =>
+        message.tag('warning').append('dev command already exists in package.json'),
+      )
     }
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
-    console.log('✅ Updated dev command to package.json')
+    context.log('dev-command-updated', (message) =>
+      message
+        .tag('success')
+        .append('Updated')
+        .append('dev', 'gray')
+        .append('command to')
+        .append('package.json', 'gray'),
+    )
   }
 
   if (!checkIfFileExists(rootDir, 'tsconfig.json')) {
@@ -176,17 +191,9 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
     }
 
     fs.writeFileSync(path.join(rootDir, 'tsconfig.json'), JSON.stringify(tsconfigContent, null, 2))
-    console.log('✅ tsconfig.json created')
-  }
-
-  if (!checkIfFileExists(rootDir, 'requirements.txt')) {
-    const requirementsContent = [
-      // TODO: motia PyPi package
-      // Add other Python dependencies as needed
-    ].join('\n')
-
-    fs.writeFileSync(path.join(rootDir, 'requirements.txt'), requirementsContent)
-    console.log('✅ requirements.txt created')
+    context.log('tsconfig-json-created', (message) =>
+      message.tag('success').append('File').append('tsconfig.json', 'cyan').append('has been created.'),
+    )
   }
 
   if (!checkIfFileExists(rootDir, '.gitignore')) {
@@ -202,7 +209,9 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
     ].join('\n')
 
     fs.writeFileSync(path.join(rootDir, '.gitignore'), gitignoreContent)
-    console.log('✅ .gitignore created')
+    context.log('gitignore-created', (message) =>
+      message.tag('success').append('File').append('.gitignore', 'cyan').append('has been created.'),
+    )
   }
 
   const cursorTemplateDir = path.join(__dirname, '../../dot-files/.cursor')
@@ -210,13 +219,17 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
 
   if (cursorEnabled && !checkIfDirectoryExists(cursorTargetDir)) {
     fs.cpSync(cursorTemplateDir, cursorTargetDir, { recursive: true })
-    console.log('✅ .cursor folder copied')
+    context.log('cursor-folder-created', (message) =>
+      message.tag('success').append('Folder').append('.cursor', 'cyan').append('has been created.'),
+    )
   }
 
   const stepsDir = path.join(rootDir, 'steps')
   if (!checkIfDirectoryExists(stepsDir)) {
     fs.mkdirSync(stepsDir)
-    console.log('✅ steps directory created')
+    context.log('steps-directory-created', (message) =>
+      message.tag('success').append('Folder').append('steps', 'cyan').append('has been created.'),
+    )
   }
 
   if (!template) {
@@ -225,18 +238,34 @@ export const create = async ({ projectName, template, cursorEnabled }: Args): Pr
   }
 
   if (template && !(template in templates)) {
-    console.error(`❌ Template ${template} not found, please use one of the following:`)
-    console.log(`📝 Available templates: \n\n ${Object.keys(templates).join('\n')}`)
+    context.log('template-not-found', (message) =>
+      message.tag('failed').append(`Template ${template} not found, please use one of the following:`),
+    )
+    context.log('available-templates', (message) =>
+      message.tag('info').append(`Available templates: \n\n ${Object.keys(templates).join('\n')}`),
+    )
 
     await wrapUpSetup(rootDir)
     return
   }
 
-  await templates[template](stepsDir)
+  await templates[template](rootDir, context)
 
   await wrapUpSetup(rootDir)
 
   if (template === 'python') {
+    if (!checkIfFileExists(rootDir, 'requirements.txt')) {
+      const requirementsContent = [
+        // TODO: motia PyPi package
+        // Add other Python dependencies as needed
+      ].join('\n')
+
+      fs.writeFileSync(path.join(rootDir, 'requirements.txt'), requirementsContent)
+      context.log('requirements-txt-created', (message) =>
+        message.tag('success').append('File').append('requirements.txt', 'gray').append('has been created.'),
+      )
+    }
+
     await pythonInstall({ baseDir: rootDir })
   }
 
