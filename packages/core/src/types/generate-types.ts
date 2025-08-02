@@ -56,13 +56,9 @@ export const generateTypesFromSteps = (steps: Step[], printer: Printer): Handler
           topics[topic] = generateTypeFromSchema(schema)
           topicsSchemas[topic] = schema
         } catch (error) {
-          if (error instanceof JsonSchemaError) {
-            printer.printInvalidSchema(topic, topicsSteps[topic])
-            // invalid schema, the topic should be ignored
-            topics[topic] = 'never'
-          } else {
-            throw error
-          }
+          printer.printInvalidSchema(topic, topicsSteps[topic])
+          // invalid schema, the topic should be ignored
+          topics[topic] = 'never'
         }
       }
     }
