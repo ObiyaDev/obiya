@@ -5,7 +5,7 @@ import { Stream } from '../types-stream'
 import { generateTypeFromSchema } from './generate-type-from-schema'
 import { generateTypesFromResponse } from './generate-types-from-response'
 import { mergeSchemas } from './merge-schemas'
-import { JsonSchema, JsonSchemaError } from './schema.types'
+import { JsonSchema } from './schema.types'
 
 type HandlersMap = Record<string, { type: string; generics: string[] }>
 type StreamsMap = Record<string, string>
