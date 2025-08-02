@@ -2,9 +2,13 @@ import fs from 'fs'
 import { CliContext } from '../../config-utils'
 
 export const loadEnvData = (envFile: string, context: CliContext): Record<string, string> => {
+  if (!envFile) {
+    return {}
+  }
+
   context.log('load-env', (message) => message.tag('progress').append('Loading environment variables...'))
 
-  if (!fs.existsSync(envFile)) {
+  if (envFile && !fs.existsSync(envFile)) {
     context.log('load-env', (message) =>
       message
         .tag('failed')

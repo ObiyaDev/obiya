@@ -8,6 +8,7 @@ type CreateDeploymentRequest = {
 }
 
 type CreateDeploymentResult = {
+  deploymentId: string
   deploymentToken: string
   environmentName: string
   projectName: string

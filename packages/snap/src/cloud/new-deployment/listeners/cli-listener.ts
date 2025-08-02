@@ -6,7 +6,8 @@ import { BuildPrinter } from './build-printer'
 import { CliContext } from '../../config-utils'
 import { DeployPrinter } from './printer'
 import { ValidationError } from '../utils/validation'
-import { DeploymentListener, DeploymentOutput } from './listener.types'
+import { DeployData, DeploymentListener, DeploymentOutput } from './listener.types'
+import { printDeploymentStatus } from './print-deployment-status'
 
 export class CliListener implements DeploymentListener {
   private readonly printer: BuildPrinter
@@ -90,6 +91,10 @@ export class CliListener implements DeploymentListener {
     this.context.log('deploy-progress', (message) => message.tag('progress').append('Version in progress...'))
   }
 
+  onDeployProgress(data: DeployData) {
+    printDeploymentStatus(data, this.context)
+  }
+
   onDeployEnd({ output }: DeploymentOutput) {
     this.context.log('deploy-result', (message) =>
       message.tag('success').append('Deployment process completed successfully'),
@@ -97,7 +102,7 @@ export class CliListener implements DeploymentListener {
 
     this.context.log('deploy-output', (message) =>
       message.table(
-        undefined,
+        ['Field', 'Value'],
         Object.entries(output).map(([key, value]) => [key, value]),
       ),
     )

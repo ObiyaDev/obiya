@@ -33,7 +33,6 @@ export function handler(handler: CliHandler): (args: Record<string, any>) => Pro
 
     try {
       await handler(args, context)
-      context.exit(0)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof Error) {

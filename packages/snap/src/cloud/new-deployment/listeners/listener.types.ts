@@ -37,8 +37,34 @@ export type DeploymentOutput = {
   output: Record<string, string>
 }
 
+export type DeployStatus = 'pending' | 'progress' | 'completed' | 'failed'
+export type DeployData = {
+  id: string
+  status: DeployStatus
+  endpoints: Array<{
+    method: string
+    path: string
+    stepName: string
+    emits: string[]
+    status: DeployStatus
+  }>
+  events: Array<{
+    topics: string[]
+    queue: string
+    stepName: string
+    status: DeployStatus
+  }>
+  cron: Array<{
+    cron: string
+    stepName: string
+    emits: string[]
+    status: DeployStatus
+  }>
+}
+
 export type DeployListener = {
   onDeployStart: () => void
+  onDeployProgress: (data: DeployData) => void
   onDeployEnd: (output: DeploymentOutput) => void
   onDeployError: (errorMessage: string) => void
 }

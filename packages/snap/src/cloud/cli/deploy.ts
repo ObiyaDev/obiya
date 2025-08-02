@@ -27,8 +27,7 @@ cloudCli
         process.exit(1)
       }
 
-      console.log(colors.green('✓ [SUCCESS]'), 'Build completed')
-
+      context.log('build-completed', (message) => message.tag('success').append('Build completed'))
       context.log('creating-deployment', (message) => message.tag('progress').append('Creating deployment...'))
 
       const deployment = await cloudApi.createDeployment({
@@ -37,17 +36,21 @@ cloudCli
         environmentId: arg.environmentId,
       })
 
-      context.log('deployment-created', (message) => message.tag('success').append('Deployment created'))
+      context.log('creating-deployment', (message) => message.tag('success').append('Deployment created'))
       context.log('uploading-artifacts', (message) => message.tag('progress').append('Uploading artifacts...'))
 
       await uploadArtifacts(builder, deployment.deploymentToken, listener)
 
+      context.log('uploading-artifacts', (message) => message.tag('success').append('Artifacts uploaded'))
       context.log('starting-deployment', (message) => message.tag('progress').append('Starting deployment...'))
 
       await deploy({
         envVars: loadEnvData(arg.envFile, context),
+        deploymentId: deployment.deploymentId,
         deploymentToken: deployment.deploymentToken,
         builder,
+        listener,
+        context,
       })
 
       context.exit(0)

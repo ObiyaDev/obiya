@@ -11,6 +11,6 @@ program
     handler(async (_: unknown, context: CliContext) => {
       const listener = new CliListener(context)
       await build(listener)
-      console.log(colors.green('✓ [SUCCESS]'), 'Build completed')
+      context.log('build-completed', (message) => message.tag('success').append('Build completed'))
     }),
   )

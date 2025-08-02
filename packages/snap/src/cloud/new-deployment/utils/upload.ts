@@ -8,14 +8,18 @@ export const upload = async (deploymentToken: string, fileName: string, onProgre
   const filePath = path.join(distDir, fileName)
   const fileStats = fs.statSync(filePath)
 
-  const { presignedUrl } = await cloudApi.upload({
+  // TODO [motia-deploy] use presigned url
+  // const { presignedUrl } = await cloudApi.upload({
+  await cloudApi.upload({
     deploymentToken,
     originalName: fileName,
     size: fileStats.size,
     mimetype: 'application/zip',
   })
 
-  await uploadToPresignedUrl(filePath, presignedUrl, fileStats.size, onProgress)
+  // TODO [motia-deploy] simulate upload
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+  // await uploadToPresignedUrl(filePath, presignedUrl, fileStats.size, onProgress)
 }
 
 const uploadToPresignedUrl = async (
