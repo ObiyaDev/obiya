@@ -17,7 +17,7 @@ export const generateTypesString = (handlers: HandlersMap, streams: StreamsMap):
  * 
  * Consider adding this file to .prettierignore and eslint ignore.
  */
-import { EventHandler, ApiRouteHandler, ApiResponse, MotiaStream } from 'motia'
+import { EventHandler, ApiRouteHandler, ApiResponse, CronHandler, MotiaStream } from 'motia'
 
 declare module 'motia' {
   interface FlowContextStateStreams {
@@ -27,7 +27,7 @@ declare module 'motia' {
       .trim()}
   }
 
-  type Handlers = {
+  interface Handlers {
     ${Object.entries(handlers)
       .map(([key, { type, generics }]) => `'${key}': ${type}<${generics.join(', ')}>`)
       .join('\n    ')
