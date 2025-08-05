@@ -165,9 +165,9 @@ The following env variables can be defined to override specific features from th
 
 | Env Variable             | Description                                                                                                                                         |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DISABLE_TUTORIAL         | This will disable the tutorial from being shown, and the tutorial question in the `create` command                                                  |
+| MOTIA_DISABLE_TUTORIAL   | This will disable the tutorial from being shown, and the tutorial question in the `create` command                                                  |
 | MOTIA_ANALYTICS_DISABLED | This will disable the analytics reporting from the tutorial                                                                                         |
-| SKIP_TUTORIAL            | This will skip presenting the tutorial to a user if the response is `N` in the `create` command, this will be set as part of the create boilerplate |
+| MOTIA_SKIP_TUTORIAL      | This will skip presenting the tutorial to a user if the response is `N` in the `create` command, this will be set as part of the create boilerplate |
 
 ## Examples
 
@@ -239,14 +239,11 @@ Describe how you plan to test your implementation.
 Include unit tests, integration tests, and user acceptance criteria.
 -->
 
-### Unit Testing
-
-- Validate the step by step navigation of the tutorial
-- Validate the analytics reporting of the tutorial
-
 ### E2E Testing
 
 - Create a playwright test to validate the tutorial flow by segments
+- Validate the step by step navigation of the tutorial
+- Validate the analytics reporting of the tutorial
 
 ### User Acceptance Testing
 
@@ -287,6 +284,7 @@ This helps guide the review process.
 -->
 
 - Should we allow users to edit the source code for the tutorial templates from Workbench? This would enhance the tutorial experience by allowing users to type and test code in real time, without leaving the tutorial.
+  - We won't proceed with this at the moment since it poses some concerns.
 
 ## Conclusion
 
