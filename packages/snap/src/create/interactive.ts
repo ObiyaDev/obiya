@@ -22,7 +22,7 @@ export const createInteractive = async (
   { skipConfirmation }: CreateInteractiveArgs,
   context: CliContext
 ): Promise<void> => {
-  context.log('welcome', (message) => message.append('\n:rocket: ' + colors.bold('Welcome to Motia Project Creator!')))
+  context.log('welcome', (message) => message.append('\n🚀 ' + colors.bold('Welcome to Motia Project Creator!')))
 
   const answers: InteractiveAnswers = await inquirer.prompt([
     {
@@ -57,11 +57,11 @@ export const createInteractive = async (
   ])
 
   if (!answers.proceed) {
-    context.log('cancelled', (message) => message.tag('info').append('\n:x: Project creation cancelled.'))
+    context.log('cancelled', (message) => message.tag('info').append('\n❌ Project creation cancelled.'))
     return
   }
 
-  context.log('creating', (message) => message.tag('info').append('\n:hammer_and_wrench: Creating your Motia project...\n'))
+  context.log('creating', (message) => message.tag('info').append('\n🔨 Creating your Motia project...\n'))
 
   await create({
     projectName: answers.projectName || '.',
