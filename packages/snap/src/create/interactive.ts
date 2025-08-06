@@ -61,7 +61,7 @@ export const createInteractive = async (
     return
   }
 
-  context.log('creating', (message) => message.tag('info').append('\n🔨 Creating your Motia project...\n'))
+  context.log('creating', (message) => message.append('\n🔨 Creating your Motia project...\n'))
 
   await create({
     projectName: answers.projectName || '.',
