@@ -29,6 +29,8 @@ declare module 'motia' {
     'ApiTrigger': ApiRouteHandler<{ message: string }, ApiResponse<200, { message: string; traceId: string }>, { topic: 'test-state'; data: { message: string } }>
     'PeriodicJobHandled': EventHandler<{ message: string }, { topic: 'tested'; data: never }>
     'HandlePeriodicJob': CronHandler<{ topic: 'periodic-job-handled'; data: { message: string } }>
+    'MyPythonStep': EventHandler<never, never>
+    'StateAuditJob': CronHandler<never>
     'Tested Event': EventHandler<never, never>
     'Test Event': EventHandler<never, { topic: 'tested'; data: never }>
     'Test API Endpoint': ApiRouteHandler<Record<string, unknown>, unknown, { topic: 'test'; data: never }>
