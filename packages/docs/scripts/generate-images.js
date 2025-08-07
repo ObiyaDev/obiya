@@ -11,7 +11,7 @@ async function generateImages() {
     // Check if favicon.svg exists
     await fs.access(svgIconPath);
   } catch (error) {
-    console.error('Error: icon.svg not found in public directory.', error);
+    console.error('Error: Favicon_48X48.ico not found in public directory.', error);
     return; // Exit if the source SVG is not found
   }
 
