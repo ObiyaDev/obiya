@@ -7,6 +7,8 @@ export type TutorialStep = {
   segmentId: string
   clickSelectorBeforeNext?: string
   waitForSelector?: string
+  runScriptBeforeNext?: () => void
+  useKeyDownEventOnClickBeforeNext?: boolean
 }
 
 export type Tutorial = {
@@ -18,6 +20,7 @@ export type Tutorial = {
 
 export type TutorialConfig = {
   tutorialId?: 'basic' // | add more tutorial id's in here
-  initialSegmentId?: string
-  initialStepId?: string
+  segmentId?: string
+  initialStepIndex?: number
+  resetSkipState?: boolean
 }

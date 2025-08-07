@@ -25,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "index.ts"],
+  "include": ["src", "index.ts", "monaco.d.ts"],
   "exclude": ["**/*.test.tsx", "**/*.test.ts"]
 }

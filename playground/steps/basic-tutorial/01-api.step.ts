@@ -1,23 +1,34 @@
 import { ApiRouteConfig, Handlers } from 'motia'
 import { z } from 'zod'
+import { petStoreService } from './services/pet-store'
 
 export const config: ApiRouteConfig = {
   type: 'api',
   name: 'ApiTrigger',
-  description: 'basic-tutorial api trigger',
+  description:
+    'basic-tutorial api trigger, it uses the petstore public api to create a new pet and emits a topic to proces an order if an item is included.',
+  /**
+   * The flows this step belongs to, will be available in Workbench
+   */
+  flows: ['basic-tutorial'],
 
   method: 'POST',
   path: '/basic-tutorial',
-
-  /**
-   * This API Step emits events to topic `test-state`
-   */
-  emits: ['test-state'],
-
   /**
    * Expected request body for type checking and documentation
    */
-  bodySchema: z.object({ message: z.string() }),
+  bodySchema: z.object({
+    pet: z.object({
+      name: z.string(),
+      photoUrl: z.string(),
+    }),
+    foodOrder: z
+      .object({
+        id: z.string(),
+        quantity: z.number(),
+      })
+      .optional(),
+  }),
 
   /**
    * Expected response body for type checking and documentation
@@ -30,17 +41,17 @@ export const config: ApiRouteConfig = {
   },
 
   /**
+   * This API Step emits events to topic `process-food-order`
+   */
+  emits: ['process-food-order'],
+
+  /**
    * We're using virtual subscribes to virtually connect noop step
    * to this step.
    *
    * Noop step is defined in noop.step.ts
    */
   virtualSubscribes: ['/basic-tutorial'],
-
-  /**
-   * The flows this step belongs to, will be available in Workbench
-   */
-  flows: ['basic-tutorial'],
 }
 
 export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit, traceId }) => {
@@ -49,13 +60,22 @@ export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit, trace
    */
   logger.info('Step 01 – Processing API Step', { body: req.body })
 
+  const { pet, foodOrder } = req.body
+
+  const newPetRecord = await petStoreService.createPet(pet)
+
   /**
    * Emit events to the topics to process asynchronously
    */
-  await emit({
-    topic: 'test-state',
-    data: { message: req.body.message },
-  })
+  if (foodOrder) {
+    await emit({
+      topic: 'process-food-order',
+      data: {
+        ...foodOrder,
+        petId: newPetRecord.id,
+      },
+    })
+  }
 
   /**
    * Return data back to the client
@@ -64,7 +84,7 @@ export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit, trace
     status: 200,
     body: {
       traceId,
-      message: 'test-state topic emitted',
+      message: 'Your pet has been registered and your order is being processed',
     },
   }
 }

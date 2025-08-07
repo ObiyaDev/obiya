@@ -19,11 +19,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.json --outDir dist",
+    "build": "tsc --project tsconfig.json --outDir dist && cp src/theme.css dist/src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@motiadev/ui": "workspace:*",
     "driver.js": "^1.3.6",
+    "tw-animate-css": "^1.2.9",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

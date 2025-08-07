@@ -134,29 +134,25 @@
   {
     "id": "basic-tutorial",
     "config": {
-      "steps/basic-tutorial/MyPythonStep.step.py": {
-        "x": 149,
-        "y": 720
-      },
       "steps/basic-tutorial/04-state-audit-cron.step.ts": {
         "x": 0,
         "y": 0
       },
-      "steps/basic-tutorial/03-check-state-change.step.ts": {
-        "x": 501,
-        "y": 720
-      },
-      "steps/basic-tutorial/02-test-state.step.ts": {
-        "x": 322,
-        "y": 524
-      },
-      "steps/basic-tutorial/01-api.step.ts": {
-        "x": 343,
-        "y": 260
+      "steps/basic-tutorial/02-process-food-order.step.ts": {
+        "x": 281,
+        "y": 584
       },
       "steps/basic-tutorial/00-noop.step.ts": {
         "x": 387,
         "y": 45
+      },
+      "steps/basic-tutorial/01-api.step.ts": {
+        "x": 281,
+        "y": 260
+      },
+      "steps/basic-tutorial/NewOrderNotifications.step.py": {
+        "x": 310,
+        "y": 820
       }
     }
   }

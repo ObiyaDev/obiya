@@ -10,8 +10,8 @@ import { NoopConfig } from 'motia'
  */
 export const config: NoopConfig = {
   type: 'noop',
-  name: 'Flow Starter',
-  description: 'Start the default flow',
+  name: 'ExternalRequest',
+  description: 'basic-tutorial noop step example, representing an external http request',
 
   /**
    * Used mostly to connect nodes that emit to this

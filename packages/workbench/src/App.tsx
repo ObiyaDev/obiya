@@ -45,13 +45,9 @@ export const App: FC = () => {
       return
     }
 
-    console.log('MOUNT: Starting tutorial')
     MotiaTutorial.start()
 
-    return () => {
-      console.log('UNMOUNT: Closing tutorial')
-      MotiaTutorial.close()
-    }
+    return () => MotiaTutorial.close()
   }, [import.meta.env.MOTIA_TUTORIAL_DISABLED])
 
   return (

@@ -1,25 +1,28 @@
+import './theme.css'
 import { TutorialConfig, TutorialStep } from './types/tutorial'
 import driver from './driver'
 import { tutorials } from './tutorials'
 import { closeTutorial } from './close'
-import { Driver } from 'driver.js'
+import { Driver, PopoverDOM } from 'driver.js'
+
+const getSteps = (tutorialId: string) => {
+  if (tutorialId in tutorials) {
+    return tutorials[tutorialId as keyof typeof tutorials].steps
+  }
+
+  return tutorials.basic.steps
+}
 
 export const startTutorial = (config?: TutorialConfig) => {
-  // if (window.localStorage.getItem('motia-tutorial-skipped')) {
-  //   return
-  // }
+  if (window.localStorage.getItem('motia-tutorial-skipped') && !config?.resetSkipState) {
+    return
+  }
+
+  if (config?.resetSkipState) {
+    window.localStorage.removeItem('motia-tutorial-skipped')
+  }
 
   const tutorialId = config?.tutorialId ?? 'basic'
-
-  if (config?.initialSegmentId) {
-    // TODO: jump to segment
-    return
-  }
-
-  if (config?.initialStepId) {
-    // TODO: jump to step
-    return
-  }
 
   let tutorialDriver: Driver | undefined
 
@@ -27,8 +30,24 @@ export const startTutorial = (config?: TutorialConfig) => {
 
   tutorialDriver = driver({
     showProgress: true,
+    onPopoverRender: (popover: PopoverDOM) => {
+      const container = document.createElement('div')
+      container.className = 'tutorial-opt-out-container'
+      const secondButton = document.createElement('button')
+      secondButton.innerText = 'Never show again'
+      secondButton.className = 'tutorial-opt-out-button'
+      secondButton.type = 'button'
+
+      secondButton.addEventListener('click', () => {
+        tutorialDriver?.destroy()
+        window.localStorage.setItem('motia-tutorial-skipped', 'true')
+      })
+
+      container.appendChild(secondButton)
+      popover.wrapper.appendChild(container)
+    },
     // NOTE: we map the internal step definitions into the Driver.js structure in order to avoid injecting dependencies from the UI into the step definitions
-    steps: tutorials[tutorialId].steps.map((step: TutorialStep) => ({
+    steps: getSteps(tutorialId).map((step: TutorialStep) => ({
       element: step.elementXpath.match('//')
         ? () => {
             const result = document.evaluate(
@@ -42,11 +61,15 @@ export const startTutorial = (config?: TutorialConfig) => {
           }
         : step.elementXpath,
       popover: {
-        title: step.title,
-        description: step.description,
+        title: `<h3 class="popover-title">${step.title}</h3>`,
+        description: `<p class="popover-description">${step.description}</p>`,
         position: step.position,
         onNextClick: () => {
           console.log('Moving to next step', { tutorialId, step })
+
+          if (step.runScriptBeforeNext) {
+            step.runScriptBeforeNext()
+          }
 
           if (step.clickSelectorBeforeNext) {
             const element = document.evaluate(
@@ -58,13 +81,19 @@ export const startTutorial = (config?: TutorialConfig) => {
             )
 
             if (element.singleNodeValue) {
-              ;(element.singleNodeValue as HTMLElement).click()
+              if (step.useKeyDownEventOnClickBeforeNext) {
+                ;(element.singleNodeValue as HTMLElement).dispatchEvent(
+                  new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', keyCode: 13 }),
+                )
+              } else {
+                ;(element.singleNodeValue as HTMLElement).click()
+              }
             }
           }
 
           if (step.waitForSelector) {
             // add logic to wait for an element to be present, with a max timeout of 60 seconds
-            let timeout = 60
+            let timeout = 5000
             let interval = setInterval(() => {
               const element = document.evaluate(
                 step.waitForSelector!,
@@ -79,24 +108,25 @@ export const startTutorial = (config?: TutorialConfig) => {
                 clearInterval(interval)
               }
 
-              timeout--
+              timeout -= 300
 
               if (timeout === 0) {
                 console.error('Timeout waiting for element', step.waitForSelector)
                 tutorialDriver?.moveNext()
                 clearInterval(interval)
               }
-            }, 1000)
+            }, 300)
 
             return
           }
 
           tutorialDriver?.moveNext()
         },
+        ...(step.id === 'intro' ? { popoverClass: 'driver-popover driver-popover-intro-step' } : {}),
       },
     })),
     onDestroyed: () => closeTutorial(true),
   })
 
-  tutorialDriver.drive()
+  tutorialDriver.drive(config?.initialStepIndex)
 }

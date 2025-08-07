@@ -1,6 +1,14 @@
 import { Tutorial } from '@/types/tutorial'
 import { introStep } from './intro'
 import { apiSteps } from './api-step'
+import { logsSteps } from './logs'
+import { statesSteps } from './states'
+import { tracingSteps } from './tracing'
+import { cronStepSteps } from './cron-step'
+import { endSteps } from './end'
+import { eventSteps } from './event-step'
+import { noopSteps } from './noop-step'
+import { endpointsSteps } from './endpoints'
 
 export const basicTutorial: Tutorial = {
   id: 'basic',
@@ -9,6 +17,13 @@ export const basicTutorial: Tutorial = {
   steps: [
     introStep,
     ...apiSteps,
-    // NOTE: ... import more steps here
+    ...eventSteps,
+    ...noopSteps,
+    ...cronStepSteps,
+    ...endpointsSteps,
+    ...tracingSteps,
+    ...logsSteps,
+    ...statesSteps,
+    ...endSteps,
   ],
 }
