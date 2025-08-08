@@ -6,6 +6,8 @@ import { pythonInstall } from '../install'
 import { generateTypes } from '../generate-types'
 import { version } from '../version'
 import { CliContext } from '../cloud/config-utils'
+import inquirer from 'inquirer'
+import { setupTemplate } from './setup-template'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
@@ -104,9 +106,16 @@ type Args = {
   template?: string
   cursorEnabled?: boolean
   context: CliContext
+  skipTutorialTemplates?: boolean
 }
 
-export const create = async ({ projectName, template, cursorEnabled, context }: Args): Promise<void> => {
+export const create = async ({
+  projectName,
+  template,
+  cursorEnabled,
+  context,
+  skipTutorialTemplates = false,
+}: Args): Promise<void> => {
   console.log(
     '\n\n' +
       `
@@ -246,18 +255,14 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
     )
   }
 
-  if (!template || !(template in templates)) {
-    context.log('template-not-found', (message) =>
-      message.tag('failed').append(`Template ${template} not found, please use one of the following:`),
-    )
-    context.log('available-templates', (message) =>
-      message.tag('info').append(`Available templates: \n\n ${Object.keys(templates).join('\n')}`),
-    )
-
-    return
+  if (!skipTutorialTemplates) {
+    await setupTemplate('basic-tutorial', rootDir, context)
+    // NOTE: add more tutorial templates here
   }
 
-  await templates[template](rootDir, context)
+  if (template) {
+    await setupTemplate(template, rootDir, context)
+  }
 
   const packageManager = await installNodeDependencies(rootDir, context)
 

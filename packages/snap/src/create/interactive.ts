@@ -7,6 +7,7 @@ interface InteractiveAnswers {
   useCurrentFolder: boolean
   folderName?: string
   addCursorRules: boolean
+  disableTutorial: boolean
 }
 
 const choices: Record<string, string> = {
@@ -56,6 +57,12 @@ export const createInteractive = async ({ skipConfirmation, context }: CreateInt
     },
     {
       type: 'confirm',
+      name: 'disableTutorial',
+      message: 'Do you wish to disable the motia tutorial?',
+      default: false,
+    },
+    {
+      type: 'confirm',
       name: 'addCursorRules',
       message: 'Do you want to add cursor rules to help working with Motia project?',
       default: true,
@@ -72,6 +79,9 @@ export const createInteractive = async ({ skipConfirmation, context }: CreateInt
       .append('Location:')
       .append(answers.useCurrentFolder ? 'Current folder' : answers.folderName || 'current', 'cyan'),
   )
+  if (answers.disableTutorial) {
+    context.log('tutorial', (message) => message.tag('info').append('Tutorial disabled'))
+  }
   context.log('cursor-rules', (message) =>
     message
       .tag('info')
@@ -104,5 +114,6 @@ export const createInteractive = async ({ skipConfirmation, context }: CreateInt
     template: answers.template,
     cursorEnabled: answers.addCursorRules,
     context,
+    skipTutorialTemplates: answers.disableTutorial,
   })
 }

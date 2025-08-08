@@ -1,4 +1,4 @@
-import { promises as fs, statSync } from 'fs'
+import { promises as fs, statSync, mkdirSync } from 'fs'
 import * as path from 'path'
 import { globSync } from 'glob'
 import { CliContext } from '../../cloud/config-utils'
@@ -14,8 +14,14 @@ export const generateTemplateSteps = (templateDir: string): Generator => {
       for (const fileName of files) {
         const filePath = path.join(templatePath, fileName)
 
-        if (statSync(filePath).isDirectory()) {
+        if (statSync(filePath).isDirectory() && !filePath.match(/services|utils|lib/)) {
           // ignore folders
+          continue
+        }
+
+        if (statSync(filePath).isDirectory()) {
+          const folderPath = path.basename(filePath)
+          mkdirSync(path.join(rootDir, folderPath))
           continue
         }
 

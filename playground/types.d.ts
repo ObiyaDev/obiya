@@ -29,13 +29,13 @@ declare module 'motia' {
     'ApiTrigger': ApiRouteHandler<{ pet: { name: string; photoUrl: string }; foodOrder?: { id: string; quantity: number } }, ApiResponse<200, { message: string; traceId: string }>, { topic: 'process-food-order'; data: { id: string; quantity: number; petId: number } }>
     'PeriodicJobHandled': EventHandler<{ message: string }, { topic: 'tested'; data: never }>
     'HandlePeriodicJob': CronHandler<{ topic: 'periodic-job-handled'; data: { message: string } }>
-    'NewOrderNotifications': EventHandler<never, never>
-    'StateAuditJob': CronHandler<never>
     'ProcessFoodOrder': EventHandler<{ id: string; quantity: number; petId: number }, { topic: 'new-order-notification'; data: never }>
     'Tested Event': EventHandler<never, never>
     'Test Event': EventHandler<never, { topic: 'tested'; data: never }>
     'Test API Endpoint': ApiRouteHandler<Record<string, unknown>, unknown, { topic: 'test'; data: never }>
     'CallOpenAiPython': EventHandler<{ message: string; assistantMessageId: string; threadId: string }, never>
     'OpenAiApiPython': ApiRouteHandler<{ message: string; threadId?: string }, ApiResponse<200, { threadId: string }>, { topic: 'openai-prompt-python'; data: { message: string; assistantMessageId: string; threadId: string } }>
+    'NewOrderNotifications': EventHandler<never, never>
+    'StateAuditJob': CronHandler<never>
   }
 }
