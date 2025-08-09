@@ -1,12 +1,10 @@
 import path from 'path'
 import fs from 'fs'
-import { templates } from './templates'
 import { executeCommand } from '../utils/execute-command'
 import { pythonInstall } from '../install'
 import { generateTypes } from '../generate-types'
 import { version } from '../version'
 import { CliContext } from '../cloud/config-utils'
-import inquirer from 'inquirer'
 import { setupTemplate } from './setup-template'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -109,13 +107,7 @@ type Args = {
   skipTutorialTemplates?: boolean
 }
 
-export const create = async ({
-  projectName,
-  template,
-  cursorEnabled,
-  context,
-  skipTutorialTemplates = false,
-}: Args): Promise<void> => {
+export const create = async ({ projectName, template, cursorEnabled, context }: Args): Promise<void> => {
   console.log(
     '\n\n' +
       `
@@ -255,13 +247,17 @@ export const create = async ({
     )
   }
 
-  if (!skipTutorialTemplates) {
-    await setupTemplate('basic-tutorial', rootDir, context)
-    // NOTE: add more tutorial templates here
+  if (!checkIfDirectoryExists(path.join(stepsDir, 'basic-tutorial'))) {
+    fs.mkdirSync(path.join(stepsDir, 'basic-tutorial'))
   }
 
+  await setupTemplate('basic-tutorial', stepsDir, context)
+
   if (template) {
-    await setupTemplate(template, rootDir, context)
+    if (!checkIfDirectoryExists(path.join(stepsDir, template))) {
+      fs.mkdirSync(path.join(stepsDir, template))
+    }
+    await setupTemplate(template, stepsDir, context)
   }
 
   const packageManager = await installNodeDependencies(rootDir, context)

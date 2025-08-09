@@ -2,7 +2,7 @@ import { CollapsiblePanel, CollapsiblePanelGroup, TabsContent, TabsList, TabsTri
 import { ReactFlowProvider } from '@xyflow/react'
 import { analytics } from '@/lib/analytics'
 import { File, GanttChart, Link2, LogsIcon } from 'lucide-react'
-import { FC, useCallback, useEffect, useMemo } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import { EndpointsPage } from './components/endpoints/endpoints-page'
 import { FlowPage } from './components/flow/flow-page'
 import { FlowTabMenuItem } from './components/flow/flow-tab-menu-item'
@@ -12,7 +12,6 @@ import { TracesPage } from './components/observability/traces-page'
 import { APP_SIDEBAR_CONTAINER_ID } from './components/sidebar/sidebar'
 import { StatesPage } from './components/states/states-page'
 import { useTabsStore } from './stores/use-tabs-store'
-import { MotiaTutorial } from '@motiadev/tutorial'
 
 enum TabLocation {
   TOP = 'top',
@@ -39,16 +38,6 @@ export const App: FC = () => {
     },
     [tabChangeCallbacks, tab],
   )
-
-  useEffect(() => {
-    if (import.meta.env.MOTIA_TUTORIAL_DISABLED) {
-      return
-    }
-
-    MotiaTutorial.start()
-
-    return () => MotiaTutorial.close()
-  }, [import.meta.env.MOTIA_TUTORIAL_DISABLED])
 
   return (
     <div className="grid grid-rows-[auto_1fr] grid-cols-[1fr_auto] bg-background text-foreground h-screen">
