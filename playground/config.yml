@@ -2,3 +2,16 @@ state:
   adapter: redis
   host: localhost
   port: 6379
+
+# Add C# step configuration
+steps:
+  - name: "C# API Step"
+    type: "api"
+    file: "steps/simpleCSharp/api_endpoint_step.cs"
+    flows: ["simple-csharp"]
+    
+  - name: "C# Event Step"
+    type: "event"
+    file: "steps/simpleCSharp/event_step.cs"
+    flows: ["simple-csharp"]
+    subscribes: ["test"]
