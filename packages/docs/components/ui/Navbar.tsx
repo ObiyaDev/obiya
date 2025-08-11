@@ -253,14 +253,14 @@ export default function Navbar() {
           <Link
             href="https://vercel.com/blog/summer-2025-oss-program#motia"
             target="_blank"
-            className="vercel-oss-button gap-2 max-md:hidden"
+            className="vercel-oss-button inline-flex items-center gap-2 max-md:hidden mr-3 leading-none"
           >
             <svg
               aria-label="Vercel logomark"
-              height="15"
+              height="12"
               role="img"
               viewBox="0 0 74 64"
-              className="fill-current"
+              className="fill-current block m-0 p-0"
             >
               <path
                 d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z"
