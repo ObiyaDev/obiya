@@ -65,7 +65,7 @@ const SocialLinks: React.FC = () => {
           href="https://vercel.com/oss?utm_source=motia&utm_campaign=oss"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-2 text-sm text-gray-400 mt-2"
+          className="flex items-center gap-2 text-sm text-gray-400"
         >
           <svg
             aria-label="Vercel logomark"
@@ -79,10 +79,8 @@ const SocialLinks: React.FC = () => {
               fill="white"
             ></path>
           </svg>
-          <span className="flex flex-col">
-            <span>Vercel Inc. // 2025</span>
-            <span>Open Source Software Program</span>
-          </span>
+          <span>Vercel Inc. // 2024</span>
+          <span>Open Source Software Program</span>
         </a>
       </div>
     </div>

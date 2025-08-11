@@ -106,6 +106,14 @@ The Workbench is your command centre:
 
 ---
 
+## Proudly part of Vercel's OSS Program
+
+<a href="https://vercel.com/oss?utm_source=github-motiadev&utm_campaign=oss" target="_blank">
+  <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" />
+</a>
+
+---
+
 ### 🧱 The Step Philosophy
 
 - **🎯 Your Logic, Your Step**: A Step holds your business logic. It can be a simple function, a call to a database, or a complex AI agent. This is where your application's real work gets done.
