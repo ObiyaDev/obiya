@@ -248,27 +248,29 @@ export default function Navbar() {
 
         <div className="flex items-center gap-[14px] max-md:gap-[4px]">
           {/**
-           * Vercel OSS Link
+           * Vercel OSS Link - Desktop Only
            **/}
-          <Link
-            href="https://vercel.com/blog/summer-2025-oss-program#motia"
-            target="_blank"
-            className="vercel-oss-button max-md:hidden gap-2"
-          >
-            <svg
-              aria-label="Vercel logomark"
-              height="15"
-              role="img"
-              viewBox="0 0 74 64"
-              className="fill-current"
+          <div className="hidden md:block">
+            <Link
+              href="https://vercel.com/blog/summer-2025-oss-program#motia"
+              target="_blank"
+              className="vercel-oss-button gap-2"
             >
-              <path
-                d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z"
-                fill="white"
-              ></path>
-            </svg>
-            Vercel OSS 2025
-          </Link>
+              <svg
+                aria-label="Vercel logomark"
+                height="15"
+                role="img"
+                viewBox="0 0 74 64"
+                className="fill-current"
+              >
+                <path
+                  d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z"
+                  fill="white"
+                ></path>
+              </svg>
+              Vercel OSS 2025
+            </Link>
+          </div>
           {/**
            * Discord Link
            *
