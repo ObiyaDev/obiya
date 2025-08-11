@@ -12,19 +12,6 @@ import smoke from '@/public/images/landing/smoke.webp'
 import ctaSectionGlow from '@/public/images/landing/ctaSectionGlow.svg'
 import ModalCTA from './ModalCTA'
 import CopyNPX from './CopyNpx'
-import { InteractiveHoverButton } from './ui/InteractiveHoverButton'
-import Link from 'next/link'
-
-const VercelButton = () => {
-  return (
-    <Link href="https://vercel.com/blog/summer-2025-oss-program#motia?utm_source=motia&utm_campaign=oss" target="_blank">
-      <InteractiveHoverButton
-        text="Part of Vercel OSS"
-        className="w-48 border-white/20 bg-transparent text-white"
-      />
-    </Link>
-  )
-}
 
 type Ray = {
   delay?: number
@@ -97,14 +84,11 @@ export default function CTASection() {
       </div>
       {/* CTAs */}
       <SectionAppearAnimation
-        className="z-2 mt-[60px] flex flex-col items-center justify-center gap-[16px] px-[16px] max-md:w-full"
+        className="z-2 mt-[60px] flex w-fit max-w-full flex-wrap-reverse items-center justify-center gap-[16px] px-[16px] max-md:w-full md:gap-[8px]"
         delay={0.35}
       >
-        <div className="flex w-fit max-w-full flex-wrap-reverse items-center justify-center gap-[16px] md:gap-[8px]">
-          <CopyNPX />
-          <ModalCTA variant="secondary" text="Sign up for Motia Cloud Beta" />
-        </div>
-        <VercelButton />
+        <CopyNPX />
+        <ModalCTA variant="secondary" text="Sign up for Motia Cloud Beta" />
       </SectionAppearAnimation>
     </div>
   )

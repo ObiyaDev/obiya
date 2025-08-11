@@ -60,7 +60,7 @@ const SocialLinks: React.FC = () => {
           {twitterIcon} <p>Follow us on Twitter</p>
         </Link>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <a
           href="https://vercel.com/oss?utm_source=motia&utm_campaign=oss"
           target="_blank"
@@ -79,10 +79,10 @@ const SocialLinks: React.FC = () => {
               fill="white"
             ></path>
           </svg>
-          <span>Vercel Inc. // 2024</span>
+          <span>Vercel Inc. // 2025</span>
           <span>Open Source Software Program</span>
         </a>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -11,19 +11,6 @@ import RiveAnimation from './RiveAnimation'
 import { Alignment, Fit } from '@rive-app/react-webgl2'
 import ModalCTA from './ModalCTA'
 import CopyNPX from './CopyNpx'
-import { InteractiveHoverButton } from './ui/InteractiveHoverButton'
-import Link from 'next/link'
-
-const VercelButton = () => {
-  return (
-    <Link href="https://vercel.com/blog/summer-2025-oss-program#motia?utm_source=motia&utm_campaign=oss" target="_blank">
-      <InteractiveHoverButton
-        text="Part of Vercel OSS"
-        className="w-48 border-white/20 bg-transparent text-white"
-      />
-    </Link>
-  )
-}
 
 export default function Hero() {
   return (
@@ -44,12 +31,9 @@ export default function Hero() {
         </SectionAppearAnimation>
         {/* CTAs */}
         <SectionAppearAnimation delay={0.5}>
-          <div className="mt-[60px] flex flex-col items-center justify-center gap-[16px] max-md:w-full max-sm:mt-[30px]">
-            <div className="flex w-fit max-w-full flex-wrap-reverse items-center justify-center gap-[16px] md:gap-[8px]">
-              <CopyNPX />
-              <ModalCTA variant="secondary" text="Sign up for Motia Cloud Beta" />
-            </div>
-            <VercelButton />
+          <div className="mt-[60px] flex w-fit max-w-full flex-wrap-reverse items-center justify-center gap-[16px] max-md:w-full max-sm:mt-[30px] md:gap-[8px]">
+            <CopyNPX />
+            <ModalCTA variant="secondary" text="Sign up for Motia Cloud Beta" />
           </div>
         </SectionAppearAnimation>
       </div>
