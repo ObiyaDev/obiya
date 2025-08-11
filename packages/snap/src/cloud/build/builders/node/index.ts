@@ -42,7 +42,7 @@ export class NodeBuilder implements StepBuilder {
       )
       .replace(
         '// {{router paths}}',
-        steps.map((step, index) => `'${step.config.name}': { path: '${step.config.path}', method: '${step.config.method}', handler: route${index}.handler, config: route${index}.config }`).join(',\n'),
+        steps.map((step, index) => `'${step.config.method} ${step.config.path}': { stepName: '${step.config.name}', handler: route${index}.handler, config: route${index}.config }`).join(',\n'),
       )
 
     const tsRouter = path.join(this.builder.distDir, 'router.ts')
