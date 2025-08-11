@@ -16,7 +16,7 @@ import Link from 'next/link'
 
 const VercelButton = () => {
   return (
-    <Link href="https://vercel.com/oss?utm_source=motia&utm_campaign=oss" target="_blank">
+    <Link href="https://vercel.com/blog/summer-2025-oss-program#motia?utm_source=motia&utm_campaign=oss" target="_blank">
       <InteractiveHoverButton
         text="Part of Vercel OSS"
         className="w-48 border-white/20 bg-transparent text-white"
