@@ -1,14 +1,31 @@
 import { getStepConfig, getStreamConfig, LockedData, Printer } from '@motiadev/core'
 import { randomUUID } from 'crypto'
 import { globSync } from 'glob'
-import path from 'path'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
 
 export const generateTypes = async (projectDir: string) => {
-  const stepsDir = path.join(projectDir, 'steps')
-  const files = globSync('**/*.step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir })
-  const streamsFiles = globSync('**/*.stream.{ts,js,py,rb}', { absolute: true, cwd: stepsDir })
+  // Scan the entire project directory for step and stream files, excluding common directories
+  const ignorePatterns = [
+    '**/node_modules/**',
+    '**/.git/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/.next/**',
+    '**/coverage/**',
+    '**/.turbo/**',
+  ]
+
+  const files = globSync('**/*.step.{ts,js,py,rb}', {
+    absolute: true,
+    cwd: projectDir,
+    ignore: ignorePatterns,
+  })
+  const streamsFiles = globSync('**/*.stream.{ts,js,py,rb}', {
+    absolute: true,
+    cwd: projectDir,
+    ignore: ignorePatterns,
+  })
   const lockedData = new LockedData(projectDir, 'memory', new Printer(projectDir))
 
   for (const filePath of files) {

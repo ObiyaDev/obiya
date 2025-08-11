@@ -2,15 +2,32 @@ import { LockedData, Step, getStepConfig, getStreamConfig } from '@motiadev/core
 import { NoPrinter, Printer } from '@motiadev/core/dist/src/printer'
 import { randomUUID } from 'crypto'
 import { globSync } from 'glob'
-import path from 'path'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
 
 export const getStepFiles = (projectDir: string): string[] => {
-  const stepsDir = path.join(projectDir, 'steps')
+  // Scan the entire project directory for step files, excluding common directories
+  const ignorePatterns = [
+    '**/node_modules/**',
+    '**/.git/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/.next/**',
+    '**/coverage/**',
+    '**/.turbo/**',
+  ]
+
   return [
-    ...globSync('**/*.step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir }),
-    ...globSync('**/*_step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir }),
+    ...globSync('**/*.step.{ts,js,py,rb}', {
+      absolute: true,
+      cwd: projectDir,
+      ignore: ignorePatterns,
+    }),
+    ...globSync('**/*_step.{ts,js,py,rb}', {
+      absolute: true,
+      cwd: projectDir,
+      ignore: ignorePatterns,
+    }),
   ]
 }
 
@@ -18,9 +35,27 @@ export const getStepFiles = (projectDir: string): string[] => {
 export const collectFlows = async (projectDir: string, lockedData: LockedData): Promise<Step[]> => {
   const invalidSteps: Step[] = []
   const stepFiles = getStepFiles(projectDir)
+  const ignorePatterns = [
+    '**/node_modules/**',
+    '**/.git/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/.next/**',
+    '**/coverage/**',
+    '**/.turbo/**',
+  ]
+
   const streamFiles = [
-    ...globSync(path.join(projectDir, '{steps,streams}/**/*.stream.{ts,js,py}')),
-    ...globSync(path.join(projectDir, '{steps,streams}/**/*_stream.{ts,js,py}')),
+    ...globSync('**/*.stream.{ts,js,py}', {
+      absolute: true,
+      cwd: projectDir,
+      ignore: ignorePatterns,
+    }),
+    ...globSync('**/*_stream.{ts,js,py}', {
+      absolute: true,
+      cwd: projectDir,
+      ignore: ignorePatterns,
+    }),
   ]
 
   for (const filePath of stepFiles) {

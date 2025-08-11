@@ -172,8 +172,22 @@ export class Watcher {
   }
 
   init() {
+    const ignorePatterns = [
+      '**/node_modules/**',
+      '**/.git/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/.next/**',
+      '**/coverage/**',
+      '**/.turbo/**',
+    ]
+
     this.watcher = chokidar
-      .watch(this.dir, { persistent: true, ignoreInitial: true })
+      .watch(this.dir, {
+        persistent: true,
+        ignoreInitial: true,
+        ignored: ignorePatterns,
+      })
       .on('add', (path) => this.onFileAdd(path))
       .on('change', (path) => this.onFileChange(path))
       .on('unlink', (path) => this.onFileDelete(path))
