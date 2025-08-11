@@ -34,6 +34,9 @@ cloudCli
         apiKey: arg.apiKey,
         versionName: arg.versionName,
         environmentId: arg.environmentId,
+      }).catch((error) => {
+        context.log('creating-deployment', (message) => message.tag('failed').append('Failed to create deployment'))
+        throw error
       })
 
       context.log('creating-deployment', (message) => message.tag('success').append('Deployment created'))

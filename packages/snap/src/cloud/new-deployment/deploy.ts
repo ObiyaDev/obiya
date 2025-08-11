@@ -38,10 +38,7 @@ export const deploy = async (input: DeployInput): Promise<void> => {
         if (item.status === 'completed') {
           // TODO [motia-deploy] add deployment output
           listener.onDeployEnd({
-            output: {
-              ApiGatewayUrl: 'https://api.snap.motia.dev',
-              WebSocketUrl: 'wss://api.snap.motia.dev',
-            },
+            output: item.output,
           })
         }
 

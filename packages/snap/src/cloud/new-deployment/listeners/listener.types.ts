@@ -60,6 +60,7 @@ export type DeployData = {
     emits: string[]
     status: DeployStatus
   }>
+  output: Record<string, string>
 }
 
 export type DeployListener = {
