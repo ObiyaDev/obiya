@@ -11,4 +11,3 @@ type RouterPath = {
 export const routerPaths: Record<string, RouterPath> = {
   // {{router paths}}
 }
-
