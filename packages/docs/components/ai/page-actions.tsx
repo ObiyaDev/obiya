@@ -17,7 +17,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from 'fumadocs-ui/components/ui/popover';
-import { cva } from 'class-variance-authority';
 
 const cache = new Map<string, string>();
 
@@ -61,9 +60,8 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   );
 }
 
-const optionVariants = cva(
-  'text-sm p-2 rounded-lg inline-flex items-center gap-2 hover:text-fd-accent-foreground hover:bg-fd-accent [&_svg]:size-4',
-);
+const optionClasses =
+  'text-sm p-2 rounded-lg inline-flex items-center gap-2 hover:text-fd-accent-foreground hover:bg-fd-accent [&_svg]:size-4';
 
 export function ViewOptions({
   markdownUrl,
@@ -130,7 +128,7 @@ export function ViewOptions({
             href={item.href}
             rel="noreferrer noopener"
             target="_blank"
-            className={cn(optionVariants())}
+            className={cn(optionClasses)}
           >
             {item.icon}
             {item.title}
