@@ -1,5 +1,5 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import * as TabsComponents from 'fumadocs-ui/components/tabs'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom'
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock'
 import type { MDXComponents } from 'mdx/types';
@@ -16,8 +16,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
         <Pre>{props.children}</Pre>
       </CodeBlock>
     ),
-    // Expose latest Tabs components directly in MDX
-    ...TabsComponents,
+    // Expose Tabs components directly in MDX
+    Tabs,
+    Tab,
     ...components,
   };
 }
