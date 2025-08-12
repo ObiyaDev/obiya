@@ -3,10 +3,11 @@ import { Button } from '@motiadev/ui'
 import { Book } from 'lucide-react'
 import { useStreamItem } from '@motiadev/stream-client-react'
 import { FlowConfigResponse } from '@/types/flow'
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useFlowStore } from '@/stores/use-flow-store'
 
 export const TutorialButton: FC = () => {
+  const [isTutorialEnabled, setIsTutorialEnabled] = useState(false)
   const selectFlowId = useFlowStore((state) => state.selectFlowId)
   const { data: flowConfig } = useStreamItem<FlowConfigResponse>({
     streamName: '__motia.flowsConfig',
@@ -16,6 +17,7 @@ export const TutorialButton: FC = () => {
 
   const startTutorial = useCallback(
     (resetState = false) => {
+      setIsTutorialEnabled(true)
       const tutorialStepIndex = new URLSearchParams(window.location.search).get('tutorialStepIndex')
       const config: TutorialConfig = {
         resetSkipState: resetState,
@@ -38,6 +40,7 @@ export const TutorialButton: FC = () => {
   useEffect(() => {
     if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED || !flowConfig) {
       console.log('Tutorial disabled or flow not found')
+      setIsTutorialEnabled(false)
       return
     }
 
@@ -46,7 +49,7 @@ export const TutorialButton: FC = () => {
     return () => MotiaTutorial.close()
   }, [flowConfig, startTutorial])
 
-  if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED) {
+  if (!isTutorialEnabled) {
     return null
   }
 
