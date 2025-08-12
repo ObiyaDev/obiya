@@ -36,7 +36,6 @@ export const deploy = async (input: DeployInput): Promise<void> => {
         listener.onDeployProgress(item)
 
         if (item.status === 'completed') {
-          // TODO [motia-deploy] add deployment output
           listener.onDeployEnd({
             output: item.outputs,
           })
