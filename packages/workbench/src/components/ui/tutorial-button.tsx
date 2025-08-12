@@ -51,7 +51,7 @@ export const TutorialButton: FC = () => {
   }
 
   return (
-    <Button variant="accent" size="sm" onClick={() => kickStartTutorial(true)}>
+    <Button data-testid="tutorial-trigger" variant="accent" size="sm" onClick={() => kickStartTutorial(true)}>
       <Book className="h-4 w-4" />
       <span>Tutorial</span>
     </Button>
