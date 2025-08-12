@@ -6,24 +6,13 @@ import { generateTypes } from '../generate-types'
 import { version } from '../version'
 import { CliContext } from '../cloud/config-utils'
 import { setupTemplate } from './setup-template'
+import { checkIfFileExists, checkIfDirectoryExists } from './utils'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
   transpileOnly: true,
   compilerOptions: { module: 'commonjs' },
 })
-
-const checkIfFileExists = (dir: string, fileName: string): boolean => {
-  return fs.existsSync(path.join(dir, fileName))
-}
-
-const checkIfDirectoryExists = (dir: string): boolean => {
-  try {
-    return fs.statSync(dir).isDirectory()
-  } catch {
-    return false
-  }
-}
 
 const getPackageManager = (dir: string): string => {
   if (checkIfFileExists(dir, 'yarn.lock')) {
