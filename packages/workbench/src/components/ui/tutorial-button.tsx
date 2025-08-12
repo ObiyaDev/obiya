@@ -8,7 +8,7 @@ import { useFlowStore } from '@/stores/use-flow-store'
 import { Tooltip } from './tooltip'
 
 export const TutorialButton: FC = () => {
-  const [isTutorialFlowMissing, setIsTutorialFlowMissing] = useState(false)
+  const [isTutorialFlowMissing, setIsTutorialFlowMissing] = useState(true)
   const selectFlowId = useFlowStore((state) => state.selectFlowId)
   const { data: flowConfig } = useStreamItem<FlowConfigResponse>({
     streamName: '__motia.flowsConfig',
@@ -44,8 +44,6 @@ export const TutorialButton: FC = () => {
       return
     }
 
-    console.log('flow Config', flowConfig)
-
     setIsTutorialFlowMissing(false)
     startTutorial()
 
@@ -56,29 +54,35 @@ export const TutorialButton: FC = () => {
     return null
   }
 
-  return (
-    <Tooltip
-      disabled={!isTutorialFlowMissing}
-      content={
-        <div className="flex flex-col gap-4 p-4 max-w-[320px]">
-          <p className="text-sm wrap-break-word p-0 m-0">
-            In order to start the tutorial, you need to download the tutorial steps using the Motia CLI. In your
-            terminal execute:
-          </p>
-          <pre className="text-sm font-bold">motia generate tutorial-flow</pre>
-        </div>
-      }
+  const trigger = (
+    <Button
+      data-testid="tutorial-trigger"
+      variant={isTutorialFlowMissing ? 'default' : 'accent'}
+      size="sm"
+      onClick={() => (!isTutorialFlowMissing ? startTutorial(true) : void 0)}
     >
-      <Button
-        disabled={isTutorialFlowMissing}
-        data-testid="tutorial-trigger"
-        variant={isTutorialFlowMissing ? 'default' : 'accent'}
-        size="sm"
-        onClick={() => (!isTutorialFlowMissing ? startTutorial(true) : void 0)}
-      >
-        <Book className="h-4 w-4" />
-        <span>Tutorial</span>
-      </Button>
-    </Tooltip>
+      <Book className="h-4 w-4" />
+      <span>Tutorial</span>
+    </Button>
   )
+
+  if (isTutorialFlowMissing) {
+    return (
+      <Tooltip
+        content={
+          <div className="flex flex-col gap-4 p-4 max-w-[320px]">
+            <p className="text-sm wrap-break-word p-0 m-0">
+              In order to start the tutorial, you need to download the tutorial steps using the Motia CLI. In your
+              terminal execute:
+            </p>
+            <pre className="text-sm font-bold">motia generate tutorial-flow</pre>
+          </div>
+        }
+      >
+        {trigger}
+      </Tooltip>
+    )
+  }
+
+  return trigger
 }
