@@ -5302,7 +5302,7 @@ import { CodeFetcher } from '../../../components/CodeFetcher'
 
 ## 🏗️ Architecture
 
-![RAG Docling Weaviate Agent](../img/)
+![RAG Docling Weaviate Agent](../img/rag-docling-weaviate-agent.png)
 
 ## 🏗️ Technologies
 
