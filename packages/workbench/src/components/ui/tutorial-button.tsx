@@ -14,7 +14,7 @@ export const TutorialButton: FC = () => {
     id: 'basic-tutorial',
   })
 
-  const kickStartTutorial = useCallback(
+  const startTutorial = useCallback(
     (resetState = false) => {
       const tutorialStepIndex = new URLSearchParams(window.location.search).get('tutorialStepIndex')
       const config: TutorialConfig = {
@@ -41,17 +41,17 @@ export const TutorialButton: FC = () => {
       return
     }
 
-    kickStartTutorial()
+    startTutorial()
 
     return () => MotiaTutorial.close()
-  }, [flowConfig, kickStartTutorial])
+  }, [flowConfig, startTutorial])
 
   if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED) {
     return null
   }
 
   return (
-    <Button data-testid="tutorial-trigger" variant="accent" size="sm" onClick={() => kickStartTutorial(true)}>
+    <Button data-testid="tutorial-trigger" variant="accent" size="sm" onClick={() => startTutorial(true)}>
       <Book className="h-4 w-4" />
       <span>Tutorial</span>
     </Button>
