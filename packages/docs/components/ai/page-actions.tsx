@@ -8,6 +8,7 @@ import {
   MessageCircleIcon,
 } from 'lucide-react';
 import { Search as SearchIcon } from 'lucide-react'
+import Image from 'next/image'
 import { cn } from '@/lib/cn';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
@@ -92,12 +93,12 @@ export function ViewOptions({
       {
         title: 'Open in ChatGPT',
         href: `https://chatgpt.com/?${new URLSearchParams({ hints: 'search', q })}`,
-        icon: <img src="/icons/chatgpt-4.svg" alt="ChatGPT" className="size-4" />,
+        icon: <Image src="/icons/chatgpt-4.svg" alt="ChatGPT" width={16} height={16} />,
       },
       {
         title: 'Open in Claude',
         href: `https://claude.ai/new?${new URLSearchParams({ q })}`,
-        icon: <img src="/icons/claude-logo.svg" alt="Claude" className="size-4" />,
+        icon: <Image src="/icons/claude-logo.svg" alt="Claude" width={16} height={16} />,
       },
       {
         title: 'Open in T3 Chat',
@@ -107,7 +108,7 @@ export function ViewOptions({
       {
         title: 'Open in Scira AI',
         href: `https://scira.ai/?${new URLSearchParams({ q })}`,
-        icon: <img src="/icons/scira.png" alt="Scira AI" className="size-4" />,
+        icon: <Image src="/icons/scira.png" alt="Scira AI" width={16} height={16} />,
       },
     ];
   }, [githubUrl, markdownUrl]);

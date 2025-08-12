@@ -1,10 +1,6 @@
+"use client"
+
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
-
-export function CodeDemo() {
-  return <DynamicCodeBlock lang="ts" code='console.log("Hello World")' />
-}
-
-'use client'
 
 import { usePlausibleTracking } from '../../hooks/usePlausibleTracking'
 
@@ -59,3 +55,7 @@ export function PlausibleExample() {
     </div>
   )
 } 
+
+export function CodeDemo() {
+  return <DynamicCodeBlock lang="ts" code='console.log("Hello World")' />
+}
