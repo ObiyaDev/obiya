@@ -10,6 +10,11 @@ import { addPackageToArchive } from './add-package-to-archive'
 import { BuildListener } from '../../../new-deployment/listeners/listener.types'
 import { distDir } from '../../../new-deployment/constants'
 
+interface PythonBuilderData {
+  packages: Array<{ name: string; version: string }>;
+  files: string[];
+}
+
 export class PythonBuilder implements StepBuilder {
   constructor(
     private readonly builder: Builder,
@@ -18,13 +23,13 @@ export class PythonBuilder implements StepBuilder {
     activatePythonVenv({ baseDir: this.builder.projectDir })
   }
 
-  private async buildStep(step: Step, archive: Archiver): Promise<string> {
+  private async buildStep(step: Step, archive: Archiver, bundlePackages: boolean = true): Promise<string> {
     const entrypointPath = step.filePath.replace(this.builder.projectDir, '')
     const normalizedEntrypointPath = entrypointPath.replace(/[.]step.py$/, '_step.py')
     const sitePackagesDir = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
 
     // Get Python builder response
-    const { packages } = await this.getPythonBuilderData(step)
+    const { packages, files } = await this.getPythonBuilderData(step)
 
     // Add main file to archive
     if (!fs.existsSync(step.filePath)) {
@@ -33,7 +38,10 @@ export class PythonBuilder implements StepBuilder {
 
     archive.append(fs.createReadStream(step.filePath), path.relative(this.builder.projectDir, normalizedEntrypointPath))
 
-    await Promise.all(packages.map(async (packageName) => addPackageToArchive(archive, sitePackagesDir, packageName)))
+    if (packages.length > 0) {
+      await Promise.all(packages.map(async (pkg) => addPackageToArchive(archive, sitePackagesDir, pkg.name)))
+      this.listener.onBuildProgress(step, `Added ${packages.length} packages to archive`)
+    }
 
     return normalizedEntrypointPath
   }
@@ -41,7 +49,6 @@ export class PythonBuilder implements StepBuilder {
   async build(step: Step): Promise<void> {
     const entrypointPath = step.filePath.replace(this.builder.projectDir, '')
     const bundlePath = path.join('python', entrypointPath.replace(/(.*)\.py$/, '$1.zip'))
-    const normalizedEntrypointPath = entrypointPath.replace(/[.]step.py$/, '_step.py')
     const outfile = path.join(distDir, bundlePath)
 
     try {
@@ -49,33 +56,14 @@ export class PythonBuilder implements StepBuilder {
       fs.mkdirSync(path.dirname(outfile), { recursive: true })
       this.listener.onBuildStart(step)
 
-      // Get Python builder response
-      const { packages } = await this.getPythonBuilderData(step)
+      // Create the step zip archive
       const stepArchiver = new Archiver(outfile)
+
+      // Build the step
       const stepPath = await this.buildStep(step, stepArchiver)
 
-      // Add main file to archive
-      if (!fs.existsSync(step.filePath)) {
-        throw new Error(`Source file not found: ${step.filePath}`)
-      }
-
-      stepArchiver.append(
-        fs.createReadStream(step.filePath),
-        path.relative(this.builder.projectDir, normalizedEntrypointPath),
-      )
-
-      // Add all imported files to archive
-      this.listener.onBuildProgress(step, 'Adding imported files to archive...')
-      const sitePackagesDir = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
-
+      // Add static files to the archive
       includeStaticFiles([step], this.builder, stepArchiver)
-
-      if (packages.length > 0) {
-        await Promise.all(
-          packages.map(async (packageName) => addPackageToArchive(stepArchiver, sitePackagesDir, packageName)),
-        )
-        this.listener.onBuildProgress(step, `Added ${packages.length} packages to archive`)
-      }
 
       // Finalize the archive and wait for completion
       const size = await stepArchiver.finalize()
@@ -149,7 +137,7 @@ export class PythonBuilder implements StepBuilder {
     return { size, path: zipName }
   }
 
-  private async getPythonBuilderData(step: Step): Promise<{ file: string; files: string[]; packages: string[] }> {
+  private async getPythonBuilderData(step: Step): Promise<PythonBuilderData> {
     return new Promise((resolve, reject) => {
       const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
         cwd: this.builder.projectDir,
