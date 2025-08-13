@@ -55,7 +55,9 @@ Get Motia project up and running in **under 60 seconds**:
 
 ### 1. Bootstrap a New Motia Project
 
-`npx motia@latest create -i`   # runs the interactive terminal
+```bash
+npx motia@latest create -i   # runs the interactive terminal
+```
 
 Follow the prompts to pick a template, project name, and language.
 
@@ -63,7 +65,9 @@ Follow the prompts to pick a template, project name, and language.
 
 Inside your new project folder, launch the dev server:
 
-`npx motia dev` # ➜ http://localhost:3000
+```bash
+npx motia dev # ➜ http://localhost:3000
+```
 
 This spins up the Motia Workbench – a local UI for building, testing & observing your backend in real-time.
 
@@ -73,11 +77,15 @@ This spins up the Motia Workbench – a local UI for building, testing & observi
 
 Open a new terminal tab and run:
 
-`curl http://localhost:3000/default`
+```bash
+curl http://localhost:3000/default
+```
 
 You should see the JSON response:
 
-`{ "message": "Hello World from Motia!" }`
+```json
+{ "message": "Hello World from Motia!" }
+```
 
 ### 4. Explore the Workbench UI
 
