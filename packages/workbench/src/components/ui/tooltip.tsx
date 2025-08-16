@@ -1,12 +1,13 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+import { ReactNode } from 'react'
 
 export const Tooltip = ({
   children,
   content,
   disabled,
 }: {
-  children: React.ReactNode
-  content: string | React.ReactNode
+  children: ReactNode
+  content: string | ReactNode
   disabled?: boolean
 }) => (
   <TooltipPrimitive.Provider disableHoverableContent={disabled}>
