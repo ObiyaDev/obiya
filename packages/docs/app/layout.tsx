@@ -78,7 +78,7 @@ export async function generateMetadata(_props: never, _parent: ResolvingMetadata
       ],
     },
     icons: {
-      icon: [{ url: `/favicon.png?v=${ASSET_VERSION}` }, { url: `/icon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
+      icon: [{ url: `/icon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
       apple: [{ url: `/favicon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
       other: [
         {
