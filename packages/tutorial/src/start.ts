@@ -61,6 +61,7 @@ export const startTutorial = (config?: TutorialConfig) => {
   const driveTutorial = () => {
     tutorialDriver = driver({
       showProgress: true,
+      overlayOpacity: 0.5,
       onPopoverRender: (popover: PopoverDOM) => {
         const container = document.createElement('div')
         container.className = 'tutorial-opt-out-container'
