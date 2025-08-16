@@ -37,16 +37,13 @@ const metaTitle = 'Motia - Unified Backend Framework for APIs, Events and AI Age
 const metaDescription =
   'Multi-language cloud functions runtime for API endpoints, background jobs, and agentic workflows using Motia Steps. Preview them in the Workbench, ship to zero-config infrastructure, and monitor in the Cloud.'
 
-export async function generateMetadata(
-  _props: never,
-  _parent: ResolvingMetadata
-): Promise<Metadata> {
-  const h = await headers();
-  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'motia.dev';
-  const proto = host.startsWith('localhost') ? 'http' : 'https';
-  const base = `${proto}://${host}`;
+export async function generateMetadata(_props: never, _parent: ResolvingMetadata): Promise<Metadata> {
+  const h = await headers()
+  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'motia.dev'
+  const proto = host.startsWith('localhost') ? 'http' : 'https'
+  const base = `${proto}://${host}`
 
-  const ogImage = `${base}/og-image-updated.jpg`;
+  const ogImage = `${base}/og-image-updated.jpg`
 
   return {
     metadataBase: new URL(base),
@@ -139,20 +136,20 @@ export async function generateMetadata(
       'apple-mobile-web-app-title': 'Motia',
       'apple-mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'black-translucent',
-      
+
       // PWA related
       'theme-color': '#18181b',
       'application-name': 'motia',
       'mobile-web-app-capable': 'yes',
       'msapplication-TileColor': '#18181b',
-      
+
       // Additional meta for better social sharing
       'og:image:secure_url': ogImage,
       'og:image:alt': metaTitle,
-      
+
       canonical: base,
     },
-  };
+  }
 }
 
 export default function RootLayout({
@@ -169,15 +166,26 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-touch-fullscreen" content="yes" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: metaTitle,
+            description: metaDescription,
+            url: 'https://motia.dev',
+            image: ['https://motia.dev/og-image-updated.jpg'],
+          })}
+        </script>
       </head>
       <body suppressHydrationWarning
         className={`${geistSans.variable} ${dmMono.variable} ${tasaExplorer.variable} w-screen overflow-x-hidden antialiased`}
       >
-        <PlausibleProvider 
+        <PlausibleProvider
           domain="motia.dev"
           customDomain="https://plausible.io"
           scriptProps={{
-            src: "https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+            src: 'https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js',
           }}
         >
           <RootProvider>
