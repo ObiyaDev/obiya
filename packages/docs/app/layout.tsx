@@ -31,7 +31,7 @@ const dmMono = DM_Mono({
 })
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? 'GTM-P6672CSW'
-const ASSET_VERSION = process.env.NEXT_PUBLIC_ASSET_VERSION ?? '1'
+const ASSET_VERSION = process.env.NEXT_PUBLIC_ASSET_VERSION ?? '2'
 
 const metaTitle = 'Motia - Unified Backend Framework for APIs, Events and AI Agents'
 const metaDescription =
@@ -78,12 +78,12 @@ export async function generateMetadata(_props: never, _parent: ResolvingMetadata
       ],
     },
     icons: {
-      icon: [{ url: `/favicon.ico?v=${ASSET_VERSION}` }, { url: `/icon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
-      apple: [{ url: `/apple-icon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
+      icon: [{ url: `/favicon.png?v=${ASSET_VERSION}` }, { url: `/icon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
+      apple: [{ url: `/favicon.png?v=${ASSET_VERSION}`, type: 'image/png' }],
       other: [
         {
           rel: 'mask-icon',
-          url: '/safari-pinned-tab.svg',
+          url: '/favicon.png',
           color: '#18181b',
         },
       ],
@@ -178,7 +178,8 @@ export default function RootLayout({
           })}
         </script>
       </head>
-      <body suppressHydrationWarning
+      <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${dmMono.variable} ${tasaExplorer.variable} w-screen overflow-x-hidden antialiased`}
       >
         <PlausibleProvider
