@@ -5,12 +5,14 @@ import { globSync } from 'glob'
 import path from 'path'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
+// TODO: allow users to add more directories through config
+const ignoredPaths = ['node_modules/**', '**/node_modules/**', 'python_modules/**', '**/python_modules/**']
 
 export const getStepFiles = (projectDir: string): string[] => {
-  const stepsDir = path.join(projectDir, 'steps')
+  const stepsDir = path.join(projectDir)
   return [
-    ...globSync('**/*.step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir }),
-    ...globSync('**/*_step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir }),
+    ...globSync('**/*.step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir, ignore: ignoredPaths }),
+    ...globSync('**/*_step.{ts,js,py,rb}', { absolute: true, cwd: stepsDir, ignore: ignoredPaths }),
   ]
 }
 
@@ -19,8 +21,8 @@ export const collectFlows = async (projectDir: string, lockedData: LockedData): 
   const invalidSteps: Step[] = []
   const stepFiles = getStepFiles(projectDir)
   const streamFiles = [
-    ...globSync(path.join(projectDir, '{steps,streams}/**/*.stream.{ts,js,py}')),
-    ...globSync(path.join(projectDir, '{steps,streams}/**/*_stream.{ts,js,py}')),
+    ...globSync(path.join(projectDir, '**/*.stream.{ts,js,py}'), { ignore: ignoredPaths }),
+    ...globSync(path.join(projectDir, '**/*_stream.{ts,js,py}'), { ignore: ignoredPaths }),
   ]
 
   for (const filePath of stepFiles) {
