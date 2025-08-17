@@ -29,7 +29,7 @@ export const config: EventConfig = {
   input: z.object({
     id: z.string(),
     quantity: z.number(),
-    petId: z.number(),
+    petId: z.number()
   }),
 }
 
