@@ -11,7 +11,7 @@ export const eventSteps: TutorialStep[] = [
     description: `Now that we have an entry point in our flow, let's focus on subscribing to a <b>topic</b> and performing a specific task.<br/><br/> For this we will look at the <b>event</b> step.<br/><br/><b>Event</b> steps are an essential primitive for Motia's event driven architecture.<br/><br/>Let's dive deeper into the anatomy of an event step by taking a look at the code visualization tool.<br/><br/> 💡 <b>Event</b> steps can only be triggered internally, through topic subscriptions.`,
     id: uuidv4(),
     clickSelectorBeforeNext: `//button[@data-testid="open-code-preview-button-processfoodorder"]`,
-    waitForSelector: `//span[contains(text(), "config")]/..`,
+    waitForSelector: `(//div[@id="app-sidebar-container"]//span[contains(text(), 'input')])[2]`,
   },
   {
     elementXpath: `(//span[contains(text(), 'input')])[2]/..`,
@@ -28,7 +28,7 @@ export const eventSteps: TutorialStep[] = [
     id: uuidv4(),
   },
   {
-    elementXpath: `//span[contains(text(), "fetch")]/..`,
+    elementXpath: `(//span[contains(text(), "petStoreService")])[2]/..`,
     segmentId,
     title: 'Third Party Request',
     description: `Inside your event step handler, you can perform any action, for example:<br/><br/> Performing a third party http request with values from the input data, storing the result of the request in state, and lastly emitting another topic to trigger another step or steps in your flow.`,
@@ -40,5 +40,8 @@ export const eventSteps: TutorialStep[] = [
     title: 'Storing Data in State',
     description: `Let's take a closer look at storing data in state.<br/><br/> By now you are familiar with emitting and subscribing, but another core feature from from Motia's ecosystem is <b>state management</b>. Motia provides out of the box a file based state management, but you can customize this by configuring a <a href="https://www.motia.dev/docs/concepts/state-management#storage-adapters" target="_blank">storage adapter</a> to persist state in-memory or Redis.<br/><br/> In this example we are persisting the result of a third party http request in <b>state</b>, scoping it to a group id named "orders".<br/><br/> 💡 We recommend you check out our <a href="https://www.motia.dev/docs/concepts/state-management#best-practices" target="_blank">best practices</a> for <a href="https://www.motia.dev/docs/concepts/state-management" target="_blank">state management</a>.`,
     id: uuidv4(),
+    clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
+    requiredSelectorOnPrev: `(//div[@id="app-sidebar-container"]//span[contains(text(), 'input')])[2]`,
+    clickRequireSelectorMissingOnPrev: `//button[@data-testid="open-code-preview-button-processfoodorder"]`,
   },
 ]

@@ -18,10 +18,10 @@ export const apiSteps: TutorialStep[] = [
     description: `Clicking on this icon will allow you to visualize the source code for a given step.`,
     id: uuidv4(),
     clickSelectorBeforeNext: `//button[@data-testid="open-code-preview-button-apitrigger"]`,
-    waitForSelector: `//span[contains(text(), "config")]/..`,
+    waitForSelector: `//div[@id="app-sidebar-container"]//span[contains(text(), "ApiRouteConfig")]`,
   },
   {
-    elementXpath: `//span[contains(text(), "config")]/..`,
+    elementXpath: `(//span[contains(text(), "ApiRouteConfig")])[2]/..`,
     segmentId,
     title: 'Step Config',
     description: `All steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of the programming language).<br/><br/> Let's start with the configuration, the common config attributes are <i>type, name, description, and flows</i>.<br/><br/> <ul><li>The <b>type</b> attribute is important since it declares the type of step primitive</li><li>The <b>flows</b> attribute will associate your step with a given flow or set of flows.</li><li>The <b>name</b> and <b>description</b> attributes will provide context in the visualization and observability tools.</li></ul>`,
@@ -95,6 +95,11 @@ export const apiSteps: TutorialStep[] = [
         monaco.editor.getEditors()[0].revealLine(lastLine)
       }
     },
+    runScriptBeforePrev: () => {
+      if (monaco) {
+        monaco.editor.getEditors()[0].revealLine(1)
+      }
+    },
   },
   {
     elementXpath: `(//span[contains(text(), "await")])[2]/..`,
@@ -109,5 +114,14 @@ export const apiSteps: TutorialStep[] = [
     title: 'API Step HTTP Response',
     description: `Now let's wrap our API step and return a response.<br/><br/> You simply need to return an object that complies with one of the <b>responseSchema</b> definitions declared in your step configuration.`,
     id: uuidv4(),
+    clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
+    requiredSelectorOnPrev: `//div[@id="app-sidebar-container"]//span[contains(text(), "ApiRouteConfig")]`,
+    clickRequireSelectorMissingOnPrev: `//button[@data-testid="open-code-preview-button-apitrigger"]`,
+    runScriptOnRequiredSelectorOnPrevFound: () => {
+      if (monaco) {
+        const lastLine = monaco.editor.getEditors()[0].getModel().getLineCount()
+        monaco.editor.getEditors()[0].revealLine(lastLine)
+      }
+    },
   },
 ]

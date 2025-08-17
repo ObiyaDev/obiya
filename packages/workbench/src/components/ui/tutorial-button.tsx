@@ -1,8 +1,8 @@
 import { MotiaTutorial, TutorialConfig } from '@motiadev/tutorial'
 import { Button } from '@motiadev/ui'
 import { Book } from 'lucide-react'
-import { useStreamItem } from '@motiadev/stream-client-react'
-import { FlowConfigResponse } from '@/types/flow'
+import { useStreamGroup } from '@motiadev/stream-client-react'
+import { FlowResponse } from '@/types/flow'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { useFlowStore } from '@/stores/use-flow-store'
 import { Tooltip } from './tooltip'
@@ -10,14 +10,16 @@ import { Tooltip } from './tooltip'
 export const TutorialButton: FC = () => {
   const [isTutorialFlowMissing, setIsTutorialFlowMissing] = useState(true)
   const selectFlowId = useFlowStore((state) => state.selectFlowId)
-  const { data: flowConfig } = useStreamItem<FlowConfigResponse>({
-    streamName: '__motia.flowsConfig',
+
+  const { data: flows } = useStreamGroup<FlowResponse>({
+    streamName: '__motia.flows',
     groupId: 'default',
-    id: 'basic-tutorial',
   })
 
   const startTutorial = useCallback(
     (resetState = false) => {
+      selectFlowId('basic-tutorial')
+
       const tutorialStepIndex = new URLSearchParams(window.location.search).get('tutorialStepIndex')
       const config: TutorialConfig = {
         resetSkipState: resetState,
@@ -26,7 +28,6 @@ export const TutorialButton: FC = () => {
         config.initialStepIndex = Number(tutorialStepIndex)
       }
 
-      selectFlowId('basic-tutorial')
       MotiaTutorial.start(config)
 
       if (resetState) {
@@ -39,16 +40,27 @@ export const TutorialButton: FC = () => {
   )
 
   useEffect(() => {
-    if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED || !flowConfig) {
-      console.log('Tutorial disabled or flow not found')
+    let nextFlowConfig = flows ? Object.values(flows).find((flow) => flow.name === 'basic-tutorial') : undefined
+
+    if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED || !nextFlowConfig) {
+      console.debug('[motia-tutorial] disabled or flow not found', { nextFlowConfig, flows })
       return
     }
 
     setIsTutorialFlowMissing(false)
-    startTutorial()
 
-    return () => MotiaTutorial.close()
-  }, [flowConfig, startTutorial])
+    if (localStorage.getItem('motia-tutorial-skipped')) {
+      console.debug('[motia-tutorial] tutorial skipped')
+      return
+    }
+
+    const timeout = setTimeout(() => startTutorial(), 300)
+
+    return () => {
+      clearTimeout(timeout)
+      MotiaTutorial.close()
+    }
+  }, [flows, startTutorial])
 
   if (import.meta.env.VITE_MOTIA_TUTORIAL_DISABLED) {
     return null

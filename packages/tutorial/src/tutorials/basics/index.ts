@@ -7,7 +7,6 @@ import { tracingSteps } from './tracing'
 import { cronStepSteps } from './cron-step'
 import { endSteps } from './end'
 import { eventSteps } from './event-step'
-import { noopSteps } from './noop-step'
 import { endpointsSteps } from './endpoints'
 
 export const basicTutorial: Tutorial = {
@@ -18,7 +17,6 @@ export const basicTutorial: Tutorial = {
     introStep,
     ...apiSteps,
     ...eventSteps,
-    ...noopSteps,
     ...cronStepSteps,
     ...endpointsSteps,
     ...tracingSteps,

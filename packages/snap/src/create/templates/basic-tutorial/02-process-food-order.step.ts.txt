@@ -26,7 +26,11 @@ export const config: EventConfig = {
   /**
    * Definition of the expected input
    */
-  input: z.object({ id: z.string(), quantity: z.number(), petId: z.number() }),
+  input: z.object({
+    id: z.string(),
+    quantity: z.number(),
+    petId: z.number()
+  }),
 }
 
 export const handler: Handlers['ProcessFoodOrder'] = async (input, { traceId, logger, state, emit }) => {
