@@ -5,7 +5,10 @@ config = {
     "subscribes": ["new-order-notification"],
     "emits": [],
     "flows": ["basic-tutorial"],
-    "input": None,  # Replace with Pydantic model for validation
+    "input": {
+        "type": "object",
+        "properties": { "order_id": { "type": "string" } }
+    },
 }
 
 async def handler(input, ctx):
