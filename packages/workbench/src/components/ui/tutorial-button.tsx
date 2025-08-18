@@ -6,8 +6,10 @@ import { FlowResponse } from '@/types/flow'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { useFlowStore } from '@/stores/use-flow-store'
 import { Tooltip } from './tooltip'
+import { useAnalytics } from '@/lib/analytics'
 
 export const TutorialButton: FC = () => {
+  const { track } = useAnalytics()
   const [isTutorialFlowMissing, setIsTutorialFlowMissing] = useState(true)
   const selectFlowId = useFlowStore((state) => state.selectFlowId)
 
@@ -28,6 +30,8 @@ export const TutorialButton: FC = () => {
         config.initialStepIndex = Number(tutorialStepIndex)
       }
 
+      track('motia-tutorial_start', { tutorialConfig: config })
+
       MotiaTutorial.start(config)
 
       if (resetState) {
@@ -36,7 +40,7 @@ export const TutorialButton: FC = () => {
         window.history.replaceState(null, '', url)
       }
     },
-    [selectFlowId],
+    [selectFlowId, track],
   )
 
   useEffect(() => {
@@ -66,12 +70,22 @@ export const TutorialButton: FC = () => {
     return null
   }
 
+  const onTutorialButtonClick = () => {
+    track('motia-tutorial_button-click')
+
+    if (isTutorialFlowMissing) {
+      return
+    }
+
+    startTutorial(true)
+  }
+
   const trigger = (
     <Button
       data-testid="tutorial-trigger"
       variant={isTutorialFlowMissing ? 'default' : 'accent'}
       size="sm"
-      onClick={() => (!isTutorialFlowMissing ? startTutorial(true) : void 0)}
+      onClick={() => onTutorialButtonClick()}
     >
       <Book className="h-4 w-4" />
       <span>Tutorial</span>
