@@ -16,7 +16,7 @@ cloudCli
   .option('-p, --project-id <id>', 'Project ID', process.env.MOTIA_PROJECT_ID)
   .option('-s, --environment-id <id>', 'Environment ID', process.env.MOTIA_ENVIRONMENT_ID)
   .option('-e, --env-file <path>', 'Path to environment file')
-  .option('-n, --project-name <name>', 'Project name', process.env.MOTIA_PROJECT_NAME)
+  .option('-n, --project-name <name>', 'Project name (used when environment-id is not provided)', process.env.MOTIA_PROJECT_NAME)
   .action(
     handler(async (arg, context) => {
       const listener = new CliListener(context)
