@@ -99,7 +99,7 @@ export class PythonBuilder implements StepBuilder {
 
     const zipName = 'router-python.zip'
     const archive = new Archiver(path.join(distDir, zipName))
-    const dependencies = ['fastapi', 'uvicorn', 'pydantic', 'pydantic_core', 'uvloop', 'starlette', 'typing_inspection']
+    const dependencies = ['uvicorn', 'pydantic', 'pydantic_core', 'uvloop', 'starlette', 'typing_inspection']
     const lambdaSitePackages = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
     await Promise.all(
       dependencies.map(async (packageName) => addPackageToArchive(archive, lambdaSitePackages, packageName)),
@@ -113,7 +113,12 @@ export class PythonBuilder implements StepBuilder {
       .readFileSync(path.join(__dirname, 'router_template.py'), 'utf-8')
       .replace(
         '# {{imports}}',
-        steps.map((step, index) => `from ${getStepPath(step)} import handler as route${index}_handler, config as route${index}_config`).join('\n'),
+        steps
+          .map(
+            (step, index) =>
+              `from ${getStepPath(step)} import handler as route${index}_handler, config as route${index}_config`,
+          )
+          .join('\n'),
       )
       .replace(
         '# {{router paths}}',
