@@ -27,4 +27,5 @@ export type TutorialConfig = {
   segmentId?: string
   initialStepIndex?: number
   resetSkipState?: boolean
+  onSkipTutorialEvent?: () => void
 }

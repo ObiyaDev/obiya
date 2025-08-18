@@ -77,6 +77,7 @@ export const startTutorial = (config?: TutorialConfig) => {
         secondButton.type = 'button'
 
         secondButton.addEventListener('click', () => {
+          config?.onSkipTutorialEvent?.()
           tutorialDriver?.destroy()
           window.localStorage.setItem('motia-tutorial-skipped', 'true')
         })

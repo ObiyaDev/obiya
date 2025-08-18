@@ -25,6 +25,7 @@ export const TutorialButton: FC = () => {
       const tutorialStepIndex = new URLSearchParams(window.location.search).get('tutorialStepIndex')
       const config: TutorialConfig = {
         resetSkipState: resetState,
+        onSkipTutorialEvent: () => track('motia-tutorial_skipped'),
       }
       if (tutorialStepIndex && !resetState) {
         config.initialStepIndex = Number(tutorialStepIndex)
