@@ -3,7 +3,7 @@ import { trackEvent } from './analytics/utils'
 import { Motia } from './motia'
 import { ProcessManager } from './process-communication/process-manager'
 import { Event, Step } from './types'
-import { BaseStreamItem, StateStreamEvent } from './types-stream'
+import { BaseStreamItem, StateStreamEvent, StateStreamEventChannel } from './types-stream'
 import { isAllowedToEmit } from './utils'
 import { Logger } from './logger'
 import { Tracer } from './observability'
@@ -15,7 +15,7 @@ type StateDeleteInput = { traceId: string; key: string }
 type StateClearInput = { traceId: string }
 
 type StateStreamGetInput = { groupId: string; id: string }
-type StateStreamSendInput = { channel: StateStreamGetInput; event: StateStreamEvent<unknown> }
+type StateStreamSendInput = { channel: StateStreamEventChannel; event: StateStreamEvent<unknown> }
 type StateStreamMutateInput = { groupId: string; id: string; data: BaseStreamItem }
 
 const getLanguageBasedRunner = (
