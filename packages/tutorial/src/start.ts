@@ -105,6 +105,7 @@ export const startTutorial = (config?: TutorialConfig) => {
           position: step.position,
           onNextClick: () => {
             if (tutorialDriver?.isLastStep()) {
+              config?.onTutorialCompletedEvent?.()
               window.localStorage.setItem('motia-tutorial-skipped', 'true')
             }
 
@@ -204,6 +205,26 @@ export const startTutorial = (config?: TutorialConfig) => {
                   )
 
                   return
+                }
+              }
+            }
+
+            if (step.clickSelectorBeforePrev) {
+              const elementBeforePrev = document.evaluate(
+                step.clickSelectorBeforePrev,
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null,
+              )
+
+              if (elementBeforePrev.singleNodeValue) {
+                if (step.useKeyDownEventOnClickBeforeNext) {
+                  ;(elementBeforePrev.singleNodeValue as HTMLElement).dispatchEvent(
+                    new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', keyCode: 13 }),
+                  )
+                } else {
+                  ;(elementBeforePrev.singleNodeValue as HTMLElement).click()
                 }
               }
             }

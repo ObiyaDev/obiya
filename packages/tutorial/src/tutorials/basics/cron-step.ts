@@ -19,6 +19,7 @@ export const cronStepSteps: TutorialStep[] = [
     title: 'Cron Schedule',
     description: `<b>CRON</b> steps are similar to the other primitives, they are composed by a configuration and a handler.<br/><br/>The <b>CRON</b> step config has a distinct attribute, the <b>cron</b> attribute, through this attribute you will define the cron schedule for your step.<br/><br/> For instance, in this example the cron schedule is configured to execute the step handler every 5 minutes. Let's take a look at the handler definition.<br/><br/> 💡 If you are not familiar with cron schedules click <a href="https://crontab.guru/" target="_blank">here</a> to learn more.`,
     id: uuidv4(),
+    clickSelectorBeforePrev: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
   },
   {
     elementXpath: `//span[contains(text(), "handler")]`,
@@ -27,5 +28,7 @@ export const cronStepSteps: TutorialStep[] = [
     description: `The <b>CRON</b> step handler only receives one argument, which is the Motia context, if you recall the Motia context gives you access to utilities to emit <i>topics</i>, <i>log</i>, <i>manage state</i>, and it provides the <i>trace id</i> associated to your step's execution.<br/><br/> In this CRON step example we are evaluating orders persisted in state, and emitting warnings through a topic for each order that hasn't been processed and has a shipping date in the past.`,
     id: uuidv4(),
     clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
+    requiredSelectorOnPrev: `//div[@id="app-sidebar-container"]//span[contains(text(), "handler")]`,
+    clickRequireSelectorMissingOnPrev: `//button[@data-testid="open-code-preview-button-stateauditjob"]`,
   },
 ]

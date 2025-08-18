@@ -6,6 +6,7 @@ export type TutorialStep = {
   elementXpath: string
   segmentId: string
   clickSelectorBeforeNext?: string
+  clickSelectorBeforePrev?: string
   waitForSelector?: string
   runScriptBeforeNext?: () => void
   runScriptBeforePrev?: () => void
@@ -28,4 +29,5 @@ export type TutorialConfig = {
   initialStepIndex?: number
   resetSkipState?: boolean
   onSkipTutorialEvent?: () => void
+  onTutorialCompletedEvent?: () => void
 }

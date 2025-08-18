@@ -10,6 +10,7 @@ export const apiSteps: TutorialStep[] = [
     title: 'API Step',
     description: `Let's evaluate the step that will allow you to receive traffic from external applications, API steps will allow you to expose an HTTP endpoint for external traffic.`,
     id: uuidv4(),
+    clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
   },
   {
     elementXpath: `//button[@data-testid="open-code-preview-button-apitrigger"]`,
@@ -47,6 +48,12 @@ export const apiSteps: TutorialStep[] = [
     title: 'API Step Request Body',
     description: `The <b>bodySchema</b> attribute will define the shape of the request body.<br/><br/> <i>💡 Both the request body and response payload are defined by <a href="https://zod.dev/" target="_blank">zod</a> schemas.</i>`,
     id: uuidv4(),
+    runScriptBeforeNext: () => {
+      if (monaco) {
+        monaco.editor.getEditors()[0].revealLine(61)
+      }
+    },
+    waitForSelector: '//span[contains(text(), "responseSchema")]',
   },
   {
     elementXpath: `//span[contains(text(), "responseSchema")]/..`,
@@ -54,19 +61,17 @@ export const apiSteps: TutorialStep[] = [
     title: 'API Step Response Payload',
     description: `Through the <b>responseSchema</b> attribute you can declare the different type of http responses based on the http status code.<br/><br/> <i>💡 Both the request body and response payload are defined by <a href="https://zod.dev/" target="_blank">zod</a> schemas.</i>`,
     id: uuidv4(),
+    runScriptBeforePrev: () => {
+      if (monaco) {
+        monaco.editor.getEditors()[0].revealLine(1)
+      }
+    },
   },
   {
-    elementXpath: `(//span[contains(text(), "emits")])[3]/..`,
+    elementXpath: `//span[contains(text(), "emits")]/..`,
     segmentId,
     title: 'Event Driven Architecture',
     description: `Motia allows you to interact between steps or flows through an event driven architecture.<br/><br/> In order to connect your steps during runtime you will use the <b>emits</b> and <br>subscribes</br> attributes.<br/><br/> Through the <b>emits</b>, you can specify a list of topics that your step emits for others to <i>subscribe</i>.`,
-    id: uuidv4(),
-  },
-  {
-    elementXpath: `//span[contains(text(), "virtualSubscribes")]/..`,
-    segmentId,
-    title: 'Virtual Topics',
-    description: `The <b>virtualSubscribes</b> attribute purpose is for visualization only, it can be used in conjuction with the <b>virtualEmits</b>.<br/><br/>Both are used to represent connections between steps in the Workbench flow visualization tool.`,
     id: uuidv4(),
   },
   {
@@ -77,14 +82,7 @@ export const apiSteps: TutorialStep[] = [
     id: uuidv4(),
   },
   {
-    elementXpath: `(//span[contains(text(), "Handlers")])[2]`,
-    segmentId,
-    title: 'Typed Handlers',
-    description: `If you are using typescript for your steps, Motia will generate type definitions based on your step's config when you are running your project in <b>dev mode</b>.<br/><br/> 💡 You enter dev mode when you execute <i>motia dev</i> from your terminal.`,
-    id: uuidv4(),
-  },
-  {
-    elementXpath: `(//span[contains(text(), 'logger')])[3]/..`,
+    elementXpath: `(//span[contains(text(), 'logger')])[2]/..`,
     segmentId,
     title: 'Logging',
     description: `We recommend using the provided <b>logger</b> util in order to guarantee observability through Motia's ecosystem.<br/><br/> You can use logger similar to <i>console.log</i> for js or <i>print</i> for python, but with enhanced utilities, such as being able to provide additional context.<br/><br/> Motia will take care of the rest to provide the best experience to visualize your logs and tie them through tracing.`,
@@ -97,7 +95,7 @@ export const apiSteps: TutorialStep[] = [
     },
     runScriptBeforePrev: () => {
       if (monaco) {
-        monaco.editor.getEditors()[0].revealLine(1)
+        monaco.editor.getEditors()[0].revealLine(33)
       }
     },
   },

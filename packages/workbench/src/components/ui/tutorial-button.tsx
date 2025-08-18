@@ -26,6 +26,7 @@ export const TutorialButton: FC = () => {
       const config: TutorialConfig = {
         resetSkipState: resetState,
         onSkipTutorialEvent: () => track('motia-tutorial_skipped'),
+        onTutorialCompletedEvent: () => track('motia-tutorial_completed'),
       }
       if (tutorialStepIndex && !resetState) {
         config.initialStepIndex = Number(tutorialStepIndex)
