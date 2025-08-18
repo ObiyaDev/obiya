@@ -5,11 +5,11 @@ from typing import Dict, Callable, Any, Literal
 # from my_step import my_api_handler
 # 
 # router_paths: Dict[str, RouterPath] = {
-#     "my_step": RouterPath(
+#     "POST /my-path": RouterPath(
 #         step_name="my_step",
 #         method="post",
 #         handler=my_api_handler,
-#         config={"timeout": 30}
+#         config=config
 #     )
 # }
 
@@ -21,5 +21,8 @@ class RouterPath:
         self.config = config
 
 router_paths: Dict[str, RouterPath] = {
+    # Example:
+    # 'POST /api/parallel-merge/python': RouterPath('Parallel Merge Python', 'post', route0_handler, route0_config)
+    
     # {{router paths}}
 }
