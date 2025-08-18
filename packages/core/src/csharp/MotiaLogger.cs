@@ -35,6 +35,16 @@ namespace MotiaCSharp.Logging
             Log("error", message, data);
         }
 
+        public void Trace(string message, object? data = null)
+        {
+            Log("trace", message, data);
+        }
+
+        public void Fatal(string message, object? data = null)
+        {
+            Log("fatal", message, data);
+        }
+
         private void Log(string level, string message, object? data)
         {
             var logData = new

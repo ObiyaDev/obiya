@@ -34,5 +34,17 @@ namespace MotiaCSharp.State
             var input = new { traceId };
             await _rpc.SendAsync("state.clear", input);
         }
+
+        public async Task<Dictionary<string, object>> GetAll(string traceId)
+        {
+            var input = new { traceId };
+            return await _rpc.SendAsync<Dictionary<string, object>>("state.getAll", input) ?? new Dictionary<string, object>();
+        }
+
+        public async Task<bool> Exists(string traceId, string key)
+        {
+            var input = new { traceId, key };
+            return await _rpc.SendAsync<bool>("state.exists", input);
+        }
     }
 }
