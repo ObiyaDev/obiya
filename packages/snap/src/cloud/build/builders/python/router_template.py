@@ -1,17 +1,6 @@
 from typing import Dict, Callable, Any, Literal
 # {{imports}}
 
-# Generated code should look like this:
-# from my_step import my_api_handler
-# 
-# router_paths: Dict[str, RouterPath] = {
-#     "POST /my-path": RouterPath(
-#         step_name="my_step",
-#         method="post",
-#         handler=my_api_handler,
-#         config=config
-#     )
-# }
 
 class RouterPath:
     def __init__(self, step_name: str, method: Literal['get', 'post', 'put', 'delete', 'patch', 'options', 'head'], handler: Callable, config: Dict[str, Any]):
