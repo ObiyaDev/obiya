@@ -50,6 +50,7 @@ async function runTypescriptModule(filePath: string, event: Record<string, unkno
             sender.send(`streams.${streams.name}.set`, { groupId, id, data }),
           delete: (groupId: string, id: string) => sender.send(`streams.${streams.name}.delete`, { groupId, id }),
           getGroup: (groupId: string) => sender.send(`streams.${streams.name}.getGroup`, { groupId }),
+          send: (channel: string, event: unknown) => sender.send(`streams.${streams.name}.send`, { channel, event }),
         }
         return acc
       },
