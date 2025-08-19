@@ -8,11 +8,6 @@ test.describe('Workbench - Endpoint Call JSON Validation', () => {
   test.beforeEach(async ({ page }) => {
     workbench = new WorkbenchPage(page)
     endpoint = new EndpointPage(page)
-
-    await page.addInitScript(() => {
-      localStorage.setItem('motia-tutorial-skipped', 'true')
-    })
-
     await workbench.open()
     await workbench.navigateToEndpoints()
     await endpoint.firstEndpointItem.click()

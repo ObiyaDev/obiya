@@ -18,7 +18,7 @@ export const StatesPage = () => {
   const onClose = () => selectStateId(undefined)
 
   return (
-    <div className="flex flex-row gap-4 h-full" data-testid="states-container">
+    <div className="flex flex-row gap-4 h-full">
       {selectedItem && <StateSidebar state={selectedItem} onClose={onClose} />}
 
       <Table>

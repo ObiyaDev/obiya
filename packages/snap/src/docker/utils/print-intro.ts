@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 export const printMotiaDockerIntro = () => {
   console.log(
     '\n\n' +

@@ -1,18 +1,29 @@
 import path from 'path'
 import fs from 'fs'
+import { templates } from './templates'
 import { executeCommand } from '../utils/execute-command'
 import { pythonInstall } from '../install'
 import { generateTypes } from '../generate-types'
 import { version } from '../version'
 import { CliContext } from '../cloud/config-utils'
-import { setupTemplate } from './setup-template'
-import { checkIfFileExists, checkIfDirectoryExists } from './utils'
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('ts-node').register({
   transpileOnly: true,
   compilerOptions: { module: 'commonjs' },
 })
+
+const checkIfFileExists = (dir: string, fileName: string): boolean => {
+  return fs.existsSync(path.join(dir, fileName))
+}
+
+const checkIfDirectoryExists = (dir: string): boolean => {
+  try {
+    return fs.statSync(dir).isDirectory()
+  } catch {
+    return false
+  }
+}
 
 const getPackageManager = (dir: string): string => {
   if (checkIfFileExists(dir, 'yarn.lock')) {
@@ -93,7 +104,6 @@ type Args = {
   template?: string
   cursorEnabled?: boolean
   context: CliContext
-  skipTutorialTemplates?: boolean
 }
 
 export const create = async ({ projectName, template, cursorEnabled, context }: Args): Promise<void> => {
@@ -236,18 +246,18 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
     )
   }
 
-  if (!checkIfDirectoryExists(path.join(stepsDir, 'basic-tutorial'))) {
-    fs.mkdirSync(path.join(stepsDir, 'basic-tutorial'))
+  if (!template || !(template in templates)) {
+    context.log('template-not-found', (message) =>
+      message.tag('failed').append(`Template ${template} not found, please use one of the following:`),
+    )
+    context.log('available-templates', (message) =>
+      message.tag('info').append(`Available templates: \n\n ${Object.keys(templates).join('\n')}`),
+    )
+
+    return
   }
 
-  await setupTemplate('basic-tutorial', stepsDir, context)
-
-  if (template) {
-    if (!checkIfDirectoryExists(path.join(stepsDir, template))) {
-      fs.mkdirSync(path.join(stepsDir, template))
-    }
-    await setupTemplate(template, stepsDir, context)
-  }
+  await templates[template](rootDir, context)
 
   const packageManager = await installNodeDependencies(rootDir, context)
 
