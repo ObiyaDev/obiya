@@ -30,7 +30,13 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   const docPath = slugSegments.length ? slugSegments.join('/') : 'index'
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage 
+      toc={page.data.toc} 
+      full={page.data.full}
+      tableOfContent={{
+        style: 'clerk'
+      }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-2">{page.data.description}</DocsDescription>
       <div className="mt-0 flex items-center gap-2">
