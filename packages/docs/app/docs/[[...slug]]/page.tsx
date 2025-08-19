@@ -1,6 +1,7 @@
 import { source } from '@/lib/source'
 import { DocsPage, DocsBody, DocsDescription, DocsTitle } from 'fumadocs-ui/page'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import { getMDXComponents } from '@/mdx-components'
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock'
@@ -71,9 +72,9 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         />
         <Banner>
           Need help? See our&nbsp;
-          <a aria-label="Visit Community" href="/docs/community-resources">
+          <Link href="/docs/community-resources" aria-label="Visit Community">
             Community Resources
-          </a>
+          </Link>
           &nbsp;for questions, examples, and discussions.
         </Banner>
       </DocsBody>
