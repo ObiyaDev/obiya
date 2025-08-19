@@ -71,7 +71,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         />
         <Banner>
           Need help? See our&nbsp;
-          <a aria-label="Visit Community" href="/community">
+          <a aria-label="Visit Community" href="/docs/community-resources">
             Community Resources
           </a>
           &nbsp;for questions, examples, and discussions.
