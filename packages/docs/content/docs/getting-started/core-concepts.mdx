@@ -28,7 +28,9 @@ Use **TypeScript** for APIs, **Python** for AI/ML, **JavaScript** for frontend l
 #### 🌐 **API Steps** - HTTP Endpoints & REST APIs
 Transform any function into a production-ready API endpoint with automatic validation, error handling, and observability.
 
-```typescript twoslash title="user-api.step.ts"
+```typescript title="user-api.step.ts"
+import { Handlers } from 'motia'
+
 // Create a REST API endpoint
 export const config = {
   type: 'api' as const,
@@ -37,9 +39,19 @@ export const config = {
   emits: ['user.fetched']
 }
 
-// Hover to see the inferred type
-type ConfigType = typeof config
-//   ^?
+// Handler processes the request
+export const handler: Handlers['GetUser'] = async (req, { logger, emit }) => {
+  const userId = req.pathParams.id
+  logger.info('Fetching user', { userId })
+  
+  // Emit event for next steps
+  await emit({
+    topic: 'user.fetched',
+    data: { userId, status: 'active' }
+  })
+  
+  return { status: 200, body: { message: 'User fetched' } }
+}
 ```
 
 #### ⚡ **Event Steps** - Background Processing & Workflows  
@@ -67,10 +79,27 @@ async def handler(user_data, context):
 Run tasks on schedules - from simple cleanups to complex data pipelines and AI agent workflows.
 
 ```typescript title="daily-report.step.ts"
+import { Handlers } from 'motia'
+
 export const config = {
   type: 'cron',
   schedule: '0 9 * * MON-FRI', // Weekdays at 9 AM
   emits: ['report.generated']
+}
+
+// Handler runs on schedule
+export const handler: Handlers['DailyReport'] = async (input, { logger, emit }) => {
+  logger.info('Generating daily report')
+  
+  const report = {
+    date: new Date().toISOString(),
+    metrics: { users: 1250, revenue: 15000 }
+  }
+  
+  await emit({
+    topic: 'report.generated',
+    data: report
+  })
 }
 ```
 
@@ -94,12 +123,25 @@ graph LR
 ### Real-World Flow Example
 
 ```typescript title="01-api.step.ts"
+import { Handlers } from 'motia'
+
 // API receives request → triggers AI processing → generates analytics → sends notifications
 export const config = {
   type: 'api',
   path: '/analyze-document',
   emits: ['document.received'],
   flows: ['document-intelligence']
+}
+
+export const handler: Handlers['AnalyzeDocument'] = async (req, { logger, emit }) => {
+  logger.info('Document received for analysis')
+  
+  await emit({
+    topic: 'document.received',
+    data: { document: req.body, timestamp: new Date() }
+  })
+  
+  return { status: 200, body: { message: 'Document queued for analysis' } }
 }
 ```
 
@@ -124,6 +166,21 @@ export const config = {
   subscribes: ['document.analyzed'],
   emits: ['analytics.complete'],
   flows: ['document-intelligence']
+}
+
+export const handler = async (analysis, { logger, emit }) => {
+  logger.info('Processing analytics', { documentId: analysis.id })
+  
+  const metrics = {
+    confidence: analysis.confidence,
+    processingTime: Date.now() - analysis.startTime,
+    categories: analysis.categories.length
+  }
+  
+  await emit({
+    topic: 'analytics.complete',
+    data: { documentId: analysis.id, metrics }
+  })
 }
 ```
 
