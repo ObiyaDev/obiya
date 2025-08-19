@@ -163,8 +163,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       framer-motion:
-        specifier: ^12.9.4
-        version: 12.23.12(react-dom@19.1.1)(react@19.1.1)
+        specifier: 12.9.4
+        version: 12.9.4(react-dom@19.1.1)(react@19.1.1)
       fumadocs-core:
         specifier: 15.2.14
         version: 15.2.14(@types/react@19.1.10)(next@15.3.2)(react-dom@19.1.1)(react@19.1.1)
@@ -8271,8 +8271,8 @@ packages:
   /fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
-  /framer-motion@12.23.12(react-dom@19.1.1)(react@19.1.1):
-    resolution: {integrity: sha512-6e78rdVtnBvlEVgu6eFEAgG9v3wLnYEboM8I5O5EXvfKC8gxGQB8wXJdhkMy10iVcn05jl6CNw7/HTsTCfwcWg==}
+  /framer-motion@12.9.4(react-dom@19.1.1)(react@19.1.1):
+    resolution: {integrity: sha512-yaeGDmGQ3eCQEwZ95/pRQMaSh/Q4E2CK6JYOclG/PdjyQad0MULJ+JFVV8911Fl5a6tF6o0wgW8Dpl5Qx4Adjg==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^19.1.0
