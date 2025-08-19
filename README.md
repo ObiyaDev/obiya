@@ -155,6 +155,25 @@ A complete chess platform benchmarking LLM performance with real-time evaluation
 - **[🐛 GitHub Issues](https://github.com/MotiaDev/motia/issues)** - Bug reports and feature requests
 - **[🗺️ Roadmap](https://github.com/orgs/MotiaDev/projects/2)** - Upcoming features and progress
 
+## 🚧 Roadmap
+
+We have a public roadmap for Motia, you can view it [here](https://github.com/orgs/MotiaDev/projects/2/views/4).
+
+Feel free to add comments to the issues, or create a new issue if you have a feature request.
+
+| Feature | Status | Link | Description |
+| ------- | ------ | ---- | ----------- |
+| Python Types | Planned | [#485](https://github.com/MotiaDev/motia/issues/485) | Add support for Python types |
+| Streams: RBAC | Planned | [#495](https://github.com/MotiaDev/motia/issues/495) | Add support for RBAC |
+| Streams: Workbench UI | Planned | [#497](https://github.com/MotiaDev/motia/issues/497) | Add support for Workbench UI |
+| Queue Strategies | Planned | [#476](https://github.com/MotiaDev/motia/issues/476) | Add support for Queue Strategies |
+| Reactive Steps | Planned | [#477](https://github.com/MotiaDev/motia/issues/477) | Add support for Reactive Steps |
+| Point in time triggers | Planned | [#480](https://github.com/MotiaDev/motia/issues/480) | Add support for Point in time triggers |
+| Workbench plugins | Planned | [#481](https://github.com/MotiaDev/motia/issues/481) | Add support for Workbench plugins |
+| Rewrite our Core in either Go or Rust | Planned | [#482](https://github.com/MotiaDev/motia/issues/482) | Rewrite our Core in either Go or Rust |
+| Decrease deployment time | Planned | [#483](https://github.com/MotiaDev/motia/issues/483) | Decrease deployment time |
+| Built-in database support | Planned | [#484](https://github.com/MotiaDev/motia/issues/484) | Add support for built-in database |
+
 ## 🤝 Contributing
 
 We welcome contributions! Check our **[Contributing Guide](https://github.com/MotiaDev/motia/blob/main/CONTRIBUTING.md)** to get started.
