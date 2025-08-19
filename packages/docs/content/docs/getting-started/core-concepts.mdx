@@ -62,12 +62,13 @@ Represent manual processes or external systems in your workflow diagrams for com
 
 **Flows** organize your steps into logical workflows. Steps connect through topics - when one step emits an event, other steps can subscribe and react. This creates powerful data pipelines that span multiple languages.
 
-```mermaid
+<Mermaid
+  chart="
 graph LR
     A[TypeScript API] --> B[Python Processor]
     B --> C[JavaScript Analytics]
-    C --> D[TypeScript Notifier]
-```
+    C --> D[TypeScript Notifier]"
+/>
 
 ### Real-World Flow Example
 

@@ -194,20 +194,6 @@ export const handler = async (input, { emit, logger, state, traceId }) => {
 - **Multi-flow**: Steps can belong to multiple flows: `flows: ['billing', 'analytics', 'compliance']`
 </Callout>
 
-### Flow Data Flow Visualization
-
-```mermaid
-graph TD
-    A[TypeScript API<br/>user-registration] -->|user.registered| B[Python ML<br/>enrich-profile]
-    B -->|profile.enriched| C[JavaScript Comms<br/>send-welcome] 
-    C -->|welcome.sent| D[Flow Complete]
-    
-    style A fill:#3178c6,color:#fff
-    style B fill:#3776ab,color:#fff  
-    style C fill:#f7df1e,color:#000
-    style D fill:#28a745,color:#fff
-```
-
 ## Visualizing Flows in Motia Workbench
 
 The **Motia Workbench** is your command center for developing, debugging, and monitoring multi-language workflows in real-time.

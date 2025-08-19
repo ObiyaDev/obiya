@@ -2,6 +2,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom'
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock'
+import { Mermaid } from '@/components/Mermaid'
 import type { MDXComponents } from 'mdx/types';
 
 // use this function to get MDX components, you will need it for rendering MDX
@@ -19,6 +20,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     // Expose Tabs components directly in MDX
     Tabs,
     Tab,
+    // Enable Mermaid diagrams
+    Mermaid,
     ...components,
   };
 }
