@@ -94,3 +94,5 @@ agents/**/components/
 .mermaid/
 
 playground/motia-workbench.json
+packages/core/src/csharp/bin/*
+packages/core/src/csharp/obj/*

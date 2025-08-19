@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{809F86A1-1C4C-B159-0CD4-DF9D33D876CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{81C5FA5E-A62B-98A1-4CBC-09B5BB06FF07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8AF3AB25-EEF3-FF19-F39A-5E70C19766B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotiaCSharp", "packages\core\src\csharp\MotiaCSharp.csproj", "{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81C5FA5E-A62B-98A1-4CBC-09B5BB06FF07} = {809F86A1-1C4C-B159-0CD4-DF9D33D876CE}
+		{8AF3AB25-EEF3-FF19-F39A-5E70C19766B1} = {81C5FA5E-A62B-98A1-4CBC-09B5BB06FF07}
+		{FCC2B3D9-45C0-5267-DA98-CE5AA09FC76C} = {8AF3AB25-EEF3-FF19-F39A-5E70C19766B1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {065F5523-0B7B-46DE-AD93-B4C45F8247D6}
+	EndGlobalSection
+EndGlobal
