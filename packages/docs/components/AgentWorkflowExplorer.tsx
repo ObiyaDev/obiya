@@ -10,7 +10,6 @@ import { AgentData } from '@/lib/fetchAgents'
 import bgWorkflowExplorer from '@/public/images/landing/bgWorkflowExplorer.avif'
 import Image from 'next/image'
 import CollapsibleFolder from './CollapsibleFolder'
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import logoFull from '@/public/images/logoFull.png'
 import { openInNewWindowIcon } from './Icons'
 import Link from 'next/link'
@@ -37,7 +36,7 @@ export const AgentWorkflowExplorer: React.FC<AgentWorkflowExplorer> = ({ agent, 
   //console.log(initialData)
   const { services, steps } = initialData
   //Get a list of all the files in the services folder
-  const serviceFileNames = services[agent]?.map((file) => file.name) || []
+  const serviceFileNames = useMemo(() => services[agent]?.map((file) => file.name) || [], [services, agent])
   //Get a list of all the files in the steps folder
   const stepsFileNames = useMemo(() => steps[agent]?.map((file) => file.name) || [], [steps, agent])
 
