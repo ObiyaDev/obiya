@@ -24,7 +24,7 @@ export class PythonBuilder implements StepBuilder {
     const sitePackagesDir = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
 
     // Get Python builder response
-    const { packages } = await this.getPythonBuilderData(step)
+    const { packages, local_files } = await this.getPythonBuilderData(step)
 
     // Add main file to archive
     if (!fs.existsSync(step.filePath)) {
@@ -32,6 +32,16 @@ export class PythonBuilder implements StepBuilder {
     }
 
     archive.append(fs.createReadStream(step.filePath), path.relative(this.builder.projectDir, normalizedEntrypointPath))
+
+    // Add local Python files to archive
+    if (local_files && local_files.length > 0) {
+      local_files.forEach((localFile: string) => {
+        const fullPath = path.join(this.builder.projectDir, localFile)
+        if (fs.existsSync(fullPath)) {
+          archive.append(fs.createReadStream(fullPath), localFile)
+        }
+      })
+    }
 
     await Promise.all(packages.map(async (packageName) => addPackageToArchive(archive, sitePackagesDir, packageName)))
 
@@ -50,7 +60,7 @@ export class PythonBuilder implements StepBuilder {
       this.listener.onBuildStart(step)
 
       // Get Python builder response
-      const { packages } = await this.getPythonBuilderData(step)
+      const { packages, local_files } = await this.getPythonBuilderData(step)
       const stepArchiver = new Archiver(outfile)
       const stepPath = await this.buildStep(step, stepArchiver)
 
@@ -67,6 +77,17 @@ export class PythonBuilder implements StepBuilder {
       // Add all imported files to archive
       this.listener.onBuildProgress(step, 'Adding imported files to archive...')
       const sitePackagesDir = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
+
+      // Add local Python files to archive
+      if (local_files && local_files.length > 0) {
+        local_files.forEach((localFile: string) => {
+          const fullPath = path.join(this.builder.projectDir, localFile)
+          if (fs.existsSync(fullPath)) {
+            stepArchiver.append(fs.createReadStream(fullPath), localFile)
+          }
+        })
+        this.listener.onBuildProgress(step, `Added ${local_files.length} local Python files to archive`)
+      }
 
       includeStaticFiles([step], this.builder, stepArchiver)
 
@@ -140,7 +161,7 @@ export class PythonBuilder implements StepBuilder {
     return { size, path: zipName }
   }
 
-  private async getPythonBuilderData(step: Step): Promise<{ file: string; files: string[]; packages: string[] }> {
+  private async getPythonBuilderData(step: Step): Promise<{ file: string; files: string[]; packages: string[]; local_files: string[] }> {
     return new Promise((resolve, reject) => {
       const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
         cwd: this.builder.projectDir,
