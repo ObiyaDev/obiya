@@ -1,8 +1,6 @@
 'use client'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
-import ts from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
-import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import React, { useEffect, useMemo, useState } from 'react'
@@ -16,9 +14,6 @@ import Link from 'next/link'
 import { GITHUB_REPO_BASE } from '@/utils/constants'
 import { flowImages, folderMap } from './constants/agentExplorer'
 
-// 1. Register the languages
-SyntaxHighlighter.registerLanguage('typescript', ts)
-SyntaxHighlighter.registerLanguage('javascript', js)
 const customStyle = {
   ...atomDark,
   'pre[class*="language-"]': {
