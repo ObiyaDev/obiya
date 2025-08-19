@@ -5,7 +5,7 @@ import ts from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { AgentData } from '@/lib/fetchAgents'
 import bgWorkflowExplorer from '@/public/images/landing/bgWorkflowExplorer.avif'
 import Image from 'next/image'
@@ -39,7 +39,7 @@ export const AgentWorkflowExplorer: React.FC<AgentWorkflowExplorer> = ({ agent, 
   //Get a list of all the files in the services folder
   const serviceFileNames = services[agent]?.map((file) => file.name) || []
   //Get a list of all the files in the steps folder
-  const stepsFileNames = steps[agent]?.map((file) => file.name) || []
+  const stepsFileNames = useMemo(() => steps[agent]?.map((file) => file.name) || [], [steps, agent])
 
   //Hooks for the currently selected file and folder to generate the URL and code
   const [selectedFile, setSelectedFile] = useState<string>(stepsFileNames[0])
@@ -50,7 +50,7 @@ export const AgentWorkflowExplorer: React.FC<AgentWorkflowExplorer> = ({ agent, 
 
   useEffect(() => {
     setSelectedFile(stepsFileNames[0])
-  }, [agent])
+  }, [stepsFileNames])
 
   useEffect(() => {
     //Find the code of the currently selected file
@@ -64,7 +64,7 @@ export const AgentWorkflowExplorer: React.FC<AgentWorkflowExplorer> = ({ agent, 
     const currentFolder = services[agent]?.findIndex((file) => file.name === selectedFile) > -1 ? 'services' : 'steps'
     setCode(code)
     setSelectedFolder(currentFolder)
-  }, [selectedFile])
+  }, [selectedFile, agent, services, steps])
 
   const MotiaNav = () => {
     const href = `${GITHUB_REPO_BASE}/${folderMap[agent]}/${selectedFolder}/${selectedFile}`
