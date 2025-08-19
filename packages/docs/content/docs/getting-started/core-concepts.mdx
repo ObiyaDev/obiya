@@ -72,14 +72,18 @@ graph LR
 
 ### Real-World Flow Example
 
-```typescript title="01-api.step.ts"
+```typescript twoslash title="01-api.step.ts"
 // TypeScript API receives data
 export const config = {
-  type: 'api',
+  type: 'api' as const,
   path: '/process-data',
   emits: ['data.received'],
   flows: ['data-pipeline']
 }
+
+// Hover to see the inferred type
+const stepType = config.type
+//    ^?
 ```
 
 ```python title="02-processor.step.py"
