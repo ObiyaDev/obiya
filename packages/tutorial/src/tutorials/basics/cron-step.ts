@@ -8,7 +8,7 @@ export const cronStepSteps: TutorialStep[] = [
     elementXpath: `//div[@data-testid="node-stateauditjob"]`,
     segmentId,
     title: 'Cron Step',
-    description: `Let's do a recap of what you've learned, thus far you've become familiar with three Motia primitives <b>API</b> and <b>event</b> steps.<br/><br/> You've also started to learn how to navigate around Workbench. Let's wrap up Motia's primitives with the last one the <b>CRON</b> step. Let's take a deeper look at its definition.`,
+    description: `Let's do a recap of what you've learned, thus far you've become familiar with three Motia primitives <b>API</b> and <b>event</b> steps.<br/><br/> You've also started to learn how to navigate around Workbench. Let's wrap up Motia's primitives with the last one the <b>CRON</b> step. Let's take a deeper look at its definition. <br><br/> 💡 You can learn more about <b>CRON</b> steps in our <a href="https://www.motia.dev/docs/concepts/steps/cron" target="_blank">docs</a>`,
     id: uuidv4(),
     clickSelectorBeforeNext: `//button[@data-testid="open-code-preview-button-stateauditjob"]`,
     waitForSelector: `(//div[@id="app-sidebar-container"]//span[contains(text(), 'cron')])[2]`,
@@ -29,6 +29,9 @@ export const cronStepSteps: TutorialStep[] = [
     id: uuidv4(),
     clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
     requiredSelectorOnPrev: `//div[@id="app-sidebar-container"]//span[contains(text(), "handler")]`,
-    clickRequireSelectorMissingOnPrev: `//button[@data-testid="open-code-preview-button-stateauditjob"]`,
+    clickRequireSelectorMissingOnPrev: [
+      { target: '//button[@data-testid="flows-link"]', useKeyDown: true },
+      { target: `//button[@data-testid="open-code-preview-button-stateauditjob"]` },
+    ],
   },
 ]

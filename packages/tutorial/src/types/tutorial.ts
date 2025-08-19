@@ -8,12 +8,14 @@ export type TutorialStep = {
   clickSelectorBeforeNext?: string
   clickSelectorBeforePrev?: string
   waitForSelector?: string
+  waitForSelectorOnPrev?: string
   runScriptBeforeNext?: () => void
   runScriptBeforePrev?: () => void
   useKeyDownEventOnClickBeforeNext?: boolean
   requiredSelectorOnPrev?: string
-  clickRequireSelectorMissingOnPrev?: string
+  clickRequireSelectorMissingOnPrev?: string | { target: string; useKeyDown?: boolean }[]
   runScriptOnRequiredSelectorOnPrevFound?: () => void
+  goBackStepCountOnPrev?: number
 }
 
 export type Tutorial = {

@@ -41,7 +41,7 @@ export const endpointsSteps: TutorialStep[] = [
     id: uuidv4(),
     runScriptBeforeNext: () => {
       if (monaco) {
-        monaco.editor.getEditors()[0].setValue(
+        monaco.editor?.getEditors?.()?.[0]?.setValue(
           JSON.stringify({
             pet: {
               name: 'Jack',
@@ -71,5 +71,12 @@ export const endpointsSteps: TutorialStep[] = [
     title: 'Test Result',
     description: `Once your request has been resolved, you will see the response from here.`,
     id: uuidv4(),
+    requiredSelectorOnPrev: '//div[@data-testid="endpoint-body-panel"]',
+    clickRequireSelectorMissingOnPrev: [
+      { target: '//button[@data-testid="endpoints-link"]', useKeyDown: true },
+      { target: '//div[@data-testid="endpoint-POST-/basic-tutorial"]' },
+    ],
+    waitForSelectorOnPrev: '//div[@id="app-sidebar-container"]',
+    goBackStepCountOnPrev: 4,
   },
 ]

@@ -8,7 +8,7 @@ export const apiSteps: TutorialStep[] = [
     elementXpath: `//div[@data-testid="node-apitrigger"]`,
     segmentId,
     title: 'API Step',
-    description: `Let's evaluate the step that will allow you to receive traffic from external applications, API steps will allow you to expose an HTTP endpoint for external traffic.`,
+    description: `Let's evaluate the step that will allow you to receive traffic from external applications, API steps will allow you to expose an HTTP endpoint for external traffic.<br><br/> 💡 You can learn more about <b>API</b> steps in our <a href="https://www.motia.dev/docs/concepts/steps/api" target="_blank">docs</a>`,
     id: uuidv4(),
     clickSelectorBeforeNext: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
   },
@@ -27,38 +27,34 @@ export const apiSteps: TutorialStep[] = [
     title: 'Step Config',
     description: `All steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of the programming language).<br/><br/> Let's start with the configuration, the common config attributes are <i>type, name, description, and flows</i>.<br/><br/> <ul><li>The <b>type</b> attribute is important since it declares the type of step primitive</li><li>The <b>flows</b> attribute will associate your step with a given flow or set of flows.</li><li>The <b>name</b> and <b>description</b> attributes will provide context in the visualization and observability tools.</li></ul>`,
     id: uuidv4(),
+    clickSelectorBeforePrev: '//div[@id="app-sidebar-container"]//button[@data-testid="close-panel"]',
   },
   {
     elementXpath: `//span[contains(text(), "method")]/..`,
     segmentId,
-    title: 'API Step Method',
+    title: 'HTTP Method',
     description: `There are specific configuration attributes for an API step, let's start with the <b>method</b> attribute. This will declare the type of HTTP method used to talk to your api step.`,
     id: uuidv4(),
   },
   {
     elementXpath: `//span[contains(text(), "path")]/..`,
     segmentId,
-    title: 'API Step Path',
+    title: 'HTTP Path',
     description: `Through the <b>path</b> attribute you'll declare the url path used to trigger your api step.`,
     id: uuidv4(),
   },
   {
     elementXpath: `//span[contains(text(), "bodySchema")]/..`,
     segmentId,
-    title: 'API Step Request Body',
+    title: 'Request Body',
     description: `The <b>bodySchema</b> attribute will define the shape of the request body.<br/><br/> <i>💡 Both the request body and response payload are defined by <a href="https://zod.dev/" target="_blank">zod</a> schemas.</i>`,
     id: uuidv4(),
-    runScriptBeforeNext: () => {
-      if (monaco) {
-        monaco.editor.getEditors()[0].revealLine(61)
-      }
-    },
     waitForSelector: '//span[contains(text(), "responseSchema")]',
   },
   {
     elementXpath: `//span[contains(text(), "responseSchema")]/..`,
     segmentId,
-    title: 'API Step Response Payload',
+    title: 'Response Payload',
     description: `Through the <b>responseSchema</b> attribute you can declare the different type of http responses based on the http status code.<br/><br/> <i>💡 Both the request body and response payload are defined by <a href="https://zod.dev/" target="_blank">zod</a> schemas.</i>`,
     id: uuidv4(),
     runScriptBeforePrev: () => {
@@ -66,6 +62,12 @@ export const apiSteps: TutorialStep[] = [
         monaco.editor.getEditors()[0].revealLine(1)
       }
     },
+    runScriptBeforeNext: () => {
+      if (monaco) {
+        monaco.editor.getEditors()[0].revealLine(61)
+      }
+    },
+    waitForSelectorOnPrev: '//span[contains(text(), "bodySchema")]',
   },
   {
     elementXpath: `//span[contains(text(), "emits")]/..`,
@@ -98,6 +100,7 @@ export const apiSteps: TutorialStep[] = [
         monaco.editor.getEditors()[0].revealLine(33)
       }
     },
+    waitForSelectorOnPrev: '(//span[contains(text(), "await")])[2]',
   },
   {
     elementXpath: `(//span[contains(text(), "await")])[2]/..`,
