@@ -37,7 +37,7 @@ export const endpointsSteps: TutorialStep[] = [
     elementXpath: `//div[@data-testid="endpoint-body-panel__call"]`,
     segmentId,
     title: 'API Endpoint Test',
-    description: `This form will allow you to validate your API step by executing an HTTP request against your API endpoint.<br/><br/> You can also test your api endpoints using your terminal through the curl command.<br/><br/> 💡 Thanks to the <b>bodySchema</b> attribute from the API step config, you are automatically provided with a sample request payload. <br/><br/> <pre class="code-preview"><code class="language-bash">curl -X POST http://localhost:3000/api-step-path \\<br/>-H "Content-Type: application/json" \\<br/>-d '{...your request body}'</code></pre>`,
+    description: `This form will allow you to validate your API step by executing an HTTP request against your API endpoint.<br/><br/> You can also test your api endpoints using your terminal through the curl command.<br/><br/> 💡 Thanks to the <b>bodySchema</b> attribute from the API step config, you are automatically provided with a sample request payload. <br/><br/> <pre class="code-preview"><code class="language-bash">curl -X POST http://localhost:3000/basic-tutorial \\<br/>-H "Content-Type: application/json" \\<br/>-d '{"pet":{"name":"Jack","photoUrl":"https://images.dog.ceo/breeds/pug/n02110958_13560.jpg"},"foodOrder":{"id":1,"quantity":0}}'</code></pre>`,
     id: uuidv4(),
     runScriptBeforeNext: () => {
       if (monaco) {
