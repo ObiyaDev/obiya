@@ -52,7 +52,6 @@ export const App: FC = () => {
       <div className="grid grid-rows-[auto_1fr] grid-cols-[1fr_auto] bg-background text-foreground h-screen ">
         <main className="m-2 overflow-hidden" role="main">
           <Panel
-            className={'py-2'}
             tabs={[
               {
                 label: 'Flow',
