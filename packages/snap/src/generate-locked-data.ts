@@ -3,10 +3,9 @@ import { NoPrinter, Printer } from '@motiadev/core/dist/src/printer'
 import { randomUUID } from 'crypto'
 import { globSync } from 'glob'
 import path from 'path'
+import { ignoredPaths } from './config/ignored-paths'
 
 const version = `${randomUUID()}:${Math.floor(Date.now() / 1000)}`
-// TODO: allow users to add more directories through config
-const ignoredPaths = ['node_modules/**', '**/node_modules/**', 'python_modules/**', '**/python_modules/**']
 
 export const getStepFiles = (projectDir: string): string[] => {
   const stepsDir = path.join(projectDir)

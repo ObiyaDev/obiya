@@ -2,6 +2,7 @@ import chokidar, { FSWatcher } from 'chokidar'
 import { randomUUID } from 'crypto'
 import { getStepConfig, getStreamConfig, LockedData, Step } from '@motiadev/core'
 import type { Stream } from '@motiadev/core/dist/src/types-stream'
+import { ignoredPaths } from './config/ignored-paths'
 
 type StepChangeHandler = (oldStep: Step, newStep: Step) => void
 type StepCreateHandler = (step: Step) => void
@@ -156,6 +157,7 @@ export class Watcher {
   }
 
   private async onFileChange(path: string): Promise<void> {
+    console.log('WATCHING PATH----->', path)
     if (this.isStepFile(path)) {
       this.onStepFileChange(path)
     } else if (this.isStreamFile(path)) {
@@ -173,7 +175,7 @@ export class Watcher {
 
   init() {
     this.watcher = chokidar
-      .watch(this.dir, { persistent: true, ignoreInitial: true })
+      .watch(this.dir, { persistent: true, ignoreInitial: true, ignored: ignoredPaths })
       .on('add', (path) => this.onFileAdd(path))
       .on('change', (path) => this.onFileChange(path))
       .on('unlink', (path) => this.onFileDelete(path))
