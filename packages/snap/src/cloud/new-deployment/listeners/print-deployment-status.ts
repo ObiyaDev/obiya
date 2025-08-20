@@ -30,21 +30,28 @@ export const printDeploymentStatus = (data: DeployData, context: CliContext) => 
 
   context.log('deployment-status-blank-1', (message) => message.append(''))
 
-  const generateEmitList = (emits: string[]) => {
+  const generateEmitList = (emits: string[] = []) => {
     return emits.map((e) => colors.white(`⌁ ${e}`)).join(colors.white(', '))
   }
 
   const getStatus = (status: DeployStatus) => {
     return status === 'failed' ? colors.red('✘') : status === 'completed' ? colors.green('✓') : getSpinner()
   }
-  
+
   const lambda = (stepName: string, color: Color) => color(`λ ${stepName}`)
+  const eventStatus = data.events.reduce((acc, event) => {
+    return acc === 'failed' ? 'failed' : acc === 'completed' ? event.status : acc
+  }, 'completed' as DeployStatus)
   const cronStatus = data.cron.reduce((acc, cron) => {
     return acc === 'failed' ? 'failed' : acc === 'completed' ? cron.status : acc
   }, 'completed' as DeployStatus)
   const apigwStatus = data.endpoints.reduce((acc, endpoint) => {
     return acc === 'failed' ? 'failed' : acc === 'completed' ? endpoint.status : acc
   }, 'completed' as DeployStatus)
+
+  context.log('deployment-status-step-handler', (message) =>
+    message.append(`[${getStatus(eventStatus)}]   [λ Step Handler]`),
+  )
 
   // Display event listeners
   data.events.forEach((event) => {
@@ -53,7 +60,7 @@ export const printDeploymentStatus = (data: DeployData, context: CliContext) => 
     const topicList = generateEmitList(event.topics)
 
     context.log(`event-${event.stepName}`, (message) => {
-      message.append(`[${status}]   [${topicList}] → [≡ ${color(event.queue)}] → [${lambda(event.stepName, color)}]`)
+      message.append(`[${status}]    ↳ [${topicList}] → [≡ ${color(event.queue)}] → [${lambda(event.stepName, color)}]`)
     })
   })
 
@@ -82,11 +89,12 @@ export const printDeploymentStatus = (data: DeployData, context: CliContext) => 
 
   if (data.cron.length > 0) {
     data.cron.forEach((cronJob) => {
+      const color = getStatusColor(cronJob.status)
       const status = getStatus(cronJob.status)
       const emitsList = generateEmitList(cronJob.emits)
 
       context.log(`cron-${cronJob.stepName}`, (message) => {
-        message.append(`[${status}]    ↳ ${cronJob.cron} → [${emitsList}]`)
+        message.append(`[${status}]    ↳ ${cronJob.cron} → [${lambda(cronJob.stepName, color)}] → [${emitsList}]`)
       })
     })
   } else {
@@ -100,6 +108,6 @@ export const printDeploymentStatus = (data: DeployData, context: CliContext) => 
   context.log('deployment-status-legent-queue', (message) => message.append('↳ ≡ Queue'))
   context.log('deployment-status-legent-api-gateway', (message) => message.append('↳ ⛩ API Gateway'))
   context.log('deployment-status-legent-topic', (message) => message.append('↳ ⌁ Topic'))
-  context.log('deployment-status-legent-function-handler', (message) => message.append('↳ λ Function Handler'))
+  context.log('deployment-status-legent-function-handler', (message) => message.append('↳ λ Step Handler'))
   context.log('deployment-status-legent-cron-job', (message) => message.append('↳ ↺ Cron Job'))
 }

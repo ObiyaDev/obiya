@@ -1,4 +1,3 @@
-import colors from 'colors'
 import { buildValidation } from '../build/build-validation'
 import { cloudCli } from '../cli'
 import { handler } from '../config-utils'
@@ -14,9 +13,10 @@ cloudCli
   .description('Deploy a new version to Motia Cloud')
   .requiredOption('-k, --api-key <key>', 'The API key for authentication', process.env.MOTIA_API_KEY)
   .requiredOption('-v, --version-name <version>', 'The version to deploy')
-  .option('-p, --project-id <id>', 'Project ID')
-  .option('-s, --environment-id <id>', 'Environment ID')
+  .option('-p, --project-id <id>', 'Project ID (Deprecated)')
+  .option('-s, --environment-id <id>', 'Environment ID', process.env.MOTIA_ENVIRONMENT_ID)
   .option('-e, --env-file <path>', 'Path to environment file')
+  .option('-n, --project-name <name>', 'Project name (used when creating a new project)', '')
   .action(
     handler(async (arg, context) => {
       const listener = new CliListener(context)
@@ -30,14 +30,17 @@ cloudCli
       context.log('build-completed', (message) => message.tag('success').append('Build completed'))
       context.log('creating-deployment', (message) => message.tag('progress').append('Creating deployment...'))
 
-      const deployment = await cloudApi.createDeployment({
-        apiKey: arg.apiKey,
-        versionName: arg.versionName,
-        environmentId: arg.environmentId,
-      }).catch((error) => {
-        context.log('creating-deployment', (message) => message.tag('failed').append('Failed to create deployment'))
-        throw error
-      })
+      const deployment = await cloudApi
+        .createDeployment({
+          apiKey: arg.apiKey,
+          versionName: arg.versionName,
+          environmentId: arg.environmentId,
+          projectName: arg.projectName,
+        })
+        .catch((error) => {
+          context.log('creating-deployment', (message) => message.tag('failed').append('Failed to create deployment'))
+          throw error
+        })
 
       context.log('creating-deployment', (message) => message.tag('success').append('Deployment created'))
       context.log('uploading-artifacts', (message) => message.tag('progress').append('Uploading artifacts...'))

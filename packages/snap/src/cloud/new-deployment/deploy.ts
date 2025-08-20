@@ -30,9 +30,17 @@ export const deploy = async (input: DeployInput): Promise<void> => {
 
   const subscription = client.subscribeItem<DeployData>('deployment', deploymentId, 'data')
 
+  const interval = setInterval(() => {
+    const state = subscription.getState()
+    if (state) {
+      listener.onDeployProgress(state)
+    }
+  }, 1000)
+
   await new Promise<void>((resolve) => {
     subscription.addChangeListener((item) => {
-      if (item) {
+      if (item && ['failed', 'completed'].includes(item.status)) {
+        clearInterval(interval)
         listener.onDeployProgress(item)
 
         if (item.status === 'completed') {
@@ -41,10 +49,8 @@ export const deploy = async (input: DeployInput): Promise<void> => {
           })
         }
 
-        if (['failed', 'completed'].includes(item.status)) {
-          client.close()
-          resolve()
-        }
+        client.close()
+        resolve()
       }
     })
   })
