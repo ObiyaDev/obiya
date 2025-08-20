@@ -31,10 +31,10 @@ export const endpointsSteps: TutorialStep[] = [
     id: uuidv4(),
     clickSelectorBeforeNext: `//button[@data-testid="endpoint-call-tab"]`,
     useKeyDownEventOnClickBeforeNext: true,
-    waitForSelector: `//div[@data-testid="endpoint-body-panel"]`,
+    waitForSelector: `//div[@data-testid="endpoint-body-panel__call"]`,
   },
   {
-    elementXpath: `//div[@data-testid="endpoint-body-panel"]`,
+    elementXpath: `//div[@data-testid="endpoint-body-panel__call"]`,
     segmentId,
     title: 'API Endpoint Test',
     description: `This form will allow you to validate your API step by executing an HTTP request against your API endpoint.<br/><br/> You can also test your api endpoints using your terminal through the curl command.<br/><br/> 💡 Thanks to the <b>bodySchema</b> attribute from the API step config, you are automatically provided with a sample request payload. <br/><br/> <pre class="code-preview"><code class="language-bash">curl -X POST http://localhost:3000/api-step-path \\<br/>-H "Content-Type: application/json" \\<br/>-d '{...your request body}'</code></pre>`,
@@ -75,12 +75,11 @@ export const endpointsSteps: TutorialStep[] = [
     title: 'Test Result',
     description: `Once your request has been resolved, you will see the response from here.`,
     id: uuidv4(),
-    requiredSelectorOnPrev: '//div[@data-testid="endpoint-body-panel"]',
+    requiredSelectorOnPrev: `//div[@id="app-sidebar-container"]//span[contains(text(), '/basic-tutorial')]`,
     clickRequireSelectorMissingOnPrev: [
       { target: '//button[@data-testid="endpoints-link"]', useKeyDown: true },
       { target: '//div[@data-testid="endpoint-POST-/basic-tutorial"]' },
     ],
-    waitForSelectorOnPrev: '//div[@id="app-sidebar-container"]',
     goBackStepCountOnPrev: 4,
   },
 ]
