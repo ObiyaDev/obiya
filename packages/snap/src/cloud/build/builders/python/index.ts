@@ -130,7 +130,7 @@ export class PythonBuilder implements StepBuilder {
 
   private async getPythonBuilderData(step: Step): Promise<PythonBuilderData> {
     return new Promise((resolve, reject) => {
-      const child = spawn('python', [path.join(__dirname, 'python-builder.py'), step.filePath], {
+      const child = spawn('python', [path.join(__dirname, 'python-builder.py'), this.builder.projectDir, step.filePath], {
         cwd: this.builder.projectDir,
         stdio: [undefined, undefined, 'pipe', 'ipc'],
       })

@@ -1,17 +1,7 @@
 import os
 import sys
 import json
-import importlib.util
 import traceback
-import site
-import builtins
-import ast
-import importlib.metadata
-import subprocess
-import re
-from typing import Set, List, Tuple, Optional, Dict, Any
-from pathlib import Path
-from functools import lru_cache
 
 from trace_packages import trace_packages
 from trace_project_files import trace_project_files
@@ -22,7 +12,7 @@ def main() -> None:
     """Main entry point for the script."""
     if len(sys.argv) != 3:
         print("Usage: python python-builder.py <project_dir> <entry_file>")
-        sys.exit(1)
+        sys.exit(2)
 
     project_dir = sys.argv[1]
     entry_file = sys.argv[2]
@@ -46,7 +36,9 @@ def main() -> None:
             print(bytes_message)
         sys.exit(0)
     except Exception as e:
-        sys.exit(2)
+        print(f"Error: {str(e)}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        sys.exit(3)
 
 if __name__ == "__main__":
     main()
