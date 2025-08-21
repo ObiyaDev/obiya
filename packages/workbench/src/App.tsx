@@ -39,26 +39,29 @@ export const App: FC = () => {
     },
     [tabChangeCallbacks, tab],
   )
+
   useEffect(() => {
     const url = new URL(window.location.href)
     const viewMode = url.searchParams.get('view-mode') as 'project' | 'system'
     if (viewMode) {
       setViewMode(viewMode)
     }
-  }, [setViewMode])
+  }, [])
 
   if (viewMode === 'project') {
     return (
-      <div className="grid grid-rows-[auto_1fr] grid-cols-[1fr_auto] bg-background text-foreground h-screen ">
-        <main className="m-2 overflow-hidden" role="main">
+      <div className="grid grid-rows-1 grid-cols-1 bg-background text-foreground h-screen">
+        <main className="h-full overflow-hidden" role="main">
           <Panel
+            contentClassName="flex-1"
+            tabsClassName="h-full"
             tabs={[
               {
                 label: 'Flow',
                 labelComponent: <FlowTabMenuItem />,
                 content: (
                   <ReactFlowProvider>
-                    <div className="h-[calc(100vh-100px)] w-full">
+                    <div className="h-full w-full">
                       <FlowPage />
                     </div>
                   </ReactFlowProvider>

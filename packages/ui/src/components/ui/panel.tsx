@@ -33,6 +33,7 @@ export interface PanelProps {
     'data-testid'?: string
   }[]
   contentClassName?: string
+  tabsClassName?: string
 }
 
 const panelVariants = {
@@ -72,6 +73,7 @@ export const Panel: FC<PanelProps> = ({
   size,
   variant = 'default',
   contentClassName,
+  tabsClassName,
   tabs,
 }) => {
   const hasTabs = tabs && tabs.length > 0
@@ -113,7 +115,11 @@ export const Panel: FC<PanelProps> = ({
     )
 
     if (hasTabs) {
-      return <Tabs defaultValue={tabs?.[0]?.label}>{_view}</Tabs>
+      return (
+        <Tabs className={tabsClassName} defaultValue={tabs?.[0]?.label}>
+          {_view}
+        </Tabs>
+      )
     }
 
     return _view
