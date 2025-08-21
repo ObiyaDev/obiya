@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import colors from 'colors'
 import { Archiver } from '../archiver'
 
 const shouldIgnore = (filePath: string): boolean => {
@@ -38,10 +37,7 @@ export const addPackageToArchive = async (
   sitePackagesDir: string,
   packageName: string,
 ): Promise<void> => {
-  const packageNameVariations = [
-    packageName,
-    `${packageName}.py`,
-  ]
+  const packageNameVariations = [packageName, `${packageName}.py`]
 
   // Iterate over all possible package name variations
   for (const pkg of packageNameVariations) {

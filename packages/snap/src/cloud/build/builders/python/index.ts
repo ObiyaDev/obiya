@@ -11,8 +11,8 @@ import { BuildListener } from '../../../new-deployment/listeners/listener.types'
 import { distDir } from '../../../new-deployment/constants'
 
 interface PythonBuilderData {
-  packages: Array<{ name: string; version: string; is_direct_import: boolean }>;
-  files: string[];
+  packages: Array<{ name: string; version: string; is_direct_import: boolean }>
+  files: string[]
 }
 
 export class PythonBuilder implements StepBuilder {
@@ -131,10 +131,14 @@ export class PythonBuilder implements StepBuilder {
 
   private async getPythonBuilderData(step: Step): Promise<PythonBuilderData> {
     return new Promise((resolve, reject) => {
-      const child = spawn('python', [path.join(__dirname, 'python-builder.py'), this.builder.projectDir, step.filePath], {
-        cwd: this.builder.projectDir,
-        stdio: [undefined, undefined, 'pipe', 'ipc'],
-      })
+      const child = spawn(
+        'python',
+        [path.join(__dirname, 'python-builder.py'), this.builder.projectDir, step.filePath],
+        {
+          cwd: this.builder.projectDir,
+          stdio: [undefined, undefined, 'pipe', 'ipc'],
+        },
+      )
       const err: string[] = []
 
       child.on('stderr', (data) => err.push(data.toString()))
