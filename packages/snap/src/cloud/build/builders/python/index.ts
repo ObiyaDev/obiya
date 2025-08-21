@@ -11,7 +11,7 @@ import { BuildListener } from '../../../new-deployment/listeners/listener.types'
 import { distDir } from '../../../new-deployment/constants'
 
 interface PythonBuilderData {
-  packages: Array<{ name: string; version: string }>;
+  packages: Array<{ name: string; version: string; is_direct_import: boolean }>;
   files: string[];
 }
 
@@ -23,7 +23,7 @@ export class PythonBuilder implements StepBuilder {
     activatePythonVenv({ baseDir: this.builder.projectDir })
   }
 
-  private async buildStep(step: Step, archive: Archiver, bundlePackages: boolean = true): Promise<string> {
+  private async buildStep(step: Step, archive: Archiver): Promise<string> {
     const entrypointPath = step.filePath.replace(this.builder.projectDir, '')
     const normalizedEntrypointPath = entrypointPath.replace(/[.]step.py$/, '_step.py')
     const sitePackagesDir = `${process.env.PYTHON_SITE_PACKAGES}-lambda`
@@ -40,7 +40,7 @@ export class PythonBuilder implements StepBuilder {
     files.forEach((file) => archive.append(fs.createReadStream(file), path.relative(this.builder.projectDir, file)))
 
     if (packages.length > 0) {
-      await Promise.all(packages.map(async (pkg) => addPackageToArchive(archive, sitePackagesDir, pkg.name)))
+      await Promise.all(packages.map((pkg) => addPackageToArchive(archive, sitePackagesDir, pkg.name)))
       this.listener.onBuildProgress(step, `Added ${packages.length} packages to archive`)
     }
 

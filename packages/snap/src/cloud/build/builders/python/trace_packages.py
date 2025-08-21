@@ -94,7 +94,27 @@ def is_builtin_module(module_name: str) -> bool:
     except ImportError:
         return False
 
-def get_direct_imports(file_path: str) -> Set[str]:
+def is_local_import(package_name: str, project_dir: str) -> bool:
+    """Check if a package is a local import within the project directory."""
+    try:
+        # Try to import the module
+        module = importlib.import_module(package_name)
+        
+        # If the module has no __file__ attribute, it's not a local file
+        if not hasattr(module, '__file__'):
+            return False
+            
+        # Check if the module's file is within the project directory
+        module_path = os.path.abspath(module.__file__)
+        
+        # Check if the module path is not in a site-packages or dist-packages directory
+        return 'site-packages' not in module_path and 'dist-packages' not in module_path
+        
+    except ImportError:
+        # If we can't import it, it means it's a local import
+        return True
+
+def get_direct_imports(project_dir: str, file_path: str) -> Set[str]:
     """Extract direct imports from a Python file using AST parsing."""
     direct_imports = set()
     
@@ -108,12 +128,16 @@ def get_direct_imports(file_path: str) -> Set[str]:
                 for name in node.names:
                     base_pkg = name.name.split('.')[0]
                     if is_valid_package_name(base_pkg) and not is_builtin_module(base_pkg):
-                        direct_imports.add(base_pkg)
+                        # Check if this is a local import
+                        if not is_local_import(base_pkg, project_dir):
+                            direct_imports.add(base_pkg)
             elif isinstance(node, ast.ImportFrom):
                 if node.module:
                     base_pkg = node.module.split('.')[0]
                     if is_valid_package_name(base_pkg) and not is_builtin_module(base_pkg):
-                        direct_imports.add(base_pkg)
+                        # Check if this is a local import
+                        if not is_local_import(base_pkg, project_dir):
+                            direct_imports.add(base_pkg)
     except Exception as e:
         print(f"Warning: Could not parse imports from {file_path}: {str(e)}")
     
@@ -129,7 +153,7 @@ def get_package_dependencies(package_name: str, processed: Set[str] = None) -> S
     if processed is None:
         processed = set()
     
-    if package_name in processed or is_builtin_module(package_name):
+    if package_name in processed:
         return set()
     
     processed.add(package_name)
@@ -171,19 +195,18 @@ def trace_packages(project_dir: str, entry_file: str) -> List[str]:
     """Find all imported Python packages and files starting from an entry file."""
     
     # Get direct imports from the entry file
-    direct_imports = get_direct_imports(entry_file)
+    direct_imports = get_direct_imports(project_dir, entry_file)
     
-    # Initialize sets to track packages
-    all_packages = set()
+    # Initialize lists to track packages
+    all_packages = []
     processed_packages = set()
     
     # Process each direct import and its dependencies
     for package_name in direct_imports:
-        all_packages.add(package_name)
+        all_packages.append({ 'name': package_name, 'is_direct_import': True })
         # Get all dependencies including sub-dependencies
-        all_packages.update(get_package_dependencies(package_name, processed_packages))
+        dependencies = get_package_dependencies(package_name, processed_packages)
+        all_packages.extend([{ 'name': dep, 'is_direct_import': False } for dep in dependencies])        
     
     # Filter out built-in packages
-    non_builtin_packages = {pkg for pkg in all_packages if not is_builtin_module(pkg)}
-    
-    return list(map(lambda pkg: {'name': pkg }, sorted(non_builtin_packages)))
+    return all_packages

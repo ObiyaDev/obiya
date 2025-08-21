@@ -14,8 +14,8 @@ def main() -> None:
         print("Usage: python python-builder.py <project_dir> <entry_file>")
         sys.exit(2)
 
-    project_dir = sys.argv[1]
-    entry_file = sys.argv[2]
+    project_dir = os.path.abspath(sys.argv[1])
+    entry_file = os.path.abspath(sys.argv[2])
 
     try:
         # Find project dependencies
