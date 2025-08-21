@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 from modulefinder import ModuleFinder
 from typing import List
 
@@ -38,4 +39,5 @@ def trace_project_files(project_dir: str, entry_file: str) -> List[str]:
         
     except Exception as e:
         print(f"Error in find_project_files: {str(e)}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         return []
