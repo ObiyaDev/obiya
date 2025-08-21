@@ -37,6 +37,7 @@ export class PythonBuilder implements StepBuilder {
     }
 
     archive.append(fs.createReadStream(step.filePath), path.relative(this.builder.projectDir, normalizedEntrypointPath))
+    files.forEach((file) => archive.append(fs.createReadStream(file), path.relative(this.builder.projectDir, file)))
 
     if (packages.length > 0) {
       await Promise.all(packages.map(async (pkg) => addPackageToArchive(archive, sitePackagesDir, pkg.name)))

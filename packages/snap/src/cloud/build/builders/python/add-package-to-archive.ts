@@ -61,6 +61,7 @@ export const addPackageToArchive = async (
       archive.append(fs.createReadStream(fullPath), relativePath)
     }
 
+    // package added successfully
     return
   }
 }
