@@ -40,9 +40,8 @@ export const addPackageToArchive = async (
 ): Promise<void> => {
   const packageNameVariations = [
     packageName,
-    packageName.replace('-', '_'),
-    packageName.replace('_', '-'),
-  ].flatMap((pkg) => [pkg, `${pkg}.py`])
+    `${packageName}.py`,
+  ]
 
   // Iterate over all possible package name variations
   for (const pkg of packageNameVariations) {
