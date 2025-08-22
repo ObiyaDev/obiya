@@ -20,9 +20,16 @@ class PetStoreService:
     
     async def create_order(self, order: Dict[str, Any]) -> Order:
         async with httpx.AsyncClient() as client:
+            order_data = {
+                "quantity": order.get("quantity"),
+                "petId": 1,
+                "shipDate": order.get("ship_date"),
+                "status": order.get("status"),
+            }
+            
             response = await client.post(
                 'https://petstore.swagger.io/v2/store/order',
-                json=order,
+                json=order_data,
                 headers={'Content-Type': 'application/json'}
             )
             return response.json()

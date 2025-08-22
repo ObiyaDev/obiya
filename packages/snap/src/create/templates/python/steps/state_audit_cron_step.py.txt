@@ -15,12 +15,12 @@ async def handler(context):
     for item in state_value:
         # check if current date is after item.ship_date
         current_date = datetime.now()
-        ship_date = datetime.fromisoformat(item["ship_date"].replace('Z', '+00:00'))
+        ship_date = datetime.fromisoformat(item.get("shipDate", "").replace('Z', '+00:00'))
 
         if not item.get("complete", False) and current_date > ship_date:
             context.logger.warn("Order is not complete and ship date is past", {
-                "order_id": item["id"],
-                "ship_date": item["ship_date"],
+                "order_id": item.get("id"),
+                "ship_date": item.get("shipDate"),
                 "complete": item.get("complete", False),
             })
 
@@ -30,9 +30,9 @@ async def handler(context):
                     "email": "test@test.com",
                     "template_id": "order-audit-warning",
                     "template_data": {
-                        "order_id": item["id"],
-                        "status": item["status"],
-                        "ship_date": item["ship_date"],
+                        "order_id": item.get("id"),
+                        "status": item.get("status"),
+                        "ship_date": item.get("shipDate"),
                         "message": "Order is not complete and ship date is past",
                     },
                 },

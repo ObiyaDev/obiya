@@ -34,6 +34,12 @@ export const useTutorialEngine = () => {
         return
       }
 
+      if (container.parentElement) {
+        container.style.transition = 'all 0.3s ease-in-out'
+        container.parentElement.style.opacity = '1'
+        container.parentElement.style.display = 'block'
+      }
+
       loading.current = true
       currentStepRef.current = stepNumber
 
@@ -127,7 +133,7 @@ export const useTutorialEngine = () => {
           // Fallback to center of screen
           moveComponent(window.innerWidth / 2 - width / 2, window.innerHeight / 2 - height / 2)
         }
-      }, 100)
+      }, 1)
 
       loading.current = false
     }
@@ -164,8 +170,6 @@ export const useTutorialEngine = () => {
 
     const onOpen = () => {
       if (container?.parentElement) {
-        container.parentElement.style.opacity = '1'
-        container.parentElement.style.display = 'block'
         setTotalSteps(MotiaTutorial.steps.length)
         moveStep(0)
       }

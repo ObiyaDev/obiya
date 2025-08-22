@@ -39,7 +39,7 @@
     "description": "We can define the events that this step will emit, this is how we can trigger other Motia Steps.",
     "lines": [
       "29",
-      "40-47"
+      "42-50"
     ]
   },
   {
@@ -47,7 +47,7 @@
     "title": "Handler",
     "description": "The handler is the function that will be executed when the step is triggered. This one receives the request body and emits events.",
     "lines": [
-      "32-49"
+      "32-52"
     ]
   },
   {
@@ -55,7 +55,7 @@
     "title": "Logger",
     "description": "The logger is a utility that allows you to log messages to the console. It is available in the handler function. We encourage you to use it instead of console.log. It will automatically be tied to the trace id of the request.",
     "lines": [
-      "33"
+      "34"
     ]
   },
   {
@@ -63,7 +63,7 @@
     "title": "HTTP Response",
     "description": "The handler can return a response to the client. This is how we can return a response to the client. It must comply with the responseSchema defined in the step configuration.",
     "lines": [
-      "49"
+      "52"
     ]
   }
 ]

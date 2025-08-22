@@ -4,7 +4,7 @@
     "title": "Step Configuration",
     "description": "All steps should have a defined configuration, this is how you define the step's behavior and how it will be triggered.",
     "lines": [
-      "5-18"
+      "5-19"
     ]
   },
   {
@@ -12,7 +12,7 @@
     "title": "Event Step",
     "description": "Definition of an event step that subscribes to specific topics",
     "lines": [
-      "11",
+      "12",
       "15-16"
     ]
   },
@@ -21,7 +21,7 @@
     "title": "Input Schema",
     "description": "Definition of the expected input data structure from the subscribed topic. Motia will automatically generate types based on this schema.",
     "lines": [
-      "5-8",
+      "5-9",
       "17"
     ]
   },
@@ -30,7 +30,7 @@
     "title": "Emits",
     "description": "We can define the events that this step will emit, triggering other Motia Steps.",
     "lines": [
-      "16"
+      "17"
     ]
   },
   {
@@ -38,7 +38,7 @@
     "title": "Handler",
     "description": "The handler is the function that will be executed when the step receives an event from its subscribed topic. It processes the input data and can emit new events.",
     "lines": [
-      "20-44"
+      "21-50"
     ]
   },
   {
@@ -46,7 +46,7 @@
     "title": "State Management",
     "description": "The handler demonstrates state management by storing order data that can be accessed by other steps.",
     "lines": [
-      "29"
+      "35"
     ]
   },
   {
@@ -54,7 +54,7 @@
     "title": "Event Emission",
     "description": "After processing the order, the handler emits a new event to notify other steps about the new order.",
     "lines": [
-      "31-44"
+      "37-50"
     ]
   },
   {
@@ -62,7 +62,7 @@
     "title": "Logger",
     "description": "The logger is a utility that allows you to log messages to the console. It is available in the handler function and automatically ties to the trace id of the request.",
     "lines": [
-      "21"
+      "22"
     ]
   }
 ]

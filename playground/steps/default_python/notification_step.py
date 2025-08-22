@@ -24,7 +24,11 @@ async def handler(input_data, context):
     
     redacted_email = re.sub(r'(?<=.{2}).(?=.*@)', '*', email)
 
-    context.logger.info("Processing Notification", {"template_id": template_id, "template_data": template_data, "email": redacted_email})
+    context.logger.info("Processing Notification", {
+        "template_id": template_id,
+        "template_data": template_data,
+        "email": redacted_email,
+    })
 
     # This represents a call to some sort of
     # notification service to indicate that a

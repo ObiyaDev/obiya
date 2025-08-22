@@ -3,6 +3,7 @@ from datetime import datetime
 from .services.pet_store import pet_store_service
 
 class InputSchema(BaseModel):
+    id: str
     email: str
     quantity: int
     pet_id: int
@@ -21,12 +22,17 @@ async def handler(input_data, context):
     context.logger.info("Step 02 – Process food order", {"input": input_data})
 
     order = await pet_store_service.create_order({
-        **input_data,
+        "id": input_data.get("id"),
+        "quantity": input_data.get("quantity"),
+        "pet_id": input_data.get("pet_id"),
+        "email": input_data.get("email"),
         "ship_date": datetime.now().isoformat(),
         "status": "placed",
     })
 
-    await context.state.set("orders_python", order.id, order)
+    context.logger.info("Order created", {"order": order})
+
+    await context.state.set("orders_python", order.get("id"), order)
 
     await context.emit({
         "topic": "python-notification",
@@ -34,11 +40,11 @@ async def handler(input_data, context):
             "email": input_data["email"],
             "template_id": "new-order",
             "template_data": {
-                "status": order.status,
-                "ship_date": order.ship_date,
-                "id": order.id,
-                "pet_id": order.pet_id,
-                "quantity": order.quantity,
+                "status": order.get("status"),
+                "ship_date": order.get("shipDate"),
+                "id": order.get("id"),
+                "pet_id": order.get("petId"),
+                "quantity": order.get("quantity"),
             },
         },
     })

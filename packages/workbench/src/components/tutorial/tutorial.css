@@ -30,8 +30,6 @@
   flex-flow: column;
   border: 1px solid var(--tutorial-border);
   border-radius: 16px;
-
-  transition: all 0.3s ease-in-out;
 }
 
 .driver-popover-image {
