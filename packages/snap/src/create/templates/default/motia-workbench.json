@@ -1,28 +1,27 @@
 [
   {
-    "id": "default",
+    "id": "basic-tutorial",
     "config": {
-      "steps/00-noop.step.ts": {
-        "x": -507,
-        "y": 111,
+      "steps/03-state-audit-cron.step.ts": {
+        "x": -165,
+        "y": 217,
         "sourceHandlePosition": "right"
       },
-      "steps/01-api.step.ts": {
-        "x": -281,
-        "y": 94,
-        "sourceHandlePosition": "right",
-        "targetHandlePosition": "left"
-      },
-      "steps/02-test-state.step.ts": {
-        "x": 60,
-        "y": 36,
+      "steps/02-process-food-order.step.ts": {
+        "x": 211,
+        "y": 17,
         "sourceHandlePosition": "bottom",
         "targetHandlePosition": "left"
       },
-      "steps/03-check-state-change.step.ts": {
-        "x": 78,
-        "y": 199,
-        "targetHandlePosition": "top"
+      "steps/01-api.step.ts": {
+        "x": -100,
+        "y": 3,
+        "sourceHandlePosition": "right",
+        "targetHandlePosition": "left"
+      },
+      "steps/04-notification.step.ts": {
+        "x": 300,
+        "y": 264
       }
     }
   }
