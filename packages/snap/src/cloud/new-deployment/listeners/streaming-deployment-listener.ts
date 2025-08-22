@@ -281,11 +281,11 @@ export class StreamingDeploymentListener implements DeploymentListener {
 
   onDeployEnd({ output }: DeploymentOutput) {
     const message = 'Deployment completed successfully'
-    this.streamManager.completeDeployment(true)
+    this.streamManager.completeDeployment(this.deploymentId, true)
   }
 
   onDeployError(errorMessage: string) {
-    this.streamManager.completeDeployment(false, errorMessage)
+    this.streamManager.completeDeployment(this.deploymentId, false, errorMessage)
   }
 
   // Utility methods for phase management

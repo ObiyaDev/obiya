@@ -9,8 +9,8 @@ The deployment system uses Motia Streams for real-time updates during the deploy
 `deployment-status`
 
 ### Stream Structure
-- **Group ID**: `active` (always use this value)
-- **Item ID**: `current` (single deployment at a time)
+- **Group ID**: `deployments` (always use this value)
+- **Item ID**: The unique `deploymentId` for each deployment
 
 ## Data Structure
 
