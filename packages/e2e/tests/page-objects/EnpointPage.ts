@@ -15,7 +15,7 @@ export class EndpointPage extends MotiaApplicationPage {
     this.detailsTab = page.getByTestId('endpoint-details-tab')
     this.firstEndpointItem = page.getByTestId('endpoint-POST-/default')
     this.editor = page.locator('.monaco-editor')
-    this.playButton = page.getByTestId('endpoint-play-button')
+    this.playButton = page.getByRole('button', { name: 'Continue' })
     this.responseContainer = page.getByTestId('endpoint-response-container')
   }
 
