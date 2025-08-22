@@ -39,7 +39,33 @@ interface DeploymentData {
 
 ## API Endpoints
 
-### Start Deployment
+### 1. Create Deployment (First Step - Web Interface)
+```http
+POST /v1/web/deployments
+Authorization: Bearer <user-session-token>
+Content-Type: application/json
+
+{
+  "projectName": "my-project",
+  "environmentId": "env-123", 
+  "versionName": "v1.0.0"
+}
+```
+
+**Response:**
+```json
+{
+  "deploymentId": "deploy-456",
+  "deploymentToken": "token-789"
+}
+```
+
+This endpoint is called by the Motia Hub web interface as the **first step** of the deployment process. It:
+- Creates a deployment record in the database
+- Generates a deployment token for secure communication
+- Returns the deployment ID and token that will be used in subsequent steps
+
+### 2. Start Deployment (Second Step - Framework)
 ```http
 POST /cloud/deploy/start
 Content-Type: application/json
