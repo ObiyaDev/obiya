@@ -137,6 +137,7 @@ export const useTutorialEngine = () => {
     if (ref.current?.parentElement) {
       ref.current.parentElement.style.transition = 'opacity 0.3s ease-out'
       ref.current.parentElement.style.opacity = '0'
+      localStorage.setItem('motia-tutorial-closed', 'true')
 
       setTimeout(() => {
         if (ref.current?.parentElement) {
@@ -171,7 +172,11 @@ export const useTutorialEngine = () => {
     }
 
     MotiaTutorial.onOpen(onOpen)
-    MotiaTutorial.onStepsRegistered(onOpen)
+    MotiaTutorial.onStepsRegistered(() => {
+      if (localStorage.getItem('motia-tutorial-closed') !== 'true') {
+        onOpen()
+      }
+    })
   }, [])
 
   return {
