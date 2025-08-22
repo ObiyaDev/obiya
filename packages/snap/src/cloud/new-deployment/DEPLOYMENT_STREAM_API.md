@@ -70,11 +70,6 @@ Content-Type: application/json
 GET /cloud/deploy/status/:deploymentId
 ```
 
-### Get All Deployments History
-```http
-GET /cloud/deploy/history
-```
-
 **Response (Single Deployment):**
 ```json
 {
@@ -88,24 +83,6 @@ GET /cloud/deploy/history
     "message": "Building step: api-handler",
     // ... rest of DeploymentData
   }
-}
-```
-
-**Response (History):**
-```json
-{
-  "success": true,
-  "deployments": [
-    {
-      "id": "deploy-123",
-      "deploymentId": "deploy-123",
-      "status": "completed",
-      "startedAt": 1234567890,
-      "completedAt": 1234567990,
-      // ... rest of DeploymentData
-    },
-    // ... more deployments
-  ]
 }
 ```
 
@@ -136,27 +113,6 @@ const MyDeploymentComponent = ({ deploymentId }: { deploymentId: string }) => {
 }
 ```
 
-### Monitoring All Deployments
-```typescript
-import { useStreamGroup } from '@motiadev/stream-client-react'
-
-const DeploymentsList = () => {
-  const { data: deployments } = useStreamGroup<DeploymentData>({
-    streamName: 'deployment-status',
-    groupId: 'deployments'
-  })
-
-  return (
-    <div>
-      {deployments.map(deployment => (
-        <div key={deployment.id}>
-          <p>{deployment.deploymentId}: {deployment.status}</p>
-        </div>
-      ))}
-    </div>
-  )
-}
-```
 
 ### Using Stream Client Directly
 ```typescript

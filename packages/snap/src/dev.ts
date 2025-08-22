@@ -12,6 +12,7 @@ import { flush } from '@amplitude/analytics-node'
 import { generateLockedData, getStepFiles } from './generate-locked-data'
 import { createDevWatchers } from './dev-watchers'
 import { stateEndpoints } from './dev/state-endpoints'
+import { deployEndpoints } from './cloud/endpoints'
 import { activatePythonVenv } from './utils/activate-python-env'
 import { identifyUser } from './utils/analytics'
 import { version } from './version'
@@ -76,8 +77,7 @@ export const dev = async (
   stateEndpoints(motiaServer, state)
   
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { deployEndpoints } = require('./dev/deploy-endpoints')
-  deployEndpoints(motiaServer)
+  deployEndpoints(motiaServer, lockedData)
 
   motiaServer.server.listen(port, hostname)
   console.log('🚀 Server ready and listening on port', port)

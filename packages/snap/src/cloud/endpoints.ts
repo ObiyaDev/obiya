@@ -1,19 +1,19 @@
+import { randomUUID } from 'crypto'
 import { Request, Response } from 'express'
-import { MotiaServer } from '@motiadev/core'
+import { LockedData, MotiaServer } from '@motiadev/core'
 import { buildValidation } from './build/build-validation'
 import { StreamingDeploymentListener } from './new-deployment/listeners/streaming-deployment-listener'
 import { build } from './new-deployment/build'
 import { uploadArtifacts } from './new-deployment/upload-artifacts'
 import { deploy } from './new-deployment/deploy'
 import { CliContext } from './config-utils'
-import { v4 as uuidv4 } from 'uuid'
-import { DeploymentStreamManager } from './new-deployment/streams/deployment-stream'
+import { DeploymentData, DeploymentStreamManager } from './new-deployment/streams/deployment-stream'
 
-export const deployEndpoints = (server: MotiaServer) => {
-  const { app, lockedData } = server
+export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => {
+  const { app } = server
   
   // Criar stream de deployment se não existir
-  const deploymentStream = lockedData.createStream({
+  const deploymentStream = lockedData.createStream<DeploymentData>({
     filePath: '__deployment',
     hidden: true,
     config: {
@@ -39,7 +39,7 @@ export const deployEndpoints = (server: MotiaServer) => {
       }
 
       // Generate unique deployment session ID
-      const sessionId = deploymentId || uuidv4()
+      const sessionId = deploymentId || randomUUID()
       
       // Create context for endpoint environment
       const context = new CliContext()

@@ -21,8 +21,11 @@ export class StreamingDeploymentListener implements DeploymentListener {
 
   // Helper to update stream with current phase and logs
   private async updateStream(update: Partial<DeploymentData>) {
-    const current = await this.streamManager.getCurrentDeployment()
-    
+    const current = await this.streamManager.getDeployment(this.deploymentId)
+
+    if(!current) {
+      return
+    }
     // Merge logs instead of replacing them
     const mergedUpdate: Partial<DeploymentData> = {
       ...update
@@ -38,40 +41,12 @@ export class StreamingDeploymentListener implements DeploymentListener {
       mergedUpdate.deployLogs = [...current.deployLogs, ...update.deployLogs]
     }
     
-    await this.streamManager.updateDeployment(mergedUpdate)
-  }
-
-  private getPhaseStatus(phase: 'build' | 'upload' | 'deploy'): DeploymentData['status'] {
-    switch (phase) {
-      case 'build': return 'building'
-      case 'upload': return 'uploading'
-      case 'deploy': return 'deploying'
-      default: return 'idle'
-    }
+    await this.streamManager.updateDeployment(this.deploymentId, mergedUpdate)
   }
 
   // DeploymentListener interface implementation
   getErrors(): ValidationError[] {
     return this.errors
-  }
-
-  getWarnings(): ValidationError[] {
-    return this.warnings
-  }
-
-  async getBuildLogs(): Promise<string[]> {
-    const deployment = await this.streamManager.getCurrentDeployment()
-    return deployment.buildLogs
-  }
-
-  async getUploadLogs(): Promise<string[]> {
-    const deployment = await this.streamManager.getCurrentDeployment()
-    return deployment.uploadLogs
-  }
-
-  async getDeployLogs(): Promise<string[]> {
-    const deployment = await this.streamManager.getCurrentDeployment()
-    return deployment.deployLogs
   }
 
   // Build phase events
