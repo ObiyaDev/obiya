@@ -235,18 +235,6 @@ export const create = async ({ projectName, template, cursorEnabled, context }: 
   const packageManager = await installNodeDependencies(rootDir, context)
 
   if (template === 'python') {
-    if (!checkIfFileExists(rootDir, 'requirements.txt')) {
-      const requirementsContent = [
-        // TODO: motia PyPi package
-        // Add other Python dependencies as needed
-      ].join('\n')
-
-      fs.writeFileSync(path.join(rootDir, 'requirements.txt'), requirementsContent)
-      context.log('requirements-txt-created', (message) =>
-        message.tag('success').append('File').append('requirements.txt', 'gray').append('has been created.'),
-      )
-    }
-
     await pythonInstall({ baseDir: rootDir })
   }
 

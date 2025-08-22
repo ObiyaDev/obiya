@@ -2,23 +2,24 @@
   {
     "id": "python-tutorial",
     "config": {
-      "steps/default_python/state_audit_cron_step.py": {
-        "x": -332,
-        "y": 149,
+      "steps/state_audit_cron_step.py": {
+        "x": -38,
+        "y": 683,
         "sourceHandlePosition": "right"
       },
-      "steps/default_python/process_food_order_step.py": {
-        "x": 81,
-        "y": -52,
+      "steps/process_food_order_step.py": {
+        "x": 384,
+        "y": 476,
         "targetHandlePosition": "left"
       },
-      "steps/default_python/notification_step.py": {
-        "x": 142,
-        "y": 175
+      "steps/notification_step.py": {
+        "x": 601,
+        "y": 724,
+        "targetHandlePosition": "left"
       },
-      "steps/default_python/api_step.py": {
-        "x": -302,
-        "y": -66,
+      "steps/api_step.py": {
+        "x": 15,
+        "y": 461,
         "sourceHandlePosition": "right"
       }
     }

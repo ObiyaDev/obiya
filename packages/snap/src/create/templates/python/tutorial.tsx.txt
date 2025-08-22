@@ -54,14 +54,16 @@ export const steps: TutorialStep[] = [
     elementXpath: workbenchXPath.sidebarContainer,
     title: 'Step Config',
     description: () => (
-      <p>
-        All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of
-        the programming language).
-        <br />
-        <br />
-        Let's start with the configuration, the common config attributes are
-        <i>type, name, description, and flows</i>.<br />
-        <br />
+      <div>
+        <p>
+          All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of
+          the programming language).
+          <br />
+          <br />
+          Let's start with the configuration, the common config attributes are
+          <i>type, name, description, and flows</i>.<br />
+          <br />
+        </p>
         <ul>
           <li>
             The <b>type</b> attribute is important since it declares the type of Step primitive
@@ -74,7 +76,7 @@ export const steps: TutorialStep[] = [
             observability tools.
           </li>
         </ul>
-      </p>
+      </div>
     ),
     before: [
       { type: 'click', selector: workbenchXPath.flows.previewButton('pythonapitrigger') },
