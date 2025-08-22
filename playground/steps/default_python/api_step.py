@@ -39,13 +39,13 @@ async def handler(req, context):
     new_pet_record = await pet_store_service.create_pet(pet)
 
     if food_order:
-        food_order = FoodOrder(**food_order)
         await context.emit({
             "topic": "python-process-food-order",
             "data": {
-                **food_order.model_dump(),
+                "id": food_order.get("id"),
+                "quantity": food_order.get("quantity"),
                 "email": "test@test.com",  # sample email
-                "pet_id": new_pet_record.id,
+                "pet_id": new_pet_record.get("id"),
             },
         })
 

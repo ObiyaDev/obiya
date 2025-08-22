@@ -16,7 +16,12 @@ export const petStoreService = {
   createOrder: async (order: Omit<Order, 'id'>): Promise<Order> => {
     const response = await fetch('https://petstore.swagger.io/v2/store/order', {
       method: 'POST',
-      body: JSON.stringify(order),
+      body: JSON.stringify({
+        quantity: order.quantity,
+        petId: 1,
+        shipDate: order.shipDate,
+        status: order.status,
+      }),
       headers: { 'Content-Type': 'application/json' },
     })
     return response.json()
