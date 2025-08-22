@@ -16,7 +16,7 @@ The deployment system uses Motia Streams for real-time updates during the deploy
 
 ```typescript
 interface DeploymentData {
-  id: string                    // Always "current"
+  id: string                    // Matches deploymentId
   status: 'idle' | 'building' | 'uploading' | 'deploying' | 'completed' | 'failed'
   phase: 'build' | 'upload' | 'deploy' | null
   progress: number               // 0-100
@@ -28,7 +28,7 @@ interface DeploymentData {
   startedAt?: number            // Unix timestamp
   completedAt?: number          // Unix timestamp
   deploymentToken?: string      // Token used for deployment
-  deploymentId?: string         // Unique deployment identifier
+  deploymentId: string          // Unique deployment identifier (required)
   metadata?: {
     totalSteps: number
     completedSteps: number
@@ -60,22 +60,28 @@ Content-Type: application/json
   "message": "Deployment started",
   "deploymentId": "unique-id",
   "streamName": "deployment-status",
-  "groupId": "active",
-  "itemId": "current"
+  "groupId": "deployments",
+  "itemId": "unique-id"
 }
 ```
 
-### Get Deployment Status
+### Get Deployment Status by ID
 ```http
-GET /cloud/deploy/status
+GET /cloud/deploy/status/:deploymentId
 ```
 
-**Response:**
+### Get All Deployments History
+```http
+GET /cloud/deploy/history
+```
+
+**Response (Single Deployment):**
 ```json
 {
   "success": true,
   "deployment": {
-    "id": "current",
+    "id": "deploy-123",
+    "deploymentId": "deploy-123",
     "status": "building",
     "phase": "build",
     "progress": 45,
@@ -85,27 +91,68 @@ GET /cloud/deploy/status
 }
 ```
 
+**Response (History):**
+```json
+{
+  "success": true,
+  "deployments": [
+    {
+      "id": "deploy-123",
+      "deploymentId": "deploy-123",
+      "status": "completed",
+      "startedAt": 1234567890,
+      "completedAt": 1234567990,
+      // ... rest of DeploymentData
+    },
+    // ... more deployments
+  ]
+}
+```
+
 ## Frontend Integration
 
 ### Using React Hook (Recommended)
 ```typescript
 import { useStreamItem } from '@motiadev/stream-client-react'
 
-const MyDeploymentComponent = () => {
+const MyDeploymentComponent = ({ deploymentId }: { deploymentId: string }) => {
   const { data: deployment } = useStreamItem<DeploymentData>({
     streamName: 'deployment-status',
-    groupId: 'active',
-    itemId: 'current'
+    groupId: 'deployments',
+    itemId: deploymentId
   })
 
   // deployment will auto-update in real-time
-  if (!deployment) return <div>No deployment in progress</div>
+  if (!deployment) return <div>Deployment not found</div>
   
   return (
     <div>
+      <p>Deployment ID: {deployment.deploymentId}</p>
       <p>Status: {deployment.status}</p>
       <p>Progress: {deployment.progress}%</p>
       <p>{deployment.message}</p>
+    </div>
+  )
+}
+```
+
+### Monitoring All Deployments
+```typescript
+import { useStreamGroup } from '@motiadev/stream-client-react'
+
+const DeploymentsList = () => {
+  const { data: deployments } = useStreamGroup<DeploymentData>({
+    streamName: 'deployment-status',
+    groupId: 'deployments'
+  })
+
+  return (
+    <div>
+      {deployments.map(deployment => (
+        <div key={deployment.id}>
+          <p>{deployment.deploymentId}: {deployment.status}</p>
+        </div>
+      ))}
     </div>
   )
 }
@@ -115,11 +162,12 @@ const MyDeploymentComponent = () => {
 ```typescript
 import { Stream } from '@motiadev/stream-client-browser'
 
+const deploymentId = 'deploy-123' // Your deployment ID
 const client = new Stream('ws://localhost:3000')
 const subscription = client.subscribeItem<DeploymentData>(
   'deployment-status',
-  'active', 
-  'current'
+  'deployments', 
+  deploymentId
 )
 
 subscription.addChangeListener((deployment) => {
@@ -178,27 +226,32 @@ import { useStreamItem } from '@motiadev/stream-client-react'
 
 export const DeploymentUI = () => {
   const [isDeploying, setIsDeploying] = useState(false)
+  const [currentDeploymentId, setCurrentDeploymentId] = useState<string | null>(null)
   
   const { data: deployment } = useStreamItem<DeploymentData>({
     streamName: 'deployment-status',
-    groupId: 'active',
-    itemId: 'current'
+    groupId: 'deployments',
+    itemId: currentDeploymentId || ''
   })
 
   const startDeployment = async () => {
     setIsDeploying(true)
+    const deploymentId = `deploy-${Date.now()}`
     
     const response = await fetch('/cloud/deploy/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         deploymentToken: 'token-123',
-        deploymentId: `deploy-${Date.now()}`,
+        deploymentId,
         envs: {}
       })
     })
     
-    if (!response.ok) {
+    if (response.ok) {
+      const data = await response.json()
+      setCurrentDeploymentId(data.deploymentId)
+    } else {
       setIsDeploying(false)
       // Handle error
     }
@@ -237,15 +290,15 @@ export const DeploymentUI = () => {
 
 ## Important Notes
 
-1. **Single Deployment**: Only one deployment can run at a time. The stream always uses `itemId: 'current'`.
+1. **Multiple Deployments**: Each deployment has a unique `deploymentId` that tracks its individual state and history.
 
 2. **Real-time Updates**: The stream automatically provides real-time updates via WebSocket. No polling needed.
 
-3. **Persistence**: Deployment state is persisted and will survive page refreshes.
+3. **Persistence**: Deployment states are persisted and will survive page refreshes. All deployments are kept in history.
 
 4. **Logs**: Each phase has separate log arrays (`buildLogs`, `uploadLogs`, `deployLogs`) that accumulate during the process.
 
-5. **Reset**: A new deployment automatically resets the previous state.
+5. **History**: Access deployment history via `/cloud/deploy/history` endpoint or by subscribing to the entire `deployments` group.
 
 ## Testing
 
@@ -264,5 +317,6 @@ ws.onmessage = (event) => {
 ## Troubleshooting
 
 - **No updates**: Ensure WebSocket connection is established (check Network tab)
-- **Empty deployment**: The stream returns `null` if no deployment exists yet
-- **Stale data**: Check if the deployment completed/failed and needs to be restarted
+- **Deployment not found**: The stream returns `null` if the deployment ID doesn't exist
+- **Wrong deployment**: Make sure you're subscribing with the correct `deploymentId`
+- **History**: Use `/cloud/deploy/history` to see all past deployments
