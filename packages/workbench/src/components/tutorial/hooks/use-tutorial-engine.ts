@@ -19,6 +19,11 @@ export const useTutorialEngine = () => {
 
   const moveComponent = (x: number, y: number) => {
     if (ref.current) {
+      if (ref.current.parentElement) {
+        ref.current.style.transition = 'all 0.3s ease-in-out'
+        ref.current.parentElement.style.opacity = '1'
+        ref.current.parentElement.style.display = 'block'
+      }
       ref.current.style.position = 'absolute'
       ref.current.style.left = `${x}px`
       ref.current.style.top = `${y}px`
@@ -164,8 +169,6 @@ export const useTutorialEngine = () => {
 
     const onOpen = () => {
       if (container?.parentElement) {
-        container.parentElement.style.opacity = '1'
-        container.parentElement.style.display = 'block'
         setTotalSteps(MotiaTutorial.steps.length)
         moveStep(0)
       }

@@ -13,8 +13,6 @@ export const TutorialButton: FC = () => {
     }
   }
 
-  console.log(isTutorialFlowMissing)
-
   const trigger = (
     <Button data-testid="tutorial-trigger" variant="default" onClick={() => onTutorialButtonClick()}>
       <Book className="h-4 w-4" />
