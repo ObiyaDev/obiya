@@ -69,8 +69,6 @@ POST https://motia-hub-api.motiahub.com/v1/deployments
 Content-Type: application/json
 
 {
-  "apiKey": "your-api-key",
-  "projectName": "my-project",
   "environmentId": "env-123", 
   "versionName": "v1.0.0"
 }
