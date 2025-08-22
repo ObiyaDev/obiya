@@ -56,8 +56,8 @@ export const deployEndpoints = (server: MotiaServer) => {
         message: 'Deployment started',
         deploymentId: sessionId,
         streamName: 'deployment-status',
-        groupId: 'active',
-        itemId: 'current'
+        groupId: 'deployments',
+        itemId: sessionId
       })
       
       // Execute deployment asynchronously
@@ -114,10 +114,19 @@ export const deployEndpoints = (server: MotiaServer) => {
     }
   })
   
-  // Get current deployment status
-  app.get('/cloud/deploy/status', async (_req: Request, res: Response) => {
+  // Get deployment status by ID
+  app.get('/cloud/deploy/status/:deploymentId', async (req: Request, res: Response) => {
     try {
-      const deployment = await deploymentManager.getCurrentDeployment()
+      const { deploymentId } = req.params
+      const deployment = await deploymentManager.getDeployment(deploymentId)
+      
+      if (!deployment) {
+        return res.status(404).json({
+          success: false,
+          error: 'Deployment not found'
+        })
+      }
+      
       res.json({
         success: true,
         deployment
