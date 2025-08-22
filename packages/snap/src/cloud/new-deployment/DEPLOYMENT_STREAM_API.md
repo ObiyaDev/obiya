@@ -27,8 +27,6 @@ interface DeploymentData {
   error?: string                // Error message if failed
   startedAt?: number            // Unix timestamp
   completedAt?: number          // Unix timestamp
-  deploymentToken?: string      // Token used for deployment
-  deploymentId: string          // Unique deployment identifier (required)
   metadata?: {
     totalSteps: number
     completedSteps: number

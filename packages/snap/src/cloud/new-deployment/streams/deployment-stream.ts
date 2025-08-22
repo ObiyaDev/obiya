@@ -12,8 +12,6 @@ export interface DeploymentData {
   error?: string
   startedAt?: number
   completedAt?: number
-  deploymentToken?: string
-  deploymentId: string
   metadata?: {
     totalSteps: number
     completedSteps: number
@@ -30,7 +28,6 @@ export const createDefaultDeploymentData = (deploymentId: string): DeploymentDat
   buildLogs: [],
   uploadLogs: [],
   deployLogs: [],
-  deploymentId,
   metadata: {
     totalSteps: 0,
     completedSteps: 0
@@ -70,8 +67,6 @@ export class DeploymentStreamManager {
       status: 'building',
       phase: 'build',
       startedAt: Date.now(),
-      deploymentToken,
-      deploymentId,
       id: deploymentId,
       message: 'Starting deployment...'
     })
