@@ -29,9 +29,9 @@ export const TutorialButton: FC = () => {
           <div className="flex flex-col gap-4 p-4 max-w-[320px]">
             <p className="text-sm wrap-break-word p-0 m-0">
               In order to start the tutorial, you need to download the tutorial steps using the Motia CLI. In your
-              terminal execute:
+              terminal execute the following command to create a new project:
             </p>
-            <pre className="text-sm font-bold">motia generate tutorial-flow</pre>
+            <pre className="text-sm font-bold">npx motia@latest create</pre>
           </div>
         }
       >

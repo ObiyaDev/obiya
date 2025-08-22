@@ -14,11 +14,6 @@ export const generateTemplateSteps = (templateFolder: string): Generator => {
       for (const fileName of files) {
         const filePath = path.join(templatePath, fileName)
 
-        if (statSync(filePath).isDirectory() && !filePath.match(/services|utils|lib/)) {
-          // ignore folders
-          continue
-        }
-
         if (statSync(filePath).isDirectory()) {
           const folderPath = path.basename(filePath)
           mkdirSync(path.join(rootDir, templateFolder, folderPath))
