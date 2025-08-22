@@ -1,7 +1,9 @@
 # Deployment Stream API Documentation
 
 ## Overview
-The deployment system uses Motia Streams for real-time updates during the deployment process. This replaces direct WebSocket connections with a unified streaming architecture.
+The deployment system uses **two separate APIs** with Motia Streams for real-time updates:
+- **Motia Cloud API**: Manages deployments (create, authenticate)
+- **Motia Framework**: Executes deployments with real-time streaming
 
 ## Stream Configuration
 
@@ -19,8 +21,10 @@ interface DeploymentData {
   id: string                    // Matches deploymentId
   status: 'idle' | 'building' | 'uploading' | 'deploying' | 'completed' | 'failed'
   phase: 'build' | 'upload' | 'deploy' | null
-  progress: number               // 0-100
+  progress: number              // 0-100
   message: string               // Current status message
+  build: BuildOutput[]          // Build phase details per step
+  upload: UploadOutput[]        // Upload phase details per step
   buildLogs: string[]           // Logs from build phase
   uploadLogs: string[]          // Logs from upload phase  
   deployLogs: string[]          // Logs from deploy phase
@@ -33,17 +37,39 @@ interface DeploymentData {
     environment?: string
   }
 }
+
+interface BuildOutput {
+  packagePath: string
+  language: string
+  status: 'building' | 'built' | 'error'
+  size?: number                 // bytes
+  type: 'event' | 'api' | 'cron'
+  errorMessage?: string
+}
+
+interface UploadOutput {
+  packagePath: string
+  language: string
+  status: 'uploading' | 'uploaded' | 'error'
+  size?: number                 // bytes
+  progress?: number             // 0-100
+  type: 'event' | 'api' | 'cron'
+  errorMessage?: string
+}
 ```
 
-## API Endpoints
+## Deployment Flow (2 Steps)
 
-### 1. Create Deployment (First Step - Web Interface)
+### Step 1: Create Deployment (Motia Cloud API)
+**Who calls it:** Motia Hub Web Interface or CLI  
+**Purpose:** Creates deployment record and generates authentication token
+
 ```http
-POST /v1/web/deployments
-Authorization: Bearer <user-session-token>
+POST https://motia-hub-api.motiahub.com/v1/deployments
 Content-Type: application/json
 
 {
+  "apiKey": "your-api-key",
   "projectName": "my-project",
   "environmentId": "env-123", 
   "versionName": "v1.0.0"
@@ -54,25 +80,26 @@ Content-Type: application/json
 ```json
 {
   "deploymentId": "deploy-456",
-  "deploymentToken": "token-789"
+  "deploymentToken": "token-789",
+  "environmentName": "production",
+  "projectName": "my-project",
+  "versionName": "v1.0.0"
 }
 ```
 
-This endpoint is called by the Motia Hub web interface as the **first step** of the deployment process. It:
-- Creates a deployment record in the database
-- Generates a deployment token for secure communication
-- Returns the deployment ID and token that will be used in subsequent steps
+### Step 2: Execute Deployment (Motia Framework)
+**Who calls it:** Motia CLI or custom deployment scripts  
+**Purpose:** Starts the actual deployment process with real-time streaming
 
-### 2. Start Deployment (Second Step - Framework)
 ```http
-POST /cloud/deploy/start
+POST http://localhost:3000/cloud/deploy/start
 Content-Type: application/json
 
 {
-  "deploymentToken": "your-token",
-  "deploymentId": "unique-id",
+  "deploymentToken": "token-789",
+  "deploymentId": "deploy-456",
   "envs": {
-    "KEY": "value"
+    "NODE_ENV": "production"
   }
 }
 ```
@@ -82,221 +109,93 @@ Content-Type: application/json
 {
   "success": true,
   "message": "Deployment started",
-  "deploymentId": "unique-id",
+  "deploymentId": "deploy-456",
   "streamName": "deployment-status",
   "groupId": "deployments",
-  "itemId": "unique-id"
+  "itemId": "deploy-456"
 }
 ```
 
-### Get Deployment Status by ID
+### Optional: Get Deployment Status (Motia Framework)
+**Who calls it:** Any client needing current deployment state  
+**Purpose:** Get deployment status without streaming (one-time fetch)
+
 ```http
-GET /cloud/deploy/status/:deploymentId
+GET http://localhost:3000/cloud/deploy/status/deploy-456
 ```
 
-**Response (Single Deployment):**
+**Response:**
 ```json
 {
   "success": true,
   "deployment": {
-    "id": "deploy-123",
-    "deploymentId": "deploy-123",
+    "id": "deploy-456",
     "status": "building",
     "phase": "build",
     "progress": 45,
     "message": "Building step: api-handler",
-    // ... rest of DeploymentData
+    "build": [...],
+    "upload": [],
+    "buildLogs": ["Step 1 building...", "Step 2 built"],
+    "uploadLogs": [],
+    "deployLogs": []
   }
 }
 ```
 
 ## Frontend Integration
 
-### Using React Hook (Recommended)
+### Real-time Updates with React Hook
 ```typescript
 import { useStreamItem } from '@motiadev/stream-client-react'
 
-const MyDeploymentComponent = ({ deploymentId }: { deploymentId: string }) => {
+const DeploymentStatus = ({ deploymentId }: { deploymentId: string }) => {
   const { data: deployment } = useStreamItem<DeploymentData>({
     streamName: 'deployment-status',
     groupId: 'deployments',
     itemId: deploymentId
   })
 
-  // deployment will auto-update in real-time
-  if (!deployment) return <div>Deployment not found</div>
+  if (!deployment) return <div>Loading...</div>
   
   return (
     <div>
-      <p>Deployment ID: {deployment.deploymentId}</p>
       <p>Status: {deployment.status}</p>
-      <p>Progress: {deployment.progress}%</p>
+      <progress value={deployment.progress} max="100" />
       <p>{deployment.message}</p>
+      {deployment.error && <div className="error">{deployment.error}</div>}
     </div>
   )
 }
 ```
 
-
-### Using Stream Client Directly
+### Direct Stream Connection
 ```typescript
 import { Stream } from '@motiadev/stream-client-browser'
 
-const deploymentId = 'deploy-123' // Your deployment ID
 const client = new Stream('ws://localhost:3000')
 const subscription = client.subscribeItem<DeploymentData>(
-  'deployment-status',
-  'deployments', 
-  deploymentId
+  'deployment-status', 'deployments', deploymentId
 )
 
 subscription.addChangeListener((deployment) => {
-  if (deployment) {
-    console.log('Deployment updated:', deployment)
-    // Update UI
-  }
+  console.log('Status:', deployment.status, deployment.progress + '%')
 })
-
-// Cleanup when done
-client.close()
 ```
 
 ## Deployment Phases
 
-### 1. Build Phase (`status: 'building'`)
-- Compiles and bundles all steps
-- Creates routers for different languages
-- Progress: 0-33%
+1. **Build** (`status: 'building'`): Compile and bundle steps (0-33%)
+2. **Upload** (`status: 'uploading'`): Upload artifacts to cloud (34-66%)  
+3. **Deploy** (`status: 'deploying'`): Provision cloud resources (67-99%)
+4. **Complete** (`status: 'completed'|'failed'`): Final result (100%)
 
-### 2. Upload Phase (`status: 'uploading'`)
-- Uploads built artifacts to cloud
-- Transfers step bundles and routers
-- Progress: 34-66%
+**Status Flow:** `idle → building → uploading → deploying → completed/failed`
 
-### 3. Deploy Phase (`status: 'deploying'`)
-- Provisions cloud resources
-- Configures endpoints and routes
-- Progress: 67-99%
+## Key Points
 
-### 4. Completion (`status: 'completed' | 'failed'`)
-- Final status with results
-- Progress: 100%
-- Check `error` field if failed
-
-## Status Flow
-```
-idle → building → uploading → deploying → completed/failed
-```
-
-## Error Handling
-
-Check the `error` field when `status === 'failed'`:
-```typescript
-if (deployment.status === 'failed') {
-  console.error('Deployment failed:', deployment.error)
-  // Show error to user
-}
-```
-
-## Example: Complete Integration
-
-```typescript
-import { useState } from 'react'
-import { useStreamItem } from '@motiadev/stream-client-react'
-
-export const DeploymentUI = () => {
-  const [isDeploying, setIsDeploying] = useState(false)
-  const [currentDeploymentId, setCurrentDeploymentId] = useState<string | null>(null)
-  
-  const { data: deployment } = useStreamItem<DeploymentData>({
-    streamName: 'deployment-status',
-    groupId: 'deployments',
-    itemId: currentDeploymentId || ''
-  })
-
-  const startDeployment = async () => {
-    setIsDeploying(true)
-    const deploymentId = `deploy-${Date.now()}`
-    
-    const response = await fetch('/cloud/deploy/start', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        deploymentToken: 'token-123',
-        deploymentId,
-        envs: {}
-      })
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      setCurrentDeploymentId(data.deploymentId)
-    } else {
-      setIsDeploying(false)
-      // Handle error
-    }
-  }
-
-  // Auto-update isDeploying based on stream
-  useEffect(() => {
-    if (deployment?.status === 'completed' || deployment?.status === 'failed') {
-      setIsDeploying(false)
-    }
-  }, [deployment?.status])
-
-  return (
-    <div>
-      <button onClick={startDeployment} disabled={isDeploying}>
-        Deploy
-      </button>
-      
-      {deployment && deployment.status !== 'idle' && (
-        <div>
-          <h3>Deployment Progress</h3>
-          <p>Phase: {deployment.phase}</p>
-          <p>Status: {deployment.status}</p>
-          <progress value={deployment.progress} max="100" />
-          <p>{deployment.message}</p>
-          
-          {deployment.error && (
-            <div className="error">{deployment.error}</div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-```
-
-## Important Notes
-
-1. **Multiple Deployments**: Each deployment has a unique `deploymentId` that tracks its individual state and history.
-
-2. **Real-time Updates**: The stream automatically provides real-time updates via WebSocket. No polling needed.
-
-3. **Persistence**: Deployment states are persisted and will survive page refreshes. All deployments are kept in history.
-
-4. **Logs**: Each phase has separate log arrays (`buildLogs`, `uploadLogs`, `deployLogs`) that accumulate during the process.
-
-5. **History**: Access deployment history via `/cloud/deploy/history` endpoint or by subscribing to the entire `deployments` group.
-
-## Testing
-
-To test the stream connection:
-```javascript
-// In browser console
-const ws = new WebSocket('ws://localhost:3000')
-ws.onmessage = (event) => {
-  const data = JSON.parse(event.data)
-  if (data.streamName === 'deployment-status') {
-    console.log('Deployment update:', data)
-  }
-}
-```
-
-## Troubleshooting
-
-- **No updates**: Ensure WebSocket connection is established (check Network tab)
-- **Deployment not found**: The stream returns `null` if the deployment ID doesn't exist
-- **Wrong deployment**: Make sure you're subscribing with the correct `deploymentId`
-- **History**: Use `/cloud/deploy/history` to see all past deployments
+- **Two APIs**: Motia Cloud API creates deployments, Motia Framework executes them
+- **Real-time**: Use streams for live updates, status endpoint for one-time checks
+- **Detailed tracking**: `build` and `upload` arrays track individual step progress
+- **Error handling**: Check `deployment.error` when `status === 'failed'`
+- **Persistence**: All deployment states survive page refreshes
