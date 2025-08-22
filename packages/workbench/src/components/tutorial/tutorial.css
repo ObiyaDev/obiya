@@ -17,6 +17,7 @@
 }
 
 .driver-popover {
+  z-index: 10000;
   width: 400px;
   max-width: 100%;
   background-color: var(--background);
@@ -25,10 +26,12 @@
   box-shadow:
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow);
-  display: flex !important;
+  display: flex;
   flex-flow: column;
   border: 1px solid var(--tutorial-border);
   border-radius: 16px;
+
+  transition: all 0.3s ease-in-out;
 }
 
 .driver-popover-image {
@@ -36,12 +39,12 @@
 }
 
 .driver-popover-intro-step {
-  max-width: 400px !important;
+  max-width: 400px;
 }
 
 .popover-title {
   font-size: 18px;
-  font-weight: 700 !important;
+  font-weight: 700;
   font-weight: var(--font-weight-600);
   line-height: 1.2;
   color: var(--text-header);
@@ -108,10 +111,10 @@
   font-size: 14px;
   font-weight: 600;
   font-family: var(--default-font-family);
-  background: transparent !important;
-  border: none !important;
-  color: var(--text-body) !important;
-  text-shadow: none !important;
+  background: transparent;
+  border: none;
+  color: var(--text-body);
+  text-shadow: none;
   cursor: pointer;
 }
 
@@ -126,20 +129,20 @@
   color: white;
   top: -20px;
   right: 0;
-  text-align: center;
-  width: 100%;
+  text-align: right;
+  width: 180%;
   height: 100%;
 
   font-size: 12px;
   font-weight: 500;
   font-family: var(--default-font-family);
-  color: var(--text-body) !important;
+  color: var(--text-body);
 }
 
 .driver-popover-navigation-btns button {
   cursor: pointer;
   border-radius: 999px;
-  color: var(--text-header);
+  color: white;
   font-family: var(--default-font-family);
   border: 0;
   font-size: 16px;
@@ -151,25 +154,13 @@
 }
 
 .driver-popover-btn-disabled {
-  display: none !important;
+  display: none;
 }
 
-.driver-popover-next-btn {
-  background-color: var(--accent-1000) !important;
-  color: white !important;
-  padding: 20px 48px !important;
-}
-
-.driver-popover-prev-btn {
-  background-color: var(--card) !important;
-  padding: 20px !important;
-}
-
-.driver-popover-prev-btn:hover,
-.driver-popover-next-btn:hover,
-.driver-popover-footer button:hover {
-  background: var(--states-hover);
-  color: var(--text-header);
+.driver-popover-next-btn, .driver-popover-next-btn:hover {
+  background-color: var(--accent-1000);
+  color: white;
+  padding: 16px 32px;
 }
 
 .driver-popover-footer {
@@ -215,5 +206,5 @@
 }
 
 .driver-popover-close-btn {
-  display: none !important;
+  display: none;
 }

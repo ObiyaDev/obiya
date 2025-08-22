@@ -4,10 +4,4 @@ type MonacoEditor = {
   revealLine: (line: number) => void
 }
 
-declare const monaco:
-  | {
-      editor: {
-        getEditors: () => MonacoEditor[]
-      }
-    }
-  | undefined
+declare const monaco: { editor: { getEditors: () => MonacoEditor[] } } | undefined

@@ -1,5 +1,7 @@
+import { Order, Pet } from './types'
+
 export const petStoreService = {
-  createPet: async (pet: { name: string; photoUrl: string }) => {
+  createPet: async (pet: Omit<Pet, 'id'>): Promise<Pet> => {
     const response = await fetch('https://petstore.swagger.io/v2/pet', {
       method: 'POST',
       body: JSON.stringify({
@@ -7,25 +9,15 @@ export const petStoreService = {
         photoUrls: [pet.photoUrl],
         status: 'available',
       }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     })
     return response.json()
   },
-  createOrder: async (order: { id: string; quantity: number; petId: number }) => {
+  createOrder: async (order: Omit<Order, 'id'>): Promise<Order> => {
     const response = await fetch('https://petstore.swagger.io/v2/store/order', {
       method: 'POST',
-      body: JSON.stringify({
-        id: order.id,
-        quantity: order.quantity,
-        petId: order.petId,
-        shipDate: new Date().toISOString(),
-        status: 'placed',
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      body: JSON.stringify(order),
+      headers: { 'Content-Type': 'application/json' },
     })
     return response.json()
   },
