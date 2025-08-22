@@ -16,17 +16,13 @@ export const generateTemplateSteps = (templateFolder: string): Generator => {
 
         if (statSync(filePath).isDirectory()) {
           const folderPath = path.basename(filePath)
-          mkdirSync(path.join(rootDir, templateFolder, folderPath))
+          mkdirSync(path.join(rootDir, folderPath))
           continue
         }
 
         const sanitizedFileName = fileName.replace('.txt', '')
         const isWorkbenchConfig = fileName.match('motia-workbench.json')
-        const generateFilePath = path.join(
-          ...(isWorkbenchConfig
-            ? [rootDir.match(/steps/) ? path.join(rootDir, '..') : rootDir, sanitizedFileName]
-            : [rootDir, templateFolder, sanitizedFileName]),
-        )
+        const generateFilePath = path.join(rootDir, sanitizedFileName)
         let content = await fs.readFile(filePath, 'utf8')
 
         // Make sure statSync doesn't break the execution if the file doesn't exist
