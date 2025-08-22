@@ -74,6 +74,10 @@ export const dev = async (
   watcher.init()
 
   stateEndpoints(motiaServer, state)
+  
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { deployEndpoints } = require('./dev/deploy-endpoints')
+  deployEndpoints(motiaServer)
 
   motiaServer.server.listen(port, hostname)
   console.log('🚀 Server ready and listening on port', port)
