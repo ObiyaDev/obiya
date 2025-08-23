@@ -10,7 +10,6 @@ import {
   trackEvent,
 } from '@motiadev/core'
 import type { Stream } from '@motiadev/core/dist/src/types-stream'
-import path from 'path'
 import { Watcher } from './watcher'
 
 export const createDevWatchers = (
@@ -19,8 +18,16 @@ export const createDevWatchers = (
   eventHandler: MotiaEventManager,
   cronManager: CronManager,
 ) => {
-  const stepDir = path.join(process.cwd())
-  const watcher = new Watcher(stepDir, lockedData)
+  const baseDir = process.cwd()
+
+  // Use optimized configuration for development
+  const watcherConfig = {
+    usePolling: false,
+    maxDepth: 8,
+    verbose: false,
+  }
+
+  const watcher = new Watcher(baseDir, lockedData, watcherConfig)
 
   watcher.onStreamChange((oldStream: Stream, stream: Stream) => {
     trackEvent('stream_updated', {
