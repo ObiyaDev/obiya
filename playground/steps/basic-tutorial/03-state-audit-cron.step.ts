@@ -20,10 +20,10 @@ export const handler: Handlers['StateAuditJob'] = async ({ state, emit }) => {
   }>('orders')
 
   if (!Array.isArray(stateValue)) {
-    await emit({
-      topic: 'state-audit-error',
-      data: { message: 'State value is not an array' },
-    })
+    // await emit({
+    //   topic: 'state-audit-error',
+    //   data: { message: 'State value is not an array' },
+    // })
 
     return
   }
@@ -33,10 +33,10 @@ export const handler: Handlers['StateAuditJob'] = async ({ state, emit }) => {
     const currentDate = new Date()
     const shipDate = new Date(item.shipDate)
     if (!item.complete && currentDate > shipDate) {
-      await emit({
-        topic: 'order-audit-warning',
-        data: { message: 'Order is not complete and ship date is past' },
-      })
+      // await emit({
+      //   topic: 'order-audit-warning',
+      //   data: { message: 'Order is not complete and ship date is past' },
+      // })
     }
   }
 }

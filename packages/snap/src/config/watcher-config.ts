@@ -16,6 +16,7 @@ export const getWatcherOptions = (config: WatcherConfig, ignoredPaths: Array<str
   const allIgnoredPaths = [...ignoredPaths, ...(config.additionalIgnorePatterns || [])]
 
   return {
+    ignoreInitial: true,
     persistent: true,
     ignored: allIgnoredPaths,
     usePolling: config.usePolling || false,
