@@ -59,8 +59,7 @@ export const steps: TutorialStep[] = [
     description: () => (
       <div>
         <p>
-          All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of
-          the programming language).
+          All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b>.
           <br />
           <br />
           Let's start with the configuration, the common config attributes are
