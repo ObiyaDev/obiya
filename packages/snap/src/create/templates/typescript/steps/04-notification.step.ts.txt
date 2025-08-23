@@ -4,7 +4,7 @@ import { z } from 'zod'
 export const config: EventConfig = {
   type: 'event',
   name: 'Notification',
-  description: 'Checks a state change',
+  description: 'Sends notifications to users',
   flows: ['basic-tutorial'],
   subscribes: ['notification'],
   emits: [],
@@ -15,7 +15,7 @@ export const config: EventConfig = {
   }),
 }
 
-export const handler: Handlers['Notification'] = async (input, { traceId, logger, state }) => {
+export const handler: Handlers['Notification'] = async (input, { traceId, logger }) => {
   const { email, ...data } = input
   const redactedEmail = email.replace(/(?<=.{2}).(?=.*@)/g, '*')
 

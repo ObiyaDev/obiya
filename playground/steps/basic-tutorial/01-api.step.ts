@@ -29,7 +29,7 @@ export const config: ApiRouteConfig = {
   emits: ['process-food-order'],
 }
 
-export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit, traceId }) => {
+export const handler: Handlers['ApiTrigger'] = async (req, { logger, emit }) => {
   logger.info('Step 01 – Processing API Step', { body: req.body })
 
   const { pet, foodOrder } = req.body
