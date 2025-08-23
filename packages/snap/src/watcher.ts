@@ -2,6 +2,8 @@ import chokidar, { FSWatcher } from 'chokidar'
 import { randomUUID } from 'crypto'
 import { getStepConfig, getStreamConfig, LockedData, Step } from '@motiadev/core'
 import type { Stream } from '@motiadev/core/dist/src/types-stream'
+import { devWatchIgnoredPaths } from './config/ignored-paths'
+import { WatcherConfig, defaultWatcherConfig, getWatcherOptions } from './config/watcher-config'
 
 type StepChangeHandler = (oldStep: Step, newStep: Step) => void
 type StepCreateHandler = (step: Step) => void
@@ -21,8 +23,9 @@ export class Watcher {
   private streamDeleteHandler?: StreamDeleteHandler
 
   constructor(
-    private readonly dir: string,
+    private readonly dir: string | string[],
     private lockedData: LockedData,
+    private config: WatcherConfig = defaultWatcherConfig,
   ) {}
 
   onStepChange(handler: StepChangeHandler) {
@@ -172,11 +175,23 @@ export class Watcher {
   }
 
   init() {
+    const watcherOptions = getWatcherOptions(this.config, devWatchIgnoredPaths)
+
     this.watcher = chokidar
-      .watch(this.dir, { persistent: true, ignoreInitial: true })
+      .watch(this.dir, watcherOptions)
       .on('add', (path) => this.onFileAdd(path))
       .on('change', (path) => this.onFileChange(path))
       .on('unlink', (path) => this.onFileDelete(path))
+      .on('error', (error: unknown) => {
+        console.error('Watcher error:', error)
+        if (error instanceof Error && error.message.includes('EMFILE')) {
+          console.error('\n🚨 EMFILE Error: Too many open files!')
+          console.error('\n💡 Quick fixes:')
+          console.error('   1. Increase file descriptor limit: ulimit -n 65536')
+          console.error('   2. Restart your terminal after running the above command')
+          console.error('   3. For permanent fix, add to ~/.zshrc: echo "ulimit -n 65536" >> ~/.zshrc')
+        }
+      })
   }
 
   private isStepFile(path: string): boolean {
