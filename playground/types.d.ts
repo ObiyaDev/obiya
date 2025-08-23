@@ -29,9 +29,9 @@ declare module 'motia' {
     'ApiTrigger': ApiRouteHandler<{ pet: { name: string; photoUrl: string }; foodOrder?: { id: string; quantity: number } }, ApiResponse<200, { id: number; name: string; photoUrl: string }>, { topic: 'process-food-order'; data: { email: string; quantity: number; petId: number } }>
     'PeriodicJobHandled': EventHandler<{ message: string }, { topic: 'tested'; data: never }>
     'HandlePeriodicJob': CronHandler<{ topic: 'periodic-job-handled'; data: { message: string } }>
-    'Notification': EventHandler<{ templateId: string; email: string; templateData: Record<string, unknown> }, never>
     'StateAuditJob': CronHandler<{ topic: 'notification'; data: { templateId: string; email: string; templateData: Record<string, unknown> } }>
     'ProcessFoodOrder': EventHandler<{ email: string; quantity: number; petId: number }, { topic: 'notification'; data: { templateId: string; email: string; templateData: Record<string, unknown> } }>
+    'Notification': EventHandler<{ templateId: string; email: string; templateData: Record<string, unknown> }, never>
     'Tested Event': EventHandler<never, never>
     'Test Event': EventHandler<never, { topic: 'tested'; data: never }>
     'Test API Endpoint': ApiRouteHandler<Record<string, unknown>, unknown, { topic: 'test'; data: never }>

@@ -27,7 +27,7 @@ export const steps: TutorialStep[] = [
   // Flows
 
   {
-    elementXpath: workbenchXPath.flows.node('pythonapitrigger'),
+    elementXpath: workbenchXPath.flows.node('apitrigger'),
     title: 'API Step',
     link: 'https://www.motia.dev/docs/concepts/steps/api',
     description: () => (
@@ -36,10 +36,13 @@ export const steps: TutorialStep[] = [
         you to expose an HTTP endpoint for external traffic.
       </p>
     ),
-    before: [{ type: 'click', selector: workbenchXPath.links.flows }],
+    before: [
+      { type: 'click', selector: workbenchXPath.links.flows },
+      { type: 'click', selector: workbenchXPath.flows.dropdownFlow('basic-tutorial') },
+    ],
   },
   {
-    elementXpath: workbenchXPath.flows.previewButton('pythonapitrigger'),
+    elementXpath: workbenchXPath.flows.previewButton('apitrigger'),
     title: 'Code Preview',
     description: () => <p>Clicking on this icon will allow you to visualize the source code for a given Step.</p>,
     before: [
@@ -54,14 +57,16 @@ export const steps: TutorialStep[] = [
     elementXpath: workbenchXPath.sidebarContainer,
     title: 'Step Config',
     description: () => (
-      <p>
-        All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of
-        the programming language).
-        <br />
-        <br />
-        Let's start with the configuration, the common config attributes are
-        <i>type, name, description, and flows</i>.<br />
-        <br />
+      <div>
+        <p>
+          All Steps are defined by two main components, the <b>configuration</b> and the <b>handler</b> (disregarding of
+          the programming language).
+          <br />
+          <br />
+          Let's start with the configuration, the common config attributes are
+          <i>type, name, description, and flows</i>.<br />
+          <br />
+        </p>
         <ul>
           <li>
             The <b>type</b> attribute is important since it declares the type of Step primitive
@@ -74,10 +79,10 @@ export const steps: TutorialStep[] = [
             observability tools.
           </li>
         </ul>
-      </p>
+      </div>
     ),
     before: [
-      { type: 'click', selector: workbenchXPath.flows.previewButton('pythonapitrigger') },
+      { type: 'click', selector: workbenchXPath.flows.previewButton('apitrigger') },
       { type: 'click', selector: workbenchXPath.flows.feature('step-configuration') },
     ],
   },
@@ -191,7 +196,7 @@ export const steps: TutorialStep[] = [
   // Event Steps
 
   {
-    elementXpath: workbenchXPath.flows.node('pythonprocessfoodorder'),
+    elementXpath: workbenchXPath.flows.node('processfoodorder'),
     title: 'Event Step',
     link: 'https://www.motia.dev/docs/concepts/steps/event',
     description: () => (
@@ -225,7 +230,7 @@ export const steps: TutorialStep[] = [
       </p>
     ),
     before: [
-      { type: 'click', selector: workbenchXPath.flows.previewButton('pythonprocessfoodorder') },
+      { type: 'click', selector: workbenchXPath.flows.previewButton('processfoodorder') },
       { type: 'click', selector: workbenchXPath.flows.feature('step-configuration') },
     ],
   },
@@ -285,7 +290,7 @@ export const steps: TutorialStep[] = [
   // Cron Steps
 
   {
-    elementXpath: workbenchXPath.flows.node('pythonstateauditjob'),
+    elementXpath: workbenchXPath.flows.node('stateauditjob'),
     title: 'Cron Step',
     link: 'https://www.motia.dev/docs/concepts/steps/cron',
     description: () => (
@@ -318,7 +323,7 @@ export const steps: TutorialStep[] = [
       </p>
     ),
     before: [
-      { type: 'click', selector: workbenchXPath.flows.previewButton('pythonstateauditjob') },
+      { type: 'click', selector: workbenchXPath.flows.previewButton('stateauditjob') },
       { type: 'click', selector: workbenchXPath.flows.feature('cron-configuration') },
     ],
   },
@@ -357,7 +362,7 @@ export const steps: TutorialStep[] = [
     before: [{ type: 'click', selector: workbenchXPath.closePanelButton }],
   },
   {
-    elementXpath: workbenchXPath.endpoints.endpoint('POST', '/python-basic-tutorial'),
+    elementXpath: workbenchXPath.endpoints.endpoint('POST', '/basic-tutorial'),
     title: 'Endpoints Tool',
     description: () => (
       <p>
@@ -383,7 +388,7 @@ export const steps: TutorialStep[] = [
         endpoint in the <b>Call</b> Tab.
       </p>
     ),
-    before: [{ type: 'click', selector: workbenchXPath.endpoints.endpoint('POST', '/python-basic-tutorial') }],
+    before: [{ type: 'click', selector: workbenchXPath.endpoints.endpoint('POST', '/basic-tutorial') }],
   },
   {
     elementXpath: workbenchXPath.endpoints.callPanel,
@@ -402,12 +407,12 @@ export const steps: TutorialStep[] = [
         <br />
         <pre className="code-preview">
           <code className="language-bash">
-            curl -X POST http://localhost:3000/python-basic-tutorial \<br />
+            curl -X POST http://localhost:3000/basic-tutorial \<br />
             {'  '}-H "Content-Type: application/json" \<br />
             {'  '}-d '
             {JSON.stringify({
-              pet: { name: 'Jack', photo_url: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
-              food_order: { id: 'food-order-1', quantity: 0 },
+              pet: { name: 'Jack', photoUrl: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
+              foodOrder: { id: 'food-order-1', quantity: 0 },
             })}
             '
           </code>
@@ -429,8 +434,8 @@ export const steps: TutorialStep[] = [
       {
         type: 'fill-editor',
         content: {
-          pet: { name: 'Jack', photo_url: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
-          food_order: { id: 'food-order-1', quantity: 0 },
+          pet: { name: 'Jack', photoUrl: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
+          foodOrder: { id: 'food-order-1', quantity: 0 },
         },
       },
     ],

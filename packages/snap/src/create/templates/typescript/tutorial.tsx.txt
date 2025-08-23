@@ -36,7 +36,10 @@ export const steps: TutorialStep[] = [
         you to expose an HTTP endpoint for external traffic.
       </p>
     ),
-    before: [{ type: 'click', selector: workbenchXPath.links.flows }],
+    before: [
+      { type: 'click', selector: workbenchXPath.links.flows },
+      { type: 'click', selector: workbenchXPath.flows.dropdownFlow('basic-tutorial') },
+    ],
   },
   {
     elementXpath: workbenchXPath.flows.previewButton('apitrigger'),

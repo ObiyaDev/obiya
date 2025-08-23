@@ -4,6 +4,7 @@ export const workbenchXPath = {
   bottomPanel: '//div[@id="bottom-panel"]',
 
   flows: {
+    dropdownFlow: (flowId: string) => `//div[@data-testid="dropdown-${flowId}"]`,
     feature: (featureId: string) => `//div[@data-feature-id="${featureId}"]`,
     previewButton: (stepId: string) => `//button[@data-testid="open-code-preview-button-${stepId}"]`,
     node: (stepId: string) => `//div[@data-testid="node-${stepId}"]`,
@@ -36,7 +37,7 @@ export const workbenchXPath = {
   },
 
   links: {
-    flows: '//button[@data-testid="flows-link"]',
+    flows: '//div[@data-testid="flows-dropdown-trigger"]',
     endpoints: '//button[@data-testid="endpoints-link"]',
     tracing: '//button[@data-testid="traces-link"]',
     logs: '//button[@data-testid="logs-link"]',

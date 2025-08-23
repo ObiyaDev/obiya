@@ -5,8 +5,8 @@ from .types import Order, Pet
 class PetStoreService:
     async def create_pet(self, pet: Dict[str, Any]) -> Pet:
         pet_data = {
-            "name": pet["name"],
-            "photoUrls": [pet["photo_url"]],
+            "name": pet.get("name", ""),
+            "photoUrls": [pet.get("photo_url", "")],
             "status": "available"
         }
         
@@ -21,10 +21,10 @@ class PetStoreService:
     async def create_order(self, order: Dict[str, Any]) -> Order:
         async with httpx.AsyncClient() as client:
             order_data = {
-                "quantity": order.get("quantity"),
+                "quantity": order.get("quantity", 1),
                 "petId": 1,
-                "shipDate": order.get("ship_date"),
-                "status": order.get("status"),
+                "shipDate": order.get("ship_date", "2025-08-22T22:07:04.730Z"),
+                "status": order.get("status", "placed"),
             }
             
             response = await client.post(
