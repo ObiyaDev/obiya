@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 config = {
     "type": "cron",
@@ -14,7 +14,7 @@ async def handler(context):
 
     for item in state_value:
         # check if current date is after item.ship_date
-        current_date = datetime.now()
+        current_date = datetime.now(timezone.utc)
         ship_date = datetime.fromisoformat(item.get("shipDate", "").replace('Z', '+00:00'))
 
         if not item.get("complete", False) and current_date > ship_date:
