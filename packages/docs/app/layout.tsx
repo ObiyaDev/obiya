@@ -7,6 +7,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { headers } from 'next/headers'
 import PlausibleProvider from 'next-plausible'
+import Script from 'next/script'
 
 const tasaExplorer = localFont({
   src: [
@@ -43,7 +44,7 @@ export async function generateMetadata(_props: never, _parent: ResolvingMetadata
   const proto = host.startsWith('localhost') ? 'http' : 'https'
   const base = `${proto}://${host}`
 
-  const ogImage = `${base}/og-image-updated.jpg`
+  const ogImage = `${base}/og-image-updated-new.jpg`
 
   return {
     metadataBase: new URL(base),
@@ -152,6 +153,17 @@ export async function generateMetadata(_props: never, _parent: ResolvingMetadata
   }
 }
 
+function JsonLd({ id, data }: { id: string; data: Record<string, unknown> }) {
+  return (
+    <Script
+      id={id}
+      type="application/ld+json"
+      strategy="afterInteractive"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -161,22 +173,33 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <GoogleTagManager gtmId={GTM_ID} />
+        {/* Start of Reo Javascript */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(){var e,t,n;e="d8f0ce9cae8ae64",t=function(){Reo.init({clientID:"d8f0ce9cae8ae64"})},(n=document.createElement("script")).src="https://static.reo.dev/"+e+"/reo.js",n.defer=!0,n.onload=t,document.head.appendChild(n)}();
+            `,
+          }}
+        />
+        {/* End of Reo Javascript */}
         {/* Additional iOS/Safari compatibility */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-touch-fullscreen" content="yes" />
 
-        <script type="application/ld+json">
-          {JSON.stringify({
+        <JsonLd
+          id="website-jsonld"
+          data={{
             '@context': 'https://schema.org',
             '@type': 'WebSite',
             name: metaTitle,
             description: metaDescription,
             url: 'https://motia.dev',
-            image: ['https://motia.dev/og-image-updated.jpg'],
-          })}
-        </script>
+            image: ['https://motia.dev/og-image-updated-new.jpg'],
+          }}
+         />
       </head>
       <body
         suppressHydrationWarning
