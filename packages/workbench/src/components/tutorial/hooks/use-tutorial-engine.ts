@@ -19,11 +19,6 @@ export const useTutorialEngine = () => {
 
   const moveComponent = (x: number, y: number) => {
     if (ref.current) {
-      if (ref.current.parentElement) {
-        ref.current.style.transition = 'all 0.3s ease-in-out'
-        ref.current.parentElement.style.opacity = '1'
-        ref.current.parentElement.style.display = 'block'
-      }
       ref.current.style.position = 'absolute'
       ref.current.style.left = `${x}px`
       ref.current.style.top = `${y}px`
@@ -37,6 +32,12 @@ export const useTutorialEngine = () => {
       if (stepNumber >= MotiaTutorial.steps.length) {
         onClose()
         return
+      }
+
+      if (container.parentElement) {
+        container.style.transition = 'all 0.3s ease-in-out'
+        container.parentElement.style.opacity = '1'
+        container.parentElement.style.display = 'block'
       }
 
       loading.current = true
@@ -132,7 +133,7 @@ export const useTutorialEngine = () => {
           // Fallback to center of screen
           moveComponent(window.innerWidth / 2 - width / 2, window.innerHeight / 2 - height / 2)
         }
-      }, 100)
+      }, 1)
 
       loading.current = false
     }
