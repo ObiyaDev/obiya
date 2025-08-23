@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { MotiaTutorial } from '../engine/tutorial-engine'
 import { TutorialImage } from '../engine/tutorial-types'
 import { waitForElementByXPath } from './tutorial-utils'
-import { MotiaTutorial } from '../engine/tutorial-engine'
 
 export const useTutorialEngine = () => {
   const ref = useRef<HTMLDivElement>(null)
@@ -14,6 +14,7 @@ export const useTutorialEngine = () => {
   const [currentStep, setCurrentStep] = useState(0)
   const [totalSteps, setTotalSteps] = useState(MotiaTutorial.steps.length)
 
+  const manualOpenRef = useRef(false)
   const loading = useRef(false)
   const currentStepRef = useRef(0)
 
@@ -175,9 +176,14 @@ export const useTutorialEngine = () => {
       }
     }
 
-    MotiaTutorial.onOpen(onOpen)
+    MotiaTutorial.onOpen(() => {
+      manualOpenRef.current = true
+      onOpen()
+    })
+
     MotiaTutorial.onStepsRegistered(() => {
       if (localStorage.getItem('motia-tutorial-closed') !== 'true') {
+        manualOpenRef.current = false
         onOpen()
       }
     })
@@ -195,5 +201,6 @@ export const useTutorialEngine = () => {
     onClose,
     moveStep,
     currentStepRef,
+    manualOpenRef,
   }
 }

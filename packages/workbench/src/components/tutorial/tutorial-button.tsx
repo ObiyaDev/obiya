@@ -1,16 +1,20 @@
+import { analytics } from '@/lib/analytics'
 import { Button } from '@motiadev/ui'
 import { Book } from 'lucide-react'
 import { FC } from 'react'
-import { useTutorial } from './hooks/use-tutorial'
 import { Tooltip } from '../ui/tooltip'
+import { useTutorial } from './hooks/use-tutorial'
 
 export const TutorialButton: FC = () => {
   const { open, steps } = useTutorial()
   const isTutorialFlowMissing = steps.length === 0
+
   const onTutorialButtonClick = () => {
     if (!isTutorialFlowMissing) {
       open()
     }
+
+    analytics.track('tutorial_button_clicked', { isTutorialFlowMissing })
   }
 
   const trigger = (

@@ -1,9 +1,36 @@
+import { analytics } from '@/lib/analytics'
 import { useTutorialEngine } from './hooks/use-tutorial-engine'
 import { TutorialStep } from './tutorial-step'
 import './tutorial.css'
 
 export const Tutorial = () => {
   const engine = useTutorialEngine()
+
+  const onNext = () => {
+    const currentStep = engine.currentStepRef.current
+    const nextStep = currentStep + 1
+
+    engine.moveStep(nextStep)
+
+    if (engine.currentStep === engine.totalSteps) {
+      analytics.track('tutorial_completed', {
+        manualOpen: engine.manualOpenRef.current,
+      })
+    } else {
+      analytics.track('tutorial_next_step', {
+        step: nextStep,
+        manualOpen: engine.manualOpenRef.current,
+      })
+    }
+  }
+
+  const onClose = () => {
+    analytics.track('tutorial_closed', {
+      step: engine.currentStepRef.current,
+      manualOpen: engine.manualOpenRef.current,
+    })
+    engine.onClose()
+  }
 
   return (
     <div>
@@ -24,8 +51,8 @@ export const Tutorial = () => {
         description={engine.description}
         link={engine.link}
         image={engine.image}
-        onNext={() => engine.moveStep(engine.currentStepRef.current + 1)}
-        onClose={engine.onClose}
+        onNext={onNext}
+        onClose={onClose}
       />
     </div>
   )
