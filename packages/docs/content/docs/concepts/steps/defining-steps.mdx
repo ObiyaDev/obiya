@@ -11,7 +11,7 @@ Steps are the core building blocks of Motia - isolated, composable functions tha
 
 Every step follows a simple, consistent pattern:
 
-1. **📁 File Naming**: `*.step.*` (e.g., `user-api.step.ts`, `process-data.step.py`)
+1. **📁 File Naming**: `*.step.*` or `*_step.*` (e.g., `user-api.step.ts`, `process-data.step.py`, `data_processor_step.py`)
 2. **⚙️ Configuration**: Export a `config` object defining step behavior
 3. **🔧 Handler**: Export a `handler` function containing business logic
 4. **🤖 Auto-Discovery**: Motia automatically finds and registers your steps
@@ -49,10 +49,10 @@ Each step exports a `config` object that tells Motia how to handle the step. The
 |----------|------|-------------|----------|
 | `type` | `'api' \| 'event' \| 'cron' \| 'noop'` | The step type | ✅ |
 | `name` | `string` | Unique identifier for the step | ✅ |
-| `description` | `string` | Documentation for the step | ❌ |
-| `subscribes` | `string[]` | Topics this step listens to | ❌ |
-| `emits` | `string[]` | Topics this step can emit | ❌ |
-| `flows` | `string[]` | Flow identifiers this step belongs to | ❌ |
+| `description` | `string` | Documentation for the step | - |
+| `subscribes` | `string[]` | Topics this step listens to | - |
+| `emits` | `string[]` | Topics this step can emit | - |
+| `flows` | `string[]` | Flow identifiers this step belongs to | - |
 
 ### Type-Specific Properties
 
