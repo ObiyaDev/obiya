@@ -410,8 +410,8 @@ export const steps: TutorialStep[] = [
             {'  '}-H "Content-Type: application/json" \<br />
             {'  '}-d '
             {JSON.stringify({
-              pet: { name: 'Jack', photo_url: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
-              food_order: { id: 'food-order-1', quantity: 0 },
+              pet: { name: 'Jack', photoUrl: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
+              foodOrder: { id: 'food-order-1', quantity: 0 },
             })}
             '
           </code>
@@ -433,8 +433,8 @@ export const steps: TutorialStep[] = [
       {
         type: 'fill-editor',
         content: {
-          pet: { name: 'Jack', photo_url: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
-          food_order: { id: 'food-order-1', quantity: 0 },
+          pet: { name: 'Jack', photoUrl: 'https://images.dog.ceo/breeds/pug/n02110958_13560.jpg' },
+          foodOrder: { id: 'food-order-1', quantity: 0 },
         },
       },
     ],
