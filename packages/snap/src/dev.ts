@@ -75,8 +75,7 @@ export const dev = async (
   watcher.init()
 
   stateEndpoints(motiaServer, state)
-  
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+
   deployEndpoints(motiaServer, lockedData)
 
   motiaServer.server.listen(port, hostname)

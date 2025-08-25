@@ -11,7 +11,7 @@ import { DeploymentData, DeploymentStreamManager } from './new-deployment/stream
 
 export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => {
   const { app } = server
-  
+
   // Criar stream de deployment se não existir
   const deploymentStream = lockedData.createStream<DeploymentData>({
     filePath: '__deployment',
@@ -22,7 +22,7 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
       schema: null as never,
     },
   })()
-  
+
   const deploymentManager = new DeploymentStreamManager(deploymentStream)
 
   // Start streaming deployment
@@ -34,22 +34,22 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
       if (!deploymentToken || !deploymentId) {
         return res.status(400).json({
           success: false,
-          error: 'deploymentToken and deploymentId are required'
+          error: 'deploymentToken and deploymentId are required',
         })
       }
 
       // Generate unique deployment session ID
       const sessionId = deploymentId || randomUUID()
-      
+
       // Create context for endpoint environment
       const context = new CliContext()
-      
+
       // Reset deployment state for new deployment
       await deploymentManager.startDeployment(deploymentToken, sessionId)
-      
+
       // Create streaming listener with Motia Stream
       const listener = new StreamingDeploymentListener(sessionId, deploymentStream)
-      
+
       // Return immediately with stream info for client tracking
       res.json({
         success: true,
@@ -57,86 +57,83 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
         deploymentId: sessionId,
         streamName: 'deployment-status',
         groupId: 'deployments',
-        itemId: sessionId
+        itemId: sessionId,
       })
-      
+
       // Execute deployment asynchronously
       setImmediate(async () => {
         try {
-        // Start build phase
-        await listener.startBuildPhase()
-        
-        const builder = await build(listener)
-        const isValid = buildValidation(builder, listener)
-        
-        if (!isValid) {
-          await listener.onBuildErrors(listener.getErrors())
-          return
-        }
-        
-        await listener.completeBuildPhase()
-        
-        // Start upload phase
-        await listener.startUploadPhase()
-        
-        await uploadArtifacts(builder, deploymentToken, listener)
-        
-        await listener.completeUploadPhase()
-        
-        // Start deploy phase
-        await listener.startDeployPhase()
-        
-        await deploy({
-          envVars: envs,
-          deploymentId: sessionId,
-          deploymentToken: deploymentToken,
-          builder,
-          listener,
-          context,
-        })
-        
+          // Start build phase
+          await listener.startBuildPhase()
+
+          const builder = await build(listener)
+          const isValid = buildValidation(builder, listener)
+
+          if (!isValid) {
+            await listener.onBuildErrors(listener.getErrors())
+            return
+          }
+
+          await listener.completeBuildPhase()
+
+          // Start upload phase
+          await listener.startUploadPhase()
+
+          await uploadArtifacts(builder, deploymentToken, listener)
+
+          await listener.completeUploadPhase()
+
+          // Start deploy phase
+          await listener.startDeployPhase()
+
+          await deploy({
+            envVars: envs,
+            deploymentId: sessionId,
+            deploymentToken: deploymentToken,
+            builder,
+            listener,
+            context,
+          })
         } catch (error: any) {
           console.error('Deployment failed:', error)
-          
+
           // Update stream with error
           if (listener) {
             await listener.onDeployError(error.message)
           }
         }
       })
-      
     } catch (error: any) {
       console.error('Failed to start deployment:', error)
       res.status(500).json({
         success: false,
-        error: error.message
+        error: error.message,
       })
     }
   })
-  
+
   // Get deployment status by ID
   app.get('/cloud/deploy/status/:deploymentId', async (req: Request, res: Response) => {
     try {
       const { deploymentId } = req.params
       const deployment = await deploymentManager.getDeployment(deploymentId)
-      
+
       if (!deployment) {
         return res.status(404).json({
           success: false,
-          error: 'Deployment not found'
+          error: 'Deployment not found',
         })
       }
-      
+
       res.json({
         success: true,
-        deployment
+        deployment,
       })
     } catch (error: any) {
       res.status(500).json({
         success: false,
-        error: error.message
+        error: error.message,
       })
     }
   })
-
 }
