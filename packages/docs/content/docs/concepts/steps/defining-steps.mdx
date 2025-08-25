@@ -352,7 +352,7 @@ Even in multi-language workflows, Motia ensures data consistency:
 <Callout type="default">
 **🚀 Ready to Build?**
 
-Check out **[Build Your First App](/docs/getting-started/build-your-first-app)** to see a complete multi-language workflow in action, or explore specific step types:
+Check out **[API Endpoints](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)** to see a complete REST API tutorial in action, or explore specific step types:
 
 - **[API Steps](/docs/concepts/steps/api)** - HTTP endpoints with validation
 - **[Event Steps](/docs/concepts/steps/event)** - Async event processing

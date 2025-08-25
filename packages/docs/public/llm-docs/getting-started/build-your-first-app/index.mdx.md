@@ -1,41 +1,85 @@
 ---
-title: 'Build Your First Motia App'
+title: Build Your First Motia App
+description: Learn how to build complete applications with Motia through hands-on tutorials covering API endpoints, background jobs, and more.
 ---
 
-# Build Your First Motia App
+Welcome to the **Build Your First Motia App** tutorial series! This comprehensive guide will take you from zero to building production-ready applications with Motia's powerful step-based architecture.
 
-Welcome to the hands-on section where you'll build your first applications with Motia! This section contains step-by-step tutorials that guide you through creating real applications using Motia's powerful step-based architecture.
+## 🎯 What You'll Learn
 
-## Available Tutorials
+Through this hands-on tutorial series, you'll master the fundamental building blocks of Motia applications:
 
-### 🚀 **REST API Development**
-Learn how to build robust REST APIs with Motia's API steps, including automatic validation, error handling, and multi-language integration.
+- **API Endpoints** - Create REST APIs with full CRUD operations, request validation, and response handling
+- **Background Jobs** - Build event-driven workflows and scheduled tasks (coming soon)
+- **Real-time Features** - Add WebSocket connections and live data streaming (coming soon)
+- **Multi-language Integration** - Combine TypeScript, Python, and JavaScript in one application (coming soon)
 
-**[Creating Your First REST API in Motia →](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)**
+## 📚 Tutorial Structure
 
----
+Each tutorial in this series builds upon the previous one, giving you a complete understanding of Motia's capabilities:
 
-## What You'll Learn
+### 1. API Endpoints ✅
 
-Through these tutorials, you'll discover:
+**[Creating Your First REST API](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)**
 
-- **Steps as Building Blocks** - How to structure your application using Motia's step primitive
-- **Multi-Language Integration** - Seamlessly combining TypeScript, Python, and JavaScript
-- **Event-Driven Architecture** - Building reactive systems that respond to events
-- **Automatic Type Safety** - Leveraging Motia's type generation across languages
-- **Development Workflow** - Using the Motia CLI and Workbench for efficient development
+Learn the fundamentals of building REST APIs in Motia. You'll create a complete pet store API with:
+- **POST /pets** - Create new pets with validation
+- **GET /pets** - List all pets  
+- **GET /pets/:id** - Get specific pets by ID
+- **PUT /pets/:id** - Update existing pets
+- **DELETE /pets/:id** - Remove pets
 
-## Before You Start
+Perfect for understanding API steps, request/response handling, and Motia's type-safe approach.
 
-Make sure you have:
-- ✅ Motia installed ([Quick Start Guide](/docs/getting-started/quick-start))
-- ✅ Basic understanding of TypeScript or JavaScript
-- ✅ A code editor (VS Code recommended)
+### 2. Background Jobs (Coming Soon)
 
-## Need Help?
+Learn how to add automated background processing to your APIs:
+- Event-triggered jobs when data changes
+- Scheduled cron jobs for recurring tasks  
+- Email notifications and external integrations
+- Queue management and error handling
 
-- **[Community Resources](/docs/community-resources)** - Get support from the Motia community
-- **[Core Concepts](/docs/concepts)** - Deep dive into Motia's architecture
-- **[Examples](/docs/examples)** - Explore more complex real-world applications
+### 3. Real-time Features (Coming Soon)
 
-Ready to build? Let's start with your first REST API! 🎯
+Add live data streaming and WebSocket connections:
+- Real-time notifications to clients
+- Live data synchronization across users
+- Chat features and collaborative tools
+- Event-driven UI updates
+
+### 4. Advanced Integrations (Coming Soon)
+
+Build complex multi-service applications:
+- External API integrations
+- Database connections and migrations
+- Authentication and authorization
+- Deployment and monitoring
+
+## 🚀 Getting Started
+
+Ready to build your first Motia application? Start with the **API Endpoints** tutorial to learn the core concepts, then progress through the series to build more advanced features.
+
+Each tutorial is designed to be:
+- **Hands-on** - You'll build real, working code
+- **Practical** - Examples you can use in production apps
+- **Progressive** - Each lesson builds on the last
+- **Multi-language** - See how TypeScript, Python, and JavaScript work together
+
+<div className="mt-8">
+  <a 
+    href="/docs/getting-started/build-your-first-app/creating-your-first-rest-api"
+    className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+  >
+    Start with API Endpoints →
+  </a>
+</div>
+
+## 💡 Prerequisites
+
+Before starting these tutorials, make sure you have:
+- Completed the [Quick Start Guide](/docs/getting-started/quick-start)  
+- A working Motia development environment
+- Basic familiarity with REST API concepts
+- Some experience with TypeScript, Python, or JavaScript
+
+Let's build something amazing with Motia! 🎉

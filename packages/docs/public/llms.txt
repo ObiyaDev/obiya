@@ -229,8 +229,8 @@ Watch video tutorials, live streams, and learn from the Motia team and community
 ## 🎯 Quick Links
 
 ### Documentation
-- **[Getting Started](/docs/getting-started/core-concepts)** - Learn the basics of Motia
-- **[Build Your First App](/docs/getting-started/build-your-first-app)** - Hands-on tutorial
+- **[Getting Started](/docs/getting-started)** - Learn the basics of Motia
+- **[API Endpoints Tutorial](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)** - Hands-on REST API tutorial
 - **[Examples](/docs/examples)** - Real-world use cases and implementations
 - **[API Reference](/docs/concepts/steps)** - Complete API documentation
 
@@ -1225,7 +1225,7 @@ This enables a seamless multi-language development experience where you can:
 
 ---
 
-**Ready to build your first multi-language flow?** Check out **[Build Your First App](/docs/getting-started/build-your-first-app)** for a complete hands-on tutorial!
+**Ready to build your first REST API?** Check out **[API Endpoints](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)** for a complete hands-on tutorial!
 
 
 -   [index](/docs/concepts): Documentation for index.
@@ -1564,7 +1564,7 @@ motia cloud deploy --api-key <api-key> --version-name <version> [options]
 
 ---
 
-**Ready to see this in action?** Check out [Build Your First App](/docs/getting-started/build-your-first-app) to create a multi-language workflow in minutes.
+**Ready to see this in action?** Check out [API Endpoints](/docs/getting-started/build-your-first-app/creating-your-first-rest-api) to build a complete REST API in minutes.
 
 -   [Logging & Debugging](/docs/concepts/logging-and-debugging): Documentation for Logging & Debugging.
 ---
@@ -3225,7 +3225,7 @@ Even in multi-language workflows, Motia ensures data consistency:
 <Callout type="default">
 **🚀 Ready to Build?**
 
-Check out **[Build Your First App](/docs/getting-started/build-your-first-app)** to see a complete multi-language workflow in action, or explore specific step types:
+Check out **[API Endpoints](/docs/getting-started/build-your-first-app/creating-your-first-rest-api)** to see a complete REST API tutorial in action, or explore specific step types:
 
 - **[API Steps](/docs/concepts/steps/api)** - HTTP endpoints with validation
 - **[Event Steps](/docs/concepts/steps/event)** - Async event processing
