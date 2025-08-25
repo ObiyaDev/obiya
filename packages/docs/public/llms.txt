@@ -3690,6 +3690,11 @@ We have curated a few examples to help you get started with Motia.
 
 <Cards>
   <Card
+    title="Multi-Language Data Processing"
+    href="/docs/examples/multi-language-data-processing"
+    description="A real-world example of a multi-language data processing flow"
+  />
+  <Card
     title="Sentiment Analysis"
     href="/docs/examples/sentiment-analysis"
     description="Sometimes you don't just want a simple “prompt => response.” Instead, you want the LLM to decide how to proceed A real-world example of a sentiment analysis flow"
@@ -3699,7 +3704,13 @@ We have curated a few examples to help you get started with Motia.
     href="/docs/examples/rag-docling-weaviate"
     description="A real-world example of a RAG flow using Docling and Weaviate"
   />
+  <Card
+    title="Uptime Monitor"
+    href="/docs/examples/uptime-discord-monitor"
+    description="A real-world example of a uptime monitor flow"
+  />
 </Cards>
+
 
 <br/>
 
@@ -3768,6 +3779,11 @@ We have curated a few examples to help you get started with Motia.
 
 <Cards>
   <Card
+    title="Multi-Language Data Processing"
+    href="/docs/examples/multi-language-data-processing"
+    description="A real-world example of a multi-language data processing flow"
+  />
+  <Card
     title="Sentiment Analysis"
     href="/docs/examples/sentiment-analysis"
     description="Sometimes you don't just want a simple “prompt => response.” Instead, you want the LLM to decide how to proceed A real-world example of a sentiment analysis flow"
@@ -3777,7 +3793,13 @@ We have curated a few examples to help you get started with Motia.
     href="/docs/examples/rag-docling-weaviate"
     description="A real-world example of a RAG flow using Docling and Weaviate"
   />
+  <Card
+    title="Uptime Monitor"
+    href="/docs/examples/uptime-discord-monitor"
+    description="A real-world example of a uptime monitor flow"
+  />
 </Cards>
+
 
 <br/>
 
@@ -8977,7 +8999,7 @@ Ready to build monitoring infrastructure that scales with your business? Start b
 
 -   [creating-your-first-rest-api](/docs/getting-started/build-your-first-app/creating-your-first-rest-api): Documentation for creating-your-first-rest-api.
 ---
-title: Creating Your First REST API in Motia
+title: API Endpoints
 description: Learn how to build a complete REST API with CRUD operations using Motia. This guide covers HTTP endpoints, request validation, and response handling.
 ---
 If you haven't already, follow the [Quick Start Guide](/docs/getting-started/quick-start) to create a Motia project. This tutorial assumes you have a working project with the development server running.

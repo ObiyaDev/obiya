@@ -1,5 +1,5 @@
 ---
-title: Creating Your First REST API in Motia
+title: API Endpoints
 description: Learn how to build a complete REST API with CRUD operations using Motia. This guide covers HTTP endpoints, request validation, and response handling.
 ---
 If you haven't already, follow the [Quick Start Guide](/docs/getting-started/quick-start) to create a Motia project. This tutorial assumes you have a working project with the development server running.
