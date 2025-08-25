@@ -514,7 +514,7 @@ motia dev
 
 Now that you understand how Motia discovers and organizes steps:
 
-- Learn about [Core Concepts](/docs/getting-started/core-concepts) to understand how steps work together
+- Learn about [Core Concepts](/docs/concepts) to understand how steps work together
 - Explore [Defining Steps](/docs/concepts/steps/defining-steps) for detailed step creation
 - Check out [API Steps](/docs/concepts/steps/api) for creating HTTP endpoints
 - Dive into [Event Steps](/docs/concepts/steps/event) for workflow orchestration
