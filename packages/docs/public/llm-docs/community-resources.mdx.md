@@ -153,7 +153,7 @@ Watch video tutorials, live streams, and learn from the Motia team and community
 ## 🎯 Quick Links
 
 ### Documentation
-- **[Getting Started](/docs/concepts)** - Learn the basics of Motia
+- **[Getting Started](/docs/getting-started/core-concepts)** - Learn the basics of Motia
 - **[Build Your First App](/docs/getting-started/build-your-first-app)** - Hands-on tutorial
 - **[Examples](/docs/examples)** - Real-world use cases and implementations
 - **[API Reference](/docs/concepts/steps)** - Complete API documentation
