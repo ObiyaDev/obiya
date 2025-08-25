@@ -17,16 +17,16 @@ class RequestBody(BaseModel):
 
 config = {
     "type": "api",
-    "name": "PythonApiTrigger",
+    "name": "ApiTrigger",
     "description": "basic-tutorial api trigger",
-    "flows": ["python-tutorial"],
+    "flows": [basic-tutorial"],
     "method": "POST",
-    "path": "/python-basic-tutorial",
+    "path": "/basic-tutorial",
     "bodySchema": RequestBody.model_json_schema(),
     "responseSchema": {
         200: Pet.model_json_schema(),
     },
-    "emits": ["python-process-food-order"],
+    "emits": ["process-food-order"],
 }
 
 async def handler(req, context):
@@ -40,7 +40,7 @@ async def handler(req, context):
 
     if food_order:
         await context.emit({
-            "topic": "python-process-food-order",
+            "topic": "process-food-order",
             "data": {
                 "id": food_order.get("id"),
                 "quantity": food_order.get("quantity"),
