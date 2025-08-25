@@ -84,7 +84,7 @@ export class DeploymentStreamManager {
     }
   }
 
-  async startDeployment(deploymentToken: string, deploymentId: string): Promise<void> {
+  async startDeployment(deploymentId: string): Promise<void> {
     await this.stream.set('deployments', deploymentId, {
       ...createDefaultDeploymentData(deploymentId),
       status: 'building',

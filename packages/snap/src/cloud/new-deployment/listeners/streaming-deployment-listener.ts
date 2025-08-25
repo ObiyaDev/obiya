@@ -17,14 +17,12 @@ export class StreamingDeploymentListener implements DeploymentListener {
     this.streamManager = new DeploymentStreamManager(deploymentStream)
   }
 
-  // Helper to determine step type from Step config
   private getStepType(step: Step): 'event' | 'api' | 'cron' {
     if (step.config.type === 'api') return 'api'
     if (step.config.type === 'cron') return 'cron'
     return 'event'
   }
 
-  // Helper to determine language from file path
   private getLanguage(filePath: string): string {
     if (filePath.endsWith('.ts') || filePath.endsWith('.js')) return 'node'
     if (filePath.endsWith('.py')) return 'python'
@@ -32,7 +30,6 @@ export class StreamingDeploymentListener implements DeploymentListener {
     return 'unknown'
   }
 
-  // Helper to update stream with current phase and logs
   private async updateStream(update: Partial<DeploymentData>) {
     const current = await this.streamManager.getDeployment(this.deploymentId)
 

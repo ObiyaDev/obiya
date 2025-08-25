@@ -14,10 +14,10 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
 
   // Criar stream de deployment se não existir
   const deploymentStream = lockedData.createStream<DeploymentData>({
-    filePath: '__deployment',
+    filePath: '__motia.deployment',
     hidden: true,
     config: {
-      name: 'deployment-status',
+      name: '__motia.deployment',
       baseConfig: { storageType: 'default' },
       schema: null as never,
     },
@@ -25,12 +25,10 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
 
   const deploymentManager = new DeploymentStreamManager(deploymentStream)
 
-  // Start streaming deployment
   app.post('/cloud/deploy/start', async (req: Request, res: Response) => {
     try {
       const { deploymentToken, deploymentId, envs } = req.body
 
-      // Validate required parameters
       if (!deploymentToken || !deploymentId) {
         return res.status(400).json({
           success: false,
@@ -38,19 +36,14 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
         })
       }
 
-      // Generate unique deployment session ID
       const sessionId = deploymentId || randomUUID()
 
-      // Create context for endpoint environment
       const context = new CliContext()
 
-      // Reset deployment state for new deployment
-      await deploymentManager.startDeployment(deploymentToken, sessionId)
+      await deploymentManager.startDeployment(sessionId)
 
-      // Create streaming listener with Motia Stream
       const listener = new StreamingDeploymentListener(sessionId, deploymentStream)
 
-      // Return immediately with stream info for client tracking
       res.json({
         success: true,
         message: 'Deployment started',
@@ -60,17 +53,15 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
         itemId: sessionId,
       })
 
-      // Execute deployment asynchronously
       setImmediate(async () => {
         try {
-          // Start build phase
           await listener.startBuildPhase()
 
           const builder = await build(listener)
           const isValid = buildValidation(builder, listener)
 
           if (!isValid) {
-            await listener.onBuildErrors(listener.getErrors())
+            listener.onBuildErrors(listener.getErrors())
             return
           }
 
