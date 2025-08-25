@@ -94,9 +94,15 @@ export class PythonBuilder implements StepBuilder {
       dependencies.map(async (packageName) => addPackageToArchive(archive, lambdaSitePackages, packageName)),
     )
 
-    for (const step of steps) {
-      await this.buildStep(step, archive)
-    }
+    await Promise.all(
+      steps.map(async (step) => {
+        this.listener.onBuildStart(step)
+        await this.buildStep(step, archive)
+        this.listener.onBuildEnd(step) // TODO: add size?
+      }),
+    )
+
+    this.listener.onApiRouterBuilding('python')
 
     const file = fs
       .readFileSync(path.join(__dirname, 'router_template.py'), 'utf-8')
@@ -125,6 +131,8 @@ export class PythonBuilder implements StepBuilder {
 
     // Finalize the archive and wait for completion
     const size = await archive.finalize()
+
+    this.listener.onApiRouterBuilt('python', size)
 
     return { size, path: zipName }
   }
