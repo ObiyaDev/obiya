@@ -2,7 +2,7 @@
   "title": "Examples",
   "defaultOpen": true,
   "pages": [
-    "build-your-first-motia-app",
+    "multi-language-data-processing",
     "sentiment-analysis",
     "rag-docling-weaviate",
     "uptime-discord-monitor"
