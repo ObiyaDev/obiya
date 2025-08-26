@@ -5,10 +5,10 @@ import { StreamConfig } from './types-stream'
 import { ProcessManager } from './process-communication/process-manager'
 
 const getLanguageBasedRunner = (
-  stepFilePath = '',
+  baseDir: string,
+  stepFilePath: string,
 ): {
   command: string
-  runner: string
   args: string[]
 } => {
   const isPython = stepFilePath.endsWith('.py')
@@ -17,32 +17,32 @@ const getLanguageBasedRunner = (
 
   if (isPython) {
     const pythonRunner = path.join(__dirname, 'python', 'get-config.py')
-    return { runner: pythonRunner, command: 'python', args: [] }
+    return { command: 'python', args: [pythonRunner, baseDir] }
   } else if (isRuby) {
     const rubyRunner = path.join(__dirname, 'ruby', 'get-config.rb')
-    return { runner: rubyRunner, command: 'ruby', args: [] }
+    return { command: 'ruby', args: [rubyRunner] }
   } else if (isNode) {
     if (process.env._MOTIA_TEST_MODE === 'true') {
       const nodeRunner = path.join(__dirname, 'node', 'get-config.ts')
-      return { runner: nodeRunner, command: 'node', args: ['-r', 'ts-node/register'] }
+      return { command: 'node', args: ['-r', 'ts-node/register', nodeRunner] }
     }
 
     const nodeRunner = path.join(__dirname, 'node', 'get-config.js')
-    return { runner: nodeRunner, command: 'node', args: [] }
+    return { command: 'node', args: [nodeRunner] }
   }
 
   throw Error(`Unsupported file extension ${stepFilePath}`)
 }
 
-const getConfig = <T>(file: string): Promise<T | null> => {
-  const { runner, command, args } = getLanguageBasedRunner(file)
+const getConfig = <T>(baseDir: string, file: string): Promise<T | null> => {
+  const { command, args } = getLanguageBasedRunner(baseDir, file)
 
   return new Promise((resolve, reject) => {
     let config: T | null = null
 
     const processManager = new ProcessManager({
       command,
-      args: [...args, runner, file],
+      args: [...args, file],
       logger: globalLogger,
       context: 'Config',
     })
@@ -86,10 +86,10 @@ const getConfig = <T>(file: string): Promise<T | null> => {
   })
 }
 
-export const getStepConfig = (file: string): Promise<StepConfig | null> => {
-  return getConfig<StepConfig>(file)
+export const getStepConfig = (baseDir: string, file: string): Promise<StepConfig | null> => {
+  return getConfig<StepConfig>(baseDir, file)
 }
 
-export const getStreamConfig = (file: string): Promise<StreamConfig | null> => {
-  return getConfig<StreamConfig>(file)
+export const getStreamConfig = (baseDir: string, file: string): Promise<StreamConfig | null> => {
+  return getConfig<StreamConfig>(baseDir, file)
 }
