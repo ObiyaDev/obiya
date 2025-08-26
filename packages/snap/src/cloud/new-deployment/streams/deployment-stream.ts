@@ -4,7 +4,7 @@ export type BuildOutput = {
   packagePath: string
   language: string
   status: 'building' | 'built' | 'error'
-  size?: number // bytes (integer)
+  size?: number
   type: 'event' | 'api' | 'cron'
   errorMessage?: string
 }
@@ -13,8 +13,8 @@ export type UploadOutput = {
   packagePath: string
   language: string
   status: 'uploading' | 'uploaded' | 'error'
-  size?: number // bytes (integer)
-  progress?: number // 0-100 (integer)
+  size?: number
+  progress?: number
   type: 'event' | 'api' | 'cron'
   errorMessage?: string
 }
@@ -61,14 +61,13 @@ export class DeploymentStreamManager {
   constructor(private stream: MotiaStream<DeploymentData>) {}
 
   async getDeployment(deploymentId: string): Promise<DeploymentData | null> {
-    return await this.stream.get('deployments', deploymentId)
+    return await this.stream.get(deploymentId, 'data')
   }
 
   async updateDeployment(deploymentId: string, data: Partial<DeploymentData>): Promise<void> {
     const current = await this.getDeployment(deploymentId)
     if (!current) {
-      // Create new deployment if it doesn't exist
-      await this.stream.set('deployments', deploymentId, {
+      await this.stream.set(deploymentId, 'data', {
         ...createDefaultDeploymentData(deploymentId),
         ...data,
         id: deploymentId,
@@ -80,12 +79,12 @@ export class DeploymentStreamManager {
         id: deploymentId,
         deploymentId,
       }
-      await this.stream.set('deployments', deploymentId, updated)
+      await this.stream.set(deploymentId, 'data', updated)
     }
   }
 
   async startDeployment(deploymentId: string): Promise<void> {
-    await this.stream.set('deployments', deploymentId, {
+    await this.stream.set(deploymentId, 'data', {
       ...createDefaultDeploymentData(deploymentId),
       status: 'building',
       phase: 'build',
@@ -99,7 +98,7 @@ export class DeploymentStreamManager {
     const current = await this.getDeployment(deploymentId)
     if (!current) return
 
-    await this.stream.set('deployments', deploymentId, {
+    await this.stream.set(deploymentId, 'data', {
       ...current,
       status: success ? 'completed' : 'failed',
       phase: null,
@@ -108,10 +107,6 @@ export class DeploymentStreamManager {
       completedAt: Date.now(),
       error,
     })
-  }
-
-  async getAllDeployments(): Promise<DeploymentData[]> {
-    return await this.stream.getGroup('deployments')
   }
 
   async updateBuildOutput(deploymentId: string, buildOutput: BuildOutput): Promise<void> {

@@ -174,19 +174,19 @@ export class StreamingDeploymentListener implements DeploymentListener {
     })
   }
 
-  onBuildWarning(warning: ValidationError) {
+  async onBuildWarning(warning: ValidationError): Promise<void> {
     this.warnings.push(warning)
-    this.updateStream({
+    await this.updateStream({
       message: `Build warning: ${warning.message}`,
       buildLogs: [`Build warning: ${warning.message}`],
       progress: 10,
     })
   }
 
-  onBuildErrors(errors: ValidationError[]) {
+  async onBuildErrors(errors: ValidationError[]): Promise<void> {
     this.errors.push(...errors)
     const errorMessage = `Build failed with ${errors.length} errors`
-    this.updateStream({
+    await this.updateStream({
       status: 'failed',
       message: errorMessage,
       buildLogs: [errorMessage],
@@ -362,12 +362,12 @@ export class StreamingDeploymentListener implements DeploymentListener {
     })
   }
 
-  onDeployEnd(): void {
-    this.streamManager.completeDeployment(this.deploymentId, true)
+  async onDeployEnd(): Promise<void> {
+    await this.streamManager.completeDeployment(this.deploymentId, true)
   }
 
-  onDeployError(errorMessage: string) {
-    this.streamManager.completeDeployment(this.deploymentId, false, errorMessage)
+  async onDeployError(errorMessage: string): Promise<void> {
+    await this.streamManager.completeDeployment(this.deploymentId, false, errorMessage)
   }
 
   // Utility methods for phase management

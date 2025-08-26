@@ -67,14 +67,12 @@ export const deployEndpoints = (server: MotiaServer, lockedData: LockedData) => 
 
           await listener.completeBuildPhase()
 
-          // Start upload phase
           await listener.startUploadPhase()
 
           await uploadArtifacts(builder, deploymentToken, listener)
 
           await listener.completeUploadPhase()
 
-          // Start deploy phase
           await listener.startDeployPhase()
 
           await deploy({
