@@ -1,5 +1,5 @@
 <a href="https://obiya.dev">
-  <img src="assets/github-readme-banner.png" alt="Obiya Banner" width="100%">
+  <img src="https://github.com/ObiyaDev/obiya/blob/main/obiya%20(1).png" alt="Obiya Banner" width="100%">
 </a>
 
 <p align="center">
