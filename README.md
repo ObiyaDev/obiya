@@ -85,7 +85,7 @@ npx obiya dev # ➜ http://localhost:3000
 - ✅ Event-driven architecture
 - ✅ Zero configuration
 
-![new-workbench](assets/new-workbench.png)
+![new-workbench](https://github.com/ObiyaDev/obiya/blob/main/work_bench.png)
 
 > 📖 **[Full tutorial in our docs →](https://motia.dev/docs/getting-started/quick-start)**
 
