@@ -2,14 +2,6 @@
   <img src="https://github.com/ObiyaDev/obiya/blob/main/obiya%20(1).png" alt="Obiya Banner" width="100%">
 </a>
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/14032" style="margin-right:8px;">
-    <img src="https://trendshift.io/api/badge/repositories/14032" alt="Obiya" style="width: 250px; height: 55px; margin-right:8px;" width="250" height="55"/>
-  </a>
-  <a href="https://vercel.com/blog/summer-2025-oss-program#motia" target="_blank" style="margin-left:8px;">
-    <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" style="width: 250px; height: 55px; margin-left:8px;" width="250" height="55"/>
-  </a>
-</p>
 
 <p align="center">
   <strong>🔥 The Unified Backend Framework That Eliminates Runtime Fragmentation 🔥</strong>
@@ -182,8 +174,7 @@ We welcome contributions! Check our **[Contributing Guide](https://github.com/Ob
 
 <div align="center">
 
-**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://#.dev/docs)** • **[💬 Discord](#)**
-
+**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://#.dev/docs)** •
 [![Star History Chart](https://api.star-history.com/svg?repos=obiyadev/obiya&type=Date)](https://www.star-history.com/#obiyadev/obiya&Date)
 
 <sub>⭐ **Star us if you find Obiya useful!**</sub>
