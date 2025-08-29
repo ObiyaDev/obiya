@@ -174,7 +174,8 @@ We welcome contributions! Check our **[Contributing Guide](https://github.com/Ob
 
 <div align="center">
 
-**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://#.dev/docs)** •
+**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://#.dev/docs)**
+
 [![Star History Chart](https://api.star-history.com/svg?repos=obiyadev/obiya&type=Date)](https://www.star-history.com/#obiyadev/obiya&Date)
 
 <sub>⭐ **Star us if you find Obiya useful!**</sub>
