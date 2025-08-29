@@ -60,7 +60,7 @@ npx obiya@latest create -i   # runs the interactive terminal
 ```
 
 Follow the prompts to pick a template, project name, and language.
-![obiya-terminal](assets/motia-terminal.gif)
+![obiya-terminal](https://github.com/ObiyaDev/obiya/blob/main/obiya.png)
 
 ### 2. Start the Workbench
 
