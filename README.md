@@ -123,7 +123,6 @@ A complete chess platform benchmarking LLM performance with real-time evaluation
 | **[AI Research Agent](https://github.com/ObiyaDev/obiya-examples/tree/main/examples/ai-deep-research-agent)** | Web research with iterative analysis |
 | **[Streaming Chatbot](https://github.com/ObiyaDev/obiya-examples/tree/main/examples/streaming-ai-chatbot)** | Real-time AI responses |
 | **[Gmail Automation](https://github.com/ObiyaDev/obiya-examples/tree/main/examples/gmail-workflow)** | Smart email processing |
-| **[GitHub PR Manager](https://github.com/Obiya/obiya-examples/tree/main/examples/github-integration-workflow)** | Automated PR workflows |
 | **[Finance Agent](https://github.com/ObiyaDev/obiya-examples/tree/main/examples/finance-agent)** | Real-time market analysis |
 
 **Features demonstrated:** Multi-language workflows • Real-time streaming • AI integration • Production deployment
