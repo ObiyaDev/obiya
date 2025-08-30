@@ -30,7 +30,7 @@ Improving the documentation is a great way to contribute to Obiya. If you find a
 
 ## Sharing Examples and Use Cases
 
-If you have built something interesting with Obiya or have a real-world use case to share, we would love to showcase it in our [Examples](/docs/examples) section. You can contribute your examples by submitting a pull request to the Obiya Examples repository.
+If you have built something interesting with Obiya or have a real-world use case to share, we would love to showcase it in our Examples section. You can contribute your examples by submitting a pull request to the Obiya Examples repository.
 
 ## Spreading the Word
 
