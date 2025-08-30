@@ -148,22 +148,22 @@ A complete chess platform benchmarking LLM performance with real-time evaluation
 
 ## 🚧 Roadmap
 
-We have a public roadmap for Obiya, you can view it [here](https://github.com/orgs/ObiyaDev/projects/2/views/4).
+We have a public roadmap for Obiya.
 
 Feel free to add comments to the issues, or create a new issue if you have a feature request.
 
-| Feature | Status | Link | Description |
-| ------- | ------ | ---- | ----------- |
-| Python Types | Planned | [#485](https://github.com/ObiyaDev/obiya/issues/485) | Add support for Python types |
-| Streams: RBAC | Planned | [#495](https://github.com/ObiyaDev/obiya/issues/495) | Add support for RBAC |
-| Streams: Workbench UI | Planned | [#497](https://github.com/ObiyaDev/obiya/issues/497) | Add support for Workbench UI |
-| Queue Strategies | Planned | [#476](https://github.com/ObiyaDev/obiya/issues/476) | Add support for Queue Strategies |
-| Reactive Steps | Planned | [#477](https://github.com/ObiyaDev/obiya/issues/477) | Add support for Reactive Steps |
-| Point in time triggers | Planned | [#480](https://github.com/ObiyaDev/obiya/issues/480) | Add support for Point in time triggers |
-| Workbench plugins | Planned | [#481](https://github.com/ObiyaDev/obiya/issues/481) | Add support for Workbench plugins |
-| Rewrite our Core in either Go or Rust | Planned | [#482](https://github.com/ObiyaDev/obiya/issues/482) | Rewrite our Core in either Go or Rust |
-| Decrease deployment time | Planned | [#483](https://github.com/ObiyaDev/obiya/issues/483) | Decrease deployment time |
-| Built-in database support | Planned | [#484](https://github.com/ObiyaDev/obiya/issues/484) | Add support for built-in database |
+| Feature | Status | Description |
+| ------- | ------ | ----------- |
+| Python Types | Planned | Add support for Python types |
+| Streams: RBAC | Planned | Add support for RBAC |
+| Streams: Workbench UI | Planned | Add support for Workbench UI |
+| Queue Strategies | Planned | Add support for Queue Strategies |
+| Reactive Steps | Planned | Add support for Reactive Steps |
+| Point in time triggers | Planned | Add support for Point in time triggers |
+| Workbench plugins | Planned | Add support for Workbench plugins |
+| Rewrite our Core in either Go or Rust | Planned | Rewrite our Core in either Go or Rust |
+| Decrease deployment time | Planned | Decrease deployment time |
+| Built-in database support | Planned | Add support for built-in database |
 
 ## 🤝 Contributing
 
