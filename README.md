@@ -84,7 +84,6 @@ npx obiya dev # ➜ http://localhost:3000
 | **`cron`** | Schedule | Recurring jobs |
 | **`noop`** | Manual | External processes |
 
-> 📖 **[Learn more about Steps →](https://obiya.dev/docs/concepts/steps)**
 
 ---
 
