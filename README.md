@@ -11,9 +11,6 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/obiya">
-    <img src="https://img.shields.io/npm/v/obiya?style=flat&logo=npm&logoColor=white&color=CB3837&labelColor=000000" alt="npm version">
-  </a>
   <a href="https://github.com/ObiyaDev/obiya/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat&logo=opensourceinitiative&logoColor=white&labelColor=000000" alt="license">
   </a>
@@ -22,9 +19,6 @@
   </a>
   <a href="#" target="_blank">
     <img src="https://img.shields.io/badge/Follow-@obiyadev-1DA1F2?style=flat&logo=twitter&logoColor=white&labelColor=000000" alt="Twitter Follow">
-  </a>
-  <a href="#" target="_blank">
-    <img src="https://img.shields.io/discord/1322278831184281721?style=flat&logo=discord&logoColor=white&color=5865F2&label=Discord&labelColor=000000" alt="Discord">
   </a>
 </p>
 
@@ -79,7 +73,7 @@ npx obiya dev # ➜ http://localhost:3000
 
 ![new-workbench](https://github.com/ObiyaDev/obiya/blob/main/work_bench.png)
 
-> 📖 **[Full tutorial in our docs →](https://motia.dev/docs/getting-started/quick-start)**
+> 📖 **[Full tutorial in our docs →](https://obiya.dev/docs/getting-started/quick-start)**
 
 ## 🎯 Step Types
 
@@ -90,7 +84,7 @@ npx obiya dev # ➜ http://localhost:3000
 | **`cron`** | Schedule | Recurring jobs |
 | **`noop`** | Manual | External processes |
 
-> 📖 **[Learn more about Steps →](https://motia.dev/docs/concepts/steps)**
+> 📖 **[Learn more about Steps →](https://obiya.dev/docs/concepts/steps)**
 
 ---
 
@@ -100,9 +94,9 @@ npx obiya dev # ➜ http://localhost:3000
 
 A complete chess platform benchmarking LLM performance with real-time evaluation.
 
-**[Live Website →](https://chessarena.ai)** | **[Source Code →](https://github.com/MotiaDev/chessarena-ai)**
+**[Live Website →](https://chessarena.ai)** | **[Source Code →](https://github.com/Obiyadev/chessarena-ai)**
 
-> ![ChessArena.ai in action (raw GIF)](https://github.com/MotiaDev/chessarena-ai/blob/main/public/images/chessarena.gif?raw=true)
+> ![ChessArena.ai in action (raw GIF)](https://github.com/Obiyadev/chessarena-ai/blob/main/public/images/chessarena.gif?raw=true)
 
 **Built from scratch to production deployment, featuring:**
 - 🔐 **Authentication & user management**
@@ -142,10 +136,8 @@ A complete chess platform benchmarking LLM performance with real-time evaluation
 ## 📚 Resources
 
 - **[📖 Documentation](https://motia.dev/docs)** - Complete guides and API reference
-- **[💬 Discord](https://discord.gg/motia)** - Community support and discussions
-- **[🐛 GitHub Issues](https://github.com/MotiaDev/motia/issues)** - Bug reports and feature requests
-- **[🗺️ Roadmap](https://github.com/orgs/MotiaDev/projects/2)** - Upcoming features and progress
-
+- **[🐛 GitHub Issues](https://github.com/ObiyaDev/obiya)** - Bug reports and feature requests
+- 
 ## 🚧 Roadmap
 
 We have a public roadmap for Obiya.
@@ -173,7 +165,7 @@ We welcome contributions! Check our **[Contributing Guide](https://github.com/Ob
 
 <div align="center">
 
-**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://#.dev/docs)**
+**[🚀 Get Started](https://obiya.dev)** • **[📖 Docs](https://obiya.dev/docs)**
 
 
 </div>
